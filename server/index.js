@@ -1,14 +1,14 @@
 import express from "express"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
+import userRouter from "./routes/userRoute"
 
 dotenv.config()
 const PORT = process.env.PORT || 5000
 const app = express()
 
-app.use("/", (req, res, next) => {
-    res.send("Connect database successfully (#2)")
-})
+// Middlewares
+app.use("/user", userRouter)
 
 mongoose
     .connect(
