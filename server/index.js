@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 import dotenv from "dotenv"
 import bodyParser from "body-parser"
 import userRouter from './routes/userRoute.js'
+import adminRouter from "./routes/adminRoute.js"
 
 dotenv.config()
 const PORT = process.env.PORT || 5000
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // Router
 app.use("/user", userRouter)
+app.use("/admin", adminRouter)
 
 mongoose
     .connect(

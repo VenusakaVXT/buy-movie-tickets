@@ -25,7 +25,7 @@ export const getAllUsers = async (req, res, next) => {
     return res.status(200).json({ users })
 }
 
-export const register = async (req, res, next) => {
+export const addUser = async (req, res, next) => {
     const name = req.body.name
     const email = req.body.email
     const password = req.body.password
@@ -118,7 +118,7 @@ export const deleteUser = async (req, res, next) => {
 export const login = async (req, res, next) => {
     const { email, password } = req.body
 
-    if (!email && email.trim() === "" && !password && !password.trim() === "") {
+    if (!email && email.trim() === "" && !password && password.trim() === "") {
         return res.status(422).json({
             message: "Invalid inputs..."
         })
