@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt"
 import User from "../models/User.js"
 
 export const getAllUsers = async (req, res, next) => {
@@ -22,6 +23,8 @@ export const register = async (req, res, next) => {
     const name = req.body.name
     const email = req.body.email
     const password = req.body.password
+    const salt = bcrypt.genSaltSync(10) // saltRounds: 10
+    const hashPassword = bcrypt.hashSync(password, salt)
 
     if (
         (!name || name.trim() === "") &&
@@ -36,7 +39,7 @@ export const register = async (req, res, next) => {
     let user
 
     try {
-        user = new User({ name, email, password })
+        user = new User({ name, email, password: hashPassword })
         user = await user.save()
     } catch (err) {
         console.error(err)
