@@ -17,6 +17,26 @@ export const getAllMovies = async (req, res, next) => {
     return res.status(200).json({ movies })
 }
 
+export const getMovieById = async (req, res, next) => {
+    const id = req.params.id
+
+    let movie
+
+    try {
+        movie = await Movie.findById(id)
+    } catch(err) {
+        console.error(err)
+    }
+
+    if (!movie) {
+        return res.status(404).json({
+            message: "invalid movie id..."
+        })
+    }
+
+    return res.status(200).json({ movie })
+}
+
 export const addMovie = async (req, res, next) => {
     // omit the word "Bearer" and just take the string <token>
     const extractedToken = req.headers.authorization.split(" ")[1]
