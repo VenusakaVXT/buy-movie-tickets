@@ -14,7 +14,8 @@ const adminSchema = new Schema({
     },
     addedMovies: [
         {
-            type: String,
+            type: mongoose.Types.ObjectId,
+            ref: "Movie"
         }
     ]
 })

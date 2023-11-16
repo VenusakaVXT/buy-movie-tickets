@@ -1,12 +1,14 @@
+import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
 import Movie from "../models/Movie.js"
+import Admin from "../models/Admin.js"
 
 export const getAllMovies = async (req, res, next) => {
     let movies
 
     try {
         movies = await Movie.find()
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 
@@ -24,7 +26,7 @@ export const getMovieById = async (req, res, next) => {
 
     try {
         movie = await Movie.findById(id)
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 
@@ -87,8 +89,17 @@ export const addMovie = async (req, res, next) => {
             posterUrl,
             admin: adminId
         })
-        movie = await movie.save()
-    } catch(err) {
+
+        const session = await mongoose.startSession()
+        session.startTransaction()
+        await movie.save({ session })
+
+        const adminUser = await Admin.findById(adminId)
+        adminUser.addedMovies.push(movie)
+        await adminUser.save({ session })
+
+        await session.commitTransaction()
+    } catch (err) {
         console.error(err)
     }
 
