@@ -1,7 +1,32 @@
-import Booking from "../models/Booking.js";
+import mongoose from "mongoose";
+import Booking from "../models/Booking.js"
+import Movie from "../models/Movie.js"
+import User from "../models/User.js"
 
 export const newBooking = async (req, res, next) => {
     const { movie, date, seatNumber, user } = req.body
+
+    let existMovie;
+    let existUser;
+
+    try {
+        existMovie = await Movie.findById(movie)
+        existUser = await User.findById(user)
+    } catch (err) {
+        console.error(err)
+    }
+
+    if (!existMovie) {
+        return res.status(404).json({
+            message: "movie not found with given id..."
+        })
+    }
+
+    if (!existUser) {
+        return res.status(404).json({
+            message: "user not found with given id..."
+        })
+    }
 
     let booking
 
@@ -13,8 +38,18 @@ export const newBooking = async (req, res, next) => {
             user
         })
 
-        booking = await booking.save()
-    } catch(err) {
+        const session = await mongoose.startSession()
+        session.startTransaction()
+
+        existUser.bookings.push(booking)
+        existMovie.bookings.push(booking)
+
+        await existUser.save({ session })
+        await existMovie.save({ session })
+        await booking.save({ session })
+
+        session.commitTransaction()
+    } catch (err) {
         console.error(err)
     }
 
@@ -25,4 +60,21 @@ export const newBooking = async (req, res, next) => {
     }
 
     return res.status(201).json({ booking })
+}
+
+export const getBookingById = async (req, res, next) => {
+    const id = req.params.id
+    let booking
+
+    try {
+        booking = await Booking.findById(id)
+    } catch(err) {
+        console.error(err)
+    }
+
+    if (!booking) {
+        return res.status(500).json({ message: "unexpected error..." })
+    }
+
+    return res.status(200).json({ booking })
 }

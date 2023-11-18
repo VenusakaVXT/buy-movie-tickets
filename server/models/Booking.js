@@ -3,10 +3,12 @@ import mongoose from "mongoose"
 const Schema = mongoose.Schema
 const bookingSchema = new Schema({
     movie: {
-        type: String,
+        type: mongoose.Types.ObjectId,
+        ref: "Movie",
         required: true,
     },
     date: {
+        // mm/dd/yyyy
         type: Date,
         required: true,
     },
@@ -15,7 +17,8 @@ const bookingSchema = new Schema({
         required: true,
     },
     user: {
-        type: String,
+        type: mongoose.Types.ObjectId,
+        ref: "User",
         required: true,
     }
 })
