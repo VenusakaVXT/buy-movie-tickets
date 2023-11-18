@@ -1,11 +1,13 @@
 import express from "express"
-import { 
-    getAllUsers, 
-    addUser, 
-    updateUser, 
-    deleteUser, 
-    login
+import {
+    getAllUsers,
+    addUser,
+    updateUser,
+    deleteUser,
+    login,
+    getBookingOfUser
 } from "../controllers/userController.js"
+import { getBookingById } from "../controllers/bookingController.js"
 
 const userRouter = express.Router()
 
@@ -14,5 +16,6 @@ userRouter.post("/register", addUser)
 userRouter.put("/:id", updateUser)
 userRouter.delete("/:id", deleteUser)
 userRouter.post("/login", login)
+userRouter.get("/booking/:id", getBookingOfUser)
 
 export default userRouter

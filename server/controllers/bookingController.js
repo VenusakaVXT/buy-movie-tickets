@@ -78,3 +78,30 @@ export const getBookingById = async (req, res, next) => {
 
     return res.status(200).json({ booking })
 }
+
+export const cancelBooking = async (req, res, next) => {
+    const id = req.params.id
+    let booking
+
+    try {
+        booking = await Booking.findByIdAndRemove(id).populate("user movie")
+
+        const session = await mongoose.startSession()
+        session.startTransaction()
+
+        await booking.user.bookings.pull(booking)
+        await booking.movie.bookings.pull(booking)
+        await booking.movie.save({ session })
+        await booking.user.save({ session })
+        
+        session.commitTransaction()
+    } catch(err) {
+        console.error(err)
+    }
+
+    if (!booking) {
+        return res.status(500).json({ message: "unable to cancel..." })
+    }
+
+    return res.status(200).json({ message: "successfully cancel!!!" })
+}

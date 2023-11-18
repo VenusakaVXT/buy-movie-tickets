@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt"
 import User from "../models/User.js"
+import Booking from "../models/Booking.js"
 
 const salt = bcrypt.genSaltSync(10) // saltRounds: 10
 
@@ -143,4 +144,21 @@ export const login = async (req, res, next) => {
     }
 
     res.status(200).json({ message: "login successfully!!!" })
+}
+
+export const getBookingOfUser = async (req, res, next) => {
+    const id = req.params.id
+    let booking
+
+    try {
+        booking = await Booking.find({ user: id })
+    } catch(err) {
+        console.error(err)
+    }
+
+    if (!booking) {
+        return res.status(500).json({ message: "unable to get booking..." })
+    }
+
+    return res.status(200).json({ booking })
 }
