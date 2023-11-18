@@ -1,9 +1,11 @@
+import Header from "./components/Header"
+
 function App() {
   return (
     <div className="App">
-      Hello World!!! I'm VENUS
+      <Header />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
