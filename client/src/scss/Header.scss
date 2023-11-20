@@ -1,0 +1,44 @@
+@import './variable';
+
+.header {
+    text-align: center;
+
+    .header__wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 28px;
+    }
+
+    .header__container {
+        display: flex;
+        align-items: center;
+    }
+
+    .header__brand-wrapper {
+        width: 170px;
+        font-size: 20px;
+        margin-right: 10px;
+        cursor: pointer;
+        
+        .header__brand-icon {
+            color: $main-color;
+        }
+    
+        .header__brand-name {
+            margin: 0;
+            color: #fff;
+        }
+    }
+
+    .header__navbar {
+        display: flex;
+    }
+
+    .header__search {
+        width: 250px;
+        background: #fff;
+        padding: 2px 5px;
+        border-radius: 6px;
+    }
+}
