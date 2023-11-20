@@ -1,3 +1,5 @@
+// Integrated instructions: https://cloud.google.com/translate/docs/reference/rest
+
 import { useState, useEffect } from "react"
 import translate from "@google-cloud/translate"
 
