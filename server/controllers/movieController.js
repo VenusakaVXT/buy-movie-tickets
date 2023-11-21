@@ -64,7 +64,15 @@ export const addMovie = async (req, res, next) => {
 
     // create new movie
     const {
-        title, description, actors, releaseDate, posterUrl, featured
+        title, 
+        description,
+        director, 
+        actors, 
+        category,
+        releaseDate, 
+        time,
+        posterUrl, 
+        featured
     } = req.body
 
     if (
@@ -83,8 +91,11 @@ export const addMovie = async (req, res, next) => {
         movie = new Movie({
             title,
             description,
+            director,
             actors,
+            category,
             releaseDate: new Date(`${releaseDate}`),
+            time,
             featured,
             posterUrl,
             admin: adminId

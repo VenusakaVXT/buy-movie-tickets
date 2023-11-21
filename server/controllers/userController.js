@@ -27,13 +27,21 @@ export const getAllUsers = async (req, res, next) => {
 }
 
 export const addUser = async (req, res, next) => {
-    const name = req.body.name
-    const email = req.body.email
-    const password = req.body.password
+    const {
+        name,
+        phone,
+        email,
+        password,
+        birthDay,
+        gender,
+        address
+    } = req.body
+
     const hashPassword = hashUserPassword(password)
 
     if (
         (!name || name.trim() === "") &&
+        (!phone || phone.trim() === "") &&
         (!email || email.trim() === "") &&
         (!password || password.trim() === "")
     ) {
@@ -45,7 +53,15 @@ export const addUser = async (req, res, next) => {
     let user
 
     try {
-        user = new User({ name, email, password: hashPassword })
+        user = new User({ 
+            name, 
+            phone,
+            email, 
+            password: hashPassword,
+            birthDay,
+            gender,
+            address
+        })
         user = await user.save()
     } catch (err) {
         console.error(err)
@@ -62,11 +78,22 @@ export const addUser = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
     const id = req.params.id
-    const { name, email, password } = req.body
+
+    const {
+        name,
+        phone,
+        email,
+        password,
+        birthDay,
+        gender,
+        address
+    } = req.body
+
     const hashPassword = hashUserPassword(password)
 
     if (
         (!name || name.trim() === "") &&
+        (!phone || phone.trim() === "") &&
         (!email || email.trim() === "") &&
         (!password || password.trim() === "")
     ) {
@@ -79,9 +106,13 @@ export const updateUser = async (req, res, next) => {
 
     try {
         user = await User.findByIdAndUpdate(id, {
-            name,
-            email,
-            password: hashPassword
+            name, 
+            phone,
+            email, 
+            password: hashPassword,
+            birthDay,
+            gender,
+            address
         })
     } catch(err) {
         console.error(err)
@@ -117,9 +148,9 @@ export const deleteUser = async (req, res, next) => {
 }
 
 export const login = async (req, res, next) => {
-    const { email, password } = req.body
+    const { username, password } = req.body
 
-    if (!email && email.trim() === "" && !password && password.trim() === "") {
+    if (!username && username.trim() === "" && !password && password.trim() === "") {
         return res.status(422).json({
             message: "Invalid inputs..."
         })
@@ -128,7 +159,7 @@ export const login = async (req, res, next) => {
     let existUser
 
     try {
-        existUser = await User.findOne({ email })
+        existUser = await User.findOne({ $or: [{ email: username }, { phone: username }] })
     } catch(err) {
         console.error(err)
     }

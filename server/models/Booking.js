@@ -7,7 +7,7 @@ const bookingSchema = new Schema({
         ref: "Movie",
         required: true,
     },
-    date: {
+    bookingDate: {
         // mm/dd/yyyy
         type: Date,
         required: true,

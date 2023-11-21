@@ -4,7 +4,7 @@ import Movie from "../models/Movie.js"
 import User from "../models/User.js"
 
 export const newBooking = async (req, res, next) => {
-    const { movie, date, seatNumber, user } = req.body
+    const { movie, bookingDate, seatNumber, user } = req.body
 
     let existMovie;
     let existUser;
@@ -33,7 +33,7 @@ export const newBooking = async (req, res, next) => {
     try {
         booking = new Booking({
             movie,
-            date: new Date(`${date}`),
+            bookingDate: new Date(`${bookingDate}`),
             seatNumber,
             user
         })
@@ -68,7 +68,7 @@ export const getBookingById = async (req, res, next) => {
 
     try {
         booking = await Booking.findById(id)
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 
@@ -93,9 +93,9 @@ export const cancelBooking = async (req, res, next) => {
         await booking.movie.bookings.pull(booking)
         await booking.movie.save({ session })
         await booking.user.save({ session })
-        
+
         session.commitTransaction()
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 

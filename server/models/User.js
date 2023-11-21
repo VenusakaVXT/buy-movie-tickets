@@ -6,6 +6,11 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    phone: {
+        type: String,
+        required: true,
+        unique: true
+    },
     email: {
         type: String,
         required: true,
@@ -15,6 +20,18 @@ const userSchema = new Schema({
         type: String,
         required: true,
         minLength: 6
+    },
+    birthDay: {
+        type: Date,
+        required: true
+    },
+    gender: {
+        type: String,
+        required: true
+    },
+    adress: {
+        type: String,
+        required: true
     },
     bookings: [{
         type: mongoose.Types.ObjectId,

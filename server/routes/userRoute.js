@@ -7,7 +7,6 @@ import {
     login,
     getBookingOfUser
 } from "../controllers/userController.js"
-import { getBookingById } from "../controllers/bookingController.js"
 
 const userRouter = express.Router()
 

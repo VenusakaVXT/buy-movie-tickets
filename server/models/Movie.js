@@ -10,13 +10,27 @@ const movieSchema = new Schema({
         type: String,
         required: true,
     },
+    director: {
+        type: String,
+        required: true,
+    },
     actors: [
         {
             type: String,
             required: true,
         }
     ],
+    category: [
+        {
+            type: String,
+            required: true,
+        }
+    ],
     releaseDate: {
+        type: String,
+        required: true,
+    },
+    time: {
         type: String,
         required: true,
     },
