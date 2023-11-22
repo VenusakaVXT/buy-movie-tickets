@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "../scss/Header.scss"
 import {
     AppBar,
@@ -11,11 +11,18 @@ import {
 } from "@mui/material"
 import MovieIcon from "@mui/icons-material/Movie"
 import LanguageMenu from "./LanguageMenu"
+import { getAllMovies } from "../api/movieApi"
 
 const movieList = ["Loki s2", "The Marvels", "Aquaman an Lost Kingdom"]
 
 function Header() {
     const [active, setActive] = useState(0)
+
+    useEffect(() => {
+        getAllMovies()
+            .then((data) => console.log(data))
+            .catch((err) => console.error(err))
+    }, [])
 
     return (
         <AppBar className="header" sx={{ bgcolor: "#000" }}>

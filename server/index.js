@@ -6,6 +6,8 @@ import userRouter from './routes/userRoute.js'
 import adminRouter from "./routes/adminRoute.js"
 import movieRouter from "./routes/movieRoute.js"
 import bookingRouter from "./routes/bookingRoute.js"
+import cors from "cors"
+//import configCors from "./config/fixCORS.js"
 
 dotenv.config()
 const PORT = process.env.PORT || 5000
@@ -21,6 +23,10 @@ app.use("/user", userRouter)
 app.use("/admin", adminRouter)
 app.use("/movie", movieRouter)
 app.use("/booking", bookingRouter)
+
+// Fix CORS
+//configCors(app)
+app.use(cors({ origin: 'http://localhost:3000' }))
 
 mongoose
     .connect(
