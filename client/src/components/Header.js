@@ -13,14 +13,13 @@ import MovieIcon from "@mui/icons-material/Movie"
 import LanguageMenu from "./LanguageMenu"
 import { getAllMovies } from "../api/movieApi"
 
-const movieList = ["Loki s2", "The Marvels", "Aquaman an Lost Kingdom"]
-
 function Header() {
     const [active, setActive] = useState(0)
+    const [movies, setMovies] = useState([])
 
     useEffect(() => {
         getAllMovies()
-            .then((data) => console.log(data))
+            .then((data) => setMovies(data.movies))
             .catch((err) => console.error(err))
     }, [])
 
@@ -53,7 +52,7 @@ function Header() {
                     <Box className="header__search">
                         <Autocomplete
                             freeSolo
-                            options={movieList.map((option) => option)}
+                            options={movies && movies.map((option) => option.title)}
                             renderInput={(params) => (
                                 <TextField
                                     variant="standard"

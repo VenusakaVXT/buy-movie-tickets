@@ -6,7 +6,6 @@ import userRouter from './routes/userRoute.js'
 import adminRouter from "./routes/adminRoute.js"
 import movieRouter from "./routes/movieRoute.js"
 import bookingRouter from "./routes/bookingRoute.js"
-//import cors from "cors"
 import configCors from "./config/fixCORS.js"
 
 dotenv.config()
@@ -20,7 +19,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // Fix CORS
 configCors(app)
-//app.use(cors())
 
 // Router
 app.use("/user", userRouter)

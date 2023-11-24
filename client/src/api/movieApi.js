@@ -1,14 +1,12 @@
 import axios from "axios"
-import { API_TIMEOUT } from "../custom/customTimeout.js"
 
 export const getAllMovies = async () => {
     try {
-        const res = await axios.get("http://localhost:5000/movie", {
-            timeout: API_TIMEOUT
-        })
+        const res = await axios.get("http://localhost:5000/movie")
 
         if (res.status === 200) {
-            return res.data
+            const data = await res.data
+            return data
         } else {
             console.log("no data...")
         }
