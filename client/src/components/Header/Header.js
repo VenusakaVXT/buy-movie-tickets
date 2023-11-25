@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import "../scss/Header.scss"
+import "../../scss/Header.scss"
 import {
     AppBar,
     Autocomplete,
@@ -10,10 +10,11 @@ import {
     Tab,
 } from "@mui/material"
 import MovieIcon from "@mui/icons-material/Movie"
-import LanguageMenu from "./LanguageMenu"
-import { getAllMovies } from "../api/movieApi"
+import LanguageMenu from "../Language/LanguageMenu"
+import { getAllMovies } from "../../api/movieApi"
+import { Link } from "react-router-dom"
 
-function Header() {
+const Header = () => {
     const [active, setActive] = useState(0)
     const [movies, setMovies] = useState([])
 
@@ -24,7 +25,7 @@ function Header() {
     }, [])
 
     return (
-        <AppBar className="header" sx={{ bgcolor: "#000" }}>
+        <AppBar position="sticky" className="header" sx={{ bgcolor: "#000" }}>
             <Toolbar className="header__wrapper">
                 <div className="header__container">
                     <Box className="header__brand-wrapper">
@@ -40,10 +41,30 @@ function Header() {
                             value={active}
                             onChange={(e, val) => setActive(val)}
                         >
-                            <Tab className="header__navitem" label="Home" />
-                            <Tab className="header__navitem" label="Release" />
-                            <Tab className="header__navitem" label="Category" />
-                            <Tab className="header__navitem" label="Cinema" />
+                            <Tab
+                                className="header__navitem"
+                                label="Home"
+                                LinkComponent={Link}
+                                to="/"
+                            />
+                            <Tab
+                                className="header__navitem"
+                                label="Release"
+                                LinkComponent={Link}
+                                to="/release"
+                            />
+                            <Tab
+                                className="header__navitem"
+                                label="Category"
+                                LinkComponent={Link}
+                                to="/category"
+                            />
+                            <Tab
+                                className="header__navitem"
+                                label="Cinema"
+                                LinkComponent={Link}
+                                to="/cinema"
+                            />
                         </Tabs>
                     </Box>
                 </div>
@@ -67,8 +88,18 @@ function Header() {
 
                     <Box>
                         <Tabs className="header__option" textColor="#fff">
-                            <Tab className="header__option-item" label="Sign up" />
-                            <Tab className="header__option-item" label="Login" />
+                            <Tab
+                                className="header__option-item"
+                                label="Sign up"
+                                LinkComponent={Link}
+                                to="/register"
+                            />
+                            <Tab
+                                className="header__option-item"
+                                label="Login"
+                                LinkComponent={Link}
+                                to="/login"
+                            />
                         </Tabs>
                     </Box>
                 </div>
