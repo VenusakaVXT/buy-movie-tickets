@@ -9,17 +9,17 @@ import {
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material"
 import "../../scss/Carousel.scss"
 
-const images = [
+const carousel = [
     {
-        src: "https://gugimages.s3.us-east-2.amazonaws.com/wp-content/uploads/2022/12/30214953/Avatar-2-poster-600x337.jpeg",
+        src: "http://localhost:5000/img/slider/avatar.jpeg",
         content: "Avatar: The Way Of Water after 13 years, the audience's wait is truly worth it"
     },
     {
-        src: "https://venusakavxt.github.io/movie-news/assets/image/ant-man-quantuminia.jpg",
+        src: "http://localhost:5000/img/slider/ant-man-quantuminia.jpg",
         content: "Ant-Man 3 expands the Marvel Cinematic Universe, bringing audiences to the quantum world - a land that has not been introduced much in previous films."
     },
     {
-        src: "https://venusakavxt.github.io/movie-news/assets/image/theflash2.jpg",
+        src: "http://localhost:5000/img/slider/theflash2.jpg",
         content: "The Flash 2, Barry will face a new threat from a parallel universe in the form of Speedster Zoom"
     },
 ]
@@ -28,11 +28,11 @@ const Carousel = () => {
     const [index, setIndex] = useState(0)
 
     const handlePrev = () => {
-        setIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length)
+        setIndex((prevIndex) => (prevIndex - 1 + carousel.length) % carousel.length)
     }
 
     const handleNext = () => {
-        setIndex((prevIndex) => (prevIndex + 1) % images.length)
+        setIndex((nextIndex) => (nextIndex + 1) % carousel.length)
     }
 
     useEffect(() => {
@@ -51,7 +51,7 @@ const Carousel = () => {
                 </IconButton>
 
                 <img
-                    className="carousel__img" src={images[index].src} alt={`Slide ${index + 1}`}
+                    className="carousel__img" src={carousel[index].src} alt={`Slide ${index + 1}`}
                 />
 
                 <IconButton className="carousel__control carousel__next-btn" onClick={handleNext}>
@@ -59,7 +59,7 @@ const Carousel = () => {
                 </IconButton>
 
                 <div className="carousel__tick">
-                    {images.map((img, i) => (
+                    {carousel.map((img, i) => (
                         <Paper 
                             className="carousel__tick-item" 
                             key={i} 
@@ -69,7 +69,7 @@ const Carousel = () => {
                 </div>
 
                 <Typography className="carousel__content" container>
-                    {images[index].content}
+                    {carousel[index].content}
                 </Typography>
             </Grid>
         </Container>

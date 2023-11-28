@@ -2,11 +2,13 @@ import express from "express"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
 import bodyParser from "body-parser"
-import userRouter from './routes/userRoute.js'
+import userRouter from "./routes/userRoute.js"
 import adminRouter from "./routes/adminRoute.js"
 import movieRouter from "./routes/movieRoute.js"
 import bookingRouter from "./routes/bookingRoute.js"
 import configCors from "./config/fixCORS.js"
+import path, { dirname } from "path"
+import { fileURLToPath } from "url"
 
 dotenv.config()
 const PORT = process.env.PORT || 5000
@@ -19,6 +21,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // Fix CORS
 configCors(app)
+
+// Static file
+const __dirname = dirname(fileURLToPath(import.meta.url))
+app.use(express.static(path.join(__dirname, "public")))
 
 // Router
 app.use("/user", userRouter)
