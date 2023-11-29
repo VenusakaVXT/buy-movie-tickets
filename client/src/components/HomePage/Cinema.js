@@ -1,9 +1,10 @@
 import React from "react"
+import "../../scss/Cinema.scss"
 
 const Cinema = () => {
     return (
-        <div>
-            Cinema
+        <div className="cinema__wrapper" style={{height:"500px"}}>
+            <h2><span>#</span>CINEMA</h2>
         </div>
     )
 }

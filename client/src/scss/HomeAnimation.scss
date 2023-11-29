@@ -1,0 +1,21 @@
+.home__animation-enter {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 300ms, transform 300ms;
+}
+
+.home__animation-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.home__animation-exit {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
+}
+
+.home__animation-exit-active {
+    opacity: 0;
+    transform: translateY(-20px);
+}

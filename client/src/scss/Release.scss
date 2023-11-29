@@ -1,0 +1,16 @@
+@import "./variable";
+
+.release__wrapper {
+    background: #fff;
+    padding: 30px 74.5px;
+
+    h2 {
+        font-size: 40px;
+        text-align: center;
+        font-weight: 100;
+
+        span {
+            color: $span-color;
+        }
+    }
+}

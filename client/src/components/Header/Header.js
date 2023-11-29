@@ -12,17 +12,25 @@ import {
 import MovieIcon from "@mui/icons-material/Movie"
 import LanguageMenu from "../Language/LanguageMenu"
 import { getAllMovies } from "../../api/movieApi"
-import { Link } from "react-router-dom"
+import { Link, Outlet, Routes, useNavigate } from "react-router-dom"
+// import { CSSTransition } from "react-transition-group"
+// import "../../scss/HomeAnimation.scss"
 
 const Header = () => {
     const [active, setActive] = useState(0)
     const [movies, setMovies] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() => {
         getAllMovies()
             .then((data) => setMovies(data.movies))
             .catch((err) => console.error(err))
     }, [])
+
+    const handleTabChange = (index, to) => {
+        setActive(index)
+        navigate(to)
+    }
 
     return (
         <AppBar position="sticky" className="header" sx={{ bgcolor: "#000" }}>
@@ -39,7 +47,7 @@ const Header = () => {
                             textColor="#fff"
                             TabIndicatorProps={{ style: { background: "#e50914" } }}
                             value={active}
-                            onChange={(e, val) => setActive(val)}
+                            onChange={(e, val) => handleTabChange(val, Routes[val])}
                         >
                             <Tab
                                 className="header__navitem"
@@ -68,6 +76,17 @@ const Header = () => {
                         </Tabs>
                     </Box>
                 </div>
+
+                {/* <CSSTransition
+                    in={true}
+                    appear={true}
+                    timeout={3000}
+                    classNames="home__animation"
+                >
+                    <div style={{ flexGrow: 1 }}>
+                        <Outlet />
+                    </div>
+                </CSSTransition> */}
 
                 <div className="header__container">
                     <Box className="header__search">
