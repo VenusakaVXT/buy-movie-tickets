@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import "../../scss/Header.scss"
 import {
     AppBar,
     Autocomplete,
@@ -12,14 +11,12 @@ import {
 import MovieIcon from "@mui/icons-material/Movie"
 import LanguageMenu from "../Language/LanguageMenu"
 import { getAllMovies } from "../../api/movieApi"
-import { Link, Outlet, Routes, useNavigate } from "react-router-dom"
-// import { CSSTransition } from "react-transition-group"
-// import "../../scss/HomeAnimation.scss"
+import { Link } from "react-router-dom"
+import "../../scss/Header.scss"
 
 const Header = () => {
     const [active, setActive] = useState(0)
     const [movies, setMovies] = useState([])
-    const navigate = useNavigate()
 
     useEffect(() => {
         getAllMovies()
@@ -27,9 +24,16 @@ const Header = () => {
             .catch((err) => console.error(err))
     }, [])
 
-    const handleTabChange = (index, to) => {
-        setActive(index)
-        navigate(to)
+    const handleTabClick = (e) => {
+        const getIdByTab = e.currentTarget.getAttribute("data-id")
+
+        if (getIdByTab) {
+            const element = document.getElementById(getIdByTab)
+
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" })
+            }
+        }
     }
 
     return (
@@ -47,46 +51,35 @@ const Header = () => {
                             textColor="#fff"
                             TabIndicatorProps={{ style: { background: "#e50914" } }}
                             value={active}
-                            onChange={(e, val) => handleTabChange(val, Routes[val])}
+                            onChange={(e, val) => setActive(val)}
                         >
                             <Tab
                                 className="header__navitem"
                                 label="Home"
-                                LinkComponent={Link}
-                                to="/"
+                                data-id="home"
+                                onClick={handleTabClick}
                             />
                             <Tab
                                 className="header__navitem"
                                 label="Release"
-                                LinkComponent={Link}
-                                to="/release"
+                                data-id="release"
+                                onClick={handleTabClick}
                             />
                             <Tab
                                 className="header__navitem"
                                 label="Category"
-                                LinkComponent={Link}
-                                to="/category"
+                                data-id="category"
+                                onClick={handleTabClick}
                             />
                             <Tab
                                 className="header__navitem"
                                 label="Cinema"
-                                LinkComponent={Link}
-                                to="/cinema"
+                                data-id="cinema"
+                                onClick={handleTabClick}
                             />
                         </Tabs>
                     </Box>
                 </div>
-
-                {/* <CSSTransition
-                    in={true}
-                    appear={true}
-                    timeout={3000}
-                    classNames="home__animation"
-                >
-                    <div style={{ flexGrow: 1 }}>
-                        <Outlet />
-                    </div>
-                </CSSTransition> */}
 
                 <div className="header__container">
                     <Box className="header__search">

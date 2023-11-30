@@ -3,7 +3,7 @@ import "../../scss/Release.scss"
 
 const Release = () => {
     return (
-        <div className="release__wrapper" style={{height:"500px"}}>
+        <div id="release" className="release__wrapper" style={{ height: "800px" }}>
             <h2><span>#</span>RELEASE</h2>
         </div>
     )

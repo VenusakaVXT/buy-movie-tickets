@@ -9,7 +9,7 @@ import Cinema from "./Cinema"
 
 const Home = () => {
     return (
-        <Box className="home__wrapper">
+        <Box id="home" className="home__wrapper">
             <Carousel />
             <Banner />
             <Release />

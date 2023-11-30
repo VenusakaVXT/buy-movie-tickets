@@ -60,10 +60,10 @@ const Carousel = () => {
 
                 <div className="carousel__tick">
                     {carousel.map((img, i) => (
-                        <Paper 
-                            className="carousel__tick-item" 
-                            key={i} 
-                            style={{ backgroundColor: i === index ? "#fff" : "#808080" }} 
+                        <Paper
+                            className="carousel__tick-item"
+                            key={i}
+                            style={{ backgroundColor: i === index ? "#fff" : "#808080" }}
                         />
                     ))}
                 </div>

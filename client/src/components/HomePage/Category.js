@@ -3,7 +3,7 @@ import "../../scss/Category.scss"
 
 const Category = () => {
     return (
-        <div className="category__wrapper" style={{height:"500px"}}>
+        <div id="category" className="category__wrapper" style={{ height: "800px" }}>
             <h2><span>#</span>CATEGORY</h2>
         </div>
     )

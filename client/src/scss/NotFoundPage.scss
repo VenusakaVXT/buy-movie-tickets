@@ -1,0 +1,23 @@
+@import "./variable";
+
+.errnotfound {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 30vw;
+        height: 60vh;
+    }
+
+    h1 {
+        font-size: 45px;
+        color: $bold-txt;
+
+        span {
+            color: $main-color;
+        }
+    }
+}
