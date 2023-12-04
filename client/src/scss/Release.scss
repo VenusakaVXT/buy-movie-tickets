@@ -8,9 +8,31 @@
         font-size: 40px;
         text-align: center;
         font-weight: 100;
+        margin-bottom: 40px;
 
         span {
             color: $span-color;
         }
+    }
+
+    .release__title {
+        font-size: 30px;
+        text-align: center;
+        font-weight: 400;
+        margin-bottom: 30px;
+    }
+
+    .release__list {
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .release__view-all {
+        display: flex;
+        margin: auto;
+        margin-top: 40px;
     }
 }

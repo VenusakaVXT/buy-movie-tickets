@@ -6,7 +6,7 @@ import {
     TextField,
     Toolbar,
     Tabs,
-    Tab,
+    Tab
 } from "@mui/material"
 import MovieIcon from "@mui/icons-material/Movie"
 import LanguageMenu from "../Language/LanguageMenu"
@@ -56,6 +56,8 @@ const Header = () => {
                             <Tab
                                 className="header__navitem"
                                 label="Home"
+                                LinkComponent={Link}
+                                to="/"
                                 data-id="home"
                                 onClick={handleTabClick}
                             />
