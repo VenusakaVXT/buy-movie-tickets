@@ -12,16 +12,16 @@ const ScreeningItem = ({ title, releaseDate, posterUrl, id }) => {
     return (
         <Card sx={{
             margin: 2,
-            width: 250,
-            height: 380,
-            borderRadius: 5,
+            width: 200,
+            height: 350,
+            borderRadius: 2,
             ":hover": {
                 boxShadow: "10px 10px 20px #ccc"
             }
         }}>
             <img height={"50%"} width={"100%"} src="https://img.youtube.com/vi/4k2verGRZNw/maxresdefault.jpg" alt={title} />
 
-            <CardContent>
+            <CardContent sx={{ paddingTop: 1 }}>
                 <Typography className="title-height" gutterBottom variant="h5" component="div">
                     {title}
                 </Typography>

@@ -120,3 +120,20 @@ export const addMovie = async (req, res, next) => {
 
     return res.status(201).json({ movie })
 }
+
+export const deleteMovie = async (req, res, next) => {
+    const id = req.params.id
+    let movie
+
+    try {
+        movie = await Movie.findByIdAndRemove(id)
+    } catch(err) {
+        console.error(err)
+    }
+
+    if (!movie) {
+        return res.status(500).json({ message: "unable to delete..." })
+    }
+
+    return res.status(200).json({ message: "successfully delete!!!" })
+}
