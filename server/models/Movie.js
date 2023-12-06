@@ -10,10 +10,18 @@ const movieSchema = new Schema({
         type: String,
         required: true,
     },
-    director: {
-        type: String,
-        required: true,
-    },
+    director: [
+        {
+            type: String,
+            required: true,
+        }
+    ],
+    contentWritter: [
+        {
+            type: String,
+            required: true,
+        }
+    ],
     actors: [
         {
             type: String,
@@ -34,7 +42,7 @@ const movieSchema = new Schema({
         type: String,
         required: true,
     },
-    posterUrl: {
+    trailerId: {
         type: String,
         required: true,
     },

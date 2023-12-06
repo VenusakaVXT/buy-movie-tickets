@@ -67,18 +67,19 @@ export const addMovie = async (req, res, next) => {
         title, 
         description,
         director, 
+        contentWritter,
         actors, 
         category,
         releaseDate, 
         time,
-        posterUrl, 
+        trailerId, 
         featured
     } = req.body
 
     if (
         !title && title.trim() === ""
         && !description && description.trim() === ""
-        && !posterUrl && posterUrl.trim() === ""
+        && !trailerId && trailerId.trim() === ""
     ) {
         return res.status(422).json({
             message: "invalid inputs..."
@@ -92,12 +93,13 @@ export const addMovie = async (req, res, next) => {
             title,
             description,
             director,
+            contentWritter,
             actors,
             category,
             releaseDate: new Date(`${releaseDate}`),
             time,
             featured,
-            posterUrl,
+            trailerId,
             admin: adminId
         })
 

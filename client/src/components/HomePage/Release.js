@@ -25,7 +25,7 @@ const Release = () => {
                     <ScreeningItem
                         id={movie.id}
                         title={movie.title}
-                        posterUrl={movie.posterUrl}
+                        trailerId={movie.trailerId}
                         releaseDate={movie.releaseDate}
                         key={index}
                     />
