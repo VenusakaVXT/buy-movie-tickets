@@ -18,8 +18,40 @@
     .release__title {
         font-size: 30px;
         text-align: center;
+        padding-left: 17px;
         font-weight: 400;
         margin-bottom: 30px;
+        cursor: pointer;
+
+        .release__tab { 
+            position: relative;
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: -3px;
+                left: 0;
+                width: 0;
+                height: 3px;
+                background-color: $main-color;
+                transition: width 0.7s ease-in-out, left 0.7s ease-in-out;
+                transform: translateX(-50%);
+            }
+
+            &:hover::after {
+                width: 100%;
+                left: 50%;
+            }
+
+            &.selected {
+                color: $main-color;
+                border-bottom: 3px solid;
+
+                &:hover {
+                    border: none;
+                }
+            }
+        }
     }
 
     .release__list {
