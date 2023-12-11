@@ -8,9 +8,55 @@
         font-size: 40px;
         text-align: center;
         font-weight: 100;
+        margin-bottom: 40px;
 
         span {
             color: $span-color;
         }
     }
+
+    .category__grid {
+        .category__item {
+            margin-bottom: 20px;
+
+            .category__title {
+                font-size: 1.5em;
+                color: #f2f2f2;
+                padding-bottom: 20px;
+                text-transform: uppercase;
+            }
+
+            .category__movies {
+                display: flex;
+                justify-content: space-between;
+
+                .category__movie-card {
+                    width: 180px;
+                    height: 290px;
+                    background: rgba(81, 88, 99, 0.3);
+                    cursor: pointer;
+                    box-shadow:
+                        0 0.0625rem 0.125rem rgba(0, 0, 0, 0.9),
+                        0 0.1875rem 0.4375rem rgba(0, 0, 0, 0.9);
+
+                    &:hover {
+                        background: #2f3032;
+                    }
+
+                    .category__movie-name {
+                        color: #f2f2f2;
+                        max-width: 100%;
+                        padding: 0 12px;
+                        display: -webkit-box;
+                        -webkit-box-orient: vertical;
+                        -webkit-line-clamp: 2;
+                        overflow: hidden;
+                        font-family: 'Segoe UI';
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+    }
+
 }

@@ -20,3 +20,14 @@ export const getAllMovies = async () => {
         }
     }
 }
+
+export const getAllCategories = async () => {
+    const res = await axios
+        .get("http://localhost:5000/category")
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200) console.log("no data...")
+
+    const data = await res.data
+    return data
+}

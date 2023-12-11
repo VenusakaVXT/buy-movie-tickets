@@ -6,6 +6,7 @@ import userRouter from "./routes/userRoute.js"
 import adminRouter from "./routes/adminRoute.js"
 import movieRouter from "./routes/movieRoute.js"
 import bookingRouter from "./routes/bookingRoute.js"
+import categoryRouter from "./routes/categoryRoute.js"
 import configCors from "./config/fixCORS.js"
 import path, { dirname } from "path"
 import { fileURLToPath } from "url"
@@ -31,6 +32,7 @@ app.use("/user", userRouter)
 app.use("/admin", adminRouter)
 app.use("/movie", movieRouter)
 app.use("/booking", bookingRouter)
+app.use("/category", categoryRouter)
 
 mongoose
     .connect(
