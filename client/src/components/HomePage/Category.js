@@ -7,10 +7,12 @@ import {
     Typography
 } from "@mui/material"
 import CategoryIcon from '@mui/icons-material/Category'
+import { useNavigate } from "react-router-dom"
 import "../../scss/Category.scss"
 
 const Category = () => {
     const [categories, setCategories] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() => {
         getAllCategories()
@@ -31,7 +33,15 @@ const Category = () => {
 
                         <div className="category__movies">
                             {category.movies.map((movie, index) => (
-                                <Card className="category__movie-card" key={index}>
+                                <Card 
+                                    key={index}
+                                    className="category__movie-card" 
+                                    onClick={() => {
+                                        const path = `/category/${category.category.toLowerCase()}/${movie.title.toLowerCase()}`
+                                        const handlePath = path.replace(/[:,]/g, '').replace(/\s+/g, '-').replace(/-{2,}/g, '-')
+                                        navigate(handlePath)
+                                    }}  
+                                >
                                     <img
                                         width={"100%"}
                                         height={"80%"}

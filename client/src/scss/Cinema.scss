@@ -14,4 +14,35 @@
             color: $span-color;
         }
     }
+
+    p {
+        color: #f2f2f2;
+        margin: 40px;
+        text-align: justify;
+        line-height: 1.5;
+        padding-left: 16px;
+        border-left: 5px solid $main-color;
+    }
+
+    .cinema__logo-list {
+        width: 100%;
+        padding: 0 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        .cinema__logo-item {
+            display: flex;
+            justify-content: center;
+            padding: 30px 0;
+            width: 25%;
+            height: 50%;
+
+            &:hover img {
+                filter: brightness(150%);
+                transition: filter 0.3s ease-in-out;
+            }
+        }
+    }
 }

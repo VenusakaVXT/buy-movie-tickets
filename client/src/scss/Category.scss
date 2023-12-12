@@ -40,6 +40,7 @@
                         0 0.1875rem 0.4375rem rgba(0, 0, 0, 0.9);
 
                     &:hover {
+                        transform: translateY(-1px);
                         background: #2f3032;
                     }
 

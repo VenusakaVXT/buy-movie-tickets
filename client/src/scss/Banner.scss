@@ -18,7 +18,7 @@
         grid-auto-flow: column;
         grid-template-columns: repeat(5, 1fr);
         grid-gap: 10px;
-        overflow: hidden;
+        //overflow: hidden;
 
         img {
             display: none;
@@ -29,11 +29,16 @@
             border-radius: 5px;
             object-fit: cover;
             box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
 
             &.visible {
                 //transform: translateX(100%);
                 transform: translateX(0);
                 display: block;
+            }
+
+            &:hover {
+                transform: translateY(-3px);
             }
         }
     }

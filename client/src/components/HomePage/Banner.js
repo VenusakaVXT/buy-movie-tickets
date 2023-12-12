@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import "../../scss/Banner.scss"
 import LoyaltyIcon from "@mui/icons-material/Loyalty"
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
@@ -15,6 +16,7 @@ const banners = [
 ]
 
 const Banner = () => {
+    const navigate = useNavigate()
     const [currentIndex, setCurrentIndex] = useState(0)
     const itemsPerPage = 5
 
@@ -46,6 +48,7 @@ const Banner = () => {
                         className={
                             Math.floor(index / itemsPerPage) === Math.floor(currentIndex / itemsPerPage) ? "visible" : ""
                         }
+                        onClick={() => navigate("/special-offers/")}
                     />
                 ))}
             </div>
