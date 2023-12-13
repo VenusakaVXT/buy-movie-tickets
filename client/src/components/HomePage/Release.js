@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Box, Button } from "@mui/material"
 import { Link } from "react-router-dom"
 import ScreeningItem from "../Screening/ScreeningItem"
-import { getAllMovies } from "../../api/movieApi"
+import getApiFromBE from "../../api/movieApi"
 import "../../scss/Release.scss"
 
 const Release = () => {
@@ -10,7 +10,7 @@ const Release = () => {
     const [showing, setShowing] = useState(true)
 
     useEffect(() => {
-        getAllMovies()
+        getApiFromBE("movie")
             .then((data) => setMovies(data.movies))
             .catch((err) => console.error(err))
     }, [])

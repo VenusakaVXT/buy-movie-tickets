@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { getAllCategories } from "../../api/movieApi"
+import getApiFromBE from "../../api/movieApi"
 import {
     Box,
     Card,
@@ -15,7 +15,7 @@ const Category = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        getAllCategories()
+        getApiFromBE("category")
             .then((data) => setCategories(data.categories))
             .catch((err) => console.error(err))
     }, [])

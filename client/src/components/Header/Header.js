@@ -10,7 +10,7 @@ import {
 } from "@mui/material"
 import MovieIcon from "@mui/icons-material/Movie"
 import LanguageMenu from "../Language/LanguageMenu"
-import { getAllMovies } from "../../api/movieApi"
+import getApiFromBE from "../../api/movieApi"
 import { Link } from "react-router-dom"
 import "../../scss/Header.scss"
 
@@ -19,7 +19,7 @@ const Header = () => {
     const [movies, setMovies] = useState([])
 
     useEffect(() => {
-        getAllMovies()
+        getApiFromBE("movie")
             .then((data) => setMovies(data.movies))
             .catch((err) => console.error(err))
     }, [])
