@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import Category from "../models/Category.js"
 
 export const addCategory = async (req, res, next) => {

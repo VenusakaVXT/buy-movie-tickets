@@ -2,19 +2,11 @@ import mongoose from "mongoose"
 
 const Schema = mongoose.Schema
 const cinemaSchema = new Schema({
-    title: {
+    name: {
         type: String,
         required: true
     },
-    openTime: {
-        type: Date,
-        required: true
-    },
-    closeTime: {
-        type: Date,
-        required: true
-    },
-    description: {
+    logo: {
         type: String,
         required: true
     }

@@ -1,42 +1,16 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
+import getApiFromBE from "../../api/movieApi"
 import { Tooltip } from "react-tooltip"
 import "../../scss/Cinema.scss"
 
 const Cinema = () => {
-    const logoCinemas = [
-        {
-            name: "CGV Cinema",
-            logo: "http://localhost:5000/img/cinema/logo1.png",
-        },
-        {
-            name: "Lotte Cinema",
-            logo: "http://localhost:5000/img/cinema/logo2.png",
-        },
-        {
-            name: "Glaxy Cinema",
-            logo: "http://localhost:5000/img/cinema/logo3.png",
-        },
-        {
-            name: "BHD Star Cineplex",
-            logo: "http://localhost:5000/img/cinema/logo4.png",
-        },
-        {
-            name: "Beta Cinemas",
-            logo: "http://localhost:5000/img/cinema/logo5.png",
-        },
-        {
-            name: "Cine Star",
-            logo: "http://localhost:5000/img/cinema/logo6.png",
-        },
-        {
-            name: "MegaGS Cinema",
-            logo: "http://localhost:5000/img/cinema/logo7.png",
-        },
-        {
-            name: "DCINE",
-            logo: "http://localhost:5000/img/cinema/logo8.png"
-        }
-    ]
+    const [cinemas, setCinemas] = useState([])
+
+    useEffect(() => {
+        getApiFromBE("cinema")
+            .then((data) => setCinemas(data.cinemas))
+            .catch((err) => console.error(err))
+    }, [])
 
     return (
         <div id="cinema" className="cinema__wrapper" style={{ height: "700px" }}>
@@ -53,23 +27,22 @@ const Cinema = () => {
             </p>
 
             <div className="cinema__logo-list">
-                {logoCinemas.map((cinema, index) => (
-                    <div className="cinema__logo-item">
+                {cinemas.map((cinema, index) => (
+                    <div className="cinema__logo-item" key={index}>
                         <img
                             width={"60%"}
                             height={"60%"}
-                            key={index}
                             src={cinema.logo}
                             alt={`Logo ${cinema.name}`}
                             data-tooltip-content={cinema.name}
                             data-tooltip-id={`tooltip${index}`}
                         />
 
-                        <Tooltip 
-                            id={`tooltip${index}`} 
-                            place="top" 
-                            effect="solid" 
-                            style={{background: "#868686", borderRadius: "16px"}}
+                        <Tooltip
+                            id={`tooltip${index}`}
+                            place="top"
+                            effect="solid"
+                            style={{ background: "#868686", borderRadius: "16px" }}
                         />
                     </div>
                 ))}
