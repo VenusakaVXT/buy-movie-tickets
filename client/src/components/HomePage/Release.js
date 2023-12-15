@@ -21,7 +21,7 @@ const Release = () => {
         }
     }
     return (
-        <div id="release" className="release__wrapper" style={{ height: "1000px" }}>
+        <div id="release" className="release__wrapper">
             <h2><span>#</span>RELEASE</h2>
 
             <h4 className="release__title">

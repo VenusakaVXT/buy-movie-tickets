@@ -13,7 +13,7 @@ const Cinema = () => {
     }, [])
 
     return (
-        <div id="cinema" className="cinema__wrapper" style={{ height: "700px" }}>
+        <div id="cinema" className="cinema__wrapper">
             <h2><span>#</span>CINEMA</h2>
 
             <p>

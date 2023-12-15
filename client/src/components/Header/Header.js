@@ -17,12 +17,29 @@ import "../../scss/Header.scss"
 const Header = () => {
     const [active, setActive] = useState(0)
     const [movies, setMovies] = useState([])
+    //const [isHeaderHidden, setIsHeaderHidden] = useState(false)
 
     useEffect(() => {
         getApiFromBE("movie")
             .then((data) => setMovies(data.movies))
             .catch((err) => console.error(err))
     }, [])
+
+    // useEffect(() => {
+    //     const handleScroll = () => {
+    //         const footerHeight = document.querySelector(".footer__wrapper")
+    //         const scrollPosition = window.scrollY
+    //         const shouldHideHeader = scrollPosition > footerHeight.clientHeight
+
+    //         setIsHeaderHidden(shouldHideHeader)
+    //     }
+
+    //     window.addEventListener("scroll", handleScroll)
+
+    //     return () => {
+    //         window.removeEventListener("scroll", handleScroll)
+    //     }
+    // }, [])
 
     const handleTabClick = (e) => {
         const getIdByTab = e.currentTarget.getAttribute("data-id")
@@ -37,7 +54,7 @@ const Header = () => {
     }
 
     return (
-        <AppBar position="sticky" className="header" sx={{ bgcolor: "#000" }}>
+        <AppBar position="sticky" className="header" sx={{ bgcolor: "#000"}}>
             <Toolbar className="header__wrapper">
                 <div className="header__container">
                     <Box className="header__brand-wrapper">
@@ -118,7 +135,7 @@ const Header = () => {
                     </Box>
                 </div>
             </Toolbar>
-        </AppBar>
+        </AppBar >
     )
 }
 

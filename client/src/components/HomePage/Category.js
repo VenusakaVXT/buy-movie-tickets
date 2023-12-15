@@ -21,7 +21,7 @@ const Category = () => {
     }, [])
 
     return (
-        <div id="category" className="category__wrapper" style={{ height: "2350px" }}>
+        <div id="category" className="category__wrapper">
             <h2><span>#</span>CATEGORY</h2>
 
             <Box className="category__grid">
