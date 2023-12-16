@@ -3,7 +3,7 @@ This is a product I am making for my scientific research project and software pr
 
 As the name of the product suggests, the topic I chose to research and implement is called: "Analyzing and Designing an Online Movie Ticket Sales System".
 
-In diagram 1, I went into the analysis of the online movie ticket sales system. From surveying the old system, giving advantages and disadvantages to overcome the new system, building more advanced functions that are not available in other systems, managing large data volumes when managing capacity movie screenings, revenue and all other activities for many cinemas rather than a single independent cinema like previous systems did.
+In project 1, I went into the analysis of the online movie ticket sales system. From surveying the old system, giving advantages and disadvantages to overcome the new system, building more advanced functions that are not available in other systems, managing large data volumes when managing capacity movie screenings, revenue and all other activities for many cinemas rather than a single independent cinema like previous systems did.
 
 ## Class Diagram
 This is the final class diagram that I have designed. It may be necessary to edit it after the software is built.
