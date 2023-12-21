@@ -1,0 +1,17 @@
+.page-ending {
+    span {
+        cursor: pointer;
+        
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .no-hovering {
+        cursor: default;
+        
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}

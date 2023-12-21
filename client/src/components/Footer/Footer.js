@@ -1,7 +1,8 @@
 import React from "react"
 import { Box, Link } from "@mui/material"
 import MovieIcon from "@mui/icons-material/Movie"
-import CopyrightIcon from '@mui/icons-material/Copyright'
+import CopyrightIcon from "@mui/icons-material/Copyright"
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward'
 import "../../scss/Footer.scss"
 
 const Footer = () => {
@@ -34,18 +35,18 @@ const Footer = () => {
                     <div className="footer__selection-item">
                         <h6>Procedure</h6>
                         <span>Book Tickets</span>
-                        <span>Bank Link</span>
+                        <span>Bank Link<ArrowOutwardIcon fontSize="10px" /></span>
                         <span>Online Payment</span>
                     </div>
 
                     <div className="footer__selection-item">
                         <h6>Service</h6>
                         <span>News</span>
-                        <span>Attendance</span>
+                        <span>Support</span>
                         <span>Offers</span>
                         <span>Price</span>
                         <span>Statistic</span>
-                        <span>Download</span>
+                        <span>Download<ArrowOutwardIcon fontSize="10px" /></span>
                     </div>
                 </div>
             </Box>

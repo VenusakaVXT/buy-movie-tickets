@@ -6,7 +6,6 @@ import Banner from "./Banner"
 import Release from "./Release"
 import Category from "./Category"
 import Cinema from "./Cinema"
-import Footer from "../Footer/Footer"
 
 const Home = () => {
     return (
@@ -16,7 +15,6 @@ const Home = () => {
             <Release />
             <Category />
             <Cinema />
-            <Footer />
         </Box>
     )
 }

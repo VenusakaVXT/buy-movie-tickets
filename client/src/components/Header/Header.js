@@ -57,10 +57,10 @@ const Header = () => {
         <AppBar position="sticky" className="header" sx={{ bgcolor: "#000"}}>
             <Toolbar className="header__wrapper">
                 <div className="header__container">
-                    <Box className="header__brand-wrapper">
+                    <Link className="header__brand-wrapper" to="/">
                         <MovieIcon className="header__brand-icon" />
                         <p className="header__brand-name">Buy Movie Tickets</p>
-                    </Box>
+                    </Link>
 
                     <Box>
                         <Tabs
