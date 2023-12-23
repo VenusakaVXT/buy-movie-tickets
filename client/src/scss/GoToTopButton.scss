@@ -1,0 +1,52 @@
+@import "./variable";
+
+.go-to-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    background: $span-color;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 16px;
+
+    &:hover {
+        background: $main-color;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOutDown {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+}
+
+.bottom-up-animation {
+    animation: slideInUp 0.5s ease-in-out;
+}
+
+.go-down-animation {
+    animation: fadeOutDown 0.9s ease-in-out;
+}

@@ -12,6 +12,7 @@ import Login from "./components/Login/Login"
 import Footer from "./components/Footer/Footer"
 import PageEnding from "./components/Footer/PageEnding"
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage"
+import GoToTopButton from "./components/GoToTop/GoToTopButton"
 
 const App = () => {
   const location = useLocation()
@@ -44,6 +45,8 @@ const App = () => {
       </section>
 
       {isHomePage ? <Footer /> : <PageEnding />}
+
+      <GoToTopButton />
     </Box>
   )
 }
