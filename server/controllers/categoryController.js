@@ -57,7 +57,9 @@ export const updateCategory = async (req, res, next) => {
 
     try {
         const updatedCategory = await Category.findByIdAndUpdate(
-            id, { category, movies }, { new: true } // returns object after update
+            id,
+            { category, movies },
+            { new: true }, // returns object after update
         )
 
         if (!updatedCategory) {
@@ -84,7 +86,7 @@ export const updateMovieInCategory = async (req, res, next) => {
                     "movies.$.img": img,
                 },
             },
-            { new: true }
+            { new: true },
         )
 
         if (!updatedCategory) {

@@ -5,19 +5,19 @@ const employeeSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     password: {
         type: String,
         required: true,
-        minLength: 6
+        minLength: 6,
     },
     addedMovies: [
         {
             type: mongoose.Types.ObjectId,
-            ref: "Movie"
-        }
-    ]
+            ref: "Movie",
+        },
+    ],
 })
 
 export default mongoose.model("Employee", employeeSchema)

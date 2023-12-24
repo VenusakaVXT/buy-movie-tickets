@@ -4,7 +4,7 @@ import {
     getAllCategories,
     getCategoryById,
     updateCategory,
-    updateMovieInCategory
+    updateMovieInCategory,
 } from "../controllers/categoryController.js"
 
 const categoryRouter = express.Router()

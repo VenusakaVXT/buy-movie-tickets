@@ -1,0 +1,8 @@
+# Files will not need to be formatted by Prettier
+# Eg: **/*.test.js, /client/*.test.js, /client/setupTests.js, ...
+
+# Run Prettier in watch mode: 
+## npx prettier --write "**/*.js" --watch
+
+# Do not run Prettier for files in .prettierignore:
+## npx prettier --write "**/*.js" --watch --ignore-path .prettierignore

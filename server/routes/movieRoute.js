@@ -1,9 +1,9 @@
 import express from "express"
-import { 
-    addMovie, 
-    deleteMovie, 
-    getAllMovies, 
-    getMovieById
+import {
+    addMovie,
+    deleteMovie,
+    getAllMovies,
+    getMovieById,
 } from "../controllers/movieController.js"
 
 const movieRouter = express.Router()

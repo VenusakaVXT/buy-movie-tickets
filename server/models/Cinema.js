@@ -4,12 +4,12 @@ const Schema = mongoose.Schema
 const cinemaSchema = new Schema({
     name: {
         type: String,
-        required: true
+        required: true,
     },
     logo: {
         type: String,
-        required: true
-    }
+        required: true,
+    },
 })
 
 export default mongoose.model("Cinema", cinemaSchema)

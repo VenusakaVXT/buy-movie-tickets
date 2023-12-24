@@ -6,9 +6,13 @@ import "../../scss/GoToTopButton.scss"
 const GoToTopButton = () => {
     const [isVisible, setIsVisible] = useState(false)
 
-    const handleScroll = () => { setIsVisible(window.scrollY > 100) }
+    const handleScroll = () => {
+        setIsVisible(window.scrollY > 100)
+    }
 
-    const scrollToTop = () => { window.scrollTo({ top: 0, behavior: "smooth" }) }
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" })
+    }
 
     useEffect(() => {
         // Subscribe for the scroll event when the component is mounted
@@ -29,14 +33,19 @@ const GoToTopButton = () => {
                     data-tooltip-id="gtt"
                     onClick={() => {
                         scrollToTop()
-                        document.querySelector(".go-to-top-btn").classList.add("go-down-animation")
+                        document
+                            .querySelector(".go-to-top-btn")
+                            .classList.add("go-down-animation")
                     }}
                 >
-                    <KeyboardArrowUpIcon fontSize="large" style={{
-                        position: "relative",
-                        right: "7px",
-                        bottom: "7px"
-                    }} />
+                    <KeyboardArrowUpIcon
+                        fontSize="large"
+                        style={{
+                            position: "relative",
+                            right: "7px",
+                            bottom: "7px",
+                        }}
+                    />
                 </button>
             )}
 
@@ -46,7 +55,7 @@ const GoToTopButton = () => {
                 effect="solid"
                 style={{
                     background: "rgba(37, 37, 38, 0.95)",
-                    borderRadius: "16px"
+                    borderRadius: "16px",
                 }}
             />
         </div>

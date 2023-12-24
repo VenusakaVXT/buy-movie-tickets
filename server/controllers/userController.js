@@ -19,7 +19,7 @@ export const getAllUsers = async (req, res, next) => {
 
     if (!users) {
         return res.status(500).json({
-            message: "Unexpected Error Occurred!!!"
+            message: "Unexpected Error Occurred!!!",
         })
     }
 
@@ -27,15 +27,7 @@ export const getAllUsers = async (req, res, next) => {
 }
 
 export const addUser = async (req, res, next) => {
-    const {
-        name,
-        phone,
-        email,
-        password,
-        birthDay,
-        gender,
-        address
-    } = req.body
+    const { name, phone, email, password, birthDay, gender, address } = req.body
 
     const hashPassword = hashUserPassword(password)
 
@@ -46,21 +38,21 @@ export const addUser = async (req, res, next) => {
         (!password || password.trim() === "")
     ) {
         return res.status(422).json({
-            message: "Invalid inputs..."
+            message: "Invalid inputs...",
         })
     }
 
     let user
 
     try {
-        user = new User({ 
-            name, 
+        user = new User({
+            name,
             phone,
-            email, 
+            email,
             password: hashPassword,
             birthDay,
             gender,
-            address
+            address,
         })
         user = await user.save()
     } catch (err) {
@@ -69,7 +61,7 @@ export const addUser = async (req, res, next) => {
 
     if (!user) {
         return res.status(500).json({
-            message: "Unexpected Error Occurred!!!"
+            message: "Unexpected Error Occurred!!!",
         })
     }
 
@@ -79,15 +71,7 @@ export const addUser = async (req, res, next) => {
 export const updateUser = async (req, res, next) => {
     const id = req.params.id
 
-    const {
-        name,
-        phone,
-        email,
-        password,
-        birthDay,
-        gender,
-        address
-    } = req.body
+    const { name, phone, email, password, birthDay, gender, address } = req.body
 
     const hashPassword = hashUserPassword(password)
 
@@ -98,7 +82,7 @@ export const updateUser = async (req, res, next) => {
         (!password || password.trim() === "")
     ) {
         return res.status(422).json({
-            message: "Invalid inputs..."
+            message: "Invalid inputs...",
         })
     }
 
@@ -106,21 +90,21 @@ export const updateUser = async (req, res, next) => {
 
     try {
         user = await User.findByIdAndUpdate(id, {
-            name, 
+            name,
             phone,
-            email, 
+            email,
             password: hashPassword,
             birthDay,
             gender,
-            address
+            address,
         })
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 
     if (!user) {
         return res.status(500).json({
-            message: "Something went wrong..."
+            message: "Something went wrong...",
         })
     }
 
@@ -134,13 +118,13 @@ export const deleteUser = async (req, res, next) => {
 
     try {
         user = await User.findByIdAndRemove(id)
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 
     if (!user) {
         return res.status(500).json({
-            message: "Something went wrong..."
+            message: "Something went wrong...",
         })
     }
 
@@ -150,17 +134,24 @@ export const deleteUser = async (req, res, next) => {
 export const login = async (req, res, next) => {
     const { username, password } = req.body
 
-    if (!username && username.trim() === "" && !password && password.trim() === "") {
+    if (
+        !username &&
+        username.trim() === "" &&
+        !password &&
+        password.trim() === ""
+    ) {
         return res.status(422).json({
-            message: "Invalid inputs..."
+            message: "Invalid inputs...",
         })
     }
 
     let existUser
 
     try {
-        existUser = await User.findOne({ $or: [{ email: username }, { phone: username }] })
-    } catch(err) {
+        existUser = await User.findOne({
+            $or: [{ email: username }, { phone: username }],
+        })
+    } catch (err) {
         console.error(err)
     }
 
@@ -183,7 +174,7 @@ export const getBookingOfUser = async (req, res, next) => {
 
     try {
         booking = await Booking.find({ user: id })
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 

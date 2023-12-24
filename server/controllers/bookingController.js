@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
 import Booking from "../models/Booking.js"
 import Movie from "../models/Movie.js"
 import User from "../models/User.js"
@@ -6,8 +6,8 @@ import User from "../models/User.js"
 export const newBooking = async (req, res, next) => {
     const { movie, bookingDate, seatNumber, user } = req.body
 
-    let existMovie;
-    let existUser;
+    let existMovie
+    let existUser
 
     try {
         existMovie = await Movie.findById(movie)
@@ -18,13 +18,13 @@ export const newBooking = async (req, res, next) => {
 
     if (!existMovie) {
         return res.status(404).json({
-            message: "movie not found with given id..."
+            message: "movie not found with given id...",
         })
     }
 
     if (!existUser) {
         return res.status(404).json({
-            message: "user not found with given id..."
+            message: "user not found with given id...",
         })
     }
 
@@ -35,7 +35,7 @@ export const newBooking = async (req, res, next) => {
             movie,
             bookingDate: new Date(`${bookingDate}`),
             seatNumber,
-            user
+            user,
         })
 
         const session = await mongoose.startSession()
@@ -55,7 +55,7 @@ export const newBooking = async (req, res, next) => {
 
     if (!booking) {
         return res.status(500).json({
-            message: "unable to create a booking..."
+            message: "unable to create a booking...",
         })
     }
 

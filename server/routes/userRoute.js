@@ -5,7 +5,7 @@ import {
     updateUser,
     deleteUser,
     login,
-    getBookingOfUser
+    getBookingOfUser,
 } from "../controllers/userController.js"
 
 const userRouter = express.Router()

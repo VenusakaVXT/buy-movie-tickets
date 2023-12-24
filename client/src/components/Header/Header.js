@@ -6,7 +6,7 @@ import {
     TextField,
     Toolbar,
     Tabs,
-    Tab
+    Tab,
 } from "@mui/material"
 import MovieIcon from "@mui/icons-material/Movie"
 import LanguageMenu from "../Language/LanguageMenu"
@@ -54,10 +54,14 @@ const Header = () => {
     }
 
     return (
-        <AppBar position="sticky" className="header" sx={{ bgcolor: "#000"}}>
+        <AppBar position="sticky" className="header" sx={{ bgcolor: "#000" }}>
             <Toolbar className="header__wrapper">
                 <div className="header__container">
-                    <Link className="header__brand-wrapper" to="/">
+                    <Link
+                        className="header__brand-wrapper"
+                        to="/"
+                        onClick={() => setActive(0)}
+                    >
                         <MovieIcon className="header__brand-icon" />
                         <p className="header__brand-name">Buy Movie Tickets</p>
                     </Link>
@@ -66,15 +70,15 @@ const Header = () => {
                         <Tabs
                             className="header__navbar"
                             textColor="#fff"
-                            TabIndicatorProps={{ style: { background: "#e50914" } }}
+                            TabIndicatorProps={{
+                                style: { background: "#e50914" },
+                            }}
                             value={active}
                             onChange={(e, val) => setActive(val)}
                         >
                             <Tab
                                 className="header__navitem"
                                 label="Home"
-                                LinkComponent={Link}
-                                to="/"
                                 data-id="home"
                                 onClick={handleTabClick}
                             />
@@ -104,7 +108,9 @@ const Header = () => {
                     <Box className="header__search">
                         <Autocomplete
                             freeSolo
-                            options={movies && movies.map((option) => option.title)}
+                            options={
+                                movies && movies.map((option) => option.title)
+                            }
                             renderInput={(params) => (
                                 <TextField
                                     variant="standard"
@@ -135,7 +141,7 @@ const Header = () => {
                     </Box>
                 </div>
             </Toolbar>
-        </AppBar >
+        </AppBar>
     )
 }
 

@@ -2,8 +2,8 @@ import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "../../scss/Banner.scss"
 import LoyaltyIcon from "@mui/icons-material/Loyalty"
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 
 const banners = [
     "http://localhost:5000/img/banner/banner1.png",
@@ -21,21 +21,31 @@ const Banner = () => {
     const itemsPerPage = 5
 
     const handlePrev = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - itemsPerPage + banners.length) % banners.length)
+        setCurrentIndex(
+            (prevIndex) =>
+                (prevIndex - itemsPerPage + banners.length) % banners.length,
+        )
     }
 
     const handleNext = () => {
-        setCurrentIndex((nextIndex) => (nextIndex + itemsPerPage) % banners.length)
+        setCurrentIndex(
+            (nextIndex) => (nextIndex + itemsPerPage) % banners.length,
+        )
     }
 
     return (
         <div className="banner__wrapper">
             <div className="banner__title">
-                <h2><LoyaltyIcon htmlColor="#e50914" /> SPECIAL OFFERS</h2>
+                <h2>
+                    <LoyaltyIcon htmlColor="#e50914" /> SPECIAL OFFERS
+                </h2>
 
                 <span className="banner__control">
                     <ArrowBackIosIcon onClick={handlePrev} cursor="pointer" />
-                    <ArrowForwardIosIcon onClick={handleNext} cursor="pointer" />
+                    <ArrowForwardIosIcon
+                        onClick={handleNext}
+                        cursor="pointer"
+                    />
                 </span>
             </div>
 
@@ -46,7 +56,10 @@ const Banner = () => {
                         src={banner}
                         alt={`Banner ${index + 1}`}
                         className={
-                            Math.floor(index / itemsPerPage) === Math.floor(currentIndex / itemsPerPage) ? "visible" : ""
+                            Math.floor(index / itemsPerPage) ===
+                            Math.floor(currentIndex / itemsPerPage)
+                                ? "visible"
+                                : ""
                         }
                         onClick={() => navigate("/special-offers/")}
                     />

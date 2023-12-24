@@ -15,40 +15,42 @@ import NotFoundPage from "./components/NotFoundPage/NotFoundPage"
 import GoToTopButton from "./components/GoToTop/GoToTopButton"
 
 const App = () => {
-  const location = useLocation()
-  const isHomePage = location.pathname === "/"
+    const location = useLocation()
+    const isHomePage = location.pathname === "/"
 
-  // disable default scrollRestoration() of RRD
-  const ScrollRestoration = () => {
-    const { pathname } = useLocation()
+    // disable default scrollRestoration() of RRD
+    const ScrollRestoration = () => {
+        const { pathname } = useLocation()
 
-    useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+        useEffect(() => {
+            window.scrollTo(0, 0)
+        }, [pathname])
 
-    return null
-  }
+        return null
+    }
 
-  return (
-    <Box className="App__wrapper">
-      <ScrollRestoration />
-      <Header />
+    return (
+        <Box className="App__wrapper">
+            <ScrollRestoration />
+            <Header />
 
-      <section>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/release" element={<Release />} />
-          <Route path="/category" element={<Category />} />
-          <Route path="/cinema" element={<Cinema />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </section>
+            <section>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/release" element={<Release />} />
+                    <Route path="/category" element={<Category />} />
+                    <Route path="/cinema" element={<Cinema />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+            </section>
 
-      {isHomePage ? <Footer /> : <PageEnding />}
+            {isHomePage ? <Footer /> : <PageEnding />}
 
-      <GoToTopButton />
-    </Box>
-  )
+            <GoToTopButton />
+        </Box>
+    )
 }
 
 export default App

@@ -38,11 +38,11 @@ app.use("/cinema", cinemaRouter)
 
 mongoose
     .connect(
-        `mongodb+srv://admin:${process.env.MONGODB_PASSWORD}@cluster0.awc33ii.mongodb.net/?retryWrites=true&w=majority`
+        `mongodb+srv://admin:${process.env.MONGODB_PASSWORD}@cluster0.awc33ii.mongodb.net/?retryWrites=true&w=majority`,
     )
     .then(() =>
         app.listen(5000, () => {
             console.log(`Run project on url localhost:${PORT}`)
-        })
+        }),
     )
-    .catch(err => console.error(err))
+    .catch((err) => console.error(err))

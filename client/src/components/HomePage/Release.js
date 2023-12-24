@@ -22,7 +22,9 @@ const Release = () => {
     }
     return (
         <div id="release" className="release__wrapper">
-            <h2><span>#</span>RELEASE</h2>
+            <h2>
+                <span>#</span>RELEASE
+            </h2>
 
             <h4 className="release__title">
                 <span
@@ -41,8 +43,11 @@ const Release = () => {
             </h4>
 
             <Box className="release__list">
-                {movies && (showing ? movies.slice(0, 8) : movies.slice(movies.length - 8, movies.length))
-                    .map((movie, index) => (
+                {movies &&
+                    (showing
+                        ? movies.slice(0, 8)
+                        : movies.slice(movies.length - 8, movies.length)
+                    ).map((movie, index) => (
                         <ScreeningItem
                             id={movie.id}
                             title={movie.title}
@@ -62,11 +67,11 @@ const Release = () => {
                         ":hover": {
                             color: "#e50914",
                             borderColor: "#e50914",
-                            background: "#2b2d42"
+                            background: "#2b2d42",
                         },
                         ":active": {
-                            background: "#2b2d42"
-                        }
+                            background: "#2b2d42",
+                        },
                     }}
                     variant="outlined"
                     LinkComponent={Link}

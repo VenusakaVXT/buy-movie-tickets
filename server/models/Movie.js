@@ -14,25 +14,25 @@ const movieSchema = new Schema({
         {
             type: String,
             required: true,
-        }
+        },
     ],
     contentWritter: [
         {
             type: String,
             required: true,
-        }
+        },
     ],
     actors: [
         {
             type: String,
             required: true,
-        }
+        },
     ],
     category: [
         {
             type: String,
             required: true,
-        }
+        },
     ],
     releaseDate: {
         type: String,
@@ -52,15 +52,17 @@ const movieSchema = new Schema({
     featured: {
         type: Boolean,
     },
-    bookings: [{
-        type: mongoose.Types.ObjectId,
-        ref: "Booking"
-    }],
+    bookings: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "Booking",
+        },
+    ],
     admin: {
         type: mongoose.Types.ObjectId,
         ref: "Admin",
         required: true,
-    }
+    },
 })
 
 export default mongoose.model("Movie", movieSchema)

@@ -32,7 +32,7 @@ export const getMovieById = async (req, res, next) => {
 
     if (!movie) {
         return res.status(404).json({
-            message: "invalid movie id..."
+            message: "invalid movie id...",
         })
     }
 
@@ -45,7 +45,7 @@ export const addMovie = async (req, res, next) => {
 
     if (!extractedToken && extractedToken.trim() === "") {
         return res.status(404).json({
-            message: "token not found..."
+            message: "token not found...",
         })
     }
 
@@ -54,7 +54,7 @@ export const addMovie = async (req, res, next) => {
     jwt.verify(extractedToken, process.env.SECRET_KEY, (err, decrypted) => {
         if (err) {
             return res.status(400).json({
-                message: `${err.message}`
+                message: `${err.message}`,
             })
         } else {
             adminId = decrypted.id
@@ -64,25 +64,28 @@ export const addMovie = async (req, res, next) => {
 
     // create new movie
     const {
-        title, 
+        title,
         description,
-        director, 
+        director,
         contentWritter,
-        actors, 
+        actors,
         category,
-        releaseDate, 
+        releaseDate,
         time,
-        trailerId, 
-        featured
+        trailerId,
+        featured,
     } = req.body
 
     if (
-        !title && title.trim() === ""
-        && !description && description.trim() === ""
-        && !trailerId && trailerId.trim() === ""
+        !title &&
+        title.trim() === "" &&
+        !description &&
+        description.trim() === "" &&
+        !trailerId &&
+        trailerId.trim() === ""
     ) {
         return res.status(422).json({
-            message: "invalid inputs..."
+            message: "invalid inputs...",
         })
     }
 
@@ -100,7 +103,7 @@ export const addMovie = async (req, res, next) => {
             time,
             featured,
             trailerId,
-            admin: adminId
+            admin: adminId,
         })
 
         const session = await mongoose.startSession()
@@ -129,7 +132,7 @@ export const deleteMovie = async (req, res, next) => {
 
     try {
         movie = await Movie.findByIdAndRemove(id)
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 

@@ -1,8 +1,5 @@
 import express from "express"
-import { 
-    addCinema, 
-    getAllCinema 
-} from "../controllers/cinemaController.js"
+import { addCinema, getAllCinema } from "../controllers/cinemaController.js"
 
 const cinemaRouter = express.Router()
 

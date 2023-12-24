@@ -16,7 +16,7 @@ export const addAdmin = async (req, res, next) => {
 
     if (!email && email.trim() === "" && !password && password.trim() === "") {
         return res.status(422).json({
-            message: "Invalid inputs..."
+            message: "Invalid inputs...",
         })
     }
 
@@ -24,7 +24,7 @@ export const addAdmin = async (req, res, next) => {
 
     try {
         existAdmin = await Admin.findOne({ email })
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 
@@ -37,7 +37,7 @@ export const addAdmin = async (req, res, next) => {
     try {
         admin = new Admin({ email, password: hashPassword })
         admin = await admin.save()
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 
@@ -53,7 +53,7 @@ export const adminLogin = async (req, res, next) => {
 
     if (!email && email.trim() === "" && !password && password.trim() === "") {
         return res.status(422).json({
-            message: "Invalid inputs..."
+            message: "Invalid inputs...",
         })
     }
 
@@ -61,7 +61,7 @@ export const adminLogin = async (req, res, next) => {
 
     try {
         existAdmin = await Admin.findOne({ email })
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 
@@ -77,22 +77,21 @@ export const adminLogin = async (req, res, next) => {
 
     const token = jwt.sign({ id: existAdmin._id }, process.env.SECRET_KEY, {
         expiresIn: "7d", // the token chain will expire after 7 days
-
     })
 
-    res.status(200).json({ 
+    res.status(200).json({
         message: "login successfully!!!",
         token,
-        id: existAdmin._id
+        id: existAdmin._id,
     })
 }
 
 export const getAdmins = async (req, res, next) => {
-    let admins;
+    let admins
 
     try {
         admins = await Admin.find()
-    } catch(err) {
+    } catch (err) {
         console.error(err)
     }
 

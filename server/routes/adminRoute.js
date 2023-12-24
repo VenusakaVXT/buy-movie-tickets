@@ -1,6 +1,6 @@
 import express from "express"
-import { 
-    addAdmin, 
+import {
+    addAdmin,
     adminLogin,
     getAdmins,
 } from "../controllers/adminController.js"

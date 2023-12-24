@@ -19,7 +19,8 @@ function Translation() {
     useEffect(() => {
         const translateContent = async () => {
             const translations = {}
-            const elementsToTranslate = document.querySelectorAll("[data-translate]")
+            const elementsToTranslate =
+                document.querySelectorAll("[data-translate]")
 
             for (const element of elementsToTranslate) {
                 const originalText = element.textContent
@@ -35,7 +36,8 @@ function Translation() {
 
     const handleLanguageChange = async (newLanguage) => {
         setLanguage(newLanguage)
-        const elementsToTranslate = document.querySelectorAll("[data-translate]")
+        const elementsToTranslate =
+            document.querySelectorAll("[data-translate]")
 
         for (const element of elementsToTranslate) {
             const originalText = element.textContent
