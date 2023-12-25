@@ -13,6 +13,7 @@ import Footer from "./components/Footer/Footer"
 import PageEnding from "./components/Footer/PageEnding"
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage"
 import GoToTopButton from "./components/GoToTop/GoToTopButton"
+import Movie from "./components/Movie/Movie"
 
 const App = () => {
     const location = useLocation()
@@ -40,6 +41,7 @@ const App = () => {
                     <Route path="/release" element={<Release />} />
                     <Route path="/category" element={<Category />} />
                     <Route path="/cinema" element={<Cinema />} />
+                    <Route path="/all-screening" element={<Movie />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="*" element={<NotFoundPage />} />

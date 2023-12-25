@@ -65,17 +65,14 @@ const Release = () => {
                         color: "#000",
                         borderColor: "#000",
                         ":hover": {
-                            color: "#e50914",
-                            borderColor: "#e50914",
-                            background: "#2b2d42",
-                        },
-                        ":active": {
-                            background: "#2b2d42",
-                        },
+                            fontSize: "15px",
+                            background: "#fff",
+                            borderColor: "#000"
+                        }
                     }}
                     variant="outlined"
                     LinkComponent={Link}
-                    to="/screening"
+                    to="/all-screening"
                 >
                     See All Screenings
                 </Button>

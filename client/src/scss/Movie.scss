@@ -1,0 +1,45 @@
+@import "./variable";
+
+.movie__wrappper {
+    margin: 30px 28px 60px;
+
+    .breadcrumb {
+        display: flex;
+        padding: 20px;
+        background: $second-background;
+        text-transform: capitalize;
+
+        .breadcrumb__item {
+            position: relative;
+            color: #fff;
+            margin-right: 30px;
+
+            &:last-child {
+                color: $main-color;
+            }
+
+            &:not(:last-child):hover{
+                cursor: pointer;
+                color: $main-color;
+            }
+
+            &:not(:last-child)::after {
+                content: ">>";
+                position: absolute;
+                display: inline-block;
+                padding: 0 5px;
+                pointer-events: none;
+                color: #fff !important;
+            }
+        }
+    }
+
+    .movie__list {
+        width: 100%;
+        margin: auto;
+        padding: 0 66px;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+}
