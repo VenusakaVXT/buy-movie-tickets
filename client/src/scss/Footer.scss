@@ -37,11 +37,14 @@
                 }
 
                 span {
+                    position: relative;
                     font-size: 18px;
                     cursor: pointer;
+                    transition: right 0.3s ease-in-out;
 
                     &:hover {
                         color: $main-color;
+                        right: -8px;
                     }
                 }
             }
