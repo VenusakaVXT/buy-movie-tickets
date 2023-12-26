@@ -73,7 +73,8 @@ export const addMovie = async (req, res, next) => {
         releaseDate,
         time,
         trailerId,
-        featured,
+        wasReleased,
+        featured
     } = req.body
 
     if (
@@ -102,6 +103,7 @@ export const addMovie = async (req, res, next) => {
             releaseDate: new Date(`${releaseDate}`),
             time,
             featured,
+            wasReleased,
             trailerId,
             admin: adminId,
         })
@@ -141,4 +143,45 @@ export const deleteMovie = async (req, res, next) => {
     }
 
     return res.status(200).json({ message: "successfully delete!!!" })
+}
+
+export const updateMovie = async (req, res, next) => {
+    const id = req.params.id
+    const {
+        title,
+        description,
+        director,
+        contentWritter,
+        actors,
+        category,
+        releaseDate,
+        time,
+        trailerId,
+        wasReleased,
+        featured
+    } = req.body
+
+    try {
+        const updatedMovie = await Movie.findByIdAndUpdate(id, {
+            title,
+            description,
+            director,
+            contentWritter,
+            actors,
+            category,
+            releaseDate,
+            time,
+            trailerId,
+            wasReleased,
+            featured
+        }, { new: true })
+
+        if (!updatedMovie) {
+            res.status(404).json({ message: "invalid movie id..." })
+        }
+
+        res.status(200).json(updatedMovie)
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
 }

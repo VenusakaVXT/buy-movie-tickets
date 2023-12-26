@@ -16,6 +16,38 @@ const Movie = () => {
             .catch((err) => console.error(err))
     }, [])
 
+    const filterMoviesByRelease = (isReleased) => {
+        return movies.filter((movie) => movie.wasReleased === isReleased)
+    }
+
+    const renderMovieList = (title, isReleased) => (
+        <>
+            <Typography variant="h5" color={"#fff"} paddingLeft={"calc(66px + 16px)"}>
+                <ConfirmationNumberIcon 
+                    htmlColor="#ff0000" 
+                    sx={{ 
+                        position: "relative", 
+                        bottom: "-3px",
+                        paddingRight: "5px"
+                    }} 
+                />
+                {title.toUpperCase()}
+            </Typography>
+
+            <Box className="movie__list">
+                {filterMoviesByRelease(isReleased).map((movie, index) => (
+                    <ScreeningItem 
+                        key={index}
+                        id={movie._id}
+                        title={movie.title}
+                        releaseDate={movie.releaseDate}
+                        trailerId={movie.trailerId}
+                    />
+                ))}
+            </Box>
+        </>
+    )
+
     return (
         <Box className="movie__wrappper">
             <Box className="breadcrumb">
@@ -31,53 +63,8 @@ const Movie = () => {
                 <span style={{ color: "#ff0000" }}>#</span>ALL SCREENINGS
             </Typography>
 
-            <Typography variant="h5" color={"#fff"} paddingLeft={"calc(66px + 16px)"}>
-                <ConfirmationNumberIcon 
-                    htmlColor="#ff0000" 
-                    sx={{ 
-                        position: "relative", 
-                        bottom: "-3px",
-                        paddingRight: "5px"
-                    }} 
-                />
-                NOW SHOWING
-            </Typography>
-
-            <Box className="movie__list">
-                {movies && movies.slice(0, 8).map((movie, index) => (
-                    <ScreeningItem 
-                        key={index}
-                        id={movie._id}
-                        title={movie.title}
-                        releaseDate={movie.releaseDate}
-                        trailerId={movie.trailerId}
-                    />
-                ))}
-            </Box>
-
-            <Typography variant="h5" color={"#fff"} marginTop={"30px"} paddingLeft={"calc(66px + 16px)"}>
-                <ConfirmationNumberIcon 
-                    htmlColor="#ff0000" 
-                    sx={{ 
-                        position: "relative", 
-                        bottom: "-3px",
-                        paddingRight: "5px"
-                    }} 
-                />
-                COMMING SOON
-            </Typography>
-
-            <Box className="movie__list">
-                {movies && movies.slice(movies.length - 8, movies.length).map((movie, index) => (
-                    <ScreeningItem 
-                        key={index}
-                        id={movie._id}
-                        title={movie.title}
-                        releaseDate={movie.releaseDate}
-                        trailerId={movie.trailerId}
-                    />
-                ))}
-            </Box>
+            {renderMovieList("now showing", true)}
+            {renderMovieList("comming soon", false)}
         </Box>
     )
 }

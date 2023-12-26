@@ -48,6 +48,7 @@ const movieSchema = new Schema({
     },
     wasReleased: {
         type: Boolean,
+        required: true,
     },
     featured: {
         type: Boolean,

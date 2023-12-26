@@ -10,6 +10,12 @@ const Release = () => {
     const [showing, setShowing] = useState(true)
 
     useEffect(() => {
+        const savedTabState = sessionStorage.getItem("tabState")
+
+        if (savedTabState) {
+            setShowing(savedTabState === "now_showing")
+        }
+
         getApiFromBE("movie")
             .then((data) => setMovies(data.movies))
             .catch((err) => console.error(err))
@@ -18,10 +24,18 @@ const Release = () => {
     const handleTabClick = (val) => {
         if (val !== showing) {
             setShowing(val)
+            sessionStorage.setItem("tabState", val ? "now_showing" : "comming_soon")
         }
     }
+
+    const filterMoviesByRelease = (movies, showing) => {
+        return movies.filter(
+            (movie) => showing ? movie.wasReleased : !movie.wasReleased
+        )
+    }
+
     return (
-        <div id="release" className="release__wrapper">
+        <Box id="release" className="release__wrapper">
             <h2>
                 <span>#</span>RELEASE
             </h2>
@@ -43,11 +57,9 @@ const Release = () => {
             </h4>
 
             <Box className="release__list">
-                {movies &&
-                    (showing
-                        ? movies.slice(0, 8)
-                        : movies.slice(movies.length - 8, movies.length)
-                    ).map((movie, index) => (
+                {filterMoviesByRelease(movies, showing)
+                    .slice(0, 8)
+                    .map((movie, index) => (
                         <ScreeningItem
                             id={movie.id}
                             title={movie.title}
@@ -77,7 +89,7 @@ const Release = () => {
                     See All Screenings
                 </Button>
             </Box>
-        </div>
+        </Box>
     )
 }
 

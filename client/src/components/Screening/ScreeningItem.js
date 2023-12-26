@@ -6,9 +6,18 @@ import {
     CardActions,
     Button,
 } from "@mui/material"
+import { useNavigate } from "react-router-dom"
 import "../../scss/Screening.scss"
 
 const ScreeningItem = ({ title, releaseDate, trailerId, id }) => {
+    const navigate = useNavigate()
+
+    const handlePath = title
+        .toLowerCase()
+        .replace(/[:,]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-{2,}/g, "-")
+
     return (
         <Card
             sx={{
@@ -26,6 +35,8 @@ const ScreeningItem = ({ title, releaseDate, trailerId, id }) => {
                 width={"100%"}
                 src={`https://img.youtube.com/vi/${trailerId}/maxresdefault.jpg`}
                 alt={title}
+                style={{ cursor: "pointer" }}
+                onClick={() => navigate(`/movie-details/${handlePath}`)}
             />
 
             <CardContent sx={{ padding: 1 }}>
@@ -34,6 +45,7 @@ const ScreeningItem = ({ title, releaseDate, trailerId, id }) => {
                     gutterBottom
                     variant="h5"
                     component="div"
+                    onClick={() => navigate(`/movie-details/${handlePath}`)}
                 >
                     {title}
                 </Typography>
@@ -54,6 +66,7 @@ const ScreeningItem = ({ title, releaseDate, trailerId, id }) => {
                             background: "#e50914",
                         },
                     }}
+                    onClick={() => navigate(`/booking/${handlePath}`)}
                 >
                     Booking
                 </Button>
