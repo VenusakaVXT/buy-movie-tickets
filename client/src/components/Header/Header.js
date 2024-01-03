@@ -36,6 +36,21 @@ const Header = () => {
         }
     }
 
+    const highlightOption = (option, inputVal) => {
+        const regex = new RegExp(`(${inputVal})`, "gi")
+
+        if (!inputVal) {
+            return <span>{option}</span>
+        } else {
+            // Word breaking skill: Keep space between words
+            return option.split(regex).map((query, index) =>
+                regex.test(query) ? (
+                    <span key={index} style={{ color: "#ff0000" }}>{query}</span>
+                ) : (query)
+            )
+        }
+    }
+
     return (
         <AppBar position="sticky" className="header" sx={{ bgcolor: "#000" }}>
             <Toolbar className="header__wrapper">
@@ -94,12 +109,24 @@ const Header = () => {
                             options={
                                 movies && movies.map((option) => option.title)
                             }
+                            getOptionLabel={(option) => option}
                             renderInput={(params) => (
                                 <TextField
                                     variant="standard"
                                     {...params}
                                     label="Search for movies..."
                                 />
+                            )}
+                            renderOption={(props, option, { inputValue }) => (
+                                <li
+                                    {...props}
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        whiteSpace: "nowrap"
+                                    }}>
+                                    {highlightOption(option, inputValue)}
+                                </li>
                             )}
                         />
                     </Box>
