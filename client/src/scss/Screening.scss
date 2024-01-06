@@ -1,3 +1,5 @@
+@import "./variable";
+
 .title-height {
     height: 64px;
     display: -webkit-box;
@@ -5,4 +7,28 @@
     -webkit-line-clamp: 2;
     overflow: hidden;
     cursor: pointer;
+}
+
+.desciption-hw {
+    height: 56px;
+    width: 780px;
+    margin-top: 4px !important;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+.p0 {
+    padding: 0 !important;
+}
+
+.customic {
+    position: relative !important;
+    margin-right: 2px !important;
+    bottom: -1px;
+}
+
+.like {
+    color: $main-color !important;
 }

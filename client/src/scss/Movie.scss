@@ -1,9 +1,10 @@
 @import "./variable";
 
 .movie__wrappper {
-    margin: 30px 28px;
+    margin: 30px 92px;
 
     .breadcrumb {
+        margin: 0 17px;
         display: flex;
         padding: 20px;
         background: $second-background;
@@ -36,9 +37,40 @@
 
     .movie__list {
         width: 100%;
-        padding: 0 66px 30px;
+        padding-bottom: 30px;
         display: flex;
         justify-content: flex-start;
         flex-wrap: wrap;
+    }
+
+    .topbar {
+        margin: 30px 17px;
+        padding: 0 20px;
+        color: #f2f2f2;
+        background: $second-background;
+        display: flex;
+        justify-content: space-between;
+
+        .topbar__item {
+            display: flex;
+            align-items: center;
+
+            .topbar__tab {
+                padding: 0;
+                min-width: 30px;
+    
+                .topbar__tab-icon {
+                    color: #fff;
+                    background: #2c2c2c;
+                    font-size: 30px;
+                    border-radius: 3px;
+                    transition: all 0.3s ease 0s;
+    
+                    &:hover, &.topbar__tab-active {
+                        background: $main-color;
+                    }
+                }
+            }
+        }
     }
 }

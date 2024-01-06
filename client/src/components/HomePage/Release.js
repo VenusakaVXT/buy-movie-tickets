@@ -61,11 +61,13 @@ const Release = () => {
                     .slice(0, 8)
                     .map((movie, index) => (
                         <ScreeningItem
+                            key={index}
                             id={movie.id}
                             title={movie.title}
-                            trailerId={movie.trailerId}
                             releaseDate={movie.releaseDate}
-                            key={index}
+                            time={movie.time}
+                            trailerId={movie.trailerId}
+                            displayType={false}
                         />
                     ))}
             </Box>
