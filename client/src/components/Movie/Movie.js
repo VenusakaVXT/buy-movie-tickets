@@ -21,6 +21,8 @@ const Movie = () => {
     const [movies, setMovies] = useState([])
     const [active, setActive] = useState(0)
     const [sort, setSort] = useState(0)
+    // boolean array that tracks the state of tabs
+    const [tabStates, setTabStates] = useState([true, false])
 
     const listSelectSort = [
         "Relevance",
@@ -29,6 +31,21 @@ const Movie = () => {
     ]
 
     useEffect(() => {
+        const storedActiveTab = sessionStorage.getItem("activeTab")
+
+        if (storedActiveTab !== null) {
+            setActive(Number(storedActiveTab))
+            // When a tab is selected 
+            // create a new array with only one element with value `true`
+            // corresponding to the selected tab
+            setTabStates((prevTabStates) => prevTabStates.map(
+                (_, index) => index === Number(storedActiveTab)
+            ))
+        } else {
+            setActive(0)
+            setTabStates([true, false])
+        }
+
         getApiFromBE("movie")
             .then((data) => setMovies(data.movies))
             .catch((err) => console.error(err))
@@ -88,17 +105,12 @@ const Movie = () => {
     )
 
     const handleTabChange = (_, newActive) => {
-        const topbarTabs = document.querySelectorAll(".topbar__tab-icon")
+        const newTabState = tabStates.map((_, index) => index === newActive)
 
-        topbarTabs.forEach((topbarTab, index) => {
-            if (newActive === index) {
-                topbarTab.classList.add("topbar__tab-active")
-            } else {
-                topbarTab.classList.remove("topbar__tab-active")
-            }
-        })
-
+        setTabStates(newTabState)
         setActive(newActive)
+
+        sessionStorage.setItem("activeTab", newActive.toString())
     }
 
     return (
@@ -126,13 +138,17 @@ const Movie = () => {
                     >
                         <Tab
                             className="topbar__tab"
-                            label={<ViewListIcon className="topbar__tab-icon topbar__tab-active" />}
+                            label={<ViewListIcon className={
+                                `topbar__tab-icon ${tabStates[0] ? "topbar__tab-active" : ""}`
+                            } />}
                             aria-selected={active === 0}
                             style={{ marginRight: "8px" }}
                         />
                         <Tab
                             className="topbar__tab"
-                            label={<AppsIcon className="topbar__tab-icon" />}
+                            label={<AppsIcon className={
+                                `topbar__tab-icon ${tabStates[1] ? "topbar__tab-active" : ""}`
+                            } />}
                             aria-selected={active === 1}
                         />
                     </Tabs>
