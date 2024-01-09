@@ -10,3 +10,8 @@
 body {
     background: $main-background;
 }
+
+::selection {
+    color: #fff;
+    background: $main-color;
+}
