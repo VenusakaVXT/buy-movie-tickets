@@ -8,7 +8,7 @@ In project 1, I went into the analysis of the online movie ticket sales system. 
 ## Class Diagram
 This is the final class diagram that I have designed. It may be necessary to edit it after the software is built.
 
-![Class_diagram](https://github.com/VenusakaVXT/buy-movie-tickets/assets/125566811/01cdbb5e-cd9a-4df3-83b8-8d18761df749)
+![Class_diagram](![class_uml](https://github.com/VenusakaVXT/buy-movie-tickets/assets/125566811/e02c5443-73ad-49fb-a4ff-56f83f0ad757))
 
 And now I am in the process of building this Online Movie Ticket Management software to submit project 2 and complete scientific research.
 
