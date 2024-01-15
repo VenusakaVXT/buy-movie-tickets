@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon --exec babel-node index.js",
+    "start": "npm run compile-less && nodemon --exec babel-node index.js",
+    "compile-less": "npx lessc views/less/style.less public/style/style.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Venus_aka_VXT",
@@ -17,7 +18,10 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.6.3"
+    "less": "^4.2.0",
+    "less-middleware": "^3.1.0",
+    "mongoose": "^7.6.3",
+    "nunjucks": "^3.2.4"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.0",

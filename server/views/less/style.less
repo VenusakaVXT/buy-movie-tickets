@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+@main-color:#e50914;
+@span-color:#ff0000;
+@main-background: #151517;
+@second-background: #1a1b1e;
+@bold-txt: #2d2d2e;
+
+body {
+    margin: 0;
+    background: @second-background;
+    font-family: 'Roboto', sans-serif;
+}
+
+.admin__wrapper {
+    .admin__sidebar {
+        width: 240px;
+        height: 100%;
+        background-color: @main-background;
+        position: fixed;
+        left: 0;
+        top: 0;
+        overflow-y: auto;
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        img {
+            max-width: 100%;
+            margin: 0 auto;
+            display: block;
+        }
+      
+        hr {
+            border: 1px solid #444;
+            margin: 15px 0;
+        }
+      
+        .menu-item {
+            padding: 10px;
+            cursor: pointer;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+      
+        .menu-item:hover {
+            background-color: #333;
+        }
+      
+        .menu-item.active {
+            background: @main-color;
+        }
+      
+        .arrow {
+            font-size: 12px;
+        }
+      
+        .menu-sub {
+            display: none;
+            padding-left: 20px;
+        }
+      
+        .submenu {
+            padding: 10px;
+            cursor: pointer;
+            color: white;
+            font-size: 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+      
+        .submenu:hover {
+            background-color: #333;
+        }
+    }
+}
+
+.active {
+    background: @main-color;
+}

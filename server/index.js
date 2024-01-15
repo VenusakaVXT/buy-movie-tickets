@@ -11,6 +11,8 @@ import cinemaRouter from "./routes/cinemaRoute.js"
 import configCors from "./config/fixCORS.js"
 import path, { dirname } from "path"
 import { fileURLToPath } from "url"
+import nunjucks from "nunjucks"
+import lessMiddleware from "less-middleware"
 
 dotenv.config()
 const PORT = process.env.PORT || 5000
@@ -27,6 +29,20 @@ configCors(app)
 // Static file
 const __dirname = dirname(fileURLToPath(import.meta.url))
 app.use(express.static(path.join(__dirname, "public")))
+
+// Template engine
+nunjucks.configure("views", {
+    autoescape: true,
+    express: app
+})
+
+app.set("view engine", "njk")
+app.get("/", (req, res) => {
+    res.render("index", { title: "BMT | Admin Dashboard" })
+})
+
+app.use(lessMiddleware("views/less", { force: true }))
+app.use(express.static("public"))
 
 // Router
 app.use("/user", userRouter)
