@@ -36,6 +36,7 @@ nunjucks.configure("views", {
     express: app
 })
 
+app.set("views", path.join(__dirname, "views"))
 app.set("view engine", "njk")
 app.get("/", (req, res) => {
     res.render("index", { title: "BMT | Admin Dashboard" })

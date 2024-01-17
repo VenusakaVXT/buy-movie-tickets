@@ -1,0 +1,87 @@
+<form class="mt-4" name="container-form" method="POST" action="/movie/">
+    <h3>Movies List</h3>
+
+    <div class="list-movies__header mt-4">
+        <div class="list-movies__header-custom">
+            <div class="form-check custom-item">
+                <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+                <label class="form-check-label form-check-label-lg" for="checkbox-all">
+                    Select all
+                </label>
+            </div>
+            <select class="form-control custom-item select-action" name="action" required>
+                <option value="">--- Action ---</option>
+                <option value="delete">Delete</option>
+            </select>
+            <button class="btn btn-primary btn-sm btn-apply custom-item" disabled>Apply</button>
+        </div>
+        <a class="list-movies__header-trash" href="/me/trash/movies">Recycle Bin {{deletedCount}}</a>
+    </div>
+
+    <table class="table table-movies mt-4" border="1">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Tick</th>
+                <th scope="col">#</th>
+                <th scope="col">Movie name</th>
+                <th scope="col">Time</th>
+                <th scope="col">Release date</th>
+                <th scope="col">Customs</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movie in movies %}
+            <tr>
+                <td>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="movieIds[]" value="{{ movie._id }}">
+                    </div>
+                </td>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ movie.title }}</td>
+                <td>{{ movie.time }}</td>
+                <td>{{ movie.releaseDate }}</td>
+                <td>
+                    <button type="button" class="btn btn-outline-warning">
+                        <a href="/movies/{{ movie._id }}/edit">Edit</a>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger">
+                        <a href="" data-toggle="modal" data-id="{{ movie._id }}"
+                            data-target="#deleteCourseModal">Delete</a>
+                    </button>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6">You have not registered for any movies yet.
+                    <a href="/movies/create">Post a movie</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</form>
+
+{# {{!-- Confirm delete movie --}}
+<div id="deleteCourseModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete the movie?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="movie-delete-btn" class="btn btn-primary">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{!-- Delete hidden form --}}
+<form method="POST" name="movie-delete-form"></form> #}

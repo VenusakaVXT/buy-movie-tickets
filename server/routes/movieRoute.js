@@ -10,8 +10,8 @@ import {
 const movieRouter = express.Router()
 
 movieRouter.get("/", getAllMovies)
-movieRouter.get("/:id", getMovieById)
-movieRouter.post("/", addMovie)
+movieRouter.get("/:id/detail", getMovieById)
+movieRouter.get("/create", addMovie)
 movieRouter.delete("/:id", deleteMovie)
 movieRouter.put("/:id", updateMovie)
 
