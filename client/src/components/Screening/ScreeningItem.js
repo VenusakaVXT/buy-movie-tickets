@@ -149,7 +149,7 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, d
                                 background: "#1a1b1e",
                                 color: "#fff",
                                 ":hover": {
-                                    background: "#1a1b1e",
+                                    background: "#e50914",
                                 },
                             }}
                             data-tooltip-id="favorite"

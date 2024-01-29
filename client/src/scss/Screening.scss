@@ -31,4 +31,8 @@
 
 .like {
     color: $main-color !important;
+    
+    &:hover {
+        background: $second-background !important;
+    }
 }
