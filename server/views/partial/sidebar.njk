@@ -1,10 +1,12 @@
 <div class="admin__sidebar">
     <div>
-        <img src="/img/logo_brand.png" alt="Logo">
+        <a href="/">
+            <img src="/img/logo_brand.png" alt="Logo">
+        </a>
 
         <hr />
 
-        <div class="menu-item" onclick="toggleMenu('manageMenu')">
+        <div class="menu-item active" onclick="toggleMenu('manageMenu')">
             Manage Movie
             <span class="arrow">
                 <i class='bx bx-chevron-down'></i>
@@ -13,10 +15,10 @@
         
         <div class="menu-sub" id="manageMenu">
             <div class="submenu">
-                <a href="/movie/">View Movie</a>
+                <a href="/movie-screening/table-lists">View Movie</a>
             </div>
             <div class="submenu">
-                <a href="/movie/create">Add Movie</a>
+                <a href="/movie-screening/create">Add Movie</a>
             </div>
             <div class="submenu">Edit Movie</div>
             <div class="submenu">Delete Movie</div>

@@ -1,4 +1,7 @@
 import mongoose from "mongoose"
+import slug from "mongoose-slug-generator"
+
+mongoose.plugin(slug)
 
 const Schema = mongoose.Schema
 const movieSchema = new Schema({
@@ -62,8 +65,12 @@ const movieSchema = new Schema({
     admin: {
         type: mongoose.Types.ObjectId,
         ref: "Admin",
-        required: true,
+        //required: true,
     },
+    slug: {
+        type: String,
+        slug: "title"
+    }
 })
 
 export default mongoose.model("Movie", movieSchema)

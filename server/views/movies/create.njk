@@ -1,52 +1,89 @@
-<div class="mt-4">
-    <h3>Post a movie</h3>
+{% extends "index.njk" %}
 
-    <form method="POST" action="/movie/">
-        <div class="form-group">
-            <label for="name">Movie name:</label>
-            <input type="text" class="form-control" id="name" name="name">
-        </div>
+{% block content %}
+    <div class="p-4">
+        <h3 class="title">Post a movie</h3>
 
-        <div class="form-group">
-            <label for="description">Movie description:</label>
-            <input type="text" class="form-control" id="description" name="description">
-        </div>
+        <form id="frm-add-movie" method="POST" action="/movie-screening/store" onsubmit="setWasReleasedDefaultValue()">
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="title">Movie title:</label>
+                <input type="text" class="form-control" id="title" name="title">
+            </div>
 
-        <div class="form-group">
-            <label for="director">Movie director:</label>
-            <input type="text" class="form-control" id="director" name="director">
-        </div>
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="description">Movie description:</label>
+                <textarea 
+                    class="form-control" 
+                    id="description" 
+                    name="description" 
+                    placeholder="Please enter a movie description..."
+                ></textarea>
+            </div>
 
-        <div class="form-group">
-            <label for="writter">Content writter:</label>
-            <input type="text" class="form-control" id="writter" name="writter">
-        </div>
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="director">Movie director:</label>
+                <input type="text" class="form-control" id="director" name="director">
+            </div>
 
-        <div class="form-group">
-            <label for="actor">Actors:</label>
-            <input type="text" class="form-control" id="actor" name="actor">
-        </div>
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="contentWritter">Content writter:</label>
+                <input type="text" class="form-control" id="contentWritter" name="contentWritter">
+            </div>
 
-        <div class="form-group">
-            <label for="category">Category:</label>
-            <input type="text" class="form-control" id="category" name="category">
-        </div>
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="actors">Actors:</label>
+                <input type="text" class="form-control" id="actors"s name="actors">
+            </div>
 
-        <div class="form-group">
-            <label for="releaseDate">Release date:</label>
-            <input type="text" class="form-control" id="releaseDate" name="releaseDate">
-        </div>
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="category">Category:</label>
+                <input type="text" class="form-control" id="category" name="category">
+            </div>
 
-        <div class="form-group">
-            <label for="time">Movie time:</label>
-            <input type="text" class="form-control" id="time" name="time">
-        </div>
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="releaseDate">
+                    Release date (<span class="text-italic">mm/dd/yyyy</span>):
+                </label>
+                <input type="text" class="form-control" id="releaseDate" name="releaseDate">
+            </div>
 
-        <div class="form-group">
-            <label for="trailerId">Trailer ID:</label>
-            <input type="text" class="form-control" id="trailerId" name="trailerId">
-        </div>
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="time">Movie time:</label>
+                <input type="text" class="form-control" id="time" name="time">
+            </div>
 
-        <button type="submit" class="btn btn-primary">Add movie</button>
-    </form>
-</div>
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="trailerId">Trailer ID:</label>
+                <input type="text" class="form-control" id="trailerId" name="trailerId">
+            </div>
+
+            <div class="form-group">
+                <span>
+                    Was released 
+                    (<span class="text-italic">
+                        If not selected, the default will be "Not yet"
+                    </span>):
+                </span>
+                <input class="radio-btn" type="radio" name="selectReleased" id="already" onclick="setWasReleased(true)">
+                <label for="already">Already</label>
+                <input class="radio-btn" type="radio" name="selectReleased" id="notyet" onclick="setWasReleased(false)">
+                <label for="notyet">Not yet</label>
+            </div>
+
+            <input type="hidden" id="wasReleased" name="wasReleased" value="">
+
+            <button type="submit" class="btn btn-control mt-2" style="width: 100">
+                Add movie
+            </button>
+        </form>
+    </div>
+{% endblock %}

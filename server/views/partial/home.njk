@@ -1,0 +1,24 @@
+<h1 class="admin__welcome title">Welcome to the Admin Page!</h1>
+
+<div class="d-block">
+    <div class="row movie__list">
+        {% for movie in movies %}
+            <div class="col" style="box-shadow:rgba(0,0,0,0.4)">
+                <div class="card movie__card">
+                    <a href="/movie-screening/{{ movie.slug }}/detail">
+                        <img class="card-img-top" src="https://img.youtube.com/vi/{{movie.trailerId}}/maxresdefault.jpg" alt="{{ movie.title }}">
+                    </a>
+                    <div class="card-body" style="background: #1b1b1b; padding: 10px">
+                        <a href="/movie-screening/{{ movie.slug }}/detail">
+                            <h5 class="card-title movie__title">{{ movie.title }}</h5>
+                        </a>
+                        <p class="card-text movie__description">{{ movie.description }}.</p>
+                        <a href="/movie-screening/{{ movie.slug }}/detail" class="btn btn-primary" style="font-size: 0.85rem">
+                            See details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "npm run compile-less && nodemon --exec babel-node index.js",
+    "start": "nodemon --exec babel-node index.js && npm run compile-less",
+    "watch": "less-watch-compiler views/less/ public/style/",
     "compile-less": "npx lessc views/less/style.less public/style/style.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,7 +21,10 @@
     "jsonwebtoken": "^9.0.2",
     "less": "^4.2.0",
     "less-middleware": "^3.1.0",
+    "less-watch-compiler": "^1.16.3",
+    "method-override": "^3.0.0",
     "mongoose": "^7.6.3",
+    "mongoose-slug-generator": "^1.0.4",
     "nunjucks": "^3.2.4"
   },
   "devDependencies": {

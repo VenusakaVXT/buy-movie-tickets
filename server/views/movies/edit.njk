@@ -1,0 +1,80 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <div class="p-4">
+        <h3 class="title">Update movie</h3>
+
+        <form id="frm-update-movie" method="POST" action="/movie-screening/{{movie._id}}?_method=PUT">
+            <div class="form-group">
+                <label for="title">Movie title:</label>
+                <input type="text" class="form-control" value="{{ movie.title }}" id="title" name="title">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Movie description:</label>
+                <textarea class="form-control" id="description" name="description">{{ movie.description }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="director">Movie director:</label>
+                <input type="text" class="form-control" value="{{ movie.director }}" id="director" name="director">
+            </div>
+
+            <div class="form-group">
+                <label for="contentWritter">Content writter:</label>
+                <input type="text" class="form-control" value="{{ movie.contentWritter }}" id="contentWritter" name="contentWritter">
+            </div>
+
+            <div class="form-group">
+                <label for="actors">Actors:</label>
+                <input type="text" class="form-control" value="{{ movie.actors }}" id="actors"s name="actors">
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <input type="text" class="form-control" value="{{ movie.category }}" id="category" name="category">
+            </div>
+
+            <div class="form-group">
+                <label for="releaseDate">
+                    Release date (<span class="text-italic">mm/dd/yyyy</span>):
+                </label>
+                <input type="text" class="form-control" value="{{ movie.releaseDate }}" id="releaseDate" name="releaseDate">
+            </div>
+
+            <div class="form-group">
+                <label for="time">Movie time:</label>
+                <input type="text" class="form-control" value="{{ movie.time }}" id="time" name="time">
+            </div>
+
+            <div class="form-group">
+                <label for="trailerId">Trailer ID:</label>
+                <input type="text" class="form-control" value="{{ movie.trailerId }}" id="trailerId" name="trailerId">
+            </div>
+
+            <div class="form-group">
+                <span>Was released</span>
+                <input 
+                    class="radio-btn" 
+                    type="radio" 
+                    name="wasReleased" 
+                    id="already" 
+                    value="true"
+                    {% if movie.wasReleased %}checked{% endif %}
+                >
+                <label for="already">Already</label>
+                <input 
+                    class="radio-btn" 
+                    type="radio" 
+                    name="wasReleased" 
+                    id="notyet" 
+                    value="false"
+                    {% if not movie.wasReleased %}checked{% endif %}
+                >
+                <label for="notyet">Not yet</label>
+            </div>
+
+            <button type="submit" class="btn btn-control mt-2" style="width: 100">Save</button>
+        </form>
+    </div>
+{% endblock %}

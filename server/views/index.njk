@@ -17,7 +17,11 @@
 <body>
     <div class="admin__wrapper">
         {% include "partial/sidebar.njk" %}
-        <div class="container">{{ body | safe }}</div>
+        <main class="admin__container">
+            {% block content %}
+                {% include "partial/home.njk" %}
+            {% endblock %}
+        </main>
     </div>
 
     <script src="/js/script.js"></script>

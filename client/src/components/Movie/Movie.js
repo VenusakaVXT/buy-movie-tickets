@@ -67,7 +67,7 @@ const Movie = () => {
                     }}
                 />
                 {title.toUpperCase()}
-            </Typography>
+            </Typography> 
 
             <div role="tab" hidden={active !== 0}>
                 <Box className="movie__list">

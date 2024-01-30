@@ -16,7 +16,7 @@ export const getAllMovies = async (req, res, next) => {
         return res.status(500).json({ message: "request failed..." })
     }
 
-    res.render("movies/display.njk", { movies })
+    return res.status(200).json({ movies })
 }
 
 export const getMovieById = async (req, res, next) => {

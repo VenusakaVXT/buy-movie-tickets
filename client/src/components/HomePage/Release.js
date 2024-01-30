@@ -52,7 +52,7 @@ const Release = () => {
                     className={`release__tab ${!showing ? "selected" : ""}`}
                     onClick={() => handleTabClick(false)}
                 >
-                    COMMING SOON
+                    COMMING SOONa
                 </span>
             </h4>
 
