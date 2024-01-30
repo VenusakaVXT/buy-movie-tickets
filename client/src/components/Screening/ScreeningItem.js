@@ -146,7 +146,7 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, d
                         <Button
                             sx={{
                                 height: 36,
-                                background: "#1a1b1e", 
+                                background: "#1a1b1e",
                                 color: "#fff",
                                 ":hover": {
                                     background: "#e50914",
