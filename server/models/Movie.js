@@ -1,7 +1,6 @@
 import mongoose from "mongoose"
 import slug from "mongoose-slug-generator"
-
-mongoose.plugin(slug)
+import mongooseDelete from "mongoose-delete"
 
 const Schema = mongoose.Schema
 const movieSchema = new Schema({
@@ -71,6 +70,13 @@ const movieSchema = new Schema({
         type: String,
         slug: "title"
     }
+})
+
+// Add plugins
+mongoose.plugin(slug)
+movieSchema.plugin(mongooseDelete, { 
+    deletedAt: true,
+    overrideMethods: "all" 
 })
 
 export default mongoose.model("Movie", movieSchema)

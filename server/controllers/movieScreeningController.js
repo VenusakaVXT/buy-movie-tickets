@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import Movie from "../models/Movie.js"
 
 class MovieScreeningController {
@@ -16,13 +15,15 @@ class MovieScreeningController {
         const movie = new Movie(req.body)
 
         movie.save()
-            .then(res.redirect("/"))
+            .then(res.redirect("/movie-screening/table-lists"))
             .catch(next)
     }
 
     tableLists(req, res, next) {
-        Movie.find({})
-            .then(movies => res.render("movies/read", { movies }))
+        Promise.all([Movie.find({}), Movie.countDocumentsWithDeleted({ deleted: true })])
+            .then(([movies, deletedCount]) => {
+                res.render("movies/read", { movies, deletedCount })
+            })
             .catch(next)
     }
 
@@ -50,8 +51,28 @@ class MovieScreeningController {
     }
 
     delete(req, res, next) {
-        Movie.deleteOne({ _id: req.params.id })
+        Movie.delete({ _id: req.params.id })
             .then(() => res.redirect("/movie-screening/table-lists"))
+            .catch(next)
+    }
+
+    recycleBin(req, res, next) {
+        Promise.all([Movie.findWithDeleted({ deleted: true }), Movie.countDocuments({})])
+            .then(([movies, moviesCount]) => {
+                res.render("movies/trash-can", { movies, moviesCount })
+            })
+            .catch(next)
+    }
+
+    restore(req, res, next) {
+        Movie.restore({ _id: req.params.id })
+            .then(() => res.redirect("back"))
+            .catch(next)
+    }
+
+    forceDelete(req, res, next) {
+        Movie.deleteOne({ _id: req.params.id })
+            .then(() => res.redirect("back"))
             .catch(next)
     }
 }

@@ -2,7 +2,7 @@
 
 {% block content %}
     <form class="p-4 movies__table-lists" name="container-form" method="POST">
-        <h3 class="title">Movies List</h3>
+        <h3 class="title">Movies Deleted</h3>
 
         <div class="list-movies__header mt-4">
             <div class="list-movies__header-custom">
@@ -14,13 +14,12 @@
                 </div>
                 <select style="margin: 0 18px" class="form-control" name="action" required>
                     <option value="">--- Action ---</option>
-                    <option value="delete">Delete</option>
+                    <option value="restore">Restore</option>
+                    <option value="hard-delete">Delete</option>
                 </select>
                 <button class="btn btn-sm btn-control" disabled>Apply</button>
             </div>
-            <a class="list-movies__header-trash" href="/movie-screening/trash-can">
-                Recycle Bin ({{deletedCount}})
-            </a>
+            <a href="/movie-screening/table-lists">List movies ({{ moviesCount }})</a>
         </div>
 
         <table class="table table-movies mt-4" border="1">
@@ -30,7 +29,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Movie title</th>
                     <th scope="col">Released</th>
-                    <th scope="col">Release date</th>
+                    <th scope="col">Deletion time</th>
                     <th scope="col">Customs</th>
                 </tr>
             </thead>
@@ -43,9 +42,7 @@
                         </div>
                     </td>
                     <th scope="row">{{ loop.index }}</th>
-                    <td>
-                        <a href="/movie-screening/{{movie.slug}}/detail">{{ movie.title }}</a>
-                    </td>
+                    <td>{{ movie.title }}</td>
                     <td>
                         {% if movie.wasReleased %}
                             Already
@@ -53,23 +50,21 @@
                             Not yet
                         {% endif %}
                     </td>
-                    <td>{{ movie.releaseDate }}</td>
+                    <td>{{ movie.deletedAt }}</td>
                     <td>
-                        <button type="button" class="btn btn-outline-warning">
-                            <a href="/movie-screening/{{ movie._id }}/edit">Edit</a>
+                        <button type="button" class="btn btn-outline-info">
+                            <a class="restore-btn" href="" data-id="{{ movie._id }}">Restore</a>
                         </button>
                         <button type="button" class="btn btn-outline-danger">
-                            <a href="" data-toggle="modal" data-id="{{ movie._id }}" data-target="#deleteMovieModal">
-                                Remove
+                            <a class="force-delete-btn" href="" data-toggle="modal" data-id="{{ movie._id }}" data-target="#deleteMovieModal">
+                                Delete
                             </a>
                         </button>
                     </td>
                 </tr>
                 {% else %}
                 <tr style="text-align: center">
-                    <td colspan="6">You have not registered for any movies yet.
-                        <a href="/movie-screening/create">Post a movie</a>
-                    </td>
+                    <td colspan="6">Empty trash can...</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -77,4 +72,6 @@
     </form>
 
     {% include "movies/delete.njk" %}
+
+    <form method="POST" name="movie-restore-form"></form>
 {% endblock %}

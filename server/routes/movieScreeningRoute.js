@@ -9,6 +9,9 @@ movieScreeningRouter.get("/table-lists", movieScreeningController.tableLists)
 movieScreeningRouter.get("/:id/edit", movieScreeningController.edit)
 movieScreeningRouter.put("/:id", movieScreeningController.update)
 movieScreeningRouter.delete("/:id", movieScreeningController.delete)
+movieScreeningRouter.get("/trash-can", movieScreeningController.recycleBin)
+movieScreeningRouter.patch("/:id/restore", movieScreeningController.restore)
+movieScreeningRouter.delete("/:id/force-delete", movieScreeningController.forceDelete)
 movieScreeningRouter.get("/:slug/detail", movieScreeningController.detail)
 
 export default movieScreeningRouter

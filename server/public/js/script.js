@@ -71,14 +71,35 @@ function setWasReleasedDefaultValue() {
 document.addEventListener("DOMContentLoaded", () => {
     let movieId
     let deleteFrm = document.forms["movie-delete-form"]
-    // let containerFrm = document.forms["container-form"]
+    let restoreFrm = document.forms["movie-restore-form"]
+    let confirmDeleteBtn = document.getElementById("movie-delete-btn")
 
-    $("#deleteMovieModal").on("show.bs.modal", function(e) {
+    $("#deleteMovieModal").on("show.bs.modal", function (e) {
         movieId = $(e.relatedTarget).data("id")
     })
 
-    document.getElementById("movie-delete-btn").addEventListener("click", () => {
+    // Soft delete
+    confirmDeleteBtn.addEventListener("click", () => {
         deleteFrm.action = "/movie-screening/" + movieId + "?_method=DELETE"
         deleteFrm.submit()
     })
+
+    $(".restore-btn").click(function (e) {
+        e.preventDefault()
+        const movieId = $(this).data("id")
+        restoreFrm.action = "/movie-screening/" + movieId + "/restore?_method=PATCH"
+        restoreFrm.submit()
+    })
+
+    // Force delete
+    $(".force-delete-btn").click(function (e) {
+        e.preventDefault()
+        const movieId = $(this).data("id")
+
+        confirmDeleteBtn.addEventListener("click", () => {
+            deleteFrm.action = "/movie-screening/" + movieId + "/force-delete?_method=DELETE"
+            deleteFrm.submit()
+        })
+    })
 })
+
