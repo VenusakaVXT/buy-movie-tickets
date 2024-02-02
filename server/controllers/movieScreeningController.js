@@ -75,6 +75,35 @@ class MovieScreeningController {
             .then(() => res.redirect("back"))
             .catch(next)
     }
+
+    handleDeleteActionFrm(req, res, next) {
+        switch(req.body.action) {
+            case "delete":
+                Movie.delete({ _id: { $in: req.body.movieIds } })
+                    .then(() => res.redirect("back"))
+                    .catch(next)
+                break
+            default: 
+                res.json({ message: 'Action is invalid' })
+        }
+    }
+
+    handleRestoreActionFrm(req, res, next) {
+        switch(req.body.action) {
+            case "restore":
+                Movie.restore({ _id: { $in: req.body.movieIds } })
+                    .then(() => res.redirect("back"))
+                    .catch(next)
+                break
+            case "hard-delete":
+                Movie.deleteOne({ _id: { $in: req.body.movieIds } })
+                    .then(() => res.redirect("back"))
+                    .catch(next)
+                break
+            default: 
+                res.json({ message: 'Action is invalid' })
+        }
+    }
 }
 
 export default new MovieScreeningController

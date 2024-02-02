@@ -1,7 +1,7 @@
 {% extends "index.njk" %}
 
 {% block content %}
-    <form class="p-4 movies__table-lists" name="container-form" method="POST">
+    <form class="p-4 movies__table-lists" method="POST" action="/movie-screening/handle-restore-action-form">
         <h3 class="title">Movies Deleted</h3>
 
         <div class="list-movies__header mt-4">
@@ -17,7 +17,7 @@
                     <option value="restore">Restore</option>
                     <option value="hard-delete">Delete</option>
                 </select>
-                <button class="btn btn-sm btn-control" disabled>Apply</button>
+                <button class="btn btn-sm btn-control btn-apply" disabled>Apply</button>
             </div>
             <a href="/movie-screening/table-lists">List movies ({{ moviesCount }})</a>
         </div>

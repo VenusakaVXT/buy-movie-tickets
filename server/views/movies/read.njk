@@ -1,7 +1,7 @@
 {% extends "index.njk" %}
 
 {% block content %}
-    <form class="p-4 movies__table-lists" name="container-form" method="POST">
+    <form class="p-4 movies__table-lists" method="POST" action="/movie-screening/handle-delete-action-form">
         <h3 class="title">Movies List</h3>
 
         <div class="list-movies__header mt-4">
@@ -16,7 +16,7 @@
                     <option value="">--- Action ---</option>
                     <option value="delete">Delete</option>
                 </select>
-                <button class="btn btn-sm btn-control" disabled>Apply</button>
+                <button class="btn btn-sm btn-control btn-apply" disabled>Apply</button>
             </div>
             <a class="list-movies__header-trash" href="/movie-screening/trash-can">
                 Recycle Bin ({{deletedCount}})

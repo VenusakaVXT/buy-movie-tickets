@@ -3,6 +3,11 @@ import movieScreeningController from "../controllers/movieScreeningController.js
 
 const movieScreeningRouter = express.Router()
 
+// Form action routing
+movieScreeningRouter.post("/handle-delete-action-form", movieScreeningController.handleDeleteActionFrm)
+movieScreeningRouter.post("/handle-restore-action-form", movieScreeningController.handleRestoreActionFrm)
+
+// Functional routing
 movieScreeningRouter.get("/create", movieScreeningController.create)
 movieScreeningRouter.post("/store", movieScreeningController.store)
 movieScreeningRouter.get("/table-lists", movieScreeningController.tableLists)

@@ -22,11 +22,6 @@ menuItems.forEach(item => {
     })
 })
 
-function toggleTooltip(tooltipId) {
-    const tooltip = document.getElementById(tooltipId)
-    tooltip.style.display = (tooltip.style.display === "block") ? "none" : "block"
-}
-
 // Handle add wasReleased to DB Movie
 function setWasReleased(value) {
     document.getElementById("wasReleased").value = value
@@ -37,35 +32,6 @@ function setWasReleasedDefaultValue() {
         setWasReleased(false)
     }
 }
-
-// Handle input data into arrays
-// function processArrayInput(inputId) {
-//     const inputEl = document.getElementById(inputId)
-//     const inputVal = inputEl.value
-//     const valueArr = inputVal.split(",").map(item => item.trim())
-//     inputEl.value = valueArr
-// }
-
-// document.getElementById("frm-add-movie").addEventListener("submit", () => {
-//     processArrayInput("director")
-//     processArrayInput("contentWritter")
-//     processArrayInput("actors")
-//     processArrayInput("category")
-// })
-
-// Handle wasReleased when accessing data in the edit form
-// document.addEventListener("DOMContentLoaded", () => {
-//     const wasReleasedValue = 
-//     document.querySelector("#frm-update-movie #wasReleased").getAttribute("data-was-released")
-
-//     if (wasReleasedValue === true) {
-//         document.querySelector("#frm-update-movie #already").checked = true
-//     } else {
-//         document.querySelector("#frm-update-movie #notyet").checked = true
-//     }
-
-//     setWasReleased(wasReleasedValue == true)
-// })
 
 // Handle delete movie
 document.addEventListener("DOMContentLoaded", () => {
@@ -101,5 +67,32 @@ document.addEventListener("DOMContentLoaded", () => {
             deleteFrm.submit()
         })
     })
-})
 
+    // Handle click checkbox "select all"
+    let checkboxAll = $("#checkbox-all")
+    let movieCheckboxItem = $("input[name='movieIds[]']")
+
+    checkboxAll.change(function () {
+        const isCheckedAll = $(this).prop("checked") // datatype: Boolean
+        movieCheckboxItem.prop("checked", isCheckedAll)
+        renderApplyBtn()
+    })
+
+    movieCheckboxItem.change(function () {
+        const movieIsChecked = $("input[name='movieIds[]']:checked")
+        const isCheckedAll = movieCheckboxItem.length === movieIsChecked.length
+        checkboxAll.prop("checked", isCheckedAll)
+        renderApplyBtn()
+    })
+
+    // Handle apply btn
+    const renderApplyBtn = () => {
+        const checkedCount = $("input[name='movieIds[]']:checked").length
+
+        if (checkedCount > 0) {
+            $(".btn-apply").attr("disabled", false)
+        } else {
+            $(".btn-apply").attr("disabled", true)
+        }
+    }
+})
