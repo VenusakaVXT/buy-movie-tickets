@@ -4,7 +4,7 @@
     <div class="p-4">
         <h3 class="title">Post a movie</h3>
 
-        <form id="frm-add-movie" method="POST" action="/movie-screening/store" onsubmit="setWasReleasedDefaultValue()">
+        <form id="frm-add-movie" method="POST" action="/movie-screening/store" onsubmit="setWasReleasedDefaultValue(); processArrayInput()">
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
                 <label for="title">Movie title:</label>
@@ -25,25 +25,25 @@
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
                 <label for="director">Movie director:</label>
-                <input type="text" class="form-control" id="director" name="director">
+                <input type="text" class="form-control" id="director" name="director" multiple>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
                 <label for="contentWritter">Content writter:</label>
-                <input type="text" class="form-control" id="contentWritter" name="contentWritter">
+                <input type="text" class="form-control" id="contentWritter" name="contentWritter" multiple>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
                 <label for="actors">Actors:</label>
-                <input type="text" class="form-control" id="actors"s name="actors">
+                <input type="text" class="form-control" id="actors"s name="actors" multiple>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
                 <label for="category">Category:</label>
-                <input type="text" class="form-control" id="category" name="category">
+                <input type="text" class="form-control" id="category" name="category" multiple>
             </div>
 
             <div class="form-group">

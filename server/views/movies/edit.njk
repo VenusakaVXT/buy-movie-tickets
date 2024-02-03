@@ -4,7 +4,7 @@
     <div class="p-4">
         <h3 class="title">Update movie</h3>
 
-        <form id="frm-update-movie" method="POST" action="/movie-screening/{{movie._id}}?_method=PUT">
+        <form id="frm-update-movie" method="POST" action="/movie-screening/{{movie._id}}?_method=PUT" onsubmit="processArrayInput()">
             <div class="form-group">
                 <label for="title">Movie title:</label>
                 <input type="text" class="form-control" value="{{ movie.title }}" id="title" name="title">
@@ -17,22 +17,22 @@
 
             <div class="form-group">
                 <label for="director">Movie director:</label>
-                <input type="text" class="form-control" value="{{ movie.director }}" id="director" name="director">
+                <input type="text" class="form-control" value="{{ movie.director }}" id="director" name="director" multiple>
             </div>
 
             <div class="form-group">
                 <label for="contentWritter">Content writter:</label>
-                <input type="text" class="form-control" value="{{ movie.contentWritter }}" id="contentWritter" name="contentWritter">
+                <input type="text" class="form-control" value="{{ movie.contentWritter }}" id="contentWritter" name="contentWritter" multiple>
             </div>
 
             <div class="form-group">
                 <label for="actors">Actors:</label>
-                <input type="text" class="form-control" value="{{ movie.actors }}" id="actors"s name="actors">
+                <input type="text" class="form-control" value="{{ movie.actors }}" id="actors"s name="actors" multiple>
             </div>
 
             <div class="form-group">
                 <label for="category">Category:</label>
-                <input type="text" class="form-control" value="{{ movie.category }}" id="category" name="category">
+                <input type="text" class="form-control" value="{{ movie.category }}" id="category" name="category" multiple>
             </div>
 
             <div class="form-group">

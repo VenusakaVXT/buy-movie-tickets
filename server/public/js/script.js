@@ -33,6 +33,23 @@ function setWasReleasedDefaultValue() {
     }
 }
 
+// Handle input data into arrays
+function converInputDataToArray(inputId) {
+    const inputVal = document.getElementById(inputId).value
+
+    // Split the input values by commas and trim spaces
+    const arrVal = inputVal.split(",").map(item => item.trim())
+
+    // Set the processed value back to the input field
+    document.getElementById(inputId).value = arrVal.join("/n")
+}
+
+function processArrayInput() {
+    const arrData = ["director", "contentWritter", "actors", "category"]
+
+    arrData.forEach(inputId => converInputDataToArray(inputId))
+}
+
 // Handle delete movie
 document.addEventListener("DOMContentLoaded", () => {
     let movieId
