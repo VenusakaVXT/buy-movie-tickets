@@ -16,6 +16,7 @@ import { fileURLToPath } from "url"
 import nunjucks from "nunjucks"
 import lessMiddleware from "less-middleware"
 import methodOverride from "method-override"
+import sortMiddleware from "./middlewares/SortMiddleware.js"
 
 dotenv.config()
 const PORT = process.env.PORT || 5000

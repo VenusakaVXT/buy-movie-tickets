@@ -113,3 +113,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 })
+
+// Handle toggle sort btn
+document.addEventListener("DOMContentLoaded", () => {
+    const sortLink = document.querySelector("a[href='?sort&column=title&type=asc']")
+
+    const getUrlParams = (nameParam, url) => {
+        nameParam = nameParam.replace(/[\[\]]/g, '\\$&')
+        const regex = new RegExp('[?&]' + nameParam + '(=([^&#]*)|&|#|$)')
+        const results = regex.exec(url)
+
+        if (!results) return null
+        if (!results[2]) return ""
+
+        return decodeURIComponent(results[2].replace(/\+/g, ' '))
+    }
+
+    sortLink.addEventListener("click", (e) => {
+        e.preventDefault()
+
+        const currentType = getUrlParams("type", sortLink.href)
+
+        if (currentType === "asc") {
+            sortLink.innerHTML = "<i class='bx bx-sort-z-a'></i>"
+            sortLink.href = "?sort&column=title&type=desc"
+        } else {
+            sortLink.innerHTML = "<i class='bx bx-sort-a-z'></i>"
+            sortLink.href = "?sort&column=title&type=asc"
+        }
+    })
+})
