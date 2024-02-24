@@ -26,14 +26,14 @@ const movieSchema = new Schema({
     ],
     actors: [
         {
-            type: String,
-            required: true,
+            type: mongoose.Types.ObjectId,
+            ref: "Actor",
         },
     ],
     category: [
         {
-            type: String,
-            required: true,
+            type: mongoose.Types.ObjectId,
+            ref: "Category",
         },
     ],
     releaseDate: {
@@ -52,6 +52,12 @@ const movieSchema = new Schema({
         type: Boolean,
         required: true,
     },
+    producer: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "Producer",
+        }
+    ],
     featured: {
         type: Boolean,
     },
@@ -66,17 +72,22 @@ const movieSchema = new Schema({
         ref: "Admin",
         //required: true,
     },
+    employee: {
+        type: mongoose.Types.ObjectId,
+        ref: "Employee",
+    },
     slug: {
         type: String,
-        slug: "title"
+        slug: "title",
+        unique: true
     }
 })
 
 // Add plugins
 mongoose.plugin(slug)
-movieSchema.plugin(mongooseDelete, { 
+movieSchema.plugin(mongooseDelete, {
     deletedAt: true,
-    overrideMethods: "all" 
+    overrideMethods: "all"
 })
 
 export default mongoose.model("Movie", movieSchema)

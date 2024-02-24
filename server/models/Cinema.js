@@ -10,6 +10,12 @@ const cinemaSchema = new Schema({
         type: String,
         required: true,
     },
+    img: {
+        type: String,
+    },
+    description: {
+        type: String,
+    }
 })
 
 export default mongoose.model("Cinema", cinemaSchema)

@@ -1,24 +1,24 @@
 import mongoose from "mongoose"
 import Booking from "../models/Booking.js"
-import Movie from "../models/Movie.js"
+import Screening from "../models/Screening.js"
 import User from "../models/User.js"
 
 export const newBooking = async (req, res, next) => {
-    const { movie, bookingDate, seatNumber, user } = req.body
+    const { screening, bookingDate, seat, user } = req.body
 
-    let existMovie
+    let existScreening
     let existUser
 
     try {
-        existMovie = await Movie.findById(movie)
+        existScreening = await Screening.findById(screening)
         existUser = await User.findById(user)
     } catch (err) {
         console.error(err)
     }
 
-    if (!existMovie) {
+    if (!existScreening) {
         return res.status(404).json({
-            message: "movie not found with given id...",
+            message: "screening not found with given id...",
         })
     }
 
@@ -32,9 +32,9 @@ export const newBooking = async (req, res, next) => {
 
     try {
         booking = new Booking({
-            movie,
+            screening,
             bookingDate: new Date(`${bookingDate}`),
-            seatNumber,
+            seat,
             user,
         })
 
@@ -42,10 +42,10 @@ export const newBooking = async (req, res, next) => {
         session.startTransaction()
 
         existUser.bookings.push(booking)
-        existMovie.bookings.push(booking)
+        existScreening.bookings.push(booking)
 
         await existUser.save({ session })
-        await existMovie.save({ session })
+        await existScreening.save({ session })
         await booking.save({ session })
 
         session.commitTransaction()
@@ -84,14 +84,14 @@ export const cancelBooking = async (req, res, next) => {
     let booking
 
     try {
-        booking = await Booking.findByIdAndRemove(id).populate("user movie")
+        booking = await Booking.findByIdAndRemove(id).populate("user screening")
 
         const session = await mongoose.startSession()
         session.startTransaction()
 
         await booking.user.bookings.pull(booking)
-        await booking.movie.bookings.pull(booking)
-        await booking.movie.save({ session })
+        await booking.screening.bookings.pull(booking)
+        await booking.screening.save({ session })
         await booking.user.save({ session })
 
         session.commitTransaction()

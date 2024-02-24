@@ -74,6 +74,7 @@ export const addMovie = async (req, res, next) => {
         time,
         trailerId,
         wasReleased,
+        producer,
         featured
     } = req.body
 
@@ -104,6 +105,7 @@ export const addMovie = async (req, res, next) => {
             time,
             featured,
             wasReleased,
+            producer,
             trailerId,
             admin: adminId,
         })
@@ -158,6 +160,7 @@ export const updateMovie = async (req, res, next) => {
         time,
         trailerId,
         wasReleased,
+        producer,
         featured
     } = req.body
 
@@ -173,6 +176,7 @@ export const updateMovie = async (req, res, next) => {
             time,
             trailerId,
             wasReleased,
+            producer,
             featured
         }, { new: true })
 
