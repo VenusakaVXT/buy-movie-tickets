@@ -14,24 +14,33 @@ import PageEnding from "./components/Footer/PageEnding"
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage"
 import GoToTopButton from "./components/GoToTop/GoToTopButton"
 import Movie from "./components/Movie/Movie"
+import { Helmet } from "react-helmet"
+
+const formatTitle = (pathname) => {
+    const convertPathname = pathname.replace(/\//g, " ").replace(/-/g, " ").trim()
+    return convertPathname.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
+}
 
 const App = () => {
     const location = useLocation()
     const isHomePage = location.pathname === "/"
+    const title = "Buy Movie Tickets"
 
     // disable default scrollRestoration() of RRD
     const ScrollRestoration = () => {
         const { pathname } = useLocation()
 
-        useEffect(() => {
-            window.scrollTo(0, 0)
-        }, [pathname])
+        useEffect(() => window.scrollTo(0, 0), [pathname])
 
         return null
     }
 
     return (
         <Box className="App__wrapper">
+            <Helmet>
+                <title>{isHomePage ? `${title}` : `${title} | ${formatTitle(location.pathname)}`}</title>
+            </Helmet>
+
             <ScrollRestoration />
             <Header />
 
