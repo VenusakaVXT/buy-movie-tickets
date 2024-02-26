@@ -26,14 +26,14 @@ const movieSchema = new Schema({
     ],
     actors: [
         {
-            type: mongoose.Types.ObjectId,
-            ref: "Actor",
+            type: String,
+            required: true,
         },
     ],
     category: [
         {
-            type: mongoose.Types.ObjectId,
-            ref: "Category",
+            type: String,
+            required: true,
         },
     ],
     releaseDate: {
