@@ -1,4 +1,5 @@
 import Movie from "../models/Movie.js"
+import slugify from "slugify"
 
 class MovieScreeningController {
     detail(req, res, next) {
@@ -13,9 +14,17 @@ class MovieScreeningController {
 
     store(req, res, next) {
         const movie = new Movie(req.body)
+        movie.slug = slugify(movie.title, { lower: true })
 
         movie.save()
-            .then(res.redirect("/movie-screening/table-lists"))
+            .then(() => {
+                // Avoid re-caching the old cache 
+                // when switching to the "/movie-screening/table-lists" page
+                res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate")
+                res.setHeader("Pragma", "no-cache")
+                res.setHeader("Expires", "0")
+                res.redirect("/movie-screening/table-lists")
+            })
             .catch(next)
     }
 
@@ -77,30 +86,30 @@ class MovieScreeningController {
     }
 
     handleDeleteActionFrm(req, res, next) {
-        switch(req.body.action) {
+        switch (req.body.action) {
             case "delete":
                 Movie.delete({ _id: { $in: req.body.movieIds } })
                     .then(() => res.redirect("back"))
                     .catch(next)
                 break
-            default: 
+            default:
                 res.json({ message: 'Action is invalid' })
         }
     }
 
     handleRestoreActionFrm(req, res, next) {
-        switch(req.body.action) {
+        switch (req.body.action) {
             case "restore":
                 Movie.restore({ _id: { $in: req.body.movieIds } })
                     .then(() => res.redirect("back"))
                     .catch(next)
                 break
             case "hard-delete":
-                Movie.deleteOne({ _id: { $in: req.body.movieIds } })
+                Movie.deleteMany({ _id: { $in: req.body.movieIds } })
                     .then(() => res.redirect("back"))
                     .catch(next)
                 break
-            default: 
+            default:
                 res.json({ message: 'Action is invalid' })
         }
     }
