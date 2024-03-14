@@ -26,7 +26,7 @@ export const getAllUsers = async (req, res, next) => {
     return res.status(200).json({ users })
 }
 
-export const addUser = async (req, res, next) => {
+export const register = async (req, res, next) => {
     const { name, phone, email, password, birthDay, gender, address } = req.body
 
     const hashPassword = hashUserPassword(password)
@@ -132,11 +132,11 @@ export const deleteUser = async (req, res, next) => {
 }
 
 export const login = async (req, res, next) => {
-    const { username, password } = req.body
+    const { nameAccount, password } = req.body
 
     if (
-        !username &&
-        username.trim() === "" &&
+        !nameAccount &&
+        nameAccount.trim() === "" &&
         !password &&
         password.trim() === ""
     ) {
@@ -149,7 +149,7 @@ export const login = async (req, res, next) => {
 
     try {
         existUser = await User.findOne({
-            $or: [{ email: username }, { phone: username }],
+            $or: [{ email: nameAccount }, { phone: nameAccount }],
         })
     } catch (err) {
         console.error(err)

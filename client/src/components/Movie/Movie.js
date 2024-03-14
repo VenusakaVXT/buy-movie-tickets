@@ -9,7 +9,7 @@ import {
     MenuItem
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
-import getApiFromBE from "../../api/movieApi"
+import { getApiFromBE } from "../../api/movieApi"
 import ScreeningItem from "../Screening/ScreeningItem"
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber"
 import AppsIcon from "@mui/icons-material/Apps"

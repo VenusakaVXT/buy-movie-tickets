@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Box, Button } from "@mui/material"
 import { Link } from "react-router-dom"
 import ScreeningItem from "../Screening/ScreeningItem"
-import getApiFromBE from "../../api/movieApi"
+import { getApiFromBE } from "../../api/movieApi"
 import "../../scss/Release.scss"
 
 const Release = () => {

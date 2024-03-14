@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import getApiFromBE from "../../api/movieApi"
+import { getApiFromBE } from "../../api/movieApi"
 import { Box, Card, CardContent, Typography } from "@mui/material"
 import CategoryIcon from "@mui/icons-material/Category"
 import { useNavigate } from "react-router-dom"

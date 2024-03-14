@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import getApiFromBE from "../../api/movieApi"
+import { getApiFromBE } from "../../api/movieApi"
 import { Tooltip } from "react-tooltip"
 import "../../scss/Cinema.scss"
 

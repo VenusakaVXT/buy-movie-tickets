@@ -23,15 +23,12 @@ const userSchema = new Schema({
     },
     birthDay: {
         type: Date,
-        required: true,
     },
     gender: {
         type: String,
-        required: true,
     },
     adress: {
         type: String,
-        required: true,
     },
     bookings: [
         {

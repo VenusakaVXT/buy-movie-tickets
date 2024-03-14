@@ -1,0 +1,97 @@
+@import "./variable";
+
+.auth__wrapper {
+    background: #060606;
+    display: flex;
+    justify-content: space-around;
+    padding: 68px 0;
+    overflow-x: hidden;
+
+    .auth__frm {
+        width: 400px;
+        background: $main-background;
+        border-radius: 10px;
+        padding: 30px;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+
+        .css-1x51dt5-MuiInputBase-input-MuiInput-input {
+            color: #fff;
+        }
+        
+        .forgot-password {
+            color: #6d6d6e;
+            text-decoration: none;
+            cursor: pointer;
+            position: relative;
+            right: -61.5%;
+            padding-top: 12px;
+
+            &:hover {
+                color: $main-color;
+                text-decoration: underline;
+            }
+        }
+        
+        .auth__btn {
+            margin: 20px 0;
+            color: #fff;
+            background: $main-color;
+
+            &:hover {
+                background: $span-color;
+            }
+        }
+
+        .other {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .line {
+                border: 1px solid #ccc;
+                width: 142px;
+            }
+
+            span {
+                color: #fff;
+                padding: 0 16px;
+            }
+        }
+
+        .kep-login-facebook {
+            height: 41px;
+            width: 160px;
+            text-transform: capitalize;
+            background: #285295;
+            border: none;
+            border-radius: 2px;
+
+            &:hover {
+                background: #0866ff;
+            }
+        }
+
+        .kep-login-google {
+            height: 41px;
+            width: 160px;
+        }
+
+        .question-switch {
+            font-size: 14px;
+            text-align: center;
+            color: #6d6d6e;
+
+            a {
+                color: $main-color;
+                text-decoration: none;
+                cursor: pointer;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

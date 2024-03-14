@@ -10,7 +10,7 @@ import {
 } from "@mui/material"
 import MovieIcon from "@mui/icons-material/Movie"
 import LanguageMenu from "../Language/LanguageMenu"
-import getApiFromBE from "../../api/movieApi"
+import { getApiFromBE } from "../../api/movieApi"
 import { Link } from "react-router-dom"
 import "../../scss/Header.scss"
 
