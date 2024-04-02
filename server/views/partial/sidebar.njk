@@ -6,50 +6,116 @@
 
         <hr />
 
-        <div class="menu-item active" onclick="toggleMenu('manageMenu')">
-            Manage Movie
+        <div class="menu-item active" onclick="toggleMenu('moviesMenu')">
+            Manage Movies
             <span class="arrow">
                 <i class='bx bx-chevron-down'></i>
             </span>
         </div>
         
-        <div class="menu-sub" id="manageMenu">
-            <div class="submenu">
-                <a href="/movie-screening/table-lists">View Movie</a>
-            </div>
+        <div class="menu-sub" id="moviesMenu">
             <div class="submenu">
                 <a href="/movie-screening/create">Add Movie</a>
             </div>
-            <div class="submenu">Edit Movie</div>
-            <div class="submenu">Delete Movie</div>
+            <div class="submenu">
+                <a href="/movie-screening/table-lists">View Movie</a>
+            </div>
         </div>
 
-        <div class="menu-item" onclick="toggleMenu('screeningsMenu')">
-            Manage Screenings
+        <div class="menu-item" onclick="toggleMenu('cinemasMenu')">
+            Manage Cinemas
             <span class="arrow">
                 <i class='bx bx-chevron-down'></i>
             </span>
         </div>
 
-        <div class="menu-sub" id="screeningsMenu">
-            <div class="submenu">View Screening</div>
-            <div class="submenu">Add Screening</div>
-            <div class="submenu">Edit Screening</div>
-            <div class="submenu">Delete Screeing</div>
+        <div class="menu-sub" id="cinemasMenu">
+            <div class="submenu">
+                <a href="/cinema/create">Add Cinema</a>
+            </div>
+            <div class="submenu">
+                <a href="/cinema/table-lists">View Cinema</a>
+            </div>
         </div>
 
-        <div class="menu-item" onclick="toggleMenu('ticketMenu')">
-            Manage Ticket
+        <div class="menu-item" onclick="toggleMenu('employeesMenu')">
+            Manage Employees
             <span class="arrow">
                 <i class='bx bx-chevron-down'></i>
             </span>
         </div>
 
-        <div class="menu-sub" id="ticketMenu">
-            <div class="submenu">View Ticket</div>
-            <div class="submenu">Add Ticket</div>
-            <div class="submenu">Edit Ticket</div>
-            <div class="submenu">Delete Ticket</div>
+        <div class="menu-sub" id="employeesMenu">
+            <div class="submenu">
+                <a href="/employee/create">Add Employee</a>
+            </div>
+            <div class="submenu">
+                <a href="/employee/table-lists">View Employee</a>
+            </div>
+        </div>
+
+        <div class="menu-item" onclick="toggleMenu('cinemaRoomsMenu')">
+            Manage CinemaRooms
+            <span class="arrow">
+                <i class='bx bx-chevron-down'></i>
+            </span>
+        </div>
+
+        <div class="menu-sub" id="cinemaRoomsMenu">
+            <div class="submenu">
+                <a href="/cinemaroom/create">Add CinemaRoom</a>
+            </div>
+            <div class="submenu">
+                <a href="/cinemaroom/table-lists">View CinemaRoom</a>
+            </div>
+        </div>
+
+        <div class="menu-item" onclick="toggleMenu('seatsMenu')">
+            Manage Seats
+            <span class="arrow">
+                <i class='bx bx-chevron-down'></i>
+            </span>
+        </div>
+
+        <div class="menu-sub" id="seatsMenu">
+            <div class="submenu">
+                <a href="/seat/create">Add Seat</a>
+            </div>
+            <div class="submenu">
+                <a href="/seat/table-lists">View Seat</a>
+            </div>
+        </div>
+
+        <div class="menu-item" onclick="toggleMenu('producersMenu')">
+            Manage Producers
+            <span class="arrow">
+                <i class='bx bx-chevron-down'></i>
+            </span>
+        </div>
+
+        <div class="menu-sub" id="producersMenu">
+            <div class="submenu">
+                <a href="/producer/create">Add Producer</a>
+            </div>
+            <div class="submenu">
+                <a href="/producer/table-lists">View Producer</a>
+            </div>
+        </div>
+
+        <div class="menu-item" onclick="toggleMenu('banksMenu')">
+            Manage Banks
+            <span class="arrow">
+                <i class='bx bx-chevron-down'></i>
+            </span>
+        </div>
+
+        <div class="menu-sub" id="banksMenu">
+            <div class="submenu">
+                <a href="/bank/create">Add Bank</a>
+            </div>
+            <div class="submenu">
+                <a href="/bank/table-lists">View Bank</a>
+            </div>
         </div>
 
         <div class="menu-item" onclick="toggleMenu('permissionsMenu')">
