@@ -10,6 +10,7 @@ import bookingRouter from "./routes/bookingRoute.js"
 import categoryRouter from "./routes/categoryRoute.js"
 import cinemaRouter from "./routes/cinemaRoute.js"
 import movieScreeningRouter from "./routes/movieScreeningRoute.js"
+import categoryFilmRouter from "./routes/categoryFilmRoute.js"
 import configCors from "./config/fixCORS.js"
 import path, { dirname } from "path"
 import { fileURLToPath } from "url"
@@ -39,9 +40,10 @@ app.use("/user", userRouter)
 app.use("/admin", adminRouter)
 app.use("/movie", movieRouter)
 app.use("/booking", bookingRouter)
-app.use("/category", categoryRouter)
+app.use("/category/", categoryRouter)
 app.use("/cinema", cinemaRouter)
 app.use("/movie-screening", movieScreeningRouter)
+app.use("/category-film/", categoryFilmRouter)
 
 // Static file
 const __dirname = dirname(fileURLToPath(import.meta.url))

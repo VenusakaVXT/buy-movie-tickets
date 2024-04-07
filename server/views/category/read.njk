@@ -1,0 +1,73 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <form class="p-4 movies__table-lists" method="POST" action="/movie-screening/handle-delete-action-form">
+        <h3 class="title">Category List</h3>
+
+        <div class="list-movies__header mt-4">
+            <div class="list-movies__header-custom">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+                    <label style="width: 65px" class="form-check-label form-check-label-lg" for="checkbox-all">
+                        Select all
+                    </label>
+                </div>
+                <select style="margin: 0 18px" class="form-control" name="action" required>
+                    <option value="">--- Action ---</option>
+                    <option value="delete">Delete</option>
+                </select>
+                <button class="btn btn-sm btn-control btn-apply" disabled>Apply</button>
+            </div>
+            <a class="list-movies__header-trash" href="/movie-screening/trash-can">
+                Recycle Bin ({{deletedCount}})
+            </a>
+        </div>
+
+        <table class="table table-movies mt-4" border="1">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Tick</th>
+                    <th scope="col">#</th>
+                    <th scope="col">
+                        Category title
+                        <a href="?sort&column=title&type=asc"><i class="bx bxs-sort-alt"></i></a>
+                    </th>
+                    <th scope="col">Customs</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                <tr>
+                    <td>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="movieIds[]" value="{{ movie._id }}">
+                        </div>
+                    </td>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>
+                        <a href="/movie-screening/{{movie.slug}}/detail">{{ category.category }}</a>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-outline-warning">
+                            <a href="/movie-screening/{{ movie._id }}/edit">Edit</a>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger">
+                            <a href="" data-toggle="modal" data-id="{{ movie._id }}" data-target="#deleteMovieModal">
+                                Remove
+                            </a>
+                        </button>
+                    </td>
+                </tr>
+                {% else %}
+                <tr style="text-align: center">
+                    <td colspan="6">You have not registered for any movies yet.
+                        <a href="/movie-screening/create">Post a movie</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+    {% include "movies/delete.njk" %}
+{% endblock %}

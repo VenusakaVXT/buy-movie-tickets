@@ -1,0 +1,19 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <div class="p-4">
+        <h3 class="title">Post a category</h3>
+
+        <form id="frm-add-category" method="POST" action="/category-film/store">
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="title">Movie category:</label>
+                <input type="text" class="form-control" id="category" name="category">
+            </div>
+
+            <button type="submit" class="btn btn-control mt-2" style="width: 120">
+                Add category
+            </button>
+        </form>
+    </div>
+{% endblock %}
