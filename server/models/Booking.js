@@ -7,11 +7,6 @@ const bookingSchema = new Schema({
         ref: "Screening",
         required: true,
     },
-    bookingDate: {
-        // mm/dd/yyyy
-        type: Date,
-        required: true,
-    },
     seat: {
         type: mongoose.Types.ObjectId,
         ref: "Seat",
@@ -21,6 +16,6 @@ const bookingSchema = new Schema({
         ref: "User",
         required: true,
     },
-})
+}, { timestamps: true })
 
 export default mongoose.model("Booking", bookingSchema)

@@ -8,6 +8,10 @@ const categorySchema = new Schema({
     },
     movies: [
         {
+            type: mongoose.Types.ObjectId,
+            ref: "Movie"
+        },
+        {
             title: {
                 type: String,
             },

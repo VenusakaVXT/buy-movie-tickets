@@ -80,11 +80,15 @@ td a {
         .menu-item {
             padding: 10px;
             cursor: pointer;
-            text-decoration: none;
             display: flex;
             justify-content: space-between;
             align-items: center;
             transition: all 0.3s ease;
+
+            a {
+                color: #fff;
+                text-decoration: none;
+            }
         }
       
         .menu-item:hover {
@@ -227,4 +231,13 @@ td a {
 input[type="checkbox"] {
     accent-color: @main-color;
     cursor: pointer;
+}
+
+.booking-ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+
+    li:not(.booking-ul li:last-child) {
+        margin-bottom: 10px;
+    }
 }

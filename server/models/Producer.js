@@ -7,9 +7,14 @@ const producerSchema = new Schema({
         required: true,
     },
     producerEmail: {
-        type: String,
-        required: true,
+        type: String
     },
+    movies: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "Movie"
+        }
+    ]
 })
 
 export default mongoose.model("Producer", producerSchema)

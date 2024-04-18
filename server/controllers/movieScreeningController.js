@@ -1,23 +1,68 @@
 import Movie from "../models/Movie.js"
+import Categorty from "../models/Category.js"
+import Producer from "../models/Producer.js"
 import slugify from "slugify"
+import { isValidObjectId } from "mongoose"
+import Screening from "../models/Screening.js"
 
 class MovieScreeningController {
-    detail(req, res, next) {
-        Movie.findOne({ slug: req.params.slug })
-            .then((movie) => { res.render("movies/movie-detail", { movie }) })
+    detail = async (req, res, next) => {
+        await Movie.findOne({ slug: req.params.slug })
+            .then(async (movie) => {
+                const category = await Categorty.findById(movie.category)
+                const categoryName = category ? category.category : "Undefined"
+                const producer = await Producer.findById(movie.producer)
+                const producerName = producer ? producer.producerName : "Undefined"
+                res.render("movies/movie-detail", { movie, categoryName, producerName })
+            })
             .catch(next)
     }
 
     create(req, res, next) {
-        res.render("movies/create")
+        Promise.all([Categorty.find({}), Producer.find({})])
+            .then(([categories, producers]) => {
+                res.render("movies/create", { categories, producers })
+            })
+            .catch(next)
     }
 
-    store(req, res, next) {
-        const movie = new Movie(req.body)
+    store = async (req, res, next) => {
+        const {
+            title,
+            description,
+            director,
+            contentWritter,
+            actors,
+            category,
+            releaseDate,
+            time,
+            trailerId,
+            wasReleased,
+            producer
+        } = req.body
+        const categoryObj = await Categorty.findOne({ _id: req.body.category })
+        const producerObj = await Producer.findOne({ _id: req.body.producer })
+
+        const movie = new Movie({
+            title,
+            description,
+            director,
+            contentWritter,
+            actors,
+            category: categoryObj._id,
+            releaseDate,
+            time,
+            trailerId,
+            wasReleased,
+            producer: producerObj._id
+        })
         movie.slug = slugify(movie.title, { lower: true })
 
-        movie.save()
-            .then(() => {
+        await movie.save()
+            .then(async () => {
+                producerObj.movies.push(movie._id)
+                await producerObj.save()
+
                 // Avoid re-caching the old cache 
                 // when switching to the "/movie-screening/table-lists" page
                 res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate")
@@ -37,26 +82,52 @@ class MovieScreeningController {
     }
 
     edit(req, res, next) {
-        Movie.findById(req.params.id)
-            .then(movie => res.render("movies/edit", { movie }))
+        Promise.all([Categorty.find({}), Producer.find({}), Movie.findById(req.params.id)])
+            .then(([categories, producers, movie]) => {
+                if (!movie.category || !isValidObjectId(movie.category)) {
+                    movie.category = ""
+                }
+                if (!movie.producer || !isValidObjectId(movie.producer)) {
+                    movie.producer = ""
+                }
+                res.render("movies/edit", { categories, producers, movie })
+            })
             .catch(next)
     }
 
-    update(req, res, next) {
-        Movie.updateOne({ _id: req.params.id }, {
-            title: req.body.title,
-            description: req.body.description,
-            director: req.body.director,
-            contentWritter: req.body.contentWritter,
-            actors: req.body.actors,
-            category: req.body.category,
-            releaseDate: req.body.releaseDate,
-            time: req.body.time,
-            trailerId: req.body.trailerId,
-            wasReleased: req.body.wasReleased
-        })
-            .then(() => res.redirect("/movie-screening/table-lists"))
-            .catch(next)
+    update = async (req, res, next) => {
+        try {
+            const [category, producer] = await Promise.all([
+                Categorty.findById({ _id: req.body.category }),
+                Producer.findById({ _id: req.body.producer })
+            ])
+
+            const slug = slugify(req.body.title, { lower: true })
+
+            await Movie.updateOne({ _id: req.params.id }, {
+                title: req.body.title,
+                description: req.body.description,
+                director: req.body.director,
+                contentWritter: req.body.contentWritter,
+                actors: req.body.actors,
+                category: category._id,
+                releaseDate: req.body.releaseDate,
+                time: req.body.time,
+                trailerId: req.body.trailerId,
+                producer: producer._id,
+                wasReleased: req.body.wasReleased,
+                slug
+            })
+
+            await Screening.updateMany(
+                { movie: req.params.id },
+                { wasReleased: req.body.wasReleased }
+            )
+
+            res.redirect(`/movie-screening/${slug}/detail`)
+        } catch (err) {
+            next(err)
+        }
     }
 
     delete(req, res, next) {

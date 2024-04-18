@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
 import Movie from "../models/Movie.js"
-import Admin from "../models/Admin.js"
+import Manager from "../models/Employee.js"
 
 export const getAllMovies = async (req, res, next) => {
     let movies
@@ -49,7 +49,7 @@ export const addMovie = async (req, res, next) => {
         })
     }
 
-    let adminId
+    let managerId
 
     jwt.verify(extractedToken, process.env.SECRET_KEY, (err, decrypted) => {
         if (err) {
@@ -57,7 +57,7 @@ export const addMovie = async (req, res, next) => {
                 message: `${err.message}`,
             })
         } else {
-            adminId = decrypted.id
+            managerId = decrypted.id
             return
         }
     })
@@ -107,16 +107,16 @@ export const addMovie = async (req, res, next) => {
             wasReleased,
             producer,
             trailerId,
-            admin: adminId,
+            manager: managerId,
         })
 
         const session = await mongoose.startSession()
         session.startTransaction()
         await movie.save({ session })
 
-        const adminUser = await Admin.findById(adminId)
-        adminUser.addedMovies.push(movie)
-        await adminUser.save({ session })
+        const managerUser = await Manager.findById(managerId)
+        managerUser.addedMovies.push(movie)
+        await managerUser.save({ session })
 
         await session.commitTransaction()
     } catch (err) {

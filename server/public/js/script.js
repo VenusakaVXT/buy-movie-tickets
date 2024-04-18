@@ -34,21 +34,21 @@ function setWasReleasedDefaultValue() {
 }
 
 // Handle input data into arrays
-function converInputDataToArray(inputId) {
-    const inputVal = document.getElementById(inputId).value
+// function converInputDataToArray(inputId) {
+//     const inputVal = document.getElementById(inputId).value
 
-    // Split the input values by commas and trim spaces
-    const arrVal = inputVal.split(",").map(item => item.trim())
+//     // Split the input values by commas and trim spaces
+//     const arrVal = inputVal.split(",").map(item => item.trim())
 
-    // Set the processed value back to the input field
-    document.getElementById(inputId).value = arrVal.join("/n")
-}
+//     // Set the processed value back to the input field
+//     document.getElementById(inputId).value = arrVal.join("/n")
+// }
 
-function processArrayInput() {
-    const arrData = ["director", "contentWritter", "actors", "category"]
+// function processArrayInput() {
+//     const arrData = ["director", "contentWritter", "actors", "category"]
 
-    arrData.forEach(inputId => converInputDataToArray(inputId))
-}
+//     arrData.forEach(inputId => converInputDataToArray(inputId))
+// }
 
 // Handle delete movie
 document.addEventListener("DOMContentLoaded", () => {
@@ -142,4 +142,47 @@ document.addEventListener("DOMContentLoaded", () => {
             sortLink.href = "?sort&column=title&type=asc"
         }
     })
+})
+
+// Handle delete of other Models
+function deleteData(model, form, modal) {
+    let id
+    const deleteFrm = document.forms[form]
+
+    $(modal).on("show.bs.modal", function(e) {
+        id = $(e.relatedTarget).data("id")
+    })
+
+    document.querySelector(`${modal} #deleteBtn`).addEventListener("click", () => {
+        deleteFrm.action = `/${model}/${id}?_method=DELETE`
+        deleteFrm.submit()
+    })
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    deleteData("category-film", "category-delete-form", "#deleteCategoryModal")
+})
+
+document.addEventListener("DOMContentLoaded", () => {
+    deleteData("producer", "producer-delete-form", "#deleteProducerModal")
+})
+
+document.addEventListener("DOMContentLoaded", () => {
+    deleteData("cinema", "cinema-delete-form", "#deleteCinemaModal")
+})
+
+document.addEventListener("DOMContentLoaded", () => {
+    deleteData("cinemaroom", "cinemaroom-delete-form", "#deleteCinemaRoomModal")
+})
+
+document.addEventListener("DOMContentLoaded", () => {
+    deleteData("seat", "seat-delete-form", "#deleteSeatModal")
+})
+
+document.addEventListener("DOMContentLoaded", () => {
+    deleteData("employee", "employee-delete-form", "#deleteEmployeeModal")
+})
+
+document.addEventListener("DOMContentLoaded", () => {
+    deleteData("screening", "screening-delete-form", "#deleteScreeningModal")
 })

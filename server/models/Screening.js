@@ -7,13 +7,20 @@ const screeningSchema = new Schema({
         ref: "Movie",
     },
     movieDate: {
-        type: Date,
+        type: String,
         required: true,
     },
     timeSlot: {
-        // type: TimeRanges,
-        type: Date,
+        type: String,
         required: true,
+    },
+    cinemaRoom: {
+        type: mongoose.Types.ObjectId,
+        ref: "CinemaRoom",
+    },
+    wasReleased: {
+        type: Boolean,
+        default: true,
     },
     bookings: [
         {
