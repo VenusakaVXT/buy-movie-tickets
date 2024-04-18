@@ -43,7 +43,12 @@
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
                 <label for="category">Category:</label>
-                <input type="text" class="form-control" id="category" name="category" multiple>
+                <select name="category" id="category" class="form-control">
+                    <option value="">Select category</option>
+                    {% for category in categories %}
+                        <option value="{{ category._id }}">{{ category.category }}</option>
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="form-group">
@@ -51,7 +56,7 @@
                 <label for="releaseDate">
                     Release date (<span class="text-italic">mm/dd/yyyy</span>):
                 </label>
-                <input type="text" class="form-control" id="releaseDate" name="releaseDate">
+                <input type="date" class="form-control" id="releaseDate" name="releaseDate">
             </div>
 
             <div class="form-group">
@@ -64,6 +69,17 @@
                 <span style="color: #ff0000">*</span>
                 <label for="trailerId">Trailer ID:</label>
                 <input type="text" class="form-control" id="trailerId" name="trailerId">
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="producer">Producer:</label>
+                <select name="producer" id="producer" class="form-control">
+                    <option value="">Select producer</option>
+                    {% for producer in producers %}
+                        <option value="{{ producer._id }}">{{ producer.producerName }}</option>
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="form-group">

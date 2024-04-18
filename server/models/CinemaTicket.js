@@ -6,10 +6,6 @@ const ticketSchema = new Schema({
         type: String,
         required: true,
     },
-    customer: {
-        type: mongoose.Types.ObjectId,
-        ref: "Customer",
-    },
     booking: {
         type: mongoose.Types.ObjectId,
         ref: "Booking",
@@ -26,10 +22,6 @@ const ticketSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref: "Payment",
     },
-    bookingTime: {
-        type: Date,
-        default: Date.now
-    }
 })
 
 ticketSchema.virtual("totalMoney").get(() => this.price * this.quantity)

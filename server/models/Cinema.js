@@ -10,12 +10,27 @@ const cinemaSchema = new Schema({
         type: String,
         required: true,
     },
+    address: {
+        type: String,
+    },
     img: {
         type: String,
     },
     description: {
         type: String,
-    }
+    },
+    cinemaRooms: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "CinemaRoom"
+        }
+    ],
+    employees: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "Employee"
+        }
+    ]
 })
 
 export default mongoose.model("Cinema", cinemaSchema)

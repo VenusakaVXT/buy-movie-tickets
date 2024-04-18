@@ -1,0 +1,36 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <div class="p-4">
+        <h3 class="title">Update cinema</h3>
+
+        <form id="frm-update-cinema" method="POST" action="/cinema/{{cinema._id}}?_method=PUT">
+            <div class="form-group">
+                <label for="name">Cinema name:</label>
+                <input type="text" class="form-control" value="{{ cinema.name }}" id="name" name="name">
+            </div>
+
+            <div class="form-group">
+                <label for="logo">Cinema logo:</label>
+                <input type="text" class="form-control" value="{{ cinema.logo }}" id="logo" name="logo">
+            </div>
+
+            <div class="form-group">
+                <label for="address">Cinema address:</label>
+                <input type="text" class="form-control" value="{{ cinema.address }}" id="address" name="address">
+            </div>
+
+            <div class="form-group">
+                <label for="img">Cinema img:</label>
+                <input type="text" class="form-control" value="{{ cinema.img }}" id="img" name="img">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Cinema description:</label>
+                <input type="text" class="form-control" value="{{ cinema.description }}" id="description" name="description">
+            </div>
+
+            <button type="submit" class="btn btn-control mt-2" style="width: 100">Save</button>
+        </form>
+    </div>
+{% endblock %}

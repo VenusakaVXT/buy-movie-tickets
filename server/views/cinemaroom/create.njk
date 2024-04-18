@@ -1,0 +1,36 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <div class="p-4">
+        <h3 class="title">Post a cinema room</h3>
+
+        <form id="frm-add-cinemaroom" method="POST" action="/cinemaroom/store">
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="roomNumber">Room number:</label>
+                <input type="text" class="form-control" id="roomNumber" name="roomNumber">
+            </div>
+            
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="totalNumSeat">Total number seats (max: 110):</label>
+                <input type="number" class="form-control" id="totalNumSeat" name="totalNumSeat" max="110">
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="cinema">Cinema:</label>
+                <select name="cinema" id="cinema" class="form-control">
+                    <option value="">Select cinema</option>
+                    {% for cinema in cinemas %}
+                        <option value="{{ cinema._id }}">{{ cinema.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-control mt-2" style="width: 160">
+                Add cinema room
+            </button>
+        </form>
+    </div>
+{% endblock %}

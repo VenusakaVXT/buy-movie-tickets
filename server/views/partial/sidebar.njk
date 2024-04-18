@@ -118,38 +118,28 @@
             </div>
         </div>
 
-        <div class="menu-item" onclick="toggleMenu('banksMenu')">
-            Manage Banks
+        <div class="menu-item" onclick="toggleMenu('screeningsMenu')">
+            Manage Screenings
             <span class="arrow">
                 <i class='bx bx-chevron-down'></i>
             </span>
         </div>
 
-        <div class="menu-sub" id="banksMenu">
+        <div class="menu-sub" id="screeningsMenu">
             <div class="submenu">
-                <a href="/bank/create">Add Bank</a>
+                <a href="/screening/create">Add Screening</a>
             </div>
             <div class="submenu">
-                <a href="/bank/table-lists">View Bank</a>
+                <a href="/screening/table-lists">View Screening</a>
             </div>
+        </div>
+
+        <div class="menu-item" onclick="toggleMenu('bookingMenu')">
+            <a href="/booking/detail-booking">Show Bookings</a>
         </div>
 
         <div class="menu-item" onclick="toggleMenu('permissionsMenu')">
             User Permissions
-            <span class="arrow">
-                <i class='bx bx-chevron-down'></i>
-            </span>
-        </div>
-
-        <div class="menu-sub" id="permissionsMenu">
-            <div class="submenu">View Role</div>
-            <div class="submenu">Add Role</div>
-            <div class="submenu">Edit Role</div>
-            <div class="submenu">Delete Role</div>
-        </div>
-
-        <div class="menu-item">
-            Statistics & Reporting
         </div>
     </div>
 </div>

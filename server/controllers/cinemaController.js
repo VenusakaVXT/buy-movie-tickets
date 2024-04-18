@@ -1,34 +1,63 @@
 import Cinema from "../models/Cinema.js"
 
-export const addCinema = async (req, res, next) => {
-    try {
-        const { name, logo } = req.body
+class CinemaController {
+    getApiCinema = async(req, res, next) => {
+        let cinemas
 
-        if (!name && name.trim() === "" && !logo && logo.trim() === "") {
-            res.status(422).json({ message: "invalid inputs..." })
+        try {
+            cinemas = await Cinema.find()
+        } catch(err) {
+            console.error(err)
         }
 
-        const newCinema = new Cinema({ name, logo })
-        const savedCinema = await newCinema.save()
+        if (!cinemas) {
+            res.status(500).json({ message: "request failed..." })
+        }
 
-        res.status(201).json(savedCinema)
-    } catch (err) {
-        res.status(500).json({ error: err.message })
+        res.status(200).json({ cinemas })
+    }
+
+    create(req, res, next) {
+        res.render("cinema/create")
+    }
+
+    store(req, res, next) {
+        const cinema = new Cinema(req.body)
+
+        cinema.save()
+            .then(() => res.redirect("/cinema/table-lists"))
+            .catch(() => next)
+    }
+
+    tableLists(req, res, next) {
+        Cinema.find({})
+            .then((cinemas) => res.render("cinema/read", { cinemas }))
+            .catch(() => next)
+    }
+
+    edit(req, res, next) {
+        Cinema.findById(req.params.id)
+            .then(cinema => res.render("cinema/edit", { cinema }))
+            .catch(next)
+    }
+
+    update(req, res, next) {
+        Cinema.updateOne({ _id: req.params.id }, { 
+            name: req.body.name,
+            logo: req.body.logo,
+            address: req.body.address,
+            img: req.body.img,
+            description: req.body.description
+        })
+            .then(() => res.redirect("/cinema/table-lists"))
+            .catch(next)
+    }
+
+    delete(req, res, next) {
+        Cinema.deleteOne({ _id: req.params.id })
+            .then(() => res.redirect("/cinema/table-lists"))
+            .catch(next)
     }
 }
 
-export const getAllCinema = async (req, res, next) => {
-    let cinemas
-
-    try {
-        cinemas = await Cinema.find()
-    } catch (err) {
-        console.error(err)
-    }
-
-    if (!cinemas) {
-        res.status(500).json({ message: "request failed..." })
-    }
-
-    res.status(200).json({ cinemas })
-}
+export default new CinemaController

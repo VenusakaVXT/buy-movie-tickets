@@ -1,13 +1,13 @@
 import mongoose from "mongoose"
 
 const Schema = mongoose.Schema
-const employeeSchema = new Schema({
-    employeeEmail: {
+const managerSchema = new Schema({
+    email: {
         type: String,
         required: true,
         unique: true,
     },
-    employeePassword: {
+    password: {
         type: String,
         required: true,
         minLength: 6,
@@ -20,10 +20,6 @@ const employeeSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref: "Cinema",
     },
-    user: {
-        type: mongoose.Types.ObjectId,
-        ref: "User",
-    },
     addedMovies: [
         {
             type: mongoose.Types.ObjectId,
@@ -32,4 +28,4 @@ const employeeSchema = new Schema({
     ],
 })
 
-export default mongoose.model("Employee", employeeSchema)
+export default mongoose.model("Manager", managerSchema)

@@ -1,0 +1,47 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <div class="p-4">
+        <h3 class="title">Update screening</h3>
+
+        <form id="frm-update-screening" method="POST" action="/screening/{{screening._id}}?_method=PUT">
+            <div class="form-group">
+                <label for="movie">Movie:</label>
+                <select name="movie" id="movie" class="form-control">
+                    {% for movie in movies %}
+                        <option value="{{ movie._id }}"
+                            {% if (screening.movie) and (screening.movie.toString() === movie._id.toString()) %}selected{% endif %}
+                        >
+                            {{ movie.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="movieDate">Movie date:</label>
+                <input type="date" class="form-control" value="{{ screening.movieDate }}" id="movieDate" name="movieDate">
+            </div>
+
+            <div class="form-group">
+                <label for="timeSlot">Time slot:</label>
+                <input type="time" class="form-control" value="{{ screening.timeSlot }}" id="timeSlot" name="timeSlot">
+            </div>
+
+            <div class="form-group">
+                <label for="cinemaRoom">Cinema room:</label>
+                <select name="cinemaRoom" id="cinemaRoom" class="form-control">
+                    {% for cinemaRoom in cinemaRooms %}
+                        <option value="{{ cinemaRoom._id }}"
+                            {% if (screening.cinemaRoom) and (screening.cinemaRoom.toString() === cinemaRoom._id.toString()) %}selected{% endif %}
+                        >
+                            {{ cinemaRoom.roomNumber }}-{{ cinemaRoom.cinemaName }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-control mt-2" style="width: 100">Save</button>
+        </form>
+    </div>
+{% endblock %}

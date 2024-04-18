@@ -2,15 +2,15 @@ import mongoose from "mongoose"
 
 const Schema = mongoose.Schema
 const seatSchema = new Schema({
-    seatId: {
+    rowSeat: {
+        type: String,
+        required: true,
+    },
+    seatNumber: {
         type: String,
         required: true,
     },
     seatType: {
-        type: Boolean,
-        required: true,
-    },
-    seatPosition: {
         type: String,
         required: true,
     },
@@ -18,6 +18,12 @@ const seatSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref: "CinemaRoom",
     },
+    bookings: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "Booking"
+        }
+    ]
 })
 
 export default mongoose.model("Seat", seatSchema)

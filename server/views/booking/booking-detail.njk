@@ -1,0 +1,36 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <form class="p-4 movies__table-lists">
+        <h3 class="title">Booking List</h3>
+
+        <table class="table table-movies mt-4" border="1">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Booking detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.userName }}</td>
+                    <td>
+                        <ul class="booking-ul">
+                            <li>Movie: {{booking.movieName}}</li>
+                            <li>Screening time: {{booking.screeningTime}}</li>
+                            <li>Screening at: {{booking.screeningAt}}</li>
+                            <li>Seat: {{booking.seatPosition}}</li>
+                            <li>Booking time: {{booking.createdAt}}</li>
+                        </ul>
+                    </td>
+                </tr>
+                {% else %}
+                <tr style="text-align: center">
+                    <td colspan="6">There are no movie ticket orders yet...</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+{% endblock %}

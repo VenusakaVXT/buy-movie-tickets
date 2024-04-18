@@ -1,0 +1,39 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <form class="p-4 movies__table-lists">
+        <div class="list-movies__header mt-4">
+            <h3 class="title">Screening Discontinued List</h3>
+            <a class="list-movies__header-trash" href="/screening/table-lists">
+                Still release
+            </a>
+        </div>
+
+        <table class="table table-movies mt-4" border="1">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Movie title</th>
+                    <th scope="col">Movie date</th>
+                    <th scope="col">Time slot</th>
+                    <th scope="col">Screening at</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for screening in screenings %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ screening.movieName }}</td>
+                    <td>{{ screening.movieDate }}</td>
+                    <td>{{ screening.timeSlot }}</td>
+                    <td>{{ screening.screeningAt }}</td>
+                </tr>
+                {% else %}
+                <tr style="text-align: center">
+                    <td colspan="6">No movie screenings have been discontinued yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+{% endblock %}

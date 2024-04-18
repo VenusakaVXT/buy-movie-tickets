@@ -4,20 +4,24 @@ import dotenv from "dotenv"
 import bodyParser from "body-parser"
 import homeRouter from "./routes/homeRoute.js"
 import userRouter from "./routes/userRoute.js"
-import adminRouter from "./routes/adminRoute.js"
+import managerRouter from "./routes/managerRoute.js"
 import movieRouter from "./routes/movieRoute.js"
 import bookingRouter from "./routes/bookingRoute.js"
 import categoryRouter from "./routes/categoryRoute.js"
 import cinemaRouter from "./routes/cinemaRoute.js"
 import movieScreeningRouter from "./routes/movieScreeningRoute.js"
 import categoryFilmRouter from "./routes/categoryFilmRoute.js"
+import producerRouter from "./routes/producerRoute.js"
+import cinemaRoomRouter from "./routes/cinemaRoomRoute.js"
+import seatRouter from "./routes/seatRoute.js"
+import screeningRouter from "./routes/screeningRoute.js"
+import employeeRouter from "./routes/employeeRoute.js"
 import configCors from "./config/fixCORS.js"
 import path, { dirname } from "path"
 import { fileURLToPath } from "url"
 import nunjucks from "nunjucks"
 import lessMiddleware from "less-middleware"
 import methodOverride from "method-override"
-import sortMiddleware from "./middlewares/SortMiddleware.js"
 
 dotenv.config()
 const PORT = process.env.PORT || 5000
@@ -37,13 +41,18 @@ configCors(app)
 // Router
 app.use("/", homeRouter)
 app.use("/user", userRouter)
-app.use("/admin", adminRouter)
+app.use("/manager", managerRouter)
 app.use("/movie", movieRouter)
 app.use("/booking", bookingRouter)
-app.use("/category/", categoryRouter)
+app.use("/category", categoryRouter)
 app.use("/cinema", cinemaRouter)
 app.use("/movie-screening", movieScreeningRouter)
-app.use("/category-film/", categoryFilmRouter)
+app.use("/category-film", categoryFilmRouter)
+app.use("/producer", producerRouter)
+app.use("/cinemaroom", cinemaRoomRouter)
+app.use("/seat", seatRouter)
+app.use("/screening", screeningRouter)
+app.use("/employee", employeeRouter)
 
 // Static file
 const __dirname = dirname(fileURLToPath(import.meta.url))

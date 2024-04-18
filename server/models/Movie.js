@@ -31,9 +31,9 @@ const movieSchema = new Schema({
     ],
     category: [
         {
-            type: String,
-            required: true,
-        },
+            type: mongoose.Types.ObjectId,
+            ref: "Category",
+        }
     ],
     releaseDate: {
         type: String,
@@ -60,26 +60,28 @@ const movieSchema = new Schema({
     featured: {
         type: Boolean,
     },
-    bookings: [
+    screenings: [
         {
             type: mongoose.Types.ObjectId,
-            ref: "Booking",
-        },
+            ref: "Screening"
+        }
     ],
-    admin: {
+    manager: {
         type: mongoose.Types.ObjectId,
-        ref: "Admin",
-        //required: true,
-    },
-    employee: {
-        type: mongoose.Types.ObjectId,
-        ref: "Employee",
+        ref: "Manager",
     },
     slug: {
         type: String,
         unique: true
     }
 })
+
+// movieSchema.virtual("category", {
+//     ref: "Category",
+//     localField: "category",
+//     foreignField: "_id",
+//     justOne: true
+// })
 
 // Add plugins
 movieSchema.plugin(mongooseDelete, {

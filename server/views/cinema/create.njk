@@ -1,0 +1,41 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <div class="p-4">
+        <h3 class="title">Post a cinema</h3>
+
+        <form id="frm-add-cinema" method="POST" action="/cinema/store">
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="name">Cinema name:</label>
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+            
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="logo">Cinema logo:</label>
+                <input type="text" class="form-control" id="logo" name="logo">
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="address">Cinema address:</label>
+                <input type="text" class="form-control" id="address" name="address">
+            </div>
+
+            <div class="form-group">
+                <label for="img">Cinema image:</label>
+                <input type="text" class="form-control" id="img" name="img">
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Cinema description:</label>
+                <input type="text" class="form-control" id="description" name="description">
+            </div>
+
+            <button type="submit" class="btn btn-control mt-2" style="width: 120">
+                Add cinema
+            </button>
+        </form>
+    </div>
+{% endblock %}

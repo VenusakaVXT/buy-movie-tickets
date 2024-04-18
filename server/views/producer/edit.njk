@@ -1,0 +1,21 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <div class="p-4">
+        <h3 class="title">Update producer</h3>
+
+        <form id="frm-update-producer" method="POST" action="/producer/{{producer._id}}?_method=PUT">
+            <div class="form-group">
+                <label for="producerName">Producer name:</label>
+                <input type="text" class="form-control" value="{{ producer.producerName }}" id="producerName" name="producerName">
+            </div>
+
+            <div class="form-group">
+                <label for="producerEmail">Producer email:</label>
+                <input type="email" class="form-control" value="{{ producer.producerEmail }}" id="producerEmail" name="producerEmail" requried>
+            </div>
+
+            <button type="submit" class="btn btn-control mt-2" style="width: 100">Save</button>
+        </form>
+    </div>
+{% endblock %}
