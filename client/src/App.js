@@ -8,7 +8,8 @@ import Release from "./components/HomePage/Release"
 import Category from "./components/HomePage/Category"
 import Cinema from "./components/HomePage/Cinema"
 import Register from "./components/Auth/Register"
-import Login from "./components/Auth/Login"
+import CustomerLogin from "./components/Auth/CustomerLogin"
+import ManagerLogin from "./components/Auth/ManagerLogin"
 import Footer from "./components/Footer/Footer"
 import PageEnding from "./components/Footer/PageEnding"
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage"
@@ -51,8 +52,9 @@ const App = () => {
                     <Route path="/category" element={<Category />} />
                     <Route path="/cinema" element={<Cinema />} />
                     <Route path="/all-screening" element={<Movie />} />
+                    <Route path="/customer/login" element={<CustomerLogin />} />
+                    <Route path="/manager/login" element={<ManagerLogin />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/login" element={<Login />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </section>

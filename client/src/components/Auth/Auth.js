@@ -14,10 +14,10 @@ import "../../scss/Auth.scss"
 
 const responseLinkLoginBtn = (response) => console.log(response)
 
-const Auth = ({ onSubmit, signUp }) => {
+const Auth = ({ onSubmit, signUp, role }) => {
     const [isSignUp, setIsSignUp] = useState(signUp)
     const [inputs, setInputs] = useState(isSignUp ? {
-        name: "", 
+        name: "",
         email: "",
         phone: "",
         birthDay: "",
@@ -25,6 +25,9 @@ const Auth = ({ onSubmit, signUp }) => {
         adress: "",
         password: "",
         confirmPassword: ""
+    } : role === "manager" ? {
+        email: "",
+        password: "",
     } : {
         nameAccount: "",
         password: "",
@@ -43,7 +46,7 @@ const Auth = ({ onSubmit, signUp }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         setIsSignUp(isSignUp)
-        onSubmit({ inputs, signUp: isSignUp })
+        onSubmit(role === "manager" ? { inputs } : { inputs, signUp: isSignUp })
     }
 
     return (
@@ -52,7 +55,7 @@ const Auth = ({ onSubmit, signUp }) => {
 
             <form height={isSignUp ? "780" : "430"} className="auth__frm" onSubmit={handleSubmit}>
                 <Typography variant="h5" color="#ff0000">
-                    {isSignUp ? "Register" : "Login"}
+                    {isSignUp ? "Register" : role === "manager" ? "Manager Login" : "Customer Login"}
                 </Typography>
 
                 {isSignUp ? <>
@@ -65,6 +68,7 @@ const Auth = ({ onSubmit, signUp }) => {
                         placeholder="Full name"
                         name="name"
                         onChange={handleChange}
+                        required
                     />
 
                     <TextField
@@ -72,10 +76,11 @@ const Auth = ({ onSubmit, signUp }) => {
                         fullWidth
                         margin="normal"
                         variant="standard"
-                        type="text"
+                        type="email"
                         placeholder="Email"
                         name="email"
                         onChange={handleChange}
+                        required
                     />
 
                     <TextField
@@ -83,10 +88,11 @@ const Auth = ({ onSubmit, signUp }) => {
                         fullWidth
                         margin="normal"
                         variant="standard"
-                        type="text"
+                        type="tel"
                         placeholder="Phone number"
                         name="phone"
                         onChange={handleChange}
+                        required
                     />
 
                     <TextField
@@ -98,6 +104,7 @@ const Auth = ({ onSubmit, signUp }) => {
                         placeholder="Password"
                         name="password"
                         onChange={handleChange}
+                        required
                     />
 
                     <TextField
@@ -109,17 +116,19 @@ const Auth = ({ onSubmit, signUp }) => {
                         placeholder="Confirm password"
                         name="confirmPassword"
                         onChange={handleChange}
+                        required
                     />
                 </> : <>
                     <TextField
-                        value={inputs.nameAccount}
+                        value={role === "manager" ? inputs.email : inputs.nameAccount}
                         fullWidth
                         margin="normal"
                         variant="standard"
                         type="text"
-                        placeholder="Email/Phone number"
-                        name="nameAccount"
+                        placeholder={role === "manager" ? "Email" : "Email/Phone number"}
+                        name={role === "manager" ? "email" : "nameAccount"}
                         onChange={handleChange}
+                        required
                     />
 
                     <TextField
@@ -131,6 +140,7 @@ const Auth = ({ onSubmit, signUp }) => {
                         placeholder="Password"
                         name="password"
                         onChange={handleChange}
+                        required
                     />
                 </>}
 
@@ -140,41 +150,43 @@ const Auth = ({ onSubmit, signUp }) => {
                     {isSignUp ? "SIGN UP" : "LOGIN"}
                 </Button>
 
-                <Box className="other">
-                    <Box className="line"></Box>
-                    <span>OR</span>
-                    <Box className="line"></Box>
-                </Box>
+                {role !== "manager" && <>
+                    <Box className="other">
+                        <Box className="line"></Box>
+                        <span>OR</span>
+                        <Box className="line"></Box>
+                    </Box>
 
-                <Box display={"flex"} justifyContent={"space-between"} margin={"23px 0"}>
-                    <FacebookLogin
-                        appId="1088597931155576"
-                        autoLoad
-                        icon="fa-facebook"
-                        size="small"
-                        textButton="Facebook"
-                        callback={responseLinkLoginBtn}
-                    />
+                    <Box display={"flex"} justifyContent={"space-between"} margin={"23px 0"}>
+                        <FacebookLogin
+                            appId="1088597931155576"
+                            autoLoad
+                            icon="fa-facebook"
+                            size="small"
+                            textButton="Facebook"
+                            callback={responseLinkLoginBtn}
+                        />
 
-                    <GoogleLogin
-                        clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
-                        buttonText="Google"
-                        onSuccess={responseLinkLoginBtn}
-                        onFailure={responseLinkLoginBtn}
-                        className="kep-login-google"
-                        style={{ border: "none" }}
-                    />
-                </Box>
+                        <GoogleLogin
+                            clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+                            buttonText="Google"
+                            onSuccess={responseLinkLoginBtn}
+                            onFailure={responseLinkLoginBtn}
+                            className="kep-login-google"
+                            style={{ border: "none" }}
+                        />
+                    </Box>
 
-                {isSignUp ?
-                    <Typography className="question-switch">
-                        Do you already have an account? <Link onClick={() => navigate("/login")}>Sign in</Link>
-                    </Typography>
-                    :
-                    <Typography className="question-switch">
-                        New to Buy Movie Tickets? <Link onClick={() => navigate("/register")}>Sign up</Link>
-                    </Typography>
-                }
+                    {isSignUp ?
+                        <Typography className="question-switch">
+                            Do you already have an account? <Link onClick={() => navigate("/customer/login")}>Sign in</Link>
+                        </Typography>
+                        :
+                        <Typography className="question-switch">
+                            New to Buy Movie Tickets? <Link onClick={() => navigate("/register")}>Sign up</Link>
+                        </Typography>
+                    }
+                </>}
             </form>
         </Box>
     )

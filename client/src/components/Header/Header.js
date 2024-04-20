@@ -137,15 +137,15 @@ const Header = () => {
                         <Tabs className="header__option" textColor="#fff">
                             <Tab
                                 className="header__option-item"
-                                label="Sign up"
+                                label="Customer"
                                 LinkComponent={Link}
-                                to="/register"
+                                to="/customer/login"
                             />
                             <Tab
                                 className="header__option-item"
-                                label="Login"
+                                label="Manager"
                                 LinkComponent={Link}
-                                to="/login"
+                                to="/manager/login"
                             />
                         </Tabs>
                     </Box>

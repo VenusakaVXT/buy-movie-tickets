@@ -2,7 +2,7 @@ import React from "react"
 import Auth from "./Auth"
 import { customerSendLoginRequest } from "../../api/userApi"
 
-const Register = () => {
+const Login = () => {
     const getData = (data) => {
         console.log(data)
         customerSendLoginRequest(data.inputs, data.signUp)
@@ -11,8 +11,8 @@ const Register = () => {
     }
 
     return <div>
-        <Auth onSubmit={getData} signUp={true} role={"customer"}/>
+        <Auth onSubmit={getData} signUp={false} role={"customer"}/>
     </div>
 }
 
-export default Register
+export default Login

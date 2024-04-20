@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const userSendLoginRequest = async (data, signUp) => {
+export const customerSendLoginRequest = async (data, signUp) => {
     const res = await axios
         .post(`/user/${signUp ? "register" : "login"}`, signUp ? {
             name: data.name,
@@ -18,7 +18,22 @@ export const userSendLoginRequest = async (data, signUp) => {
         .catch((err) => console.error(err))
 
     if (res.status !== 200 && res.status !== 201) {
-        console.log("Error sending login request...")
+        console.log("Error sending customer login request...")
+    }
+
+    const resData = await res.data
+    return resData
+}
+
+export const managerSendLoginRequest = async (data) => {
+    const res = await axios.post("/manager/login", {
+            email: data.email,
+            password: data.password
+        })
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200 && res.status !== 201) {
+        console.log("Error sending manager login request...")
     }
 
     const resData = await res.data
