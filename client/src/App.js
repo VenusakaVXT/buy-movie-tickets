@@ -16,6 +16,8 @@ import NotFoundPage from "./components/NotFoundPage/NotFoundPage"
 import GoToTopButton from "./components/GoToTop/GoToTopButton"
 import Movie from "./components/Movie/Movie"
 import { Helmet } from "react-helmet"
+import { useDispatch, useSelector } from "react-redux"
+import { customerActions, managerActions } from "./store"
 
 const formatTitle = (pathname) => {
     const convertPathname = pathname.replace(/\//g, " ").replace(/-/g, " ").trim()
@@ -23,9 +25,25 @@ const formatTitle = (pathname) => {
 }
 
 const App = () => {
+    const dispatch = useDispatch()
+    const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
+    const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
     const location = useLocation()
     const isHomePage = location.pathname === "/"
     const title = "Buy Movie Tickets"
+
+    console.log("isManagerLoggedIn", isManagerLoggedIn)
+    console.log("isCustomerLoggedIn", isCustomerLoggedIn)
+
+    useEffect(() => {
+        if (localStorage.getItem("customerId")) {
+            dispatch(customerActions.login())
+        } else if (localStorage.getItem("managerId")) {
+            dispatch(managerActions.login())
+        } else {
+            console.log("Not logged in yet...")
+        }
+    }, [dispatch])
 
     // disable default scrollRestoration() of RRD
     const ScrollRestoration = () => {

@@ -165,7 +165,7 @@ export const login = async (req, res, next) => {
         return res.status(400).json({ message: "incorrect password..." })
     }
 
-    res.status(200).json({ message: "login successfully!!!" })
+    res.status(200).json({ message: "login successfully!!!", id: existUser._id })
 }
 
 export const getBookingOfUser = async (req, res, next) => {

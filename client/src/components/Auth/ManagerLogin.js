@@ -1,12 +1,23 @@
 import React from "react"
 import Auth from "./Auth"
 import { managerSendLoginRequest } from "../../api/userApi"
+import { useDispatch } from "react-redux"
+import { managerActions } from "../../store"
 
 const Login = () => {
+    const dispatch = useDispatch()
+
+    const onResReceived = (data) => {
+        console.log(data)
+        dispatch(managerActions.login())
+        localStorage.setItem("managerId", data.id)
+        localStorage.setItem("token", data.token)
+    }
+
     const getData = (data) => {
         console.log(data)
         managerSendLoginRequest(data.inputs)
-            .then(res => console.log(res))
+            .then(onResReceived)
             .catch(err => console.error(err))
     }
 
