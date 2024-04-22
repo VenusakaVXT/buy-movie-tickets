@@ -2,7 +2,7 @@ import Movie from "../models/Movie.js"
 import Categorty from "../models/Category.js"
 import Producer from "../models/Producer.js"
 import slugify from "slugify"
-import { isValidObjectId } from "mongoose"
+import mongoose, { isValidObjectId } from "mongoose"
 import Screening from "../models/Screening.js"
 
 class MovieScreeningController {
@@ -131,8 +131,32 @@ class MovieScreeningController {
     }
 
     delete(req, res, next) {
-        Movie.delete({ _id: req.params.id })
-            .then(() => res.redirect("/movie-screening/table-lists"))
+        const movieIds = Array.isArray(req.params.id)
+            ? req.params.id.map(id => new mongoose.Types.ObjectId(id))
+            : [new mongoose.Types.ObjectId(req.params.id)]
+
+        Movie.find({ _id: { $in: movieIds }, wasReleased: true })
+            .then((movies) => {
+                const unreleasableMovies = movies.filter((movie) => movie.wasReleased)
+
+                if (unreleasableMovies.length > 0) {
+                    if (movieIds.length === 1) {
+                        res.status(400).json({
+                            message:
+                                "This movie cannot be deleted because it is currently being released"
+                        })
+                    } else {
+                        res.status(400).json({
+                            message:
+                                `These ${unreleasableMovies.length} movies cannot be deleted because some are still being released`
+                        })
+                    }
+                } else {
+                    Movie.delete({ _id: { $in: movieIds }, wasReleased: false })
+                        .then(() => res.redirect("/movie-screening/table-lists"))
+                        .catch(next)
+                }
+            })
             .catch(next)
     }
 

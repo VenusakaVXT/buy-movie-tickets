@@ -22,6 +22,7 @@ import { fileURLToPath } from "url"
 import nunjucks from "nunjucks"
 import lessMiddleware from "less-middleware"
 import methodOverride from "method-override"
+import flash from "connect-flash"
 
 dotenv.config()
 const PORT = process.env.PORT || 5000
@@ -31,6 +32,7 @@ const app = express()
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(flash())
 
 // Convert HTTPS Method
 app.use(methodOverride("_method"))

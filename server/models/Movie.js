@@ -76,13 +76,6 @@ const movieSchema = new Schema({
     }
 })
 
-// movieSchema.virtual("category", {
-//     ref: "Category",
-//     localField: "category",
-//     foreignField: "_id",
-//     justOne: true
-// })
-
 // Add plugins
 movieSchema.plugin(mongooseDelete, {
     deletedAt: true,
