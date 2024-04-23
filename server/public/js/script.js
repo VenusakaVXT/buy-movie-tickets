@@ -187,17 +187,17 @@ document.addEventListener("DOMContentLoaded", () => {
     deleteData("screening", "screening-delete-form", "#deleteScreeningModal")
 })
 
-fetch("/movie-screening/{{ movie._id }}", { method: "DELETE" })
-    .then((res) => {
-        if (!res.ok) {
-            return res.json().then((data) => Promise.reject(data))
-        }
-        return res.json()
-    })
-    .then((data) => {
-        if (data.message) {
-            alert(data.message)
-            window.location.href = "/movie-screening/table-lists"
-        }
-    })
-    .catch((err) => console.error(err))
+// fetch("/movie-screening/{{ movie._id }}", { method: "DELETE" })
+//     .then((res) => {
+//         if (!res.ok) {
+//             return res.json().then((data) => Promise.reject(data))
+//         }
+//         return res.json()
+//     })
+//     .then((data) => {
+//         if (data.message) {
+//             alert(data.message)
+//             window.location.href = "/movie-screening/table-lists"
+//         }
+//     })
+//     .catch((err) => console.error(err))
