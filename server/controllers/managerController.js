@@ -83,6 +83,7 @@ export const managerLogin = async (req, res, next) => {
         message: "login successfully!!!",
         token,
         id: existManager._id,
+        email
     })
 }
 

@@ -3,15 +3,19 @@ import Auth from "./Auth"
 import { managerSendLoginRequest } from "../../api/userApi"
 import { useDispatch } from "react-redux"
 import { managerActions } from "../../store"
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const onResReceived = (data) => {
         console.log(data)
         dispatch(managerActions.login())
-        localStorage.setItem("managerId", data.id)
         localStorage.setItem("token", data.token)
+        localStorage.setItem("managerId", data.id)
+        localStorage.setItem("managerEmail", data.email)
+        navigate("/")
     }
 
     const getData = (data) => {
