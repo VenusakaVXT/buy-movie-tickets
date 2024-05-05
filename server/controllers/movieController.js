@@ -31,9 +31,25 @@ export const getMovieById = async (req, res, next) => {
     }
 
     if (!movie) {
-        return res.status(404).json({
-            message: "invalid movie id...",
-        })
+        return res.status(404).json({ message: "invalid movie id..." })
+    }
+
+    return res.status(200).json({ movie })
+}
+
+export const getMovieBySlug = async (req, res, next) => {
+    let movie
+
+    try {
+        movie = await Movie.findOne({ slug: req.params.slug })
+            .populate("category", "category")
+            .populate("producer", "producerName")
+    } catch (err) {
+        console.error(err)
+    }
+
+    if (!movie) {
+        return res.status(404).json({ message: "invalid movie slug..." })
     }
 
     return res.status(200).json({ movie })
@@ -44,18 +60,14 @@ export const addMovie = async (req, res, next) => {
     const extractedToken = req.headers.authorization.split(" ")[1]
 
     if (!extractedToken && extractedToken.trim() === "") {
-        return res.status(404).json({
-            message: "token not found...",
-        })
+        return res.status(404).json({ message: "token not found..." })
     }
 
     let managerId
 
     jwt.verify(extractedToken, process.env.SECRET_KEY, (err, decrypted) => {
         if (err) {
-            return res.status(400).json({
-                message: `${err.message}`,
-            })
+            return res.status(400).json({ message: `${err.message}` })
         } else {
             managerId = decrypted.id
             return
@@ -86,9 +98,7 @@ export const addMovie = async (req, res, next) => {
         !trailerId &&
         trailerId.trim() === ""
     ) {
-        return res.status(422).json({
-            message: "invalid inputs...",
-        })
+        return res.status(422).json({ message: "invalid inputs..." })
     }
 
     let movie

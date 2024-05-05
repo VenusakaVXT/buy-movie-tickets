@@ -18,6 +18,7 @@ import Movie from "./components/Movie/Movie"
 import { Helmet } from "react-helmet"
 import { useDispatch, useSelector } from "react-redux"
 import { customerActions, managerActions } from "./store"
+import MovieDetail from "./components/Movie/MovieDetail"
 
 const formatTitle = (pathname) => {
     const convertPathname = pathname.replace(/\//g, " ").replace(/-/g, " ").trim()
@@ -73,6 +74,7 @@ const App = () => {
                     <Route path="/customer/login" element={<CustomerLogin />} />
                     <Route path="/manager/login" element={<ManagerLogin />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/movie-details/:slug" element={<MovieDetail />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </section>

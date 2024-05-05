@@ -18,6 +18,8 @@ import "../../scss/Screening.scss"
 const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, displayType }) => {
     const navigate = useNavigate()
 
+    const isDigits = (str) => /^\d+$/.test(str)
+
     const handlePath = title
         .toLowerCase()
         .replace(/[:,]/g, "")
@@ -68,7 +70,8 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, d
                     </Typography>
 
                     <Typography variant="body2" color="text.secondary">
-                        <AccessTimeIcon fontSize="0.8rem" className="customic" />{`Time: ${time}`}
+                        <AccessTimeIcon fontSize="0.8rem" className="customic" />
+                        { isDigits(time) ? `Time: ${time} minute` : "none"}
                     </Typography>
                 </CardContent>
 
@@ -137,7 +140,8 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, d
                             </Typography>
 
                             <Typography variant="body2" color="#f2f2f2">
-                                <AccessTimeIcon fontSize="0.8rem" className="customic" />{`Time: ${time}`}
+                                <AccessTimeIcon fontSize="0.8rem" className="customic" />
+                                { isDigits(time) ? `Time: ${time} minute` : "none"}
                             </Typography>
                         </Box>
                     </CardContent>

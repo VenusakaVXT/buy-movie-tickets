@@ -1,0 +1,35 @@
+@import "./variable";
+
+.text-border {
+    color: #fff;
+    text-shadow: 
+        -1px -1px 0 #000,  
+        1px -1px 0 #000,
+        -1px  1px 0 #000,
+        1px  1px 0 #000;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+
+.actor-info {
+    text-decoration: none;
+    padding-left: 4px;
+
+    &:not(:last-child)::after {
+        content: ",";
+    }
+}
+
+.btn {
+    background: $main-color !important;
+    color: #fff;
+    margin: 0 10px !important;
+    transition: all 150ms linear 0s;
+
+    &:hover {
+        transform: scale(1.1);
+        background: $span-color !important;
+    }
+}

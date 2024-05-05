@@ -11,24 +11,18 @@ const movieSchema = new Schema({
         type: String,
         required: true,
     },
-    director: [
-        {
-            type: String,
-            required: true,
-        },
-    ],
-    contentWritter: [
-        {
-            type: String,
-            required: true,
-        },
-    ],
-    actors: [
-        {
-            type: String,
-            required: true,
-        },
-    ],
+    director: {
+        type: String,
+        required: true,
+    },
+    contentWritter: {
+        type: String,
+        required: true,
+    },
+    actors: {
+        type: String,
+        required: true,
+    },
     category: [
         {
             type: mongoose.Types.ObjectId,
@@ -37,15 +31,12 @@ const movieSchema = new Schema({
     ],
     releaseDate: {
         type: String,
-        required: true,
     },
     time: {
-        type: String,
-        required: true,
+        type: Number,
     },
     trailerId: {
         type: String,
-        required: true,
     },
     wasReleased: {
         type: Boolean,
