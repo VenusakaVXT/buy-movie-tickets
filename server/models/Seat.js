@@ -18,6 +18,10 @@ const seatSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref: "CinemaRoom",
     },
+    selected: {
+        type: Boolean,
+        required: true,
+    },
     bookings: [
         {
             type: mongoose.Types.ObjectId,

@@ -26,14 +26,15 @@ class SeatController {
     }
 
     store = async (req, res, next) => {
-        const { rowSeat, seatNumber, seatType } = req.body
+        const { rowSeat, seatNumber, seatType, selected = false } = req.body
         const cinemaRoomObj = await CinemaRoom.findOne({ _id: req.body.cinemaRoom })
 
         const seat = new Seat({
             rowSeat,
             seatNumber,
             seatType,
-            cinemaRoom: cinemaRoomObj._id
+            cinemaRoom: cinemaRoomObj._id,
+            selected
         })
 
         await seat.save()
@@ -81,7 +82,8 @@ class SeatController {
                     rowSeat: req.body.rowSeat,
                     seatNumber: req.body.seatNumber,
                     seatType: req.body.seatType,
-                    cinemaRoom: cinemaRoom._id
+                    cinemaRoom: cinemaRoom._id,
+                    selected: false
                 })
                     .then(() => res.redirect("/seat/table-lists"))
                     .catch(next)
