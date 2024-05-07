@@ -14,6 +14,7 @@ import ScreeningItem from "../Screening/ScreeningItem"
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber"
 import AppsIcon from "@mui/icons-material/Apps"
 import ViewListIcon from "@mui/icons-material/ViewList"
+import "../../scss/App.scss"
 import "../../scss/Movie.scss"
 
 const Movie = () => {
@@ -120,12 +121,12 @@ const Movie = () => {
                     Home
                 </Typography>
                 <Typography className="breadcrumb__item">
-                    All Screening
+                    All Movies
                 </Typography>
             </Box>
 
             <Typography textAlign={"center"} variant="h4" color={"#fff"} marginTop={"30px"}>
-                <span style={{ color: "#ff0000" }}>#</span>ALL SCREENINGS
+                <span style={{ color: "#ff0000" }}>#</span>ALL MOVIES
             </Typography>
 
             <Box className="topbar">

@@ -1,0 +1,33 @@
+@import "./variable";
+
+.breadcrumb {
+    margin: 0 17px;
+    display: flex;
+    padding: 20px;
+    background: $second-background;
+    text-transform: capitalize;
+
+    .breadcrumb__item {
+        position: relative;
+        color: #fff;
+        margin-right: 30px;
+
+        &:last-child {
+            color: $main-color;
+        }
+
+        &:not(:last-child, .disable):hover{
+            cursor: pointer;
+            color: $main-color;
+        }
+
+        &:not(:last-child)::after {
+            content: ">>";
+            position: absolute;
+            display: inline-block;
+            padding: 0 5px;
+            pointer-events: none;
+            color: #fff !important;
+        }
+    }
+}

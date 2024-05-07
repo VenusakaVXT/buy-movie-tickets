@@ -86,9 +86,9 @@ const Release = () => {
                     }}
                     variant="outlined"
                     LinkComponent={Link}
-                    to="/all-screening"
+                    to="/all-movies"
                 >
-                    See All Screenings
+                    See All Movies
                 </Button>
             </Box>
         </Box>

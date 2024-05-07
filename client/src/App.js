@@ -15,6 +15,7 @@ import PageEnding from "./components/Footer/PageEnding"
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage"
 import GoToTopButton from "./components/GoToTop/GoToTopButton"
 import Movie from "./components/Movie/Movie"
+import Booking from "./components/Booking/Booking"
 import { Helmet } from "react-helmet"
 import { useDispatch, useSelector } from "react-redux"
 import { customerActions, managerActions } from "./store"
@@ -70,11 +71,12 @@ const App = () => {
                     <Route path="/release" element={<Release />} />
                     <Route path="/category" element={<Category />} />
                     <Route path="/cinema" element={<Cinema />} />
-                    <Route path="/all-screening" element={<Movie />} />
+                    <Route path="/all-movies" element={<Movie />} />
                     <Route path="/customer/login" element={<CustomerLogin />} />
                     <Route path="/manager/login" element={<ManagerLogin />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/movie-details/:slug" element={<MovieDetail />} />
+                    <Route path="/booking/:slug" element={<Booking />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </section>

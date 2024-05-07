@@ -3,9 +3,9 @@
 {% block content %}
     <form class="p-4 movies__table-lists">
         <div class="list-movies__header mt-4">
-            <h3 class="title">Screening List</h3>
-            <a class="list-movies__header-trash" href="/screening/discontinued-release">
-                Discontinued release
+            <h3 class="title">Now Showing</h3>
+            <a class="list-movies__header-trash" href="/screening/comming-soon">
+                Comming Soon
             </a>
         </div>
 
@@ -16,6 +16,7 @@
                     <th scope="col">Movie title</th>
                     <th scope="col">Movie date</th>
                     <th scope="col">Time slot</th>
+                    <th scope="col">Price</th>
                     <th scope="col">Screening at</th>
                 </tr>
             </thead>
@@ -26,6 +27,7 @@
                     <td>{{ screening.movieName }}</td>
                     <td>{{ screening.movieDate }}</td>
                     <td>{{ screening.timeSlot }}</td>
+                    <td>{{ screening.price }}</td>
                     <td>{{ screening.screeningAt }}</td>
                 </tr>
                 {% else %}

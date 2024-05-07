@@ -10,6 +10,8 @@ class ScreeningController {
 
         try {
             screenings = await Screening.find()
+                .populate("movie", "title")
+                .populate("cinemaRoom", "roomNumber")
         } catch (err) {
             console.error(err)
         }
@@ -22,7 +24,7 @@ class ScreeningController {
     }
 
     create(req, res, next) {
-        Promise.all([Movie.find({ wasReleased: true }), CinemaRoom.find({})])
+        Promise.all([Movie.find({}), CinemaRoom.find({})])
             .then(async ([movies, cinemaRooms]) => {
                 const cinemas = await Cinema.find({})
 
@@ -39,7 +41,7 @@ class ScreeningController {
     }
 
     store = async (req, res, next) => {
-        const { movieDate, timeSlot } = req.body
+        const { movieDate, timeSlot, price } = req.body
         const movieObj = await Movie.findOne({ _id: req.body.movie })
         const cinemaRoomObj = await CinemaRoom.findOne({ _id: req.body.cinemaRoom })
 
@@ -47,9 +49,11 @@ class ScreeningController {
             movie: movieObj._id,
             movieDate,
             timeSlot,
-            cinemaRoom: cinemaRoomObj._id
+            price,
+            cinemaRoom: cinemaRoomObj._id,
+            wasReleased: movieObj.wasReleased === true ? true : false
         })
-
+1
         await screening.save()
             .then(async () => {
                 movieObj.screenings.push(screening._id)
@@ -58,12 +62,16 @@ class ScreeningController {
                 cinemaRoomObj.screenings.push(screening._id)
                 await cinemaRoomObj.save()
 
-                res.redirect("/screening/table-lists")
+                if (screening.wasReleased === true) {
+                    res.redirect("/screening/now-showing")
+                } else {
+                    res.redirect("/screening/comming-soon")
+                }
             })
             .catch(next)
     }
 
-    tableLists = async (req, res, next) => {
+    lstNowShowing = async (req, res, next) => {
         try {
             const screenings = await Screening.find({ wasReleased: true })
             const movies = await Movie.find({})
@@ -91,14 +99,14 @@ class ScreeningController {
                     ? `${cinemaRoom.roomNumber}-${cinema.name}` : "Unknown"
             })
 
-            res.render("screening/read", { screenings })
+            res.render("screening/now-showing", { screenings })
         } catch (err) {
             next(err)
         }
     }
 
     edit(req, res, next) {
-        Promise.all([Movie.find({ wasReleased: true }), CinemaRoom.find({}), Screening.findById(req.params.id)])
+        Promise.all([Movie.find({}), CinemaRoom.find({}), Screening.findById(req.params.id)])
             .then(async ([movies, cinemaRooms, screening]) => {
                 if (!screening.movie || !isValidObjectId(screening.movie)) {
                     screening.movie = ""
@@ -132,6 +140,7 @@ class ScreeningController {
                     movie: movie._id,
                     movieDate: req.body.movieDate,
                     timeSlot: req.body.timeSlot,
+                    price: req.body.price,
                     cinemaRoom: cinemaRoom._id
                 })
                     .then(() => res.redirect("/screening/table-lists"))
@@ -146,7 +155,7 @@ class ScreeningController {
             .catch(next)
     }
 
-    screeningDiscontinued = async (req, res, next) => {
+    lstCommingSoon = async (req, res, next) => {
         try {
             const screenings = await Screening.find({ wasReleased: false })
             const movies = await Movie.find({})
@@ -174,7 +183,7 @@ class ScreeningController {
                     ? `${cinemaRoom.roomNumber}-${cinema.name}` : "Unknown"
             })
 
-            res.render("screening/stop", { screenings })
+            res.render("screening/comming-soon", { screenings })
         } catch (err) {
             next(err)
         }

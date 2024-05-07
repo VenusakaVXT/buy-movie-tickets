@@ -14,13 +14,17 @@ const screeningSchema = new Schema({
         type: String,
         required: true,
     },
+    price: {
+        type: Number,
+        required: true,
+    },
     cinemaRoom: {
         type: mongoose.Types.ObjectId,
         ref: "CinemaRoom",
     },
     wasReleased: {
         type: Boolean,
-        default: true,
+        //default: true,
     },
     bookings: [
         {

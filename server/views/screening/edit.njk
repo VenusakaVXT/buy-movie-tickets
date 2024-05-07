@@ -29,6 +29,11 @@
             </div>
 
             <div class="form-group">
+                <label for="price">Price (<span class="text-italic">xx000 = xx.000VNĐ</span>):</label>
+                <input type="number" class="form-control" value="{{ screening.price }}" id="price" name="price">
+            </div>
+
+            <div class="form-group">
                 <label for="cinemaRoom">Cinema room:</label>
                 <select name="cinemaRoom" id="cinemaRoom" class="form-control">
                     {% for cinemaRoom in cinemaRooms %}

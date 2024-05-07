@@ -6,10 +6,10 @@ const screeningRouter = express.Router()
 screeningRouter.get("/", screeningController.getApiScreening)
 screeningRouter.get("/create", screeningController.create)
 screeningRouter.post("/store", screeningController.store)
-screeningRouter.get("/table-lists", screeningController.tableLists)
+screeningRouter.get("/now-showing", screeningController.lstNowShowing)
 screeningRouter.get("/:id/edit", screeningController.edit)
 screeningRouter.put("/:id", screeningController.update)
 screeningRouter.delete("/:id", screeningController.delete)
-screeningRouter.get("/discontinued-release", screeningController.screeningDiscontinued)
+screeningRouter.get("/comming-soon", screeningController.lstCommingSoon)
 
 export default screeningRouter
