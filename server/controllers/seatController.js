@@ -78,14 +78,25 @@ class SeatController {
     update(req, res, next) {
         CinemaRoom.findById({ _id: req.body.cinemaRoom })
             .then((cinemaRoom) => {
-                Seat.updateOne({ _id: req.params.id }, {
+                const seatId = req.params.id
+
+                Seat.updateOne({ _id: seatId }, {
                     rowSeat: req.body.rowSeat,
                     seatNumber: req.body.seatNumber,
                     seatType: req.body.seatType,
                     cinemaRoom: cinemaRoom._id,
                     selected: false
                 })
-                    .then(() => res.redirect("/seat/table-lists"))
+                    .then(() => {
+                        const foundSeat = cinemaRoom.seats.indexOf(seatId)
+
+                        if (foundSeat == -1) {
+                            cinemaRoom.seats.push(seatId)
+                            cinemaRoom.save()
+                        }
+
+                        res.redirect("/seat/table-lists")
+                    })
                     .catch(next)
             })
             .catch(next)

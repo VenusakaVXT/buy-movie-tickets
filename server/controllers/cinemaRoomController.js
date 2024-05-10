@@ -60,12 +60,23 @@ class CinemaRoomController {
     update(req, res, next) {
         Cinema.findById({ _id: req.body.cinema })
             .then((cinema) => {
-                CinemaRoom.updateOne({ _id: req.params.id }, {
+                const cinemaRoomId = req.params.id
+
+                CinemaRoom.updateOne({ _id: cinemaRoomId }, {
                     roomNumber: req.body.roomNumber,
                     totalNumSeat: req.body.totalNumSeat,
                     cinema: cinema._id
                 })
-                    .then(() => res.redirect("/cinemaroom/table-lists"))
+                    .then(() => {
+                        const foundCinemaRoom = cinema.cinemaRooms.indexOf(cinemaRoomId)
+
+                        if (foundCinemaRoom == -1) {
+                            cinema.cinemaRooms.push(cinemaRoomId)
+                            cinema.save()
+                        }
+
+                        res.redirect("/cinemaroom/table-lists")
+                    })
                     .catch(next)
             })
             .catch(next)

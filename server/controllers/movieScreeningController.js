@@ -102,9 +102,10 @@ class MovieScreeningController {
                 Producer.findById({ _id: req.body.producer })
             ])
 
+            const movieId = req.params.id
             const slug = slugify(req.body.title, { lower: true })
 
-            await Movie.updateOne({ _id: req.params.id }, {
+            await Movie.updateOne({ _id: movieId }, {
                 title: req.body.title,
                 description: req.body.description,
                 director: req.body.director,
@@ -118,6 +119,13 @@ class MovieScreeningController {
                 wasReleased: req.body.wasReleased,
                 slug
             })
+
+            const foundMovie = producer.movies.indexOf(movieId)
+
+            if (foundMovie == -1) {
+                producer.movies.push(movieId)
+                producer.save()
+            }
 
             await Screening.updateMany(
                 { movie: req.params.id },

@@ -68,13 +68,24 @@ class EmployeeController {
     update(req, res, next) {
         Cinema.findById({ _id: req.body.cinema })
             .then((cinema) => {
-                Employee.updateOne({ _id: req.params.id }, {
+                const employeeId = req.params.id
+
+                Employee.updateOne({ _id: employeeId }, {
                     email: req.body.email,
                     password: req.body.password,
                     position: req.body.position,
                     cinema: cinema._id
                 })
-                    .then(() => res.redirect("/employee/table-lists"))
+                    .then(() => {
+                        const foundEmployee = cinema.employees.indexOf(employeeId)
+
+                        if (foundEmployee == -1) {
+                            cinema.employees.push(employeeId)
+                            cinema.save()
+                        }
+
+                        res.redirect("/employee/table-lists")
+                    })
                     .catch(next)
             })
             .catch(next)

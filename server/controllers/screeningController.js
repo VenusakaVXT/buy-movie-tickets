@@ -136,14 +136,28 @@ class ScreeningController {
             CinemaRoom.findById({ _id: req.body.cinemaRoom })
         ])
             .then(([movie, cinemaRoom]) => {
-                Screening.updateOne({ _id: req.params.id }, {
+                const screeningId = req.params.id
+
+                Screening.updateOne({ _id: screeningId }, {
                     movie: movie._id,
                     movieDate: req.body.movieDate,
                     timeSlot: req.body.timeSlot,
                     price: req.body.price,
                     cinemaRoom: cinemaRoom._id
                 })
-                    .then(() => res.redirect("/screening/table-lists"))
+                    .then(() => {
+                        if (movie.screenings.indexOf(screeningId) == -1) {
+                            movie.screenings.push(screeningId)
+                            movie.save()
+                        }
+
+                        if (cinemaRoom.screenings.indexOf(screeningId) == -1) {
+                            cinemaRoom.screenings.push(screeningId)
+                            cinemaRoom.save()
+                        }
+
+                        res.redirect("/screening/table-lists")
+                    })
                     .catch(next)
             })
             .catch(next)
