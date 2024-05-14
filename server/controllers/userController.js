@@ -165,26 +165,29 @@ export const login = async (req, res, next) => {
         return res.status(400).json({ message: "incorrect password..." })
     }
 
-    res.status(200).json({ 
-        message: "login successfully!!!", 
+    res.status(200).json({
+        message: "login successfully!!!",
         id: existUser._id,
-        name: existUser.name 
+        name: existUser.name
     })
 }
 
 export const getBookingOfUser = async (req, res, next) => {
-    const id = req.params.id
-    let booking
-
     try {
-        booking = await Booking.find({ user: id })
+        const bookings = await Booking.find({ user: req.params.id })
+            .populate("seats", "rowSeat seatNumber")
+            .populate({
+                path: "screening", select: "movieDate", populate: {
+                    path: "movie", select: "title trailerId slug"
+                }
+            })
+
+        if (!bookings) {
+            return res.status(500).json({ message: "unable to get booking..." })
+        }
+
+        return res.status(200).json({ bookings })
     } catch (err) {
         console.error(err)
     }
-
-    if (!booking) {
-        return res.status(500).json({ message: "unable to get booking..." })
-    }
-
-    return res.status(200).json({ booking })
 }

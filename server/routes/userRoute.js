@@ -15,6 +15,6 @@ userRouter.post("/register", register)
 userRouter.put("/:id", updateUser)
 userRouter.delete("/:id", deleteUser)
 userRouter.post("/login", login)
-userRouter.get("/booking/:id", getBookingOfUser)
+userRouter.get("/:id/bookings", getBookingOfUser)
 
 export default userRouter

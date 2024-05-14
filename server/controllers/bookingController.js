@@ -6,18 +6,31 @@ import User from "../models/User.js"
 import Movie from "../models/Movie.js"
 import CinemaRoom from "../models/CinemaRoom.js"
 import Cinema from "../models/Cinema.js"
+import qrCode from "qrcode"
 
 export const newBooking = async (req, res, next) => {
-    const { screening, seat, user } = req.body
+    const { screening, seats, user } = req.body
 
     let existScreening
-    let existSeat
     let existUser
+    let existSeats = []
 
     try {
         existScreening = await Screening.findById(screening)
-        existSeat = await Seat.findById(seat)
         existUser = await User.findById(user)
+
+        for (const seatId of seats) {
+            const existSeat = await Seat.findById(seatId)
+            if (existSeat) {
+                if (existSeat.selected) {
+                    return res.status(400).json({
+                        message: `Seat ${existSeat.rowSeat}${existSeat.seatNumber} has already been selected`
+                    })
+                } else {
+                    existSeats.push(existSeat)
+                }
+            }
+        }
     } catch (err) {
         console.error(err)
     }
@@ -28,33 +41,41 @@ export const newBooking = async (req, res, next) => {
         })
     }
 
-    if (!existSeat) {
-        return res.status(404).json({
-            message: "seat not found with given id...",
-        })
-    }
-
     if (!existUser) {
         return res.status(404).json({
             message: "user not found with given id...",
         })
     }
 
+    if (existSeats.length !== seats.length) {
+        return res.status(404).json({
+            message: "seat not found with given id...",
+        })
+    }
+
     let booking
 
     try {
-        booking = new Booking({ screening, seat, user })
+        const totalMoney = existScreening.price * existSeats.length
+        const qrData = JSON.stringify({ screening, seats, user, totalMoney })
+        const qrDataURL = await qrCode.toDataURL(qrData)
+
+        booking = new Booking({ screening, seats, user, totalMoney, qrCode: qrDataURL })
 
         const session = await mongoose.startSession()
         session.startTransaction()
 
         existUser.bookings.push(booking)
         existScreening.bookings.push(booking)
-        existSeat.bookings.push(booking)
+
+        for (const seat of existSeats) {
+            seat.selected = true
+            seat.bookings.push(booking)
+            await seat.save({ session })
+        }
 
         await existUser.save({ session })
         await existScreening.save({ session })
-        await existSeat.save({ session })
         await booking.save({ session })
 
         session.commitTransaction()
@@ -72,37 +93,50 @@ export const newBooking = async (req, res, next) => {
 }
 
 export const getBookingById = async (req, res, next) => {
-    let booking
-
     try {
-        booking = await Booking.findById(req.params.id)
+        const booking = await Booking.findById(req.params.id)
+            .populate("user", "name")
+            .populate("seats", "rowSeat seatNumber")
+            .populate({
+                path: "screening",
+                populate: [
+                    { path: "movie", select: "title time" },
+                    { path: "cinemaRoom", select: "roomNumber", populate: {
+                        path: "cinema", select: "name"
+                    } }
+                ]
+            })
+
+        if (!booking) {
+            return res.status(404).json({ message: "booking not found..." })
+        }
+
+        return res.status(200).json({ booking })
     } catch (err) {
-        console.error(err)
+        return res.status(500).json({ message: err })
     }
-
-    if (!booking) {
-        return res.status(500).json({ message: "unexpected error..." })
-    }
-
-    return res.status(200).json({ booking })
 }
 
 export const cancelBooking = async (req, res, next) => {
     let booking
 
     try {
-        booking = await Booking.findByIdAndRemove(req.params.id).populate("user screening seat")
+        booking = await Booking.findByIdAndRemove(req.params.id).populate("user screening seats")
 
         const session = await mongoose.startSession()
         session.startTransaction()
 
+        for (const seat of booking.seats) {
+            seat.selected = false
+            seat.bookings.pull(booking)
+            await seat.save({ session })
+        }
+
         await booking.user.bookings.pull(booking)
         await booking.screening.bookings.pull(booking)
-        await booking.seat.bookings.pull(booking)
 
         await booking.user.save({ session })
         await booking.screening.save({ session })
-        await booking.seat.save({ session })
 
         session.commitTransaction()
     } catch (err) {
@@ -158,21 +192,23 @@ export const detailAllBooking = async (req, res, next) => {
             booking.screeningAt = cinema ? `${cinemaRoom.roomNumber}-${cinema.name}` : "Unknown"
         })
 
-        const seats = await Seat.find({})
+        for (let booking of bookings) {
+            const seatPromises = booking.seats.map((seatId) => Seat.findById(seatId))
+            const seats = await Promise.all(seatPromises)
+            const seatPositions = []
 
-        bookings.forEach((booking) => {
-            const seat = seats.find((s) =>
-                s._id.toString() === booking.seat.toString()
-            )
+            seats.forEach((seat) => {
+                if (seat && seat.seatNumber < 10) {
+                    seatPositions.push(`${seat.rowSeat}-00${seat.seatNumber}`)
+                } else if (seat && seat.seatNumber >= 10) {
+                    seatPositions.push(`${seat.rowSeat}-0${seat.seatNumber}`)
+                } else {
+                    seatPositions.push("Unknown")
+                }
+            })
 
-            if (seat.seatNumber < 10) {
-                seat.position = `${seat.rowSeat}-00${seat.seatNumber}`
-            } else {
-                seat.position = `${seat.rowSeat}-0${seat.seatNumber}`
-            }
-
-            booking.seatPosition = seat ? seat.position : "Unknown"
-        })
+            booking.seatPositions = seatPositions.join(", ")
+        }
 
         res.render("booking/booking-detail", { bookings })
     } catch (err) {

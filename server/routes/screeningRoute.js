@@ -11,5 +11,6 @@ screeningRouter.get("/:id/edit", screeningController.edit)
 screeningRouter.put("/:id", screeningController.update)
 screeningRouter.delete("/:id", screeningController.delete)
 screeningRouter.get("/comming-soon", screeningController.lstCommingSoon)
+screeningRouter.get("/:id/cinema-room/all-seats", screeningController.getAllSeatsFromCinemaRoom)
 
 export default screeningRouter

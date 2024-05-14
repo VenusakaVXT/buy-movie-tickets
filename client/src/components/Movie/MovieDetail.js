@@ -10,6 +10,7 @@ import {
     Button
 } from "@mui/material"
 import "../../scss/MovieDetail.scss"
+import "../../scss/App.scss"
 
 const MovieDetail = () => {
     const [movie, setMovie] = useState()

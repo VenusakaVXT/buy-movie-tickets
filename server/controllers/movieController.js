@@ -199,3 +199,26 @@ export const updateMovie = async (req, res, next) => {
         res.status(500).json({ error: err.message })
     }
 }
+
+export const getScreeningsByMovieSlug = async (req, res, next) => {
+    try {
+        const { slug } = req.params
+        const movie = await Movie.findOne({ slug }).populate({
+            path: "screenings",
+            select: "_id movieDate timeSlot price cinemaRoom",
+            populate: {
+                path: "cinemaRoom",
+                select: "roomNumber"
+            }
+        })
+
+        if (!movie) {
+            return res.status(404).json({ message: "movie not found..." })
+        }
+
+        return res.status(200).json({ screenings: movie.screenings })
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ message: next })
+    }
+}

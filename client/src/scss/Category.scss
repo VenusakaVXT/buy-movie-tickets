@@ -34,7 +34,7 @@
                 .category__movie-card {
                     width: 180px;
                     height: 290px;
-                    background: rgba(81, 88, 99, 0.3);
+                    background: $third-background;
                     cursor: pointer;
                     box-shadow:
                         0 0.0625rem 0.125rem rgba(0, 0, 0, 0.9),
@@ -42,7 +42,7 @@
 
                     &:hover {
                         transform: translateY(-1px);
-                        background: #2f3032;
+                        background: $fourth-background;
                     }
 
                     .category__movie-name {
@@ -60,5 +60,4 @@
             }
         }
     }
-
 }

@@ -1,3 +1,54 @@
+@import "./variable";
+
 .booking__wrapper {
     margin: 30px 92px;
+
+    .cinema__list {
+        display: flex;
+        justify-content: space-between;
+        padding: 16px 0;
+        border-bottom: 1px solid #ccc;
+
+        .cinema__item {
+            color: #fff;
+            padding: 6px;
+            width: 120px;
+            border: 1px solid #fff;
+            border-radius: 20px;
+            text-align: center;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            cursor: pointer;
+
+            &.active {
+                border-color: $main-color;
+                color: $main-color;
+            }
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .screening__list {
+        .screening__item {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            background: $second-background;
+            color: #fff;
+            margin-top: 16px;
+            cursor: pointer;
+
+            &:hover {
+                background: $third-background;
+            }
+        }
+
+        .css-ahj2mt-MuiTypography-root {
+            font-size: 24px !important;
+        }
+    }
 }

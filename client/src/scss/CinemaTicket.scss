@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Mandali&family=Pacifico&display=swap");
+
+$cinema_ticket_border_color: #fbecb3;
+$cinema_ticket_background1: rgb(185 36 14);
+$cinema_ticket_background2: rgb(227 216 194);
+$cinema_ticket_title: rgb(227 215 192);
+$cinema_ticket_text-color: rgb(65 54 32);
+$width_background_1: 530px;
+
+.cinema-ticket__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 30px;
+
+    .cinema-ticket__border {
+        position: relative;
+        display: flex;
+        width: 850px;
+        height: 500px;
+        border: 1rem solid $cinema_ticket_background1;
+        border-image: repeating-linear-gradient(
+            45deg, $cinema_ticket_border_color, $cinema_ticket_border_color 5px, 
+            $cinema_ticket_background1 6px, $cinema_ticket_background1 15px, 
+            $cinema_ticket_border_color 16px, $cinema_ticket_border_color 20px) 
+            20/1rem;
+
+        img {
+            position: absolute;
+            width: 110px;
+            left: -60px;
+            top: -40px;
+        }
+
+        .cinema-ticket__content {
+            width: $width_background_1;
+            background: $cinema_ticket_background1;
+            padding: 10px 20px;
+
+            h3 {
+                text-align: center;
+                color: $cinema_ticket_title;
+                font-family: "Pacifico", cursive;
+                font-weight: 400;
+                font-style: normal;
+            }
+            
+            p {
+                color: $cinema_ticket_title;
+                font-size: 1.25rem;
+                padding-bottom: 9px;
+            }
+
+            span {
+                color: #000;
+                font-size: 1.25rem;
+            }
+        }
+
+        .cinema-ticket__img {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            width: calc(100% - $width_background_1);
+            background: $cinema_ticket_background2;
+
+            p {
+                font-size: 1.5rem;
+                color: $cinema_ticket_text-color;
+            }
+
+            img  {
+                position: absolute;
+
+                &:first-child {
+                    width: 65%;
+                    top: 25px;
+                    left: 50px;
+                    border-radius: 4px;
+                }
+
+                &:last-child {
+                    width: 325px;
+                    top: 256px;
+                    left: -19px;
+                }
+            }
+        }
+    }
+
+    .cinema-ticket__btn {
+        display: flex;
+        margin: 30px 0;
+
+        span {
+            margin-left: 3px;
+        }
+    }
+}

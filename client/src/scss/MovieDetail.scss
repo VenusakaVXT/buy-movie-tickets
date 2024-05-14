@@ -21,15 +21,3 @@
         content: ",";
     }
 }
-
-.btn {
-    background: $main-color !important;
-    color: #fff;
-    margin: 0 10px !important;
-    transition: all 150ms linear 0s;
-
-    &:hover {
-        transform: scale(1.1);
-        background: $span-color !important;
-    }
-}

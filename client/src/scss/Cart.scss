@@ -1,0 +1,55 @@
+@import "./variable";
+
+.cart__wrapper {
+    margin: 30px 92px;
+
+    .lst-booking {
+        margin-top: 20px;
+        
+        .booking-item {
+            background: $second-background;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #fff;
+
+            img {
+                width: 163px;
+                height: 84px;
+            }
+
+            p {
+                margin-top: 4px;
+                font-size: 1.25rem;
+                color: #000;
+            }
+
+            .movie {
+                width: 350px;
+                
+                p {
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 1;
+                    overflow: hidden;
+                }
+            }
+
+            .seat {
+                width: 180px;
+
+                span {
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 1;
+                    overflow: hidden;
+                }
+            }
+
+            &:hover {
+                background: $third-background;
+            }
+        }
+    }
+}

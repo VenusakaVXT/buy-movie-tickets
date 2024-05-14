@@ -1,12 +1,15 @@
 import Cinema from "../models/Cinema.js"
+import CinemaRoom from "../models/CinemaRoom.js"
+import Screening from "../models/Screening.js"
+import Movie from "../models/Movie.js"
 
 class CinemaController {
-    getApiCinema = async(req, res, next) => {
+    getApiCinema = async (req, res, next) => {
         let cinemas
 
         try {
             cinemas = await Cinema.find()
-        } catch(err) {
+        } catch (err) {
             console.error(err)
         }
 
@@ -42,7 +45,7 @@ class CinemaController {
     }
 
     update(req, res, next) {
-        Cinema.updateOne({ _id: req.params.id }, { 
+        Cinema.updateOne({ _id: req.params.id }, {
             name: req.body.name,
             logo: req.body.logo,
             address: req.body.address,
@@ -57,6 +60,36 @@ class CinemaController {
         Cinema.deleteOne({ _id: req.params.id })
             .then(() => res.redirect("/cinema/table-lists"))
             .catch(next)
+    }
+
+    getScreeningsFromCinemaRooms = async (req, res, next) => {
+        try {
+            const cinema = await Cinema.findById(req.params.cinemaId)
+
+            if (!cinema) {
+                return res.status(404).json({ message: "cinema not found..." })
+            }
+
+            const cinemaRoomIds = cinema.cinemaRooms
+            const cinemaRooms = await CinemaRoom.find({ _id: { $in: cinemaRoomIds } })
+
+            let screenings = []
+
+            for (const cinemaRoom of cinemaRooms) {
+                const screeningsOfCinemaRoom = await Screening.find({ cinemaRoom: cinemaRoom._id })
+                    .select("_id movieDate timeSlot price movie")
+                    .populate({ path: "cinemaRoom", select: "roomNumber" })
+
+                const movie = await Movie.findOne({ slug: req.params.movieSlug })
+                const screeningsMovie = screeningsOfCinemaRoom.filter((screening) => screening.movie.equals(movie._id))
+
+                screenings = [...screenings, ...screeningsMovie]
+            }
+
+            return res.status(200).json({ screenings })
+        } catch {
+            return res.status(500).json({ message: next })
+        }
     }
 }
 

@@ -53,7 +53,7 @@ class ScreeningController {
             cinemaRoom: cinemaRoomObj._id,
             wasReleased: movieObj.wasReleased === true ? true : false
         })
-1
+        1
         await screening.save()
             .then(async () => {
                 movieObj.screenings.push(screening._id)
@@ -198,6 +198,43 @@ class ScreeningController {
             })
 
             res.render("screening/comming-soon", { screenings })
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    getAllSeatsFromCinemaRoom = async (req, res, next) => {
+        try {
+            const screening = await Screening.findById(req.params.id)
+            if (!screening) {
+                return res.status(404).json({ message: "screening not found..." })
+            }
+
+            const movie = await Movie.findById(screening.movie)
+            if (!movie) {
+                return res.status(404).json({ message: "movie not found..." })
+            }
+
+            const cinemaRoom = await CinemaRoom.findById(screening.cinemaRoom)
+                .populate("seats", "_id rowSeat seatNumber selected")
+            if (!cinemaRoom) {
+                return res.status(404).json({ message: "cinemaRoom not found..." })
+            }
+
+            const cinema = await Cinema.findOne({ cinemaRooms: cinemaRoom._id })
+            if (!cinema) {
+                return res.status(404).json({ message: "cinema not found..." })
+            }
+
+            const synthesizeData = {
+                movieTitle: movie.title,
+                roomNumber: cinemaRoom.roomNumber,
+                cinemaName: cinema.name,
+                seats: cinemaRoom.seats,
+                price: screening.price
+            }
+
+            return res.status(200).json({ synthesizeData })
         } catch (err) {
             next(err)
         }

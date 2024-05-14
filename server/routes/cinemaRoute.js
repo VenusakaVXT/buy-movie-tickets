@@ -10,5 +10,6 @@ cinemaRouter.get("/table-lists", cinemaController.tableLists)
 cinemaRouter.get("/:id/edit", cinemaController.edit)
 cinemaRouter.put("/:id", cinemaController.update)
 cinemaRouter.delete("/:id", cinemaController.delete)
+cinemaRouter.get("/:cinemaId/cinema-room/screenings/:movieSlug", cinemaController.getScreeningsFromCinemaRooms)
 
 export default cinemaRouter

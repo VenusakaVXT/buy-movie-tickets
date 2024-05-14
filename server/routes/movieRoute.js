@@ -5,6 +5,7 @@ import {
     getAllMovies,
     getMovieById,
     getMovieBySlug,
+    getScreeningsByMovieSlug,
     updateMovie,
 } from "../controllers/movieController.js"
 
@@ -16,5 +17,6 @@ movieRouter.get("/:slug/detail", getMovieBySlug)
 movieRouter.post("/", addMovie)
 movieRouter.delete("/:id", deleteMovie)
 movieRouter.put("/:id", updateMovie)
+movieRouter.get("/:slug/screenings", getScreeningsByMovieSlug)
 
 export default movieRouter

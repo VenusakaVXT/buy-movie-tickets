@@ -31,3 +31,39 @@
         }
     }
 }
+
+.link {
+    color: $main-color !important;
+
+    &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}
+
+.btn {
+    background: $main-color !important;
+    color: #fff !important;
+    margin: 0 10px !important;
+    transition: all 150ms linear 0s;
+
+    &:hover {
+        transform: scale(1.1);
+        background: $span-color !important;
+    }
+}
+
+.loading-spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid $main-color;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: auto;
+}
+  
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

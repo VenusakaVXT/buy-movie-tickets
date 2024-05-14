@@ -7,15 +7,25 @@ const bookingSchema = new Schema({
         ref: "Screening",
         required: true,
     },
-    seat: {
-        type: mongoose.Types.ObjectId,
-        ref: "Seat",
-    },
+    seats: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "Seat",
+        },
+    ],
     user: {
         type: mongoose.Types.ObjectId,
         ref: "User",
         required: true,
     },
+    totalMoney: {
+        type: Number,
+        required: true
+    },
+    qrCode: {
+        type: String,
+        required: true
+    }
 }, { timestamps: true })
 
 export default mongoose.model("Booking", bookingSchema)

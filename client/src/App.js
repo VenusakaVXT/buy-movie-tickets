@@ -16,6 +16,9 @@ import NotFoundPage from "./components/NotFoundPage/NotFoundPage"
 import GoToTopButton from "./components/GoToTop/GoToTopButton"
 import Movie from "./components/Movie/Movie"
 import Booking from "./components/Booking/Booking"
+import SeatDiagram from "./components/Booking/SeatDiagram"
+import CinemaTicket from "./components/Booking/CinemaTicket"
+import Cart from "./components/Cart/Cart"
 import { Helmet } from "react-helmet"
 import { useDispatch, useSelector } from "react-redux"
 import { customerActions, managerActions } from "./store"
@@ -77,6 +80,13 @@ const App = () => {
                     <Route path="/register" element={<Register />} />
                     <Route path="/movie-details/:slug" element={<MovieDetail />} />
                     <Route path="/booking/:slug" element={<Booking />} />
+                    <Route path="/booking/:movieSlug/:screeningId" element={
+                        <SeatDiagram title={`${title} | Seat Diagram`} />
+                    } />
+                    <Route path="/booking/:bookingId/detail" element={
+                        <CinemaTicket title={`${title} | Movie Ticket`} />
+                    } />
+                    <Route path="/cart" element={<Cart />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </section>

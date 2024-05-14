@@ -1,14 +1,15 @@
 import Seat from "../models/Seat.js"
 import CinemaRoom from "../models/CinemaRoom.js"
 import { isValidObjectId } from "mongoose"
+import Cinema from "../models/Cinema.js"
 
 class SeatController {
-    getApiSeat = async(req, res, next) => {
+    getApiSeat = async (req, res, next) => {
         let seats
 
         try {
-            seats = await Seat.find()
-        } catch(err) {
+            seats = await Seat.find().populate("cinemaRoom", "roomNumber")
+        } catch (err) {
             console.error(err)
         }
 
@@ -76,24 +77,39 @@ class SeatController {
     }
 
     update(req, res, next) {
-        CinemaRoom.findById({ _id: req.body.cinemaRoom })
-            .then((cinemaRoom) => {
-                const seatId = req.params.id
+        const newCinemaRoomId = req.body.cinemaRoom
+        const seatId = req.params.id
 
-                Seat.updateOne({ _id: seatId }, {
-                    rowSeat: req.body.rowSeat,
-                    seatNumber: req.body.seatNumber,
-                    seatType: req.body.seatType,
-                    cinemaRoom: cinemaRoom._id,
-                    selected: false
-                })
+        const updateSeatObj = {
+            rowSeat: req.body.rowSeat,
+            seatNumber: req.body.seatNumber,
+            seatType: req.body.seatType,
+            cinemaRoom: newCinemaRoomId
+        }
+
+        Seat.findById(seatId).populate("cinemaRoom")
+            .then((seat) => {
+                if (!seat) {
+                    return res.status(404).json({ message: "seat not found..." })
+                }
+
+                const oldCinemaRoomId = seat.cinemaRoom ? seat.cinemaRoom._id : null
+
+                Seat.findByIdAndUpdate(seatId, updateSeatObj, { new: true })
                     .then(() => {
-                        const foundSeat = cinemaRoom.seats.indexOf(seatId)
-
-                        if (foundSeat == -1) {
-                            cinemaRoom.seats.push(seatId)
-                            cinemaRoom.save()
+                        if (oldCinemaRoomId && oldCinemaRoomId !== newCinemaRoomId) {
+                            CinemaRoom.findByIdAndUpdate(
+                                oldCinemaRoomId,
+                                { $pull: { seats: seatId } },
+                                { new: true }
+                            ).catch(next)
                         }
+
+                        CinemaRoom.findByIdAndUpdate(
+                            newCinemaRoomId,
+                            { $addToSet: { seats: seatId } },
+                            { new: true }
+                        ).catch(next)
 
                         res.redirect("/seat/table-lists")
                     })

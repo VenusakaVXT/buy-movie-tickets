@@ -22,6 +22,7 @@ const Movie = () => {
     const [movies, setMovies] = useState([])
     const [active, setActive] = useState(0)
     const [sort, setSort] = useState(0)
+    const [isLoading, setIsLoading] = useState(false)
     // boolean array that tracks the state of tabs
     const [tabStates, setTabStates] = useState([true, false])
 
@@ -47,9 +48,12 @@ const Movie = () => {
             setTabStates([true, false])
         }
 
+        setIsLoading(true)
+
         getApiFromBE("movie")
             .then((data) => setMovies(data.movies))
             .catch((err) => console.error(err))
+            .finally(() => setIsLoading(false))
     }, [])
 
     const filterMoviesByRelease = (isReleased) => {
@@ -188,9 +192,11 @@ const Movie = () => {
                     </FormControl>
                 </Box>
             </Box>
-
-            {renderMovieList("now showing", true)}
-            {renderMovieList("comming soon", false)}
+            
+            {isLoading ? <Box className="loading-spinner"></Box> : <>
+                {renderMovieList("now showing", true)}
+                {renderMovieList("comming soon", false)}
+            </>}
         </Box>
     )
 }

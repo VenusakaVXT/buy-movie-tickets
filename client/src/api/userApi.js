@@ -15,7 +15,7 @@ export const customerSendLoginRequest = async (data, signUp) => {
             nameAccount: data.nameAccount,
             password: data.password,
         })
-        .catch((err) => console.error(err))
+        .catch((err) => alert("Login failed because:", err))
 
     if (res.status !== 200 && res.status !== 201) {
         console.log("Error sending customer login request...")
@@ -30,7 +30,7 @@ export const managerSendLoginRequest = async (data) => {
             email: data.email,
             password: data.password
         })
-        .catch((err) => console.error(err))
+        .catch((err) => alert("Login failed because:", err))
 
     if (res.status !== 200 && res.status !== 201) {
         console.log("Error sending manager login request...")
