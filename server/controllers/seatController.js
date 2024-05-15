@@ -1,7 +1,6 @@
 import Seat from "../models/Seat.js"
 import CinemaRoom from "../models/CinemaRoom.js"
 import { isValidObjectId } from "mongoose"
-import Cinema from "../models/Cinema.js"
 
 class SeatController {
     getApiSeat = async (req, res, next) => {
@@ -49,17 +48,18 @@ class SeatController {
 
     tableLists = async (req, res, next) => {
         try {
-            const seats = await Seat.find({})
+            const { cinemaRoomId } = req.query
+            let seats
+
+            if (cinemaRoomId && cinemaRoomId !== "all") {
+                seats = await Seat.find({ cinemaRoom: cinemaRoomId }).populate("cinemaRoom", "roomNumber")
+            } else {
+                seats = await Seat.find({}).populate("cinemaRoom", "roomNumber")
+            }
+
             const cinemaRooms = await CinemaRoom.find({})
 
-            seats.forEach((seat) => {
-                const cinemaRoom = cinemaRooms.find((cr) =>
-                    cr._id.toString() === seat.cinemaRoom.toString()
-                )
-                seat.roomNumber = cinemaRoom ? cinemaRoom.roomNumber : "Unknown"
-            })
-
-            res.render("seat/read", { seats })
+            res.render("seat/read", { seats, cinemaRooms, selectedCinemaRoomId: cinemaRoomId || "all" })
         } catch (err) {
             next(err)
         }

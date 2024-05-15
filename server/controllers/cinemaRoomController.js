@@ -30,17 +30,18 @@ class CinemaRoomController {
 
     tableLists = async (req, res, next) => {
         try {
-            const cinemaRooms = await CinemaRoom.find({})
+            const { cinemaId } = req.query
+            let cinemaRooms
+
+            if (cinemaId && cinemaId !== "all") {
+                cinemaRooms = await CinemaRoom.find({ cinema: cinemaId }).populate("cinema", "name")
+            } else {
+                cinemaRooms = await CinemaRoom.find({}).populate("cinema", "name")
+            }
+
             const cinemas = await Cinema.find({})
 
-            cinemaRooms.forEach((cinemaroom) => {
-                const cinema = cinemas.find((c) =>
-                    c._id.toString() === cinemaroom.cinema.toString()
-                )
-                cinemaroom.cinemaName = cinema ? cinema.name : "Unknown"
-            })
-
-            res.render("cinemaroom/read", { cinemaRooms })
+            res.render("cinemaroom/read", { cinemaRooms, cinemas, selectedCinemaId: cinemaId || "all" })
         } catch (err) {
             next(err)
         }

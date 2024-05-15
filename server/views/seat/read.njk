@@ -4,6 +4,20 @@
     <form class="p-4 movies__table-lists">
         <h3 class="title">Seat List</h3>
 
+        <div class="d-flex">
+            <label for="selectCinemaRoom" style="line-height: 38px; margin-right: 10px">Select CinemaRoom</label>
+            <select id="selectCinemaRoom" 
+                style="width: 15%; border-radius: 5px" onchange="handleSelectGroup('selectCinemaRoom', 'seat')"
+            >
+                <option value="all" {% if selectedCinemaRoomId == "all" %}selected{% endif %}>All CinemaRooms</option>
+                {% for cinemaRoom in cinemaRooms %}
+                <option value="{{ cinemaRoom._id }}" {% if cinemaRoom._id == selectedCinemaRoomId %}selected{% endif %}>
+                    {{ cinemaRoom.roomNumber }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
         <table class="table table-movies mt-4" border="1">
             <thead class="thead-dark">
                 <tr>
@@ -22,7 +36,7 @@
                         {{seat.rowSeat}}{% if seat.seatNumber < 10 %}-00{{seat.seatNumber}}{% else %}-0{{seat.seatNumber}}{% endif %}
                     </td>
                     <td>{{ seat.seatType }}</td>
-                    <td>{{ seat.roomNumber }}</td>
+                    <td>{{ seat.cinemaRoom.roomNumber }}</td>
                     <td>
                         <button type="button" class="btn btn-outline-warning">
                             <a href="/seat/{{ seat._id }}/edit">Edit</a>

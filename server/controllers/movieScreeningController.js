@@ -172,7 +172,7 @@ class MovieScreeningController {
                     .catch(next)
                 break
             default:
-                res.json({ message: 'Action is invalid' })
+                res.json({ message: "Action is invalid" })
         }
     }
 
@@ -189,7 +189,7 @@ class MovieScreeningController {
                     .catch(next)
                 break
             default:
-                res.json({ message: 'Action is invalid' })
+                res.json({ message: "Action is invalid" })
         }
     }
 }

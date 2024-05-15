@@ -33,23 +33,6 @@ function setWasReleasedDefaultValue() {
     }
 }
 
-// Handle input data into arrays
-// function converInputDataToArray(inputId) {
-//     const inputVal = document.getElementById(inputId).value
-
-//     // Split the input values by commas and trim spaces
-//     const arrVal = inputVal.split(",").map(item => item.trim())
-
-//     // Set the processed value back to the input field
-//     document.getElementById(inputId).value = arrVal.join("/n")
-// }
-
-// function processArrayInput() {
-//     const arrData = ["director", "contentWritter", "actors", "category"]
-
-//     arrData.forEach(inputId => converInputDataToArray(inputId))
-// }
-
 // Handle delete movie
 document.addEventListener("DOMContentLoaded", () => {
     let movieId
@@ -187,17 +170,19 @@ document.addEventListener("DOMContentLoaded", () => {
     deleteData("screening", "screening-delete-form", "#deleteScreeningModal")
 })
 
-// fetch("/movie-screening/{{ movie._id }}", { method: "DELETE" })
-//     .then((res) => {
-//         if (!res.ok) {
-//             return res.json().then((data) => Promise.reject(data))
-//         }
-//         return res.json()
-//     })
-//     .then((data) => {
-//         if (data.message) {
-//             alert(data.message)
-//             window.location.href = "/movie-screening/table-lists"
-//         }
-//     })
-//     .catch((err) => console.error(err))
+function handleSelectGroup(element, path) {
+    const select = document.getElementById(element)
+    const id = select.value
+
+    switch(path) {
+        case "cinemaroom":
+            window.location.href = `/${path}/table-lists?cinemaId=${id}`
+            break
+        case "seat":
+            window.location.href = `/${path}/table-lists?cinemaRoomId=${id}`
+            break
+        default:
+            alert("Error path...")
+            break
+    }
+}
