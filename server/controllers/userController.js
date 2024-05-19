@@ -26,6 +26,20 @@ export const getAllUsers = async (req, res, next) => {
     return res.status(200).json({ users })
 }
 
+export const getUserById = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.params.id)
+
+        if (!user) {
+            return res.status(500).json({ message: "user not found..." })
+        }
+
+        return res.status(200).json({ user })
+    } catch (err) {
+        next(err)
+    }
+}
+
 export const register = async (req, res, next) => {
     const { name, phone, email, password, birthDay, gender, address } = req.body
 
@@ -71,15 +85,12 @@ export const register = async (req, res, next) => {
 export const updateUser = async (req, res, next) => {
     const id = req.params.id
 
-    const { name, phone, email, password, birthDay, gender, address } = req.body
-
-    const hashPassword = hashUserPassword(password)
+    const { name, phone, email, birthDay, gender, address } = req.body
 
     if (
         (!name || name.trim() === "") &&
         (!phone || phone.trim() === "") &&
-        (!email || email.trim() === "") &&
-        (!password || password.trim() === "")
+        (!email || email.trim() === "")
     ) {
         return res.status(422).json({
             message: "Invalid inputs...",
@@ -93,7 +104,6 @@ export const updateUser = async (req, res, next) => {
             name,
             phone,
             email,
-            password: hashPassword,
             birthDay,
             gender,
             address,

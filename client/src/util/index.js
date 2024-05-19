@@ -17,3 +17,9 @@ export const handleSeatArr = (seatArr) => {
     const seats = seatArr.map((seat) => `${seat.rowSeat}-${seat.seatNumber.padStart(3, "0")}`)
     return seats.join(", ")
 }
+
+export const handleDate = (date) => {
+    const formatDate = new Date(date)
+    const options = { day: "2-digit", month: "2-digit", year: "numeric" }
+    return formatDate.toLocaleDateString("en-GB", options)
+}

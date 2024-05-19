@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { managerActions, customerActions } from "../../store"
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart"
 import { Tooltip } from "react-tooltip"
+import "../../scss/App.scss"
 
 const Header = () => {
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
@@ -269,10 +270,10 @@ const Header = () => {
                                 </MenuItem>
 
                                 <MenuItem LinkComponent={Link} onClick={() => {
-                                    navigate("/manager/setting")
+                                    navigate("/manager/mission")
                                     handleMenuClose()
                                 }}>
-                                    Settings
+                                    Today works
                                 </MenuItem>
                                 <hr />
 
@@ -284,10 +285,17 @@ const Header = () => {
                                 </MenuItem>
 
                                 <MenuItem LinkComponent={Link} onClick={() => {
-                                    navigate("/manager/mission")
+                                    navigate("/manager/list-movie")
                                     handleMenuClose()
                                 }}>
-                                    Today works
+                                    List movie
+                                </MenuItem>
+
+                                <MenuItem LinkComponent={Link} onClick={() => {
+                                    navigate("/manager/statistical")
+                                    handleMenuClose()
+                                }}>
+                                    Statistical
                                 </MenuItem>
                                 <hr />
 

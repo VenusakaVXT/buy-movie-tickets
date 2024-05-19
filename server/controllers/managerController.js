@@ -102,3 +102,18 @@ export const getManagers = async (req, res, next) => {
 
     return res.status(200).json({ managers })
 }
+
+export const getManagerById = async (req, res, next) => {
+    try {
+        const manager = await Manager.findById(req.params.id)
+            .populate("cinema", "name")
+
+        if (!manager) {
+            return res.status(500).json({ message: "manager not found..." })
+        }
+
+        return res.status(200).json({ manager })
+    } catch (err) {
+        next(err)
+    }
+}

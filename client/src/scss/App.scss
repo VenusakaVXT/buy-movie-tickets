@@ -1,5 +1,11 @@
 @import "./variable";
 
+hr {
+    border: none;
+    height: 1px;
+    background: #3e4041;
+}
+
 .breadcrumb {
     margin: 0 17px;
     display: flex;
@@ -47,6 +53,11 @@
     margin: 0 10px !important;
     transition: all 150ms linear 0s;
 
+    &.lowercase {
+        text-transform: none;
+        font-size: 1rem;
+    }
+
     &:hover {
         transform: scale(1.1);
         background: $span-color !important;
@@ -66,4 +77,29 @@
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+.txt-line {
+    padding-bottom: 6px;
+}
+
+.txt-hover {
+    padding-bottom: 12px;
+
+    &:hover {
+        cursor: pointer;
+        color: $main-color;
+        text-decoration: underline;
+    }
+}
+
+.input-form {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #3e4041;
+    border-radius: 4px;
+    margin: 12px 0;
+    background: transparent;
+    color: #fff;
+    font-size: 16px;
 }

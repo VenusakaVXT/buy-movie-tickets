@@ -19,6 +19,7 @@ import Booking from "./components/Booking/Booking"
 import SeatDiagram from "./components/Booking/SeatDiagram"
 import CinemaTicket from "./components/Booking/CinemaTicket"
 import Cart from "./components/Cart/Cart"
+import Profile from "./components/User/Profile"
 import { Helmet } from "react-helmet"
 import { useDispatch, useSelector } from "react-redux"
 import { customerActions, managerActions } from "./store"
@@ -87,6 +88,10 @@ const App = () => {
                         <CinemaTicket title={`${title} | Movie Ticket`} />
                     } />
                     <Route path="/cart" element={<Cart />} />
+                    <Route 
+                        path={`${isCustomerLoggedIn ? "/customer" : "/manager"}/profile`} 
+                        element={<Profile />} 
+                    />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </section>
