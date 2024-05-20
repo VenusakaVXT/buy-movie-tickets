@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Box, Typography, Button } from "@mui/material"
 import { useNavigate, useParams } from "react-router-dom"
+import { useSelector } from "react-redux"
 import { Helmet } from "react-helmet"
 import { getAllSeatsFromCinemaRoom } from "../../api/cinemaApi"
 import { newBooking } from "../../api/bookingApi"
@@ -18,6 +19,8 @@ const SeatDiagram = ({ title }) => {
     const navigate = useNavigate()
     const screeningId = useParams().screeningId
     const movieSlug = useParams().movieSlug
+    const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
+    const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
 
     useEffect(() => {
         const handleBeforeUnload = () => localStorage.removeItem("seatBookeds")
@@ -73,7 +76,8 @@ const SeatDiagram = ({ title }) => {
         const customerId = localStorage.getItem("customerId")
 
         if (!screeningId || seats.length === 0 || !customerId) {
-            return console.error("Missing required data")
+            alert("Please choose your seat before booking!!!")
+            return
         }
 
         try {
@@ -83,7 +87,7 @@ const SeatDiagram = ({ title }) => {
             navigate(`/booking/${bookingId}/detail`)
 
             localStorage.removeItem("seatBookeds")
-        } catch(err) {
+        } catch (err) {
             alert("Tickets cannot be booked because:", err)
         }
     }
@@ -180,9 +184,15 @@ const SeatDiagram = ({ title }) => {
                     </Box>
 
                     <Button className="btn" fontSize={"1.5rem"} onClick={() => {
-                        setIsLoading(true)
-                        localStorage.setItem("screeningId", screeningId)
-                        handleBookNowClick()
+                        if (isCustomerLoggedIn) {
+                            setIsLoading(true)
+                            localStorage.setItem("screeningId", screeningId)
+                            handleBookNowClick()
+                        } else if (isManagerLoggedIn) {
+                            alert("You are using a staff account that is not used to book tickets")
+                        } else {
+                            alert("You need to log in to be able to book tickets")
+                        }
                     }}>
                         Book Now
                     </Button>

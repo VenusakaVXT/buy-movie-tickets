@@ -42,4 +42,23 @@
         padding: 2px 5px;
         border-radius: 6px;
     }
+
+    .header__cart {
+        display: flex;
+        align-items: center;
+        padding-right: 16px;
+        position: relative;
+
+        span {
+            position: absolute;
+            top: 0px;
+            right: 5px;
+            padding: 1px 6px;
+            font-size: 16px;
+            line-height: 15px;
+            color: #fff;
+            background: $main-color;
+            border-radius: 10px;
+        }
+    }
 }

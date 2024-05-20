@@ -15,6 +15,7 @@ import {
 import MovieIcon from "@mui/icons-material/Movie"
 import LanguageMenu from "../Language/LanguageMenu"
 import { getApiFromBE } from "../../api/movieApi"
+import { getBookingsFromUser } from "../../api/bookingApi"
 import { Link, useNavigate } from "react-router-dom"
 import "../../scss/Header.scss"
 import { useDispatch, useSelector } from "react-redux"
@@ -28,6 +29,7 @@ const Header = () => {
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
     const [active, setActive] = useState(0)
     const [movies, setMovies] = useState([])
+    const [bookings, setBookings] = useState([])
     const [menuItem, setMenuItem] = useState(null)
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -35,6 +37,12 @@ const Header = () => {
     useEffect(() => {
         getApiFromBE("movie")
             .then((data) => setMovies(data.movies))
+            .catch((err) => console.error(err))
+    }, [])
+
+    useEffect(() => {
+        getBookingsFromUser()
+            .then((res) => setBookings(res.bookings))
             .catch((err) => console.error(err))
     }, [])
 
@@ -173,12 +181,14 @@ const Header = () => {
                         </>}
 
                         {isCustomerLoggedIn && <>
-                            <Link to="/cart" style={{ display: "flex", alignItems: "center", paddingRight: "16px" }}>
+                            <Link to="/cart" className="header__cart">
                                 <ShoppingCartIcon
                                     sx={{ color: "#fff", ":hover": { color: "#e50914" } }}
                                     data-tooltip-content="Screening Cart"
                                     data-tooltip-id="cart"
                                 />
+
+                                <span>{bookings.length.toString() || 0}</span>
                             </Link>
 
                             <Tooltip

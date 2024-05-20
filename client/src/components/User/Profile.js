@@ -101,7 +101,13 @@ const Profile = () => {
                         </Box>
 
                         <Box display={"flex"} justifyContent={"center"}>
-                            <Button className="btn lowercase" onClick={() => setIsModalOpen(true)}>
+                            <Button className="btn lowercase" onClick={() => {
+                                if (isCustomerLoggedIn) {
+                                    setIsModalOpen(true)
+                                } else {
+                                    handleNavigate("edit-profile")
+                                }
+                            }}>
                                 Edit profile
                             </Button>
                             <Button className="btn lowercase" onClick={() => {
@@ -136,12 +142,7 @@ const Profile = () => {
                 </Box>
             </Box>
 
-            {isModalOpen && (
-                <UserUpdateModal
-                    open={isModalOpen}
-                    onClose={() => setIsModalOpen(false)}
-                />
-            )}
+            {isModalOpen && <UserUpdateModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />}
         </Box>
     )
 }
