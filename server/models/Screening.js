@@ -23,8 +23,11 @@ const screeningSchema = new Schema({
         ref: "CinemaRoom",
     },
     wasReleased: {
-        type: Boolean,
-        //default: true,
+        type: Boolean
+    },
+    manager: {
+        type: mongoose.Types.ObjectId,
+        ref: "Manager",
     },
     bookings: [
         {

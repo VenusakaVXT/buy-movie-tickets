@@ -32,6 +32,8 @@ const managerSlice = createSlice({
             localStorage.removeItem("token")
             localStorage.removeItem("managerId")
             localStorage.removeItem("managerEmail")
+            localStorage.removeItem("cinemaId")
+            localStorage.removeItem("seatBookeds")
             sessionStorage.removeItem("tabState")
             sessionStorage.removeItem("activeTab")
             state.isLoggedIn = false

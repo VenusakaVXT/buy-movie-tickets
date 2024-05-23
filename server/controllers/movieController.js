@@ -2,6 +2,8 @@ import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
 import Movie from "../models/Movie.js"
 import Manager from "../models/Employee.js"
+import Producer from "../models/Producer.js"
+import slugify from "slugify"
 
 export const getAllMovies = async (req, res, next) => {
     let movies
@@ -86,8 +88,7 @@ export const addMovie = async (req, res, next) => {
         time,
         trailerId,
         wasReleased,
-        producer,
-        featured
+        producer
     } = req.body
 
     if (
@@ -111,21 +112,25 @@ export const addMovie = async (req, res, next) => {
             contentWritter,
             actors,
             category,
-            releaseDate: new Date(`${releaseDate}`),
+            releaseDate,
             time,
-            featured,
             wasReleased,
             producer,
             trailerId,
             manager: managerId,
         })
+        movie.slug = slugify(movie.title, { lower: true })
 
         const session = await mongoose.startSession()
         session.startTransaction()
         await movie.save({ session })
 
+        const producerMovie = await Producer.findById(movie.producer)
+        producerMovie.movies.push(movie._id)
+        await producerMovie.save({ session })
+
         const managerUser = await Manager.findById(managerId)
-        managerUser.addedMovies.push(movie)
+        managerUser.addedMovies.push(movie._id)
         await managerUser.save({ session })
 
         await session.commitTransaction()
@@ -170,8 +175,7 @@ export const updateMovie = async (req, res, next) => {
         time,
         trailerId,
         wasReleased,
-        producer,
-        featured
+        producer
     } = req.body
 
     try {
@@ -186,8 +190,7 @@ export const updateMovie = async (req, res, next) => {
             time,
             trailerId,
             wasReleased,
-            producer,
-            featured
+            producer
         }, { new: true })
 
         if (!updatedMovie) {

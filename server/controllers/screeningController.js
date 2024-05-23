@@ -2,7 +2,9 @@ import Screening from "../models/Screening.js"
 import Movie from "../models/Movie.js"
 import CinemaRoom from "../models/CinemaRoom.js"
 import Cinema from "../models/Cinema.js"
-import { isValidObjectId } from "mongoose"
+import Manager from "../models/Employee.js"
+import mongoose, { isValidObjectId } from "mongoose"
+import jwt from "jsonwebtoken"
 
 class ScreeningController {
     getApiScreening = async (req, res, next) => {
@@ -21,6 +23,79 @@ class ScreeningController {
         }
 
         res.status(200).json({ screenings })
+    }
+
+    addScreening = async (req, res, next) => {
+        const extractedToken = req.headers.authorization.split(" ")[1]
+
+        if (!extractedToken && extractedToken.trim() === "") {
+            return res.status(404).json({ message: "token not found..." })
+        }
+
+        let managerId, screening
+
+        jwt.verify(extractedToken, process.env.SECRET_KEY, (err, decrypted) => {
+            if (err) {
+                return res.status(400).json({ message: `${err.message}` })
+            } else {
+                managerId = decrypted.id
+                return
+            }
+        })
+
+        const { movie, movieDate, timeSlot, price, cinemaRoom } = req.body
+
+        if (
+            !movie && movie.trim() === "" && !movieDate && movieDate.trim() === ""
+            && !timeSlot && timeSlot.trim() === "" && !price && price.trim() === ""
+            && !cinemaRoom && cinemaRoom.trim() === ""
+        ) {
+            return res.status(422).json({ message: "invalid inputs..." })
+        }
+
+        try {
+            const movieObj = await Movie.findById(movie)
+            const cinemaRoomObj = await CinemaRoom.findById(cinemaRoom)
+
+            if (!movieObj || !cinemaRoomObj) {
+                return res.status(404).json({ message: "movie or cinemaroom not found..." })
+            }
+
+            screening = new Screening({
+                movie,
+                movieDate,
+                timeSlot,
+                price,
+                cinemaRoom,
+                wasReleased: movieObj.wasReleased === true ? true : false,
+                manager: managerId
+            })
+
+            const session = await mongoose.startSession()
+            session.startTransaction()
+            await screening.save({ session })
+
+            movieObj.screenings.push(screening._id)
+            await movieObj.save({ session })
+            
+            cinemaRoomObj.screenings.push(screening._id)
+            await cinemaRoomObj.save({ session })
+
+            const managerUser = await Manager.findById(managerId)
+            managerUser.addedScreenings.push(screening._id)
+            await managerUser.save({ session })
+
+            await session.commitTransaction()
+            session.endSession()
+        } catch (err) {
+            next(err)
+        }
+
+        if (!screening) {
+            return res.status(500).json({ message: "request failed..." })
+        }
+
+        return res.status(201).json({ screening })
     }
 
     create(req, res, next) {
@@ -53,7 +128,7 @@ class ScreeningController {
             cinemaRoom: cinemaRoomObj._id,
             wasReleased: movieObj.wasReleased === true ? true : false
         })
-        1
+
         await screening.save()
             .then(async () => {
                 movieObj.screenings.push(screening._id)

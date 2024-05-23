@@ -1,8 +1,12 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Box } from "@mui/material"
 import "./scss/App.scss"
-import Header from "./components/Header/Header"
 import { Routes, Route, useLocation } from "react-router-dom"
+import { Helmet } from "react-helmet"
+import { useDispatch, useSelector } from "react-redux"
+import { customerActions, managerActions } from "./store"
+import { getManagerProfile } from "./api/userApi"
+import Header from "./components/Header/Header"
 import Home from "./components/HomePage/Home"
 import Release from "./components/HomePage/Release"
 import Category from "./components/HomePage/Category"
@@ -15,15 +19,16 @@ import PageEnding from "./components/Footer/PageEnding"
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage"
 import GoToTopButton from "./components/GoToTop/GoToTopButton"
 import Movie from "./components/Movie/Movie"
+import MovieDetail from "./components/Movie/MovieDetail"
 import Booking from "./components/Booking/Booking"
 import SeatDiagram from "./components/Booking/SeatDiagram"
 import CinemaTicket from "./components/Booking/CinemaTicket"
 import Cart from "./components/Cart/Cart"
 import Profile from "./components/User/Profile"
-import { Helmet } from "react-helmet"
-import { useDispatch, useSelector } from "react-redux"
-import { customerActions, managerActions } from "./store"
-import MovieDetail from "./components/Movie/MovieDetail"
+import AddMovie from "./components/Manager/AddMovie"
+import AddScreening from "./components/Manager/AddScreening"
+import ListData from "./components/Manager/ListData"
+import Statistical from "./components/Manager/Statistical"
 
 const formatTitle = (pathname) => {
     const convertPathname = pathname.replace(/\//g, " ").replace(/-/g, " ").trim()
@@ -31,6 +36,7 @@ const formatTitle = (pathname) => {
 }
 
 const App = () => {
+    const [manager, setManager] = useState()
     const dispatch = useDispatch()
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
@@ -50,6 +56,17 @@ const App = () => {
             console.log("Not logged in yet...")
         }
     }, [dispatch])
+
+    useEffect(() => {
+        getManagerProfile(localStorage.getItem("managerId"))
+            .then((res) => setManager(res.manager))
+            .catch((err) => console.error(err))
+    }, [])
+
+    const handlePathAndTitle = (type) => {
+        const str = manager && manager.position === "Manage movies" ? "Movie" : "Screening"
+        return type === "lower" ? str.toLowerCase() : str
+    }
 
     // disable default scrollRestoration() of RRD
     const ScrollRestoration = () => {
@@ -88,10 +105,22 @@ const App = () => {
                         <CinemaTicket title={`${title} | Movie Ticket`} />
                     } />
                     <Route path="/cart" element={<Cart />} />
-                    <Route 
-                        path={`${isCustomerLoggedIn ? "/customer" : "/manager"}/profile`} 
-                        element={<Profile />} 
+                    <Route
+                        path={`${isCustomerLoggedIn ? "/customer" : "/manager"}/profile`}
+                        element={<Profile />}
                     />
+                    <Route path="/manager/add-movie" element={
+                        <AddMovie title={`${title} | Add Movie`} />
+                    } />
+                    <Route path="/manager/add-screening" element={
+                        <AddScreening title={`${title} | Add Screening`} />
+                    } />
+                    <Route path={`/manager/list-${handlePathAndTitle("lower")}`} element={
+                        <ListData title={`${title} | List ${handlePathAndTitle("upper")}`} />
+                    } />
+                    <Route path="/manager/statistical" element={
+                        <Statistical title={`${title} | Statistical`} />
+                    } />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </section>

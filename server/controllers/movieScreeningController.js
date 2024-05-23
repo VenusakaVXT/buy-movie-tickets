@@ -138,10 +138,17 @@ class MovieScreeningController {
         }
     }
 
-    delete(req, res, next) {
-        Movie.delete({ _id: req.params.id })
-            .then(() => res.redirect("/movie-screening/table-lists"))
-            .catch(next)
+    delete = async (req, res, next) => {
+        try {
+            const movieId = req.params.id
+
+            await Screening.deleteMany({ movie: movieId })
+            await Movie.delete({ _id: movieId })
+
+            res.redirect("/movie-screening/table-lists")
+        } catch (err) {
+            next(err)
+        }
     }
 
     recycleBin(req, res, next) {

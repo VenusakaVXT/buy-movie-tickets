@@ -15,6 +15,7 @@ const Login = () => {
         localStorage.setItem("token", data.token)
         localStorage.setItem("managerId", data.id)
         localStorage.setItem("managerEmail", data.email)
+        localStorage.setItem("cinemaId", data.cinemaId)
         navigate("/")
     }
 

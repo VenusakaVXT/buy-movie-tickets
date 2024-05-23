@@ -3,10 +3,10 @@
 .cart__wrapper {
     margin: 30px 92px;
 
-    .lst-booking {
+    .lst-booking, .list-data {
         margin-top: 20px;
         
-        .booking-item {
+        .booking-item, .data-item {
             background: $second-background;
             margin-bottom: 10px;
             display: flex;
@@ -25,7 +25,7 @@
                 color: #000;
             }
 
-            .movie {
+            .col1 {
                 width: 350px;
                 
                 p {
@@ -36,7 +36,7 @@
                 }
             }
 
-            .seat {
+            .col2 {
                 width: 180px;
 
                 span {

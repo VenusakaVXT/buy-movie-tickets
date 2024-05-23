@@ -20,6 +20,12 @@ class CinemaController {
         res.status(200).json({ cinemas })
     }
 
+    getCinemaRoomFromCinema = (req, res, next) => {
+        CinemaRoom.find({ cinema: req.params.cinemaId })
+            .then((cinemaRooms) => res.status(200).json({ cinemaRooms }))
+            .catch((err) => res.status(500).json({ message: err }))
+    }
+
     create(req, res, next) {
         res.render("cinema/create")
     }

@@ -48,9 +48,6 @@ const movieSchema = new Schema({
             ref: "Producer",
         }
     ],
-    featured: {
-        type: Boolean,
-    },
     screenings: [
         {
             type: mongoose.Types.ObjectId,

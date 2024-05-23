@@ -1,9 +1,42 @@
 @import "./variable";
 
+$frm-color: #767676;
+$frm-margin: 8px 0 20px;
+
+.wrapper {
+    margin: 30px 92px;
+}
+
+.frm-wrapper {
+    width: 100%;
+    padding: 40px;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 10px 10px 20px #000;
+    color: #fff;
+}
+
 hr {
     border: none;
     height: 1px;
     background: #3e4041;
+}
+
+textarea {
+    min-height: 94px;
+    display: block;
+    padding: 0.375rem 0.75rem;
+    margin: $frm-margin;
+    font-size: 1rem;
+    line-height: 1.5;
+    background: transparent;
+    color: #fff;
+    background-clip: padding-box;
+    border-radius: 0.25rem;
+    resize: vertical;
+    transition: border-color, box-shadow 0.15s ease-in-out;
 }
 
 .breadcrumb {
@@ -79,8 +112,16 @@ hr {
     100% { transform: rotate(360deg); }
 }
 
+.text-italic {
+    font-style: italic;
+}
+
 .txt-line {
     padding-bottom: 6px;
+}
+
+.txt-span, .css-11zohuh-MuiSvgIcon-root {
+    color: $main-color;
 }
 
 .txt-hover {
@@ -102,4 +143,56 @@ hr {
     background: transparent;
     color: #fff;
     font-size: 16px;
+}
+
+.css-1x51dt5-MuiInputBase-input-MuiInput-input {
+    padding-left: 11px !important;
+}
+
+.css-dgk4ve-MuiFormControl-root-MuiTextField-root {
+    margin: $frm-margin !important;
+}
+
+.css-q8hpuo-MuiFormControl-root {
+    margin: $frm-margin !important;
+    border: 1px solid $frm-color !important;
+    border-radius: 0.25rem;
+}
+
+.MuiFormLabel-colorPrimary,
+.css-1x51dt5-MuiInputBase-input-MuiInput-input,
+.css-1x51dt5-MuiInputBase-input-MuiInput-input,
+.css-1jy569b-MuiFormLabel-root-MuiInputLabel-root,
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+    color: #fff !important;
+}
+
+.css-hfutr2-MuiSvgIcon-root-MuiSelect-icon, 
+.css-bpeome-MuiSvgIcon-root-MuiSelect-icon,
+.css-1hbvpl3-MuiSvgIcon-root {
+    color: $frm-color !important;
+
+    &.active {
+        color: $main-color !important;
+    }
+}
+
+.css-6hp17o-MuiList-root-MuiMenu-list {
+    background: $second-background;
+    color: #fff;
+}
+
+.calendar {
+    margin: $frm-margin;
+    padding: 16.5px 10px;
+    border: 1px solid $frm-color;
+    border-radius: 0.25rem;
+    background: transparent;
+    color: #fff;
+    font-size: 1rem;
+
+    &::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        color: $frm-color !important;
+    }
 }

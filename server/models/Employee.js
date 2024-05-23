@@ -26,6 +26,12 @@ const managerSchema = new Schema({
             ref: "Movie",
         },
     ],
+    addedScreenings: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "Screening",
+        },
+    ]
 })
 
 export default mongoose.model("Manager", managerSchema)

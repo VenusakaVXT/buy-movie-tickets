@@ -4,6 +4,7 @@ import screeningController from "../controllers/screeningController.js"
 const screeningRouter = express.Router()
 
 screeningRouter.get("/", screeningController.getApiScreening)
+screeningRouter.post("/", screeningController.addScreening)
 screeningRouter.get("/create", screeningController.create)
 screeningRouter.post("/store", screeningController.store)
 screeningRouter.get("/now-showing", screeningController.lstNowShowing)

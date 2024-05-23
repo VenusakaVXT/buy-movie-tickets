@@ -83,7 +83,8 @@ export const managerLogin = async (req, res, next) => {
         message: "login successfully!!!",
         token,
         id: existManager._id,
-        email
+        email,
+        cinemaId: existManager.cinema
     })
 }
 
@@ -107,6 +108,24 @@ export const getManagerById = async (req, res, next) => {
     try {
         const manager = await Manager.findById(req.params.id)
             .populate("cinema", "name")
+            .populate({
+                path: "addedMovies",
+                populate: [
+                    { path: "category", select: "category" },
+                    { path: "producer", select: "producerName" }
+                ],
+            })
+            .populate({
+                path: "addedScreenings",
+                populate: [
+                    { path: "movie", select: "title trailerId slug time" },
+                    {
+                        path: "cinemaRoom", select: "roomNumber", populate: {
+                            path: "cinema", select: "name"
+                        }
+                    }
+                ],
+            })
 
         if (!manager) {
             return res.status(500).json({ message: "manager not found..." })

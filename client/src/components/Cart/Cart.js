@@ -4,7 +4,7 @@ import { Box, Typography, List, ListItem, ListItemText } from "@mui/material"
 import { getBookingsFromUser } from "../../api/bookingApi"
 import { handleSeatArr } from "../../util"
 import Loading from "../Loading/Loading"
-import DetailsIcon from "@mui/icons-material/Details";
+import DetailsIcon from "@mui/icons-material/Details"
 import { Tooltip } from "react-tooltip"
 import "../../scss/Cart.scss"
 import "../../scss/App.scss"
@@ -41,7 +41,7 @@ const Cart = () => {
                                 alt={booking.screening.movie.slug}
                             />
 
-                            <Box className="movie">
+                            <Box className="col1">
                                 <Typography className="link" onClick={() =>
                                     navigate(`/movie-details/${booking.screening.movie.slug}`)
                                 }>
@@ -51,12 +51,12 @@ const Cart = () => {
                                 <ListItemText>{booking.screening.movieDate}</ListItemText>
                             </Box>
 
-                            <Box className="seat">
+                            <Box className="col2">
                                 <Typography>Seat number:</Typography>
                                 <ListItemText>{handleSeatArr(booking.seats)}</ListItemText>
                             </Box>
 
-                            <Box className="price">
+                            <Box className="col3">
                                 <Typography>Price ticket:</Typography>
                                 <ListItemText>{booking.totalMoney.toLocaleString("vi-VN")} VNĐ</ListItemText>
                             </Box>

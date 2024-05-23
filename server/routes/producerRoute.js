@@ -3,6 +3,7 @@ import producerController from "../controllers/producerController.js"
 
 const producerRouter = express.Router()
 
+producerRouter.get("/", producerController.getApiProducer)
 producerRouter.get("/create", producerController.create)
 producerRouter.post("/store", producerController.store)
 producerRouter.get("/table-lists", producerController.tableLists)

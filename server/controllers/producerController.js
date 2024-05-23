@@ -1,6 +1,20 @@
 import Producer from "../models/Producer.js"
 
 class ProducerController {
+    getApiProducer = async (req, res, next) => {
+        try {
+            const producers = await Producer.find().populate("movies")
+
+            if (!producers) {
+                res.status(500).json({ message: "request failed..." })
+            }
+
+            res.status(200).json({ producers })
+        } catch(err) {
+            next(err)
+        }
+    }
+
     create(req, res, next) {
         res.render("producer/create")
     }

@@ -16,6 +16,7 @@ import MovieIcon from "@mui/icons-material/Movie"
 import LanguageMenu from "../Language/LanguageMenu"
 import { getApiFromBE } from "../../api/movieApi"
 import { getBookingsFromUser } from "../../api/bookingApi"
+import { getManagerProfile } from "../../api/userApi"
 import { Link, useNavigate } from "react-router-dom"
 import "../../scss/Header.scss"
 import { useDispatch, useSelector } from "react-redux"
@@ -30,9 +31,11 @@ const Header = () => {
     const [active, setActive] = useState(0)
     const [movies, setMovies] = useState([])
     const [bookings, setBookings] = useState([])
+    const [manager, setManager] = useState()
     const [menuItem, setMenuItem] = useState(null)
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const managerId = localStorage.getItem("managerId")
 
     useEffect(() => {
         getApiFromBE("movie")
@@ -41,10 +44,16 @@ const Header = () => {
     }, [])
 
     useEffect(() => {
-        getBookingsFromUser()
+        isCustomerLoggedIn && getBookingsFromUser()
             .then((res) => setBookings(res.bookings))
             .catch((err) => console.error(err))
-    }, [])
+    }, [isCustomerLoggedIn])
+
+    useEffect(() => {
+        isManagerLoggedIn && getManagerProfile(managerId)
+            .then((res) => setManager(res.manager))
+            .catch((err) => console.error(err))
+    }, [isManagerLoggedIn, managerId])
 
     const handleTabClick = (e) => {
         const getIdByTab = e.currentTarget.getAttribute("data-id")
@@ -78,6 +87,17 @@ const Header = () => {
 
     const logout = (isAdmin) => {
         dispatch(isAdmin ? managerActions.logout() : customerActions.logout())
+    }
+
+    const determinePosition = (position) => {
+        switch (position) {
+            case "Manage movies":
+                return { path: ["add-movie", "list-movie"], menu: ["Add movie", "List movie"] }
+            case "Manage screenings":
+                return { path: ["add-screening", "list-screening"], menu: ["Add screening", "List screening"] }
+            default:
+                return { path: ["add-data", "list-data"], menu: ["Add data", "List data"] }
+        }
     }
 
     return (
@@ -188,7 +208,7 @@ const Header = () => {
                                     data-tooltip-id="cart"
                                 />
 
-                                <span>{bookings.length.toString() || 0}</span>
+                                <span>{bookings.length.toString()}</span>
                             </Link>
 
                             <Tooltip
@@ -287,19 +307,23 @@ const Header = () => {
                                 </MenuItem>
                                 <hr />
 
-                                <MenuItem LinkComponent={Link} onClick={() => {
-                                    navigate("/manager/add-movie")
-                                    handleMenuClose()
-                                }}>
-                                    Add movie
-                                </MenuItem>
+                                {manager && <>
+                                    <MenuItem LinkComponent={Link} onClick={() => {
+                                        navigate(`/manager/${determinePosition(manager.position).path[0]}`)
+                                        handleMenuClose()
+                                        window.location.reload()
+                                    }}>
+                                        {determinePosition(manager.position).menu[0]}
+                                    </MenuItem>
 
-                                <MenuItem LinkComponent={Link} onClick={() => {
-                                    navigate("/manager/list-movie")
-                                    handleMenuClose()
-                                }}>
-                                    List movie
-                                </MenuItem>
+                                    <MenuItem LinkComponent={Link} onClick={() => {
+                                        navigate(`/manager/${determinePosition(manager.position).path[1]}`)
+                                        handleMenuClose()
+                                        window.location.reload()
+                                    }}>
+                                        {determinePosition(manager.position).menu[1]}
+                                    </MenuItem>
+                                </>}
 
                                 <MenuItem LinkComponent={Link} onClick={() => {
                                     navigate("/manager/statistical")
