@@ -40,6 +40,7 @@ class SeatController {
         await seat.save()
             .then(async () => {
                 cinemaRoomObj.seats.push(seat._id)
+                cinemaRoomObj.totalNumSeat = cinemaRoomObj.seats.length
                 await cinemaRoomObj.save()
                 res.redirect("/seat/table-lists")
             })

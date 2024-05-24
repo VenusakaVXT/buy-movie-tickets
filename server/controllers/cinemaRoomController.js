@@ -1,5 +1,6 @@
 import Cinema from "../models/Cinema.js"
 import CinemaRoom from "../models/CinemaRoom.js"
+import Seat from "../models/Seat.js"
 import { isValidObjectId } from "mongoose"
 
 class CinemaRoomController {
@@ -9,9 +10,36 @@ class CinemaRoomController {
             .catch(next)
     }
 
+    createSeatsAuto = async (cinemaRoomId, totalNumSeat) => {
+        const seats = []
+        const rows = ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
+
+        for (let i = 0; i < totalNumSeat; i++) {
+            const rowSeat = rows[Math.floor(i / 11)]
+            const seatNumber = (i % 11) + 1
+
+            const seat = new Seat({
+                rowSeat,
+                seatNumber: seatNumber.toString(),
+                seatType: "Single",
+                cinemaRoom: cinemaRoomId,
+                selected: false
+            })
+
+            seats.push(seat)
+        }
+
+        const savedSeats = await Seat.insertMany(seats)
+        return savedSeats.map(seat => seat._id)
+    }
+
     store = async (req, res, next) => {
         const { roomNumber, totalNumSeat } = req.body
         const cinemaObj = await Cinema.findOne({ _id: req.body.cinema })
+
+        if (!cinemaObj) {
+            return res.status(404).send("cinema not found...")
+        }
 
         const cinemaRoom = new CinemaRoom({
             roomNumber,
@@ -19,13 +47,16 @@ class CinemaRoomController {
             cinema: cinemaObj._id
         })
 
-        await cinemaRoom.save()
-            .then(async () => {
-                cinemaObj.cinemaRooms.push(cinemaRoom._id)
-                await cinemaObj.save()
-                res.redirect("/cinemaroom/table-lists")
-            })
-            .catch(next)
+        const savedCinemaRoom = await cinemaRoom.save()
+        const seatIds = await this.createSeatsAuto(savedCinemaRoom._id, totalNumSeat)
+
+        savedCinemaRoom.seats = seatIds
+        await savedCinemaRoom.save()
+
+        cinemaObj.cinemaRooms.push(cinemaRoom._id)
+        await cinemaObj.save()
+
+        res.redirect("/cinemaroom/table-lists")
     }
 
     tableLists = async (req, res, next) => {
