@@ -45,6 +45,20 @@ const Auth = ({ onSubmit, signUp, role }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+
+        if (isSignUp) {
+            if (inputs.password !== inputs.confirmPassword) {
+                alert("Passwords do not match!!!")
+                return
+            }
+
+            const passwordPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&]).{6,}/
+            if (!passwordPattern.test(inputs.password)) {
+                alert("Password must contain at least one uppercase letter, one number, and one special character")
+                return
+            }
+        }
+
         setIsSignUp(isSignUp)
         onSubmit(role === "manager" ? { inputs } : { inputs, signUp: isSignUp })
     }

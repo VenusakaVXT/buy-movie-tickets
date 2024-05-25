@@ -36,6 +36,9 @@ const userSchema = new Schema({
             ref: "Booking",
         },
     ],
+    ratingPoints: {
+        type: Number
+    }
 })
 
 export default mongoose.model("User", userSchema)

@@ -16,12 +16,21 @@ import MovieIcon from "@mui/icons-material/Movie"
 import LanguageMenu from "../Language/LanguageMenu"
 import { getApiFromBE } from "../../api/movieApi"
 import { getBookingsFromUser } from "../../api/bookingApi"
-import { getManagerProfile } from "../../api/userApi"
+import { getCustomerProfile, getManagerProfile } from "../../api/userApi"
 import { Link, useNavigate } from "react-router-dom"
 import "../../scss/Header.scss"
 import { useDispatch, useSelector } from "react-redux"
 import { managerActions, customerActions } from "../../store"
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart"
+import StarsIcon from "@mui/icons-material/Stars"
+import TrendingUpIcon from "@mui/icons-material/TrendingUp"
+import PersonIcon from "@mui/icons-material/Person"
+import SettingsIcon from "@mui/icons-material/Settings"
+import LogoutIcon from "@mui/icons-material/Logout"
+import RuleIcon from "@mui/icons-material/Rule"
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd"
+import BarChartIcon from "@mui/icons-material/BarChart"
+import ListIcon from "@mui/icons-material/List"
 import { Tooltip } from "react-tooltip"
 import "../../scss/App.scss"
 
@@ -31,10 +40,12 @@ const Header = () => {
     const [active, setActive] = useState(0)
     const [movies, setMovies] = useState([])
     const [bookings, setBookings] = useState([])
+    const [customer, setCustomer] = useState()
     const [manager, setManager] = useState()
     const [menuItem, setMenuItem] = useState(null)
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const customerId = localStorage.getItem("customerId")
     const managerId = localStorage.getItem("managerId")
 
     useEffect(() => {
@@ -42,6 +53,12 @@ const Header = () => {
             .then((data) => setMovies(data.movies))
             .catch((err) => console.error(err))
     }, [])
+
+    useEffect(() => {
+        isCustomerLoggedIn && getCustomerProfile(customerId)
+            .then((res) => setCustomer(res.user))
+            .catch((err) => console.error(err))
+    }, [isCustomerLoggedIn, customerId])
 
     useEffect(() => {
         isCustomerLoggedIn && getBookingsFromUser()
@@ -223,7 +240,7 @@ const Header = () => {
 
                             <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer" }} onClick={handleMenuOpen}>
                                 <Avatar style={{ width: "39px", height: "38px" }} alt="user avt" />
-                                <Typography paddingLeft={"10px"}>{localStorage.getItem("customerName")}</Typography>
+                                <Typography paddingLeft={"10px"}>{customer && customer.name}</Typography>
                             </Box>
 
                             <Menu
@@ -241,18 +258,33 @@ const Header = () => {
                                 <MenuItem sx={{ cursor: "default" }}>Account type: Customer</MenuItem>
                                 <hr />
 
+                                <MenuItem sx={{ cursor: "default" }}>
+                                    <StarsIcon htmlColor="#ffff00" sx={{ marginRight: "2px" }} />
+                                    <Typography lineHeight={"21px"}>
+                                        {`Raiting: ${customer && customer.ratingPoints} point`}
+                                    </Typography>
+                                </MenuItem>
+
+                                <MenuItem LinkComponent={Link} onClick={() => {
+                                    navigate("/charts")
+                                    handleMenuClose()
+                                }}>
+                                    <TrendingUpIcon sx={{ marginRight: "2px" }} />Customer charts
+                                </MenuItem>
+                                <hr />
+
                                 <MenuItem LinkComponent={Link} onClick={() => {
                                     navigate("/customer/profile")
                                     handleMenuClose()
                                 }}>
-                                    Account information
+                                    <PersonIcon sx={{ margin: "0 2px 3px 0" }} />Account information
                                 </MenuItem>
 
                                 <MenuItem LinkComponent={Link} onClick={() => {
                                     navigate("/customer/setting")
                                     handleMenuClose()
                                 }}>
-                                    Settings
+                                    <SettingsIcon sx={{ margin: "0 2px 3px 0" }} />Settings
                                 </MenuItem>
                                 <hr />
 
@@ -266,7 +298,7 @@ const Header = () => {
                                         ":hover": { color: "#e50914" }
                                     }}
                                 >
-                                    Log out
+                                    <LogoutIcon sx={{ marginRight: "2px" }} />Log out
                                 </MenuItem>
                             </Menu>
                         </>}
@@ -296,14 +328,14 @@ const Header = () => {
                                     navigate("/manager/profile")
                                     handleMenuClose()
                                 }}>
-                                    Account information
+                                    <PersonIcon sx={{ margin: "0 2px 3px 0" }} />Account information
                                 </MenuItem>
 
                                 <MenuItem LinkComponent={Link} onClick={() => {
                                     navigate("/manager/mission")
                                     handleMenuClose()
                                 }}>
-                                    Today works
+                                    <RuleIcon sx={{ marginRight: "2px" }} />Today works
                                 </MenuItem>
                                 <hr />
 
@@ -311,8 +343,8 @@ const Header = () => {
                                     <MenuItem LinkComponent={Link} onClick={() => {
                                         navigate(`/manager/${determinePosition(manager.position).path[0]}`)
                                         handleMenuClose()
-                                        window.location.reload()
                                     }}>
+                                        <LibraryAddIcon sx={{ marginRight: "2px" }} />
                                         {determinePosition(manager.position).menu[0]}
                                     </MenuItem>
 
@@ -321,7 +353,10 @@ const Header = () => {
                                         handleMenuClose()
                                         window.location.reload()
                                     }}>
-                                        {determinePosition(manager.position).menu[1]}
+                                        <ListIcon sx={{ marginRight: "2px" }} />
+                                        <Typography lineHeight={"21px"}>
+                                            {determinePosition(manager.position).menu[1]}
+                                        </Typography>
                                     </MenuItem>
                                 </>}
 
@@ -329,7 +364,8 @@ const Header = () => {
                                     navigate("/manager/statistical")
                                     handleMenuClose()
                                 }}>
-                                    Statistical
+                                    <BarChartIcon sx={{ marginRight: "2px" }} />
+                                    <Typography lineHeight={"21px"}>Statistical</Typography>
                                 </MenuItem>
                                 <hr />
 
@@ -343,7 +379,7 @@ const Header = () => {
                                         ":hover": { color: "#e50914" }
                                     }}
                                 >
-                                    Log out
+                                    <LogoutIcon sx={{ marginRight: "2px" }} />Log out
                                 </MenuItem>
                             </Menu>
                         </>}

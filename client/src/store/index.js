@@ -9,7 +9,6 @@ const customerSlice = createSlice({
         },
         logout(state) {
             localStorage.removeItem("customerId")
-            localStorage.removeItem("customerName")
             localStorage.removeItem("screeningId")
             localStorage.removeItem("seatBookeds")
             sessionStorage.removeItem("tabState")

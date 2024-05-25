@@ -13,7 +13,6 @@ const Login = () => {
         console.log(data)
         dispatch(customerActions.login())
         localStorage.setItem("customerId", data.id)
-        localStorage.setItem("customerName", data.name)
         navigate("/")
     }
 

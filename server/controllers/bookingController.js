@@ -57,6 +57,7 @@ export const newBooking = async (req, res, next) => {
 
     try {
         const totalMoney = existScreening.price * existSeats.length
+        const ratingPoints = existSeats.length * 5
         const qrData = JSON.stringify({ screening, seats, user, totalMoney })
         const qrDataURL = await qrCode.toDataURL(qrData)
 
@@ -65,6 +66,7 @@ export const newBooking = async (req, res, next) => {
         const session = await mongoose.startSession()
         session.startTransaction()
 
+        existUser.ratingPoints += ratingPoints
         existUser.bookings.push(booking)
         existScreening.bookings.push(booking)
 
