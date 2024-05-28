@@ -17,7 +17,7 @@ import LanguageMenu from "../Language/LanguageMenu"
 import { getApiFromBE } from "../../api/movieApi"
 import { getBookingsFromUser } from "../../api/bookingApi"
 import { getCustomerProfile, getManagerProfile } from "../../api/userApi"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import "../../scss/Header.scss"
 import { useDispatch, useSelector } from "react-redux"
 import { managerActions, customerActions } from "../../store"
@@ -45,8 +45,13 @@ const Header = () => {
     const [menuItem, setMenuItem] = useState(null)
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const location = useLocation()
     const customerId = localStorage.getItem("customerId")
     const managerId = localStorage.getItem("managerId")
+
+    useEffect(() => {
+        if (location.pathname === "/") setActive(0)
+    }, [location])
 
     useEffect(() => {
         getApiFromBE("movie")
