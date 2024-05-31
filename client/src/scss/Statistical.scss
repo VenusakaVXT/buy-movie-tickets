@@ -1,0 +1,82 @@
+@import "./variable";
+@import url("https://fonts.googleapis.com/css2?family=Mandali&family=Pacifico&display=swap");
+
+.statistical__wrapper {
+    h4 {
+        color: $main-color;
+        text-align: left;
+        font-family: "Pacifico", cursive;
+        font-weight: 400;
+        font-style: normal;
+        margin: 10px;
+    }
+
+    .statistical__tabs {
+        margin: 10px;
+
+        .statistical__tab-item {
+            font-size: 16px;
+            color: #fff;
+            padding: 8px 10px;
+            cursor: pointer;
+
+            &.active {
+                background: $main-color;
+                border-radius: 0.25rem;
+            }
+        }
+    }
+
+    .statistical__tables {
+        width: 100%;
+        height: calc(100% - (50% + 15px));
+        margin: 15px 0;
+        background: $second-background;
+    }
+
+    .chart-wrapper {
+        display: flex;
+        width: 100%;
+        height: 50%;
+
+        .chart-item {
+            background: $second-background;
+            padding: 16px;
+
+            .chart-note {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .chart-note-item {
+                    display: flex;
+                    position: relative;
+
+                    .chart-note-color {
+                        width: 32px;
+                        height: 8px;
+                        position: absolute;
+                        border-radius: 0.25rem;
+                        top: 6px;
+                        left: -32px;
+                    }
+                }
+            }
+        }
+
+        .chart-growth {
+            width: 65%;
+            margin-right: 15px;
+
+            .chart-display {
+                height: 250px;
+                flex-grow: 1;
+                overflow: hidden;
+            }
+        }
+
+        .chart-pie {
+            width: calc(100% - 65%);
+        }
+    }
+}

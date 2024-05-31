@@ -192,6 +192,7 @@ const SeatDiagram = ({ title }) => {
                             alert("You are using a staff account that is not used to book tickets")
                         } else {
                             alert("You need to log in to be able to book tickets")
+                            navigate("/customer/login")
                         }
                     }}>
                         Book Now

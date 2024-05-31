@@ -176,7 +176,11 @@ export const login = async (req, res, next) => {
         return res.status(400).json({ message: "incorrect password..." })
     }
 
-    res.status(200).json({ message: "login successfully!!!", id: existUser._id })
+    res.status(200).json({
+        message: "login successfully!!!",
+        id: existUser._id,
+        name: existUser.name
+    })
 }
 
 export const getBookingOfUser = async (req, res, next) => {
@@ -196,5 +200,28 @@ export const getBookingOfUser = async (req, res, next) => {
         return res.status(200).json({ bookings })
     } catch (err) {
         console.error(err)
+    }
+}
+
+export const getCustomersRanking = async (req, res, next) => {
+    try {
+        const customers = await User.find().lean()
+
+        const customersData = customers.map((customer) => ({
+            name: customer.name,
+            totalBookings: customer.bookings.length,
+            feedbacks: 0,
+            ratingPoints: customer.ratingPoints
+        }))
+
+        customersData.sort((a, b) => b.ratingPoints - a.ratingPoints)
+
+        customersData.forEach((customer, index) => {
+            customer.rank = index + 1
+        })
+
+        return res.status(200).json({ customersStatistics: customersData })
+    } catch (err) {
+        next(err)
     }
 }

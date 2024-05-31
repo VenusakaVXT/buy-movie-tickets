@@ -5,6 +5,7 @@ import {
     getAllMovies,
     getMovieById,
     getMovieBySlug,
+    getMovieStatistics,
     getScreeningsByMovieSlug,
     updateMovie,
 } from "../controllers/movieController.js"
@@ -12,6 +13,7 @@ import {
 const movieRouter = express.Router()
 
 movieRouter.get("/", getAllMovies)
+movieRouter.get("/statistics", getMovieStatistics)
 movieRouter.get("/:id", getMovieById)
 movieRouter.get("/:slug/detail", getMovieBySlug)
 movieRouter.post("/", addMovie)

@@ -97,3 +97,15 @@ export const addScreening = async (data) => {
     const resData = await res.data
     return resData
 }
+
+export const getMovieStatistics = async () => {
+    const res = await axios.get("/movie/statistics")
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200 && res.status !== 201) {
+        console.log("no data...")
+    }
+
+    const resData = await res.data
+    return resData
+}

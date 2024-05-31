@@ -75,3 +75,27 @@ export const updateUser = async (id) => {
     const resData = await res.data
     return resData
 }
+
+export const getCustomersRanking = async () => {
+    const res = await axios.get("/user/customers/ranking")
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200 && res.status !== 201) {
+        console.log("no data...")
+    }
+
+    const resData = await res.data
+    return resData
+}
+
+export const getEmployeeStatistics = async () => {
+    const res = await axios.get("/manager/statistics/employees")
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200 && res.status !== 201) {
+        console.log("no data...")
+    }
+
+    const resData = await res.data
+    return resData
+}

@@ -6,9 +6,11 @@ const customerSlice = createSlice({
     reducers: {
         login(state) {
             state.isLoggedIn = true
+            localStorage.removeItem("seatBookeds")
         },
         logout(state) {
             localStorage.removeItem("customerId")
+            localStorage.removeItem("customerName")
             localStorage.removeItem("screeningId")
             localStorage.removeItem("seatBookeds")
             sessionStorage.removeItem("tabState")
@@ -26,6 +28,7 @@ const managerSlice = createSlice({
             state.isLoggedIn = true
             sessionStorage.removeItem("tabState")
             sessionStorage.removeItem("activeTab")
+            localStorage.removeItem("seatBookeds")
         },
         logout(state) {
             localStorage.removeItem("token")

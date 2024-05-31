@@ -4,6 +4,8 @@ import Movie from "../models/Movie.js"
 import Manager from "../models/Employee.js"
 import Producer from "../models/Producer.js"
 import slugify from "slugify"
+import Screening from "../models/Screening.js"
+import CinemaRoom from "../models/CinemaRoom.js"
 
 export const getAllMovies = async (req, res, next) => {
     let movies
@@ -223,5 +225,59 @@ export const getScreeningsByMovieSlug = async (req, res, next) => {
     } catch (err) {
         console.error(err)
         return res.status(500).json({ message: next })
+    }
+}
+
+export const getMovieStatistics = async (req, res, next) => {
+    try {
+        const moviesStatistics = []
+        const movies = await Movie.find().populate("screenings").lean()
+
+        if (!movies || movies.length === 0) {
+            return res.status(404).json({ message: "movies not found..." })
+        }
+
+        for (const movie of movies) {
+            const screenings = await Screening.find({ movie: movie._id })
+                .populate("bookings").populate("cinemaRoom").lean()
+
+            let ticketsBookedLength = 0
+            let revenue = 0
+            let totalSeats = 0
+            let selectedSeats = 0
+
+            for (const screening of screenings) {
+                ticketsBookedLength += screening.bookings.length
+
+                for (const booking of screening.bookings) {
+                    revenue += booking.totalMoney
+                }
+
+                if (screening.cinemaRoom) {
+                    const cinemaRoom = await CinemaRoom.findById(screening.cinemaRoom._id).populate("seats").lean()
+
+                    if (cinemaRoom && cinemaRoom.seats) {
+                        totalSeats += cinemaRoom.seats.length
+                        selectedSeats += cinemaRoom.seats.filter(seat => seat.selected).length
+                    }
+                }
+            }
+
+            const percentSeatBooked = totalSeats ? (selectedSeats / totalSeats) * 100 : 0
+            const percentSeatNotBooked = percentSeatBooked === 0 ? 100 : ((totalSeats - selectedSeats) / totalSeats) * 100
+
+            moviesStatistics.push({
+                title: movie.title,
+                totalScreenings: movie.screenings ? movie.screenings.length : 0,
+                ticketsBookedLength,
+                revenue,
+                percentSeatBooked: percentSeatBooked.toFixed(2),
+                percentSeatNotBooked: percentSeatNotBooked.toFixed(2)
+            })
+        }
+
+        return res.status(200).json({ moviesStatistics })
+    } catch (err) {
+        next(err)
     }
 }

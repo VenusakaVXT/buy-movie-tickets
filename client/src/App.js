@@ -29,6 +29,7 @@ import AddMovie from "./components/Manager/AddMovie"
 import AddScreening from "./components/Manager/AddScreening"
 import ListData from "./components/Manager/ListData"
 import Statistical from "./components/Manager/Statistical"
+import Charts from "./components/Charts/Charts"
 
 const formatTitle = (pathname) => {
     const convertPathname = pathname.replace(/\//g, " ").replace(/-/g, " ").trim()
@@ -121,6 +122,7 @@ const App = () => {
                     <Route path="/manager/statistical" element={
                         <Statistical title={`${title} | Statistical`} />
                     } />
+                    <Route path="/charts" element={<Charts />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </section>

@@ -23,3 +23,9 @@ export const handleDate = (date) => {
     const options = { day: "2-digit", month: "2-digit", year: "numeric" }
     return formatDate.toLocaleDateString("en-GB", options)
 }
+
+export const convertToAcronym = (phrase) => {
+    const words = String(phrase).split(" ")
+    const acronym = words.map(word => word.charAt(0).toUpperCase()).join("")
+    return acronym
+}

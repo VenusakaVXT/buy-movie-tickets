@@ -34,7 +34,7 @@ const Cart = () => {
                 </Box>
 
                 <List className="lst-booking">
-                    {bookings.map((booking) => (
+                    {bookings.length !== 0 ? bookings.map((booking) => (
                         <ListItem key={booking._id} className="booking-item">
                             <img
                                 src={`https://img.youtube.com/vi/${booking.screening.movie.trailerId}/maxresdefault.jpg`}
@@ -83,7 +83,18 @@ const Cart = () => {
                                 }}
                             />
                         </ListItem>
-                    ))}
+                    )) :
+                        <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
+                            <img
+                                src="http://localhost:5000/img/astronaut_with_magnifying_glass.png"
+                                width={"30%"}
+                                height={"60%"}
+                                alt="Not found"
+                            />
+                            <Typography variant="h5" color={"#2d2d2e"}>
+                                You haven't booked any tickets yet
+                            </Typography>
+                        </Box>}
                 </List>
             </Box> : <Loading />}
         </>
