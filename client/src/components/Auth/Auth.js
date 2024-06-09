@@ -22,7 +22,7 @@ const Auth = ({ onSubmit, signUp, role }) => {
         phone: "",
         birthDay: "",
         gender: "",
-        adress: "",
+        address: "",
         password: "",
         confirmPassword: ""
     } : role === "manager" ? {

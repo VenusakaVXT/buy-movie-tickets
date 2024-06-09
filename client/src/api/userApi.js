@@ -8,7 +8,7 @@ export const customerSendLoginRequest = async (data, signUp) => {
             phone: data.phone,
             birthDay: data.birthDay,
             gender: data.gender,
-            adress: data.adress,
+            address: data.address,
             password: data.password,
             confirmPassword: data.confirmPassword
         } : {
@@ -64,8 +64,8 @@ export const getManagerProfile = async (id) => {
     return resData
 }
 
-export const updateUser = async (id) => {
-    const res = await axios.put(`/user/${id}`)
+export const updateUser = async (id, data) => {
+    const res = await axios.put(`/user/${id}`, data)
         .catch((err) => console.error(err))
 
     if (res.status !== 200 && res.status !== 201) {

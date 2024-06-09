@@ -29,3 +29,9 @@ export const convertToAcronym = (phrase) => {
     const acronym = words.map(word => word.charAt(0).toUpperCase()).join("")
     return acronym
 }
+
+export const formatDateInput = (dateStr) => {
+    if (!dateStr) return null
+    const date = new Date(dateStr)
+    return date.toISOString().split("T")[0]
+}

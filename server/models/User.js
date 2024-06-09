@@ -27,7 +27,7 @@ const userSchema = new Schema({
     gender: {
         type: String,
     },
-    adress: {
+    address: {
         type: String,
     },
     bookings: [

@@ -1,177 +1,154 @@
-import React, { useState, useEffect } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import axios from "axios"
+import React, { useState } from "react"
 import {
     Modal,
     Box,
     Typography,
     TextField,
+    FormLabel,
     Button,
-    Grid
+    IconButton,
+    FormControl,
+    Select,
+    MenuItem
 } from "@mui/material"
+import CloseIcon from "@mui/icons-material/Close"
+import { updateUser } from "../../api/userApi"
+import { formatDateInput } from "../../util"
 
-const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    p: 4,
-}
+const setWidth = { width: "510px" }
+const frmRow = { display: "flex", marginBottom: 2 }
+const frmCol = { display: "flex", flexDirection: "column" }
 
-const fetchUserData = async (id) => {
-    try {
-        const res = await axios.get(`/user/${id}`)
-        return res.data
-    } catch (error) {
-        console.error("Error fetching user data:", error)
-        return null
-    }
-}
-
-const UserUpdateModal = ({ open, onClose }) => {
-    const { userId } = useParams()
-    const navigate = useNavigate()
-    const [user, setUser] = useState({
-        name: "",
-        phone: "",
-        email: "",
-        birthDay: "",
-        gender: "",
-        address: ""
+const UserUpdateModal = ({ customerData, open, onClose }) => {
+    const [inputs, setInputs] = useState({
+        name: customerData.name,
+        email: customerData.email,
+        phone: customerData.phone,
+        birthDay: formatDateInput(customerData.birthDay),
+        gender: customerData.gender,
+        address: customerData.address
     })
 
-    useEffect(() => {
-        const getUserData = async () => {
-            const userData = await fetchUserData(userId)
-            if (userData) {
-                setUser(userData)
-            }
-        }
-        getUserData()
-    }, [userId])
-
     const handleChange = (e) => {
-        const { name, value } = e.target
-        setUser((prevUser) => ({
-            ...prevUser,
-            [name]: value
-        }))
+        setInputs((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
     }
 
-    const handleSubmit = async () => {
-        if (!user.name || !user.phone || !user.email) {
-            alert("All fields are required.")
-            return
-        }
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        const customerId = localStorage.getItem("customerId")
 
         try {
-            const updatedUser = await updateUser(userId, user)
-            if (updatedUser) {
+            const res = await updateUser(customerId, inputs)
+            if (res) {
                 alert("User updated successfully")
-                onClose()
-                navigate("/users")
+                window.location.reload()
             }
-        } catch (error) {
-            console.error("Error updating user:", error)
-        }
-    }
-
-    const updateUser = async (id, userData) => {
-        try {
-            const res = await axios.put(`/user/${id}`, userData)
-            return res.data
-        } catch (error) {
-            console.error(error)
-            return null
+        } catch (err) {
+            console.error(err)
         }
     }
 
     return (
-        <Modal
-            open={open}
-            onClose={onClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-        >
-            <Box sx={style}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Update User
-                </Typography>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <TextField
-                            label="Name"
-                            name="name"
-                            value={user.name}
-                            onChange={handleChange}
-                            fullWidth
-                            required
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            label="Phone"
-                            name="phone"
-                            value={user.phone}
-                            onChange={handleChange}
-                            fullWidth
-                            required
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            label="Email"
-                            name="email"
-                            value={user.email}
-                            onChange={handleChange}
-                            fullWidth
-                            required
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            label="Birthday"
-                            name="birthDay"
-                            type="date"
-                            value={user.birthDay}
-                            onChange={handleChange}
-                            fullWidth
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            label="Gender"
-                            name="gender"
-                            value={user.gender}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            label="Address"
-                            name="address"
-                            value={user.address}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                    </Grid>
-                </Grid>
-                <Box sx={{ mt: 2, display: "flex", justifyContent: "space-between" }}>
-                    <Button variant="contained" color="secondary" onClick={onClose}>
-                        Cancel
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={handleSubmit}>
-                        Save
-                    </Button>
+        <Modal open={open} onClose={onClose}>
+            <form onSubmit={handleSubmit}>
+                <Box className="frm-wrapper" bgcolor={"#1a1b1e"} boxShadow={24} sx={{
+                    width: "82%",
+                    position: "absolute",
+                    top: "45%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)"
+                }}>
+                    <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"} marginBottom={2}>
+                        <Typography variant="h5" color={"#e50914"}>Edit Profile</Typography>
+                        <IconButton onClick={onClose}>
+                            <CloseIcon sx={{ ":hover": { color: "#e50914" } }} />
+                        </IconButton>
+                    </Box>
+
+                    <Box sx={frmRow}>
+                        <Box sx={frmCol} marginRight={"20px"}>
+                            <FormLabel>Customer name:</FormLabel>
+                            <TextField
+                                name="name"
+                                variant="standard"
+                                margin="normal"
+                                value={inputs.name}
+                                required
+                                sx={setWidth}
+                                onChange={handleChange}
+                            />
+                        </Box>
+
+                        <Box sx={frmCol}>
+                            <FormLabel>Email:</FormLabel>
+                            <TextField
+                                name="email"
+                                variant="standard"
+                                margin="normal"
+                                value={inputs.email}
+                                required
+                                sx={setWidth}
+                                onChange={handleChange}
+                            />
+                        </Box>
+                    </Box>
+
+                    <Box sx={frmRow}>
+                        <Box sx={frmCol} marginRight={"20px"}>
+                            <FormLabel>Phone number:</FormLabel>
+                            <TextField
+                                name="phone"
+                                variant="standard"
+                                margin="normal"
+                                value={inputs.phone}
+                                required
+                                sx={setWidth}
+                                onChange={handleChange}
+                            />
+                        </Box>
+
+                        <Box sx={frmCol}>
+                            <FormLabel>Birthday:</FormLabel>
+                            <input
+                                type="date"
+                                className="calendar"
+                                name="birthDay"
+                                value={inputs.birthDay}
+                                style={setWidth}
+                                onChange={handleChange}
+                            />
+                        </Box>
+                    </Box>
+
+                    <Box sx={frmRow}>
+                        <Box sx={frmCol} marginRight={"20px"}>
+                            <FormLabel>Gender:</FormLabel>
+                            <FormControl sx={setWidth}>
+                                <Select name="gender" value={inputs.gender} onChange={handleChange}>
+                                    <MenuItem value={"Male"}>Male</MenuItem>
+                                    <MenuItem value={"Female"}>Female</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
+
+                        <Box sx={frmCol}>
+                            <FormLabel>Address:</FormLabel>
+                            <TextField
+                                name="address"
+                                variant="standard"
+                                margin="normal"
+                                value={inputs.address}
+                                sx={setWidth}
+                                onChange={handleChange}
+                            />
+                        </Box>
+                    </Box>
+
+                    <Box display={"flex"} justifyContent={"flex-end"}>
+                        <Button className="btn lowercase" type="submit">Save</Button>
+                    </Box>
                 </Box>
-            </Box>
+            </form>
         </Modal>
     )
 }

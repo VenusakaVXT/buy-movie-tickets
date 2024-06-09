@@ -17,6 +17,8 @@ const Profile = () => {
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
     const navigate = useNavigate()
 
+    const handleClose = () => setIsModalOpen(false)
+
     useEffect(() => {
         if (isCustomerLoggedIn) {
             getCustomerProfile(localStorage.getItem("customerId"))
@@ -82,13 +84,13 @@ const Profile = () => {
                                     <Typography className="txt-line">Email: {customer.email}</Typography>
                                     <Typography className="txt-line">Phone number: {customer.phone}</Typography>
                                     <Typography className="txt-line">
-                                        Birth day: {customer.birthDay ? handleDate(customer.birthDay) : "No information"}
+                                        Birthday: {customer.birthDay ? handleDate(customer.birthDay) : "No information"}
                                     </Typography>
                                     <Typography className="txt-line">
                                         Gender: {customer.gender ? customer.gender : "No information"}
                                     </Typography>
                                     <Typography className="txt-line">
-                                        Adress: {customer.adress ? customer.adress : "No information"}
+                                        Address: {customer.address ? customer.address : "No information"}
                                     </Typography>
                                 </>}
 
@@ -142,7 +144,7 @@ const Profile = () => {
                 </Box>
             </Box>
 
-            {isModalOpen && <UserUpdateModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />}
+            {isModalOpen && <UserUpdateModal customerData={customer} open={isModalOpen} onClose={handleClose} />}
         </Box>
     )
 }
