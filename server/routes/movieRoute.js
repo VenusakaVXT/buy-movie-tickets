@@ -3,6 +3,7 @@ import {
     addMovie,
     deleteMovie,
     getAllMovies,
+    getCommentsByMovie,
     getMovieById,
     getMovieBySlug,
     getMovieStatistics,
@@ -20,5 +21,6 @@ movieRouter.post("/", addMovie)
 movieRouter.delete("/:id", deleteMovie)
 movieRouter.put("/:id", updateMovie)
 movieRouter.get("/:slug/screenings", getScreeningsByMovieSlug)
+movieRouter.get("/:slug/comments", getCommentsByMovie)
 
 export default movieRouter

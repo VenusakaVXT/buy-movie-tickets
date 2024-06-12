@@ -22,6 +22,17 @@ export const getMovieDetail = async (slug) => {
     return resData
 }
 
+export const getCommentsByMovie = async (slug) => {
+    const res = await axios
+        .get(`/movie/${slug}/comments`)
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200) console.log("no data...")
+
+    const resData = await res.data
+    return resData
+}
+
 export const getScreeningsByMovie = async (slug) => {
     const res = await axios
         .get(`/movie/${slug}/screenings`)

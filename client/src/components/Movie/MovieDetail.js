@@ -1,19 +1,31 @@
 import React, { useEffect, useState } from "react"
 import { useParams, Link } from "react-router-dom"
-import { getMovieDetail } from "../../api/movieApi"
 import {
     Box,
     Card,
     CardMedia,
     CardContent,
     Typography,
-    Button
+    Button,
+    Stack,
+    Avatar,
+    Modal
 } from "@mui/material"
+import { getMovieDetail, getCommentsByMovie } from "../../api/movieApi"
+import { userComment, userDeleteComment } from "../../api/userApi"
+import SendIcon from "@mui/icons-material/Send"
+import { useSelector } from "react-redux"
 import "../../scss/MovieDetail.scss"
 import "../../scss/App.scss"
 
 const MovieDetail = () => {
     const [movie, setMovie] = useState()
+    const [comments, setComments] = useState([])
+    const [newComment, setNewComment] = useState("")
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [idCommentDeleted, setIdCommentDeleted] = useState()
+    const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
+    const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
     const slug = useParams().slug
 
     useEffect(() => {
@@ -22,8 +34,44 @@ const MovieDetail = () => {
             .catch((err) => console.error(err))
     }, [slug])
 
+    useEffect(() => {
+        getCommentsByMovie(slug)
+            .then((res) => setComments(res.comments))
+            .catch((err) => console.error(err))
+    }, [slug])
+
+    const handleCommentSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            if (isCustomerLoggedIn && !isManagerLoggedIn) {
+                const res = await userComment({
+                    userId: localStorage.getItem("customerId"),
+                    movieId: movie._id,
+                    content: newComment
+                })
+
+                setComments([...comments, res.comment])
+                setNewComment("")
+            } else {
+                alert("You are using a staff account that cannot comment!!!")
+            }
+        } catch {
+            alert("Error send comment!!!")
+        }
+    }
+
+    const handleDeleteComment = async (id) => {
+        try {
+            await userDeleteComment(id)
+            setComments(comments.filter(comment => comment._id !== id))
+            setIsModalOpen(false)
+        } catch {
+            alert("Delete cmt failed!!!")
+        }
+    }
+
     return (
-        <>
+        <Box bgcolor={"#000"} pb={32}>
             {movie && (
                 <Box
                     sx={{
@@ -35,7 +83,7 @@ const MovieDetail = () => {
                         `,
                         backgroundSize: "100% 70%, 100% 100%",
                         backgroundPosition: "0% 0%, 0% 100%",
-                        backgroundRepeat: "no-repeat",
+                        backgroundRepeat: "no-repeat"
                     }}
                 >
                     <Box display={"flex"} width={"100%"} alignItems={"center"} justifyContent={"center"}>
@@ -160,17 +208,152 @@ const MovieDetail = () => {
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "flex-start",
-                            padding: "30px 70px",
-                            mb: 2,
+                            padding: "30px 70px"
                         }}
                     >
-                        <Typography variant="h4" color={"#e50914"} fontFamily={"600"}>
+                        <Typography variant="h4" color={"#e50914"} fontFamily={"600"} mb={1}>
                             Feedbacks
                         </Typography>
+
+                        <form onSubmit={handleCommentSubmit} style={{ width: "100%" }}>
+                            <Box marginBottom={"20px"} maxHeight={"376px"} sx={{ overflowY: "auto" }}>
+                                {comments && comments.length > 0 ? comments.map((comment) =>
+                                    <Box id={comment._id} key={comment._id} mb={"10px"}>
+                                        <Box display={"flex"} alignItems={"center"}>
+                                            <Stack alignItems={"center"} direction="row" spacing={2} mr={1}>
+                                                <Avatar sx={{ width: 35, height: 35 }} />
+                                                <Typography variant="subtitle2" fontSize={"0.95rem"} color={"#fff"}>
+                                                    {comment.user.name}
+                                                </Typography>
+                                            </Stack>
+
+                                            <Typography pt={"2px"} sx={{ fontSize: "0.75rem", color: "#ccc" }}>
+                                                {comment.periodAfterCreation}
+                                            </Typography>
+                                        </Box>
+
+                                        <Box ml={"calc(35px + 16px)"}>
+                                            <Typography color="#fff" fontSize={"0.875rem"}>
+                                                {comment.content}
+                                            </Typography>
+
+                                            <Box display={"flex"}>
+                                                {comment.user.name === localStorage.getItem("customerName") && <>
+                                                    <Button
+                                                        sx={{ p: 0, minWidth: 0, textTransform: "none" }}
+                                                        onClick={() => alert("Edit cmt under maintenance")}
+                                                    >
+                                                        <Typography sx={{
+                                                            marginRight: 2,
+                                                            fontSize: "0.75rem",
+                                                            color: "#ccc",
+                                                            "&:hover": {
+                                                                textDecoration: "underline",
+                                                                cursor: "pointer"
+                                                            }
+                                                        }}>
+                                                            Edit
+                                                        </Typography>
+                                                    </Button>
+
+                                                    <Button
+                                                        sx={{ p: 0, minWidth: 0, textTransform: "none" }}
+                                                        onClick={() => {
+                                                            setIdCommentDeleted(comment._id)
+                                                            setIsModalOpen(true)
+                                                        }}
+                                                    >
+                                                        <Typography sx={{
+                                                            fontSize: "0.75rem",
+                                                            color: "#ccc",
+                                                            "&:hover": {
+                                                                textDecoration: "underline",
+                                                                cursor: "pointer"
+                                                            }
+                                                        }}>
+                                                            Delete
+                                                        </Typography>
+                                                    </Button>
+                                                </>}
+                                            </Box>
+                                        </Box>
+                                    </Box>) : <Typography color={"#fff"}>No comments available</Typography>}
+                            </Box>
+
+                            <Box position={"relative"}>
+                                <textarea
+                                    className="comment-wrapper"
+                                    name="content"
+                                    variant="standard"
+                                    margin="normal"
+                                    placeholder="Please leave your review here..."
+                                    value={newComment}
+                                    onChange={(e) => setNewComment(e.target.value)}
+                                    required
+                                />
+
+                                <Button className="btn" type="submit" sx={{
+                                    position: "absolute",
+                                    top: "0.375rem",
+                                    right: 0
+                                }}>
+                                    <SendIcon />
+                                </Button>
+                            </Box>
+                        </form>
                     </Box>
                 </Box>
             )}
-        </>
+
+            {isModalOpen &&
+                <Modal
+                    open={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    aria-labelledby="modal__title"
+                    aria-describedby="modal__content"
+                >
+                    <Box sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: 500,
+                        p: "20px",
+                        bgcolor: "#1a1b1e",
+                        borderRadius: "0.25rem",
+                        boxShadow: 24
+                    }}>
+                        <Typography id="modal__title" variant="h6" component="h2" color={"#e50914"}>
+                            Delete comment?
+                        </Typography>
+                        <Typography id="modal__content" m={"16px 0"} color={"#fff"}>
+                            Are you sure you want to delete this comment?
+                            If you delete your comment, 5 rating points will be deducted
+                        </Typography>
+
+                        <Box display={"flex"} justifyContent={"flex-end"}>
+                            <Button
+                                className="btn"
+                                sx={{ mr: "0 !important" }}
+                                onClick={() => handleDeleteComment(idCommentDeleted)}
+                            >
+                                OK
+                            </Button>
+                            <Button
+                                className="btn"
+                                sx={{
+                                    bgcolor: "#2f3032 !important",
+                                    "&:hover": { bgcolor: "rgba(81, 88, 99, 0.3) !important" }
+                                }}
+                                onClick={() => setIsModalOpen(false)}
+                            >
+                                Cancel
+                            </Button>
+                        </Box>
+                    </Box>
+                </Modal>
+            }
+        </Box>
     )
 }
 

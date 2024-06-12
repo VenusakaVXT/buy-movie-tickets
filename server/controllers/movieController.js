@@ -6,6 +6,7 @@ import Producer from "../models/Producer.js"
 import slugify from "slugify"
 import Screening from "../models/Screening.js"
 import CinemaRoom from "../models/CinemaRoom.js"
+import Comment from "../models/Comment.js"
 
 export const getAllMovies = async (req, res, next) => {
     let movies
@@ -225,6 +226,17 @@ export const getScreeningsByMovieSlug = async (req, res, next) => {
     } catch (err) {
         console.error(err)
         return res.status(500).json({ message: next })
+    }
+}
+
+export const getCommentsByMovie = async (req, res, next) => {
+    try {
+        const { slug } = req.params
+        const movie = await Movie.findOne({ slug })
+        const comments = await Comment.find({ movie: movie._id }).populate("user", "name")
+        res.status(200).json({ comments })
+    } catch (err) {
+        next(err)
     }
 }
 

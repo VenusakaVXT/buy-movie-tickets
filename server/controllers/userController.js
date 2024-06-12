@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt"
 import User from "../models/User.js"
 import Booking from "../models/Booking.js"
+import Comment from "../models/Comment.js"
 
 const salt = bcrypt.genSaltSync(10) // saltRounds: 10
 
@@ -210,7 +211,7 @@ export const getCustomersRanking = async (req, res, next) => {
         const customersData = customers.map((customer) => ({
             name: customer.name,
             totalBookings: customer.bookings.length,
-            feedbacks: 0,
+            feedbacks: customer.comments.length,
             ratingPoints: customer.ratingPoints
         }))
 
@@ -221,6 +222,60 @@ export const getCustomersRanking = async (req, res, next) => {
         })
 
         return res.status(200).json({ customersStatistics: customersData })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const userComment = async (req, res, next) => {
+    try {
+        const { userId, movieId, content } = req.body
+        const newComment = new Comment({ user: userId, movie: movieId, content })
+        await newComment.save()
+
+        const user = await User.findById(userId)
+        if (!user) {
+            return res.status(404).json({ message: "user not found!!!" })
+        }
+
+        user.comments.push(newComment._id)
+        user.ratingPoints = (user.ratingPoints || 0) + 5
+        await user.save()
+
+        const createdComment = await Comment.findById(newComment._id)
+            .populate("user", "name")
+            .exec()
+
+        res.status(201).json({ comment: createdComment })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const userDeleteComment = async (req, res, next) => {
+    try {
+        const id = req.params.commentId
+        const comment = await Comment.findById(id)
+        const userId = comment.user
+
+        if (!comment) {
+            return res.status(404).json({ message: "Cmt does not exist!!!" })
+        }
+
+        await Comment.findByIdAndDelete(id)
+
+        const user = await User.findById(userId)
+        user.comments.pull(comment._id)
+
+        if (user.ratingPoints && user.ratingPoints > 0) {
+            user.ratingPoints -= 5
+        } else {
+            user.ratingPoints = 0
+        }
+
+        await user.save()
+
+        res.status(200).json({ message: "Successfully deleted cmt..." })
     } catch (err) {
         next(err)
     }

@@ -76,6 +76,32 @@ export const updateUser = async (id, data) => {
     return resData
 }
 
+export const userComment = async ({ userId, movieId, content }) => {
+    const res = await axios
+        .post("/user/create-comment", { userId, movieId, content })
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200 && res.status !== 201) {
+        console.log("error post comment...")
+    }
+
+    const resData = await res.data
+    return resData
+}
+
+export const userDeleteComment = async (commentId) => {
+    const res = axios
+        .delete(`/user/delete-comment/${commentId}`)
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200 && res.status !== 201) {
+        console.log("error delete comment...")
+    }
+
+    const resData = await res.data
+    return resData
+}
+
 export const getCustomersRanking = async () => {
     const res = await axios.get("/user/customers/ranking")
         .catch((err) => console.error(err))

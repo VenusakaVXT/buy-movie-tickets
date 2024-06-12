@@ -38,7 +38,13 @@ const userSchema = new Schema({
     ],
     ratingPoints: {
         type: Number
-    }
+    },
+    comments: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "Comment",
+        },
+    ]
 })
 
 export default mongoose.model("User", userSchema)
