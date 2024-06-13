@@ -5,17 +5,17 @@ import "../../scss/Carousel.scss"
 
 const carousel = [
     {
-        src: "http://localhost:5000/img/slider/avatar.jpeg",
+        src: `${process.env.REACT_APP_API_URL}/img/slider/avatar.jpeg`,
         content:
             "Avatar: The Way Of Water after 13 years, the audience's wait is truly worth it",
     },
     {
-        src: "http://localhost:5000/img/slider/ant-man-quantuminia.jpg",
+        src: `${process.env.REACT_APP_API_URL}/img/slider/ant-man-quantuminia.jpg`,
         content:
             "Ant-Man 3 expands the Marvel Cinematic Universe, bringing audiences to the quantum world - a land that has not been introduced much in previous films.",
     },
     {
-        src: "http://localhost:5000/img/slider/theflash2.jpg",
+        src: `${process.env.REACT_APP_API_URL}/img/slider/theflash2.jpg`,
         content:
             "The Flash 2, Barry will face a new threat from a parallel universe in the form of Speedster Zoom",
     },

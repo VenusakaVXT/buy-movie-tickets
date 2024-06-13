@@ -11,7 +11,7 @@ const PageEnding = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://localhost:5000/movie")
+                const response = await fetch(`${process.env.REACT_APP_API_URL}/movie`)
                 setSystemStatus(response.status)
             } catch (err) {
                 console.error("Error fetching data:", err)

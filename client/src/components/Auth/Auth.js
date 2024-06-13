@@ -8,7 +8,6 @@ import {
     Button
 } from "@mui/material"
 import Brand from "../Brand/Brand"
-import FacebookLogin from "react-facebook-login"
 import GoogleLogin from "react-google-login"
 import "../../scss/Auth.scss"
 
@@ -171,15 +170,15 @@ const Auth = ({ onSubmit, signUp, role }) => {
                         <Box className="line"></Box>
                     </Box>
 
-                    <Box display={"flex"} justifyContent={"space-between"} margin={"23px 0"}>
-                        <FacebookLogin
+                    <Box margin={"23px 0"}>
+                        {/* <FacebookLogin
                             appId="1088597931155576"
                             autoLoad
                             icon="fa-facebook"
                             size="small"
                             textButton="Facebook"
                             callback={responseLinkLoginBtn}
-                        />
+                        /> */}
 
                         <GoogleLogin
                             clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"

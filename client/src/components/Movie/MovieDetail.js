@@ -197,7 +197,7 @@ const MovieDetail = () => {
                             Booking
                         </Button>
                         <Button className="btn" variant="contained" onClick={() => {
-                            window.scrollBy({ top: 150, left: 0, behavior: "smooth" })
+                            window.scrollBy({ top: 500, left: 0, behavior: "smooth" })
                         }}>
                             See reviews
                         </Button>
@@ -216,7 +216,7 @@ const MovieDetail = () => {
                         </Typography>
 
                         <form onSubmit={handleCommentSubmit} style={{ width: "100%" }}>
-                            <Box marginBottom={"20px"} maxHeight={"376px"} sx={{ overflowY: "auto" }}>
+                            <Box marginBottom={"20px"} maxHeight={"376px"} className="scrollable-div">
                                 {comments && comments.length > 0 ? comments.map((comment) =>
                                     <Box id={comment._id} key={comment._id} mb={"10px"}>
                                         <Box display={"flex"} alignItems={"center"}>

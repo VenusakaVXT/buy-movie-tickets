@@ -224,3 +224,26 @@ hr {
     resize: vertical;
     transition: border-color, box-shadow 0.15s ease-in-out;
 }
+
+// Div scrollable
+.scrollable-div {
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+
+        &:hover {
+            background: #555;
+        }
+    }
+}

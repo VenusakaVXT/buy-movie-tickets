@@ -52,7 +52,7 @@ const CinemaTicket = ({ title }) => {
                 </Helmet>
 
                 <Box className="cinema-ticket__border">
-                    <img src="http://localhost:5000/img/cinema_ticket.png" alt="cinema-ticket" />
+                    <img src={`${process.env.REACT_APP_API_URL}/img/cinema_ticket.png`} alt="cinema-ticket" />
 
                     <Box className="cinema-ticket__content">
                         <Typography variant="h3">Movie Ticket Info</Typography>
@@ -87,7 +87,7 @@ const CinemaTicket = ({ title }) => {
                         <img src={booking.qrCode} alt="QR Code" ref={qrCodeRef} />
                         <Typography>QR CODE</Typography>
 
-                        <img src="http://localhost:5000/img/cinema_decorate.png" alt="cinema-decorate" />
+                        <img src={`${process.env.REACT_APP_API_URL}/img/cinema_decorate.png`} alt="cinema-decorate" />
                     </Box>
                 </Box>
 

@@ -6,13 +6,13 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 
 const banners = [
-    "http://localhost:5000/img/banner/banner1.png",
-    "http://localhost:5000/img/banner/banner2.png",
-    "http://localhost:5000/img/banner/banner3.png",
-    "http://localhost:5000/img/banner/banner4.png",
-    "http://localhost:5000/img/banner/banner5.png",
-    "http://localhost:5000/img/banner/banner6.png",
-    "http://localhost:5000/img/banner/banner7.png",
+    `${process.env.REACT_APP_API_URL}/img/banner/banner1.png`,
+    `${process.env.REACT_APP_API_URL}/img/banner/banner2.png`,
+    `${process.env.REACT_APP_API_URL}/img/banner/banner3.png`,
+    `${process.env.REACT_APP_API_URL}/img/banner/banner4.png`,
+    `${process.env.REACT_APP_API_URL}/img/banner/banner5.png`,
+    `${process.env.REACT_APP_API_URL}/img/banner/banner6.png`,
+    `${process.env.REACT_APP_API_URL}/img/banner/banner7.png`,
 ]
 
 const Banner = () => {

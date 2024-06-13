@@ -85,7 +85,7 @@ const Charts = () => {
                             <TableRow>
                                 <TableCell>
                                     <img
-                                        src={`http://localhost:5000/img/rank/${customer.rank}.png`}
+                                        src={`${process.env.REACT_APP_API_URL}/img/rank/${customer.rank}.png`}
                                         width={"32px"}
                                         style={{ marginTop: "5px" }}
                                         alt="rank_icon"

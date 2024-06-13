@@ -189,7 +189,7 @@ const Statistical = ({ title }) => {
             width: 120,
             renderCell: (params) => (
                 <img
-                    src={`http://localhost:5000/img/rank/${params.row.rank}.png`}
+                    src={`${process.env.REACT_APP_API_URL}/img/rank/${params.row.rank}.png`}
                     width={"32px"}
                     style={{ marginTop: "5px" }}
                     alt="rank_icon"

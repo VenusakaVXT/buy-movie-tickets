@@ -75,7 +75,17 @@
 
         .kep-login-google {
             height: 41px;
-            width: 160px;
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            text-transform: uppercase;
+            color: #000 !important;
+
+            div {
+                padding: 0 !important;
+            }
         }
 
         .question-switch {

@@ -6,7 +6,7 @@ const NotFoundPage = () => {
     return (
         <Box className="errnotfound">
             <img
-                src="http://localhost:5000/img/astronaut_with_magnifying_glass.png"
+                src={`${process.env.REACT_APP_API_URL}/img/astronaut_with_magnifying_glass.png`}
                 alt="404notfound"
             />
             <h1>

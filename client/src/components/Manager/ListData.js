@@ -25,7 +25,7 @@ const ListData = ({ title }) => {
     const NoDataComponent = ({ content }) => (
         <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
             <img
-                src="http://localhost:5000/img/astronaut_with_magnifying_glass.png"
+                src={`${process.env.REACT_APP_API_URL}/img/astronaut_with_magnifying_glass.png`}
                 width={"30%"}
                 height={"60%"}
                 alt="Not found"

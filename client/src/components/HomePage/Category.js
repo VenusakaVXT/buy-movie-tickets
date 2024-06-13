@@ -46,7 +46,7 @@ const Category = () => {
                                     <img
                                         width={"100%"}
                                         height={"80%"}
-                                        src={`http://localhost:5000${movie.img}`}
+                                        src={`${process.env.REACT_APP_API_URL}${movie.img}`}
                                         alt="film-in-category"
                                     />
 
