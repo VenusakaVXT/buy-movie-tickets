@@ -8,10 +8,7 @@ import {
     Button
 } from "@mui/material"
 import Brand from "../Brand/Brand"
-import GoogleLogin from "react-google-login"
 import "../../scss/Auth.scss"
-
-const responseLinkLoginBtn = (response) => console.log(response)
 
 const Auth = ({ onSubmit, signUp, role }) => {
     const [isSignUp, setIsSignUp] = useState(signUp)
@@ -171,23 +168,23 @@ const Auth = ({ onSubmit, signUp, role }) => {
                     </Box>
 
                     <Box margin={"23px 0"}>
-                        {/* <FacebookLogin
-                            appId="1088597931155576"
-                            autoLoad
-                            icon="fa-facebook"
-                            size="small"
-                            textButton="Facebook"
-                            callback={responseLinkLoginBtn}
-                        /> */}
-
-                        <GoogleLogin
-                            clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
-                            buttonText="Google"
-                            onSuccess={responseLinkLoginBtn}
-                            onFailure={responseLinkLoginBtn}
-                            className="kep-login-google"
-                            style={{ border: "none" }}
-                        />
+                        <Box sx={{
+                            width: "100%",
+                            height: 40,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "15px",
+                            textTransform: "uppercase",
+                            bgcolor: "#fff",
+                            color: "#000",
+                            cursor: "pointer",
+                            ":hover": {
+                                opacity: 0.8
+                            }
+                        }}>
+                            <Typography>Social Other</Typography>
+                        </Box>
                     </Box>
 
                     {isSignUp ?
