@@ -7,7 +7,7 @@
         <form id="frm-update-movie" method="POST" action="/movie-screening/{{movie._id}}?_method=PUT">
             <div class="form-group">
                 <label for="title">Movie title:</label>
-                <input type="text" class="form-control" value="{{ movie.title }}" id="title" name="title">
+                <input type="text" class="form-control" value="{{ movie.title }}" id="title" name="title" required>
             </div>
 
             <div class="form-group">
@@ -17,22 +17,22 @@
 
             <div class="form-group">
                 <label for="director">Movie director:</label>
-                <input type="text" class="form-control" value="{{ movie.director }}" id="director" name="director">
+                <input type="text" class="form-control" value="{{ movie.director }}" id="director" name="director" required>
             </div>
 
             <div class="form-group">
                 <label for="contentWritter">Content writter:</label>
-                <input type="text" class="form-control" value="{{ movie.contentWritter }}" id="contentWritter" name="contentWritter">
+                <input type="text" class="form-control" value="{{ movie.contentWritter }}" id="contentWritter" name="contentWritter" required>
             </div>
 
             <div class="form-group">
                 <label for="actors">Actors:</label>
-                <input type="text" class="form-control" value="{{ movie.actors }}" id="actors"s name="actors">
+                <input type="text" class="form-control" value="{{ movie.actors }}" id="actors"s name="actors" required>
             </div>
 
             <div class="form-group">
                 <label for="category">Category:</label>
-                <select name="category" id="category" class="form-control">
+                <select name="category" id="category" class="form-control" required>
                     <option value="" {% if movie.category === "" %}selected{% endif %}>Select category</option>
                     {% for category in categories %}
                         <option value="{{ category._id }}"
@@ -48,22 +48,22 @@
                 <label for="releaseDate">
                     Release date (<span class="text-italic">mm/dd/yyyy</span>):
                 </label>
-                <input type="date" class="form-control" value="{{ movie.releaseDate }}" id="releaseDate" name="releaseDate">
+                <input type="date" class="form-control" value="{{ movie.releaseDate }}" id="releaseDate" name="releaseDate" required>
             </div>
 
             <div class="form-group">
                 <label for="time">Movie time:</label>
-                <input type="number" class="form-control" value="{{ movie.time }}" id="time" name="time">
+                <input type="number" class="form-control" value="{{ movie.time }}" id="time" name="time" required>
             </div>
 
             <div class="form-group">
                 <label for="trailerId">Trailer ID:</label>
-                <input type="text" class="form-control" value="{{ movie.trailerId }}" id="trailerId" name="trailerId">
+                <input type="text" class="form-control" value="{{ movie.trailerId }}" id="trailerId" name="trailerId" required>
             </div>
 
             <div class="form-group">
                 <label for="producer">Producer:</label>
-                <select name="producer" id="producer" class="form-control">
+                <select name="producer" id="producer" class="form-control" required>
                     <option value="" {% if movie.producer === "" %}selected{% endif %}>Select producer</option>
                     {% for producer in producers %}
                         <option value="{{ producer._id }}"

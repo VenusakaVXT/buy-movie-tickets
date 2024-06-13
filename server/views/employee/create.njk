@@ -22,7 +22,7 @@
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
                 <label for="position">Position employee:</label>
-                <select name="position" id="position" class="form-control">
+                <select name="position" id="position" class="form-control" required>
                     <option value="">Select position</option>
                     <option value="Manage movies">Manage movies</option>
                     <option value="Manage screenings">Manage screenings</option>
@@ -37,7 +37,7 @@
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
                 <label for="cinema">Cinema:</label>
-                <select name="cinema" id="cinema" class="form-control">
+                <select name="cinema" id="cinema" class="form-control" required>
                     <option value="">Select cinema</option>
                     {% for cinema in cinemas %}
                         <option value="{{ cinema._id }}">{{ cinema.name }}</option>

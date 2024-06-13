@@ -7,17 +7,17 @@
         <form id="frm-update-cinema" method="POST" action="/cinema/{{cinema._id}}?_method=PUT">
             <div class="form-group">
                 <label for="name">Cinema name:</label>
-                <input type="text" class="form-control" value="{{ cinema.name }}" id="name" name="name">
+                <input type="text" class="form-control" value="{{ cinema.name }}" id="name" name="name" required>
             </div>
 
             <div class="form-group">
                 <label for="logo">Cinema logo:</label>
-                <input type="text" class="form-control" value="{{ cinema.logo }}" id="logo" name="logo">
+                <input type="text" class="form-control" value="{{ cinema.logo }}" id="logo" name="logo" required>
             </div>
 
             <div class="form-group">
                 <label for="address">Cinema address:</label>
-                <input type="text" class="form-control" value="{{ cinema.address }}" id="address" name="address">
+                <input type="text" class="form-control" value="{{ cinema.address }}" id="address" name="address" required>
             </div>
 
             <div class="form-group">

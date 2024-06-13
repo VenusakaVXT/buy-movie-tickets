@@ -7,7 +7,7 @@
         <form id="frm-update-screening" method="POST" action="/screening/{{screening._id}}?_method=PUT">
             <div class="form-group">
                 <label for="movie">Movie:</label>
-                <select name="movie" id="movie" class="form-control">
+                <select name="movie" id="movie" class="form-control" required>
                     {% for movie in movies %}
                         <option value="{{ movie._id }}"
                             {% if (screening.movie) and (screening.movie.toString() === movie._id.toString()) %}selected{% endif %}
@@ -20,22 +20,22 @@
 
             <div class="form-group">
                 <label for="movieDate">Movie date:</label>
-                <input type="date" class="form-control" value="{{ screening.movieDate }}" id="movieDate" name="movieDate">
+                <input type="date" class="form-control" value="{{ screening.movieDate }}" id="movieDate" name="movieDate" required>
             </div>
 
             <div class="form-group">
                 <label for="timeSlot">Time slot:</label>
-                <input type="time" class="form-control" value="{{ screening.timeSlot }}" id="timeSlot" name="timeSlot">
+                <input type="time" class="form-control" value="{{ screening.timeSlot }}" id="timeSlot" name="timeSlot" required>
             </div>
 
             <div class="form-group">
                 <label for="price">Price (<span class="text-italic">xx000 = xx.000VNĐ</span>):</label>
-                <input type="number" class="form-control" value="{{ screening.price }}" id="price" name="price">
+                <input type="number" class="form-control" value="{{ screening.price }}" id="price" name="price" required>
             </div>
 
             <div class="form-group">
                 <label for="cinemaRoom">Cinema room:</label>
-                <select name="cinemaRoom" id="cinemaRoom" class="form-control">
+                <select name="cinemaRoom" id="cinemaRoom" class="form-control" required>
                     {% for cinemaRoom in cinemaRooms %}
                         <option value="{{ cinemaRoom._id }}"
                             {% if (screening.cinemaRoom) and (screening.cinemaRoom.toString() === cinemaRoom._id.toString()) %}selected{% endif %}

@@ -7,7 +7,7 @@
         <form id="frm-update-seat" method="POST" action="/seat/{{seat._id}}?_method=PUT">
             <div class="form-group">
                 <label for="rowSeat">Row seat:</label>
-                <select name="rowSeat" id="rowSeat" class="form-control">
+                <select name="rowSeat" id="rowSeat" class="form-control" required>
                     {% for row in "ABCDEFGHI" %}
                         <option value="{{ row }}" {% if seat.rowSeat === row %}selected{% endif %}>{{ row }}</option>
                     {% endfor %}
@@ -16,7 +16,7 @@
 
             <div class="form-group">
                 <label for="seatNumber">Seat number:</label>
-                <input type="number" class="form-control" value="{{ seat.seatNumber }}" id="seatNumber" name="seatNumber" max="110">
+                <input type="number" class="form-control" value="{{ seat.seatNumber }}" id="seatNumber" name="seatNumber" max="110" required>
             </div>
 
             <div class="form-group">
@@ -29,7 +29,7 @@
 
             <div class="form-group">
                 <label for="cinemaRoom">Cinema room:</label>
-                <select name="cinemaRoom" id="cinemaRoom" class="form-control">
+                <select name="cinemaRoom" id="cinemaRoom" class="form-control" required>
                     {% for cinemaRoom in cinemaRooms %}
                         <option value="{{ cinemaRoom._id }}"
                             {% if (seat.cinemaRoom) and (seat.cinemaRoom.toString() === cinemaRoom._id.toString()) %}selected{% endif %}

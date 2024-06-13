@@ -77,6 +77,13 @@ const Header = () => {
             .catch((err) => console.error(err))
     }, [isManagerLoggedIn, managerId])
 
+    const handleChange = (e, val) => {
+        const movie = movies.find((movie) => movie.title === val)
+        if (movie) {
+            navigate(`/movie-details/${movie.slug}`)
+        }
+    }
+
     const handleTabClick = (e) => {
         const getIdByTab = e.currentTarget.getAttribute("data-id")
 
@@ -199,6 +206,7 @@ const Header = () => {
                                     {highlightOption(option, inputValue)}
                                 </li>
                             )}
+                            onChange={handleChange}
                         />
                     </Box>
 

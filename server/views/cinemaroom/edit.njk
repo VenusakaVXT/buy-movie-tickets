@@ -7,17 +7,17 @@
         <form id="frm-update-cinemaroom" method="POST" action="/cinemaroom/{{cinemaroom._id}}?_method=PUT">
             <div class="form-group">
                 <label for="roomNumber">Room number:</label>
-                <input type="text" class="form-control" value="{{ cinemaroom.roomNumber }}" id="roomNumber" name="roomNumber">
+                <input type="text" class="form-control" value="{{ cinemaroom.roomNumber }}" id="roomNumber" name="roomNumber" required>
             </div>
 
             <div class="form-group">
                 <label for="totalNumSeat">Total number seats (max: 110):</label>
-                <input type="number" class="form-control" value="{{ cinemaroom.totalNumSeat }}" id="totalNumSeat" name="totalNumSeat" max="110">
+                <input type="number" class="form-control" value="{{ cinemaroom.totalNumSeat }}" id="totalNumSeat" name="totalNumSeat" max="110" required>
             </div>
 
             <div class="form-group">
                 <label for="cinema">Cinema:</label>
-                <select name="cinema" id="cinema" class="form-control">
+                <select name="cinema" id="cinema" class="form-control" required>
                     {% for cinema in cinemas %}
                         <option value="{{ cinema._id }}"
                             {% if (cinemaroom.cinema) and (cinemaroom.cinema.toString() === cinema._id.toString()) %}selected{% endif %}

@@ -7,7 +7,7 @@
         <form id="frm-update-category" method="POST" action="/category-film/{{category._id}}?_method=PUT">
             <div class="form-group">
                 <label for="category">Category title:</label>
-                <input type="text" class="form-control" value="{{ category.category }}" id="category" name="category">
+                <input type="text" class="form-control" value="{{ category.category }}" id="category" name="category" required>
             </div>
 
             <button type="submit" class="btn btn-control mt-2" style="width: 100">Save</button>
