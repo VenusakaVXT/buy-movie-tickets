@@ -23,7 +23,6 @@ const Movie = () => {
     const [active, setActive] = useState(0)
     const [sort, setSort] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
-    // boolean array that tracks the state of tabs
     const [tabStates, setTabStates] = useState([true, false])
 
     const listSelectSort = [
@@ -37,9 +36,6 @@ const Movie = () => {
 
         if (storedActiveTab !== null) {
             setActive(Number(storedActiveTab))
-            // When a tab is selected 
-            // create a new array with only one element with value `true`
-            // corresponding to the selected tab
             setTabStates((prevTabStates) => prevTabStates.map(
                 (_, index) => index === Number(storedActiveTab)
             ))
@@ -192,8 +188,8 @@ const Movie = () => {
                     </FormControl>
                 </Box>
             </Box>
-            
-            {isLoading ? <Box className="loading-spinner"></Box> : <>
+
+            {isLoading ? <Box mb={12}><Box className="loading-spinner"></Box></Box> : <>
                 {renderMovieList("now showing", true)}
                 {renderMovieList("comming soon", false)}
             </>}

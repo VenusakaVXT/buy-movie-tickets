@@ -1,0 +1,62 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <form class="p-4 movies__table-lists">
+        <div class="list-movies__header mt-4">
+            <h3 class="title">Cancel Booking List</h3>
+            <a class="list-movies__header-trash" href="/booking/detail-booking">
+                List Booking
+            </a>
+        </div>
+
+        <table class="table table-movies mt-4" border="1">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Cancel booking detail</th>
+                    <th scope="col">Approve</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cancelBooking in cancelBookings %}
+                <tr>
+                    <td>{{ cancelBooking.user.name }}</td>
+                    <td>
+                        <ul class="booking-ul">
+                            <li>Movie: {{cancelBooking.booking.screening.movie.title}}</li>
+                            <li>Screening time: {{cancelBooking.booking.screeningTime}}</li>
+                            <li>Screening at: {{cancelBooking.booking.screeningAt}}</li>
+                            <li>Seats: {{cancelBooking.booking.seatDisplay}}</li>
+                            <li>Total money: {{cancelBooking.booking.totalMoney}}</li>
+                            <li>Booking time: {{cancelBooking.booking.createdAt}}</li>
+                            <li>Reason: {{cancelBooking.reason}}</li>
+                            <li> 
+                                Refunds: {{cancelBooking.refunds}} (
+                                    {{cancelBooking.compensationPercent}}% for Customer,
+                                    {{100 - cancelBooking.compensationPercent}}% for Cinema)
+                            </li>
+                            <li>Cancel time: {{cancelBooking.createdAt}}</li>
+                        </ul>
+                    </td>
+                    <td>
+                        {% if cancelBooking.approveRequest %}
+                            Approved
+                        {% else %}
+                            <button class="btn btn-success approve-btn" data-id="{{cancelBooking._id}}">
+                                Approve
+                            </button>
+                            <button class="btn btn-danger restore-btn" data-id="{{cancelBooking._id}}">
+                                Not approved
+                            </button>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr style="text-align: center">
+                    <td colspan="6">There are no movie ticket orders yet...</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+{% endblock %}

@@ -76,9 +76,7 @@ const CinemaTicket = ({ title }) => {
                         </Typography>
                         <Typography>Seat quantity: <span>{booking.seats.length}</span></Typography>
                         <Typography>
-                            Total money: <span>
-                                {(booking.screening.price * booking.seats.length).toLocaleString("vi-VN")} VNĐ
-                            </span>
+                            Total money: <span>{booking.totalMoney.toLocaleString("vi-VN")} VNĐ</span>
                         </Typography>
                         <Typography>Booking time: <span>{booking.createdAt}</span></Typography>
                     </Box>

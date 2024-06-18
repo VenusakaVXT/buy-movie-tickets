@@ -170,11 +170,12 @@ document.addEventListener("DOMContentLoaded", () => {
     deleteData("screening", "screening-delete-form", "#deleteScreeningModal")
 })
 
+// Group models
 function handleSelectGroup(element, path) {
     const select = document.getElementById(element)
     const id = select.value
 
-    switch(path) {
+    switch (path) {
         case "cinemaroom":
             window.location.href = `/${path}/table-lists?cinemaId=${id}`
             break
@@ -186,3 +187,56 @@ function handleSelectGroup(element, path) {
             break
     }
 }
+
+// AJAX handles ticket cancellations
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".approve-btn").forEach((btn) => {
+        btn.addEventListener("click", async function () {
+            const id = this.getAttribute("data-id")
+            try {
+                const res = await fetch(`/booking/cancel-booking/${id}/approve-request`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+
+                const result = await res.json()
+
+                if (res.ok) {
+                    alert("Booking approved successfully")
+                    location.reload()
+                } else {
+                    alert("Processing error:", result.message)
+                }
+            } catch (err) {
+                alert("Processing error...")
+            }
+        })
+    })
+
+    document.querySelectorAll(".restore-btn").forEach((btn) => {
+        btn.addEventListener("click", async function () {
+            const id = this.getAttribute("data-id")
+            try {
+                const res = await fetch(`/booking/cancel-booking/${id}/restore`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+
+                const result = await res.json()
+
+                if (res.ok) {
+                    alert("Booking restored successfully")
+                    location.reload()
+                } else {
+                    alert("Processing error:", result.message)
+                }
+            } catch (err) {
+                alert("Processing error...")
+            }
+        })
+    })
+})

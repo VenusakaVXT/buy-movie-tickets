@@ -17,8 +17,6 @@ const Profile = () => {
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
     const navigate = useNavigate()
 
-    const handleClose = () => setIsModalOpen(false)
-
     useEffect(() => {
         if (isCustomerLoggedIn) {
             getCustomerProfile(localStorage.getItem("customerId"))
@@ -44,7 +42,7 @@ const Profile = () => {
     }
 
     return (
-        <Box margin={"30px 92px"} color={"#fff"}>
+        <Box className="wrapper" color={"#fff"}>
             <Box className="breadcrumb">
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
                     Home
@@ -58,7 +56,13 @@ const Profile = () => {
             </Box>
 
             <Box margin={"20px 17px"} display={"flex"}>
-                <Box width={"250x"} padding={"20px"} borderRadius={"6px"} backgroundColor={"#1a1b1e"}>
+                <Box sx={{
+                    width: 250,
+                    bgcolor: "#1a1b1e",
+                    p: "20px",
+                    borderRadius: "6px",
+                    ".txt-hover.css-ahj2mt-MuiTypography-root": { mb: "12px" }
+                }}>
                     <Typography className="txt-hover">Personal information</Typography>
                     <Typography className="txt-hover">Passwords and security</Typography>
                     <hr style={{ marginBottom: "12px" }} />
@@ -144,7 +148,9 @@ const Profile = () => {
                 </Box>
             </Box>
 
-            {isModalOpen && <UserUpdateModal customerData={customer} open={isModalOpen} onClose={handleClose} />}
+            {isModalOpen &&
+                <UserUpdateModal customerData={customer} open={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            }
         </Box>
     )
 }

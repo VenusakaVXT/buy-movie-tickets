@@ -31,6 +31,7 @@ import RuleIcon from "@mui/icons-material/Rule"
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd"
 import BarChartIcon from "@mui/icons-material/BarChart"
 import ListIcon from "@mui/icons-material/List"
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong"
 import { Tooltip } from "react-tooltip"
 import "../../scss/App.scss"
 
@@ -278,25 +279,20 @@ const Header = () => {
                                     </Typography>
                                 </MenuItem>
 
-                                <MenuItem LinkComponent={Link} onClick={() => {
-                                    navigate("/charts")
-                                    handleMenuClose()
-                                }}>
+                                <MenuItem component={Link} to="/customer/cancel-booking/list" onClick={handleMenuClose}>
+                                    <ReceiptLongIcon sx={{ marginRight: "2px" }} />List cancel booking
+                                </MenuItem>
+
+                                <MenuItem component={Link} to="/charts" onClick={handleMenuClose}>
                                     <TrendingUpIcon sx={{ marginRight: "2px" }} />Customer charts
                                 </MenuItem>
                                 <hr />
 
-                                <MenuItem LinkComponent={Link} onClick={() => {
-                                    navigate("/customer/profile")
-                                    handleMenuClose()
-                                }}>
+                                <MenuItem component={Link} to="/customer/profile" onClick={handleMenuClose}>
                                     <PersonIcon sx={{ margin: "0 2px 3px 0" }} />Account information
                                 </MenuItem>
 
-                                <MenuItem LinkComponent={Link} onClick={() => {
-                                    navigate("/customer/setting")
-                                    handleMenuClose()
-                                }}>
+                                <MenuItem component={Link} to="/customer/setting" onClick={handleMenuClose}>
                                     <SettingsIcon sx={{ margin: "0 2px 3px 0" }} />Settings
                                 </MenuItem>
                                 <hr />
@@ -337,46 +333,43 @@ const Header = () => {
                                 <MenuItem sx={{ cursor: "default" }}>Account type: Manager</MenuItem>
                                 <hr />
 
-                                <MenuItem LinkComponent={Link} onClick={() => {
-                                    navigate("/manager/profile")
-                                    handleMenuClose()
-                                }}>
+                                <MenuItem component={Link} to="/manager/profile" onClick={handleMenuClose}>
                                     <PersonIcon sx={{ margin: "0 2px 3px 0" }} />Account information
                                 </MenuItem>
 
-                                <MenuItem LinkComponent={Link} onClick={() => {
-                                    navigate("/manager/mission")
-                                    handleMenuClose()
-                                }}>
+                                <MenuItem component={Link} to="/manager/mission" onClick={handleMenuClose}>
                                     <RuleIcon sx={{ marginRight: "2px" }} />Today works
                                 </MenuItem>
                                 <hr />
 
                                 {manager && <>
-                                    <MenuItem LinkComponent={Link} onClick={() => {
-                                        navigate(`/manager/${determinePosition(manager.position).path[0]}`)
-                                        handleMenuClose()
-                                    }}>
+                                    <MenuItem
+                                        component={Link}
+                                        to={`/manager/${determinePosition(manager.position).path[0]}`}
+                                        onClick={handleMenuClose}
+                                    >
                                         <LibraryAddIcon sx={{ marginRight: "2px" }} />
                                         {determinePosition(manager.position).menu[0]}
                                     </MenuItem>
 
-                                    <MenuItem LinkComponent={Link} onClick={() => {
-                                        navigate(`/manager/${determinePosition(manager.position).path[1]}`)
-                                        handleMenuClose()
-                                        window.location.reload()
-                                    }}>
+                                    <MenuItem
+                                        component={Link}
+                                        to={`/manager/${determinePosition(manager.position).path[1]}`}
+                                        onClick={handleMenuClose}
+                                    >
                                         <ListIcon sx={{ marginRight: "2px" }} />
                                         <Typography lineHeight={"21px"}>
                                             {determinePosition(manager.position).menu[1]}
                                         </Typography>
                                     </MenuItem>
                                 </>}
+                                <hr />
 
-                                <MenuItem LinkComponent={Link} onClick={() => {
-                                    navigate("/manager/statistical")
-                                    handleMenuClose()
-                                }}>
+                                <MenuItem component={Link} to="/manager/cancel-booking/list" onClick={handleMenuClose}>
+                                    <ReceiptLongIcon sx={{ marginRight: "2px" }} />List cancel booking
+                                </MenuItem>
+
+                                <MenuItem component={Link} to="/manager/statistical" onClick={handleMenuClose}>
                                     <BarChartIcon sx={{ marginRight: "2px" }} />
                                     <Typography lineHeight={"21px"}>Statistical</Typography>
                                 </MenuItem>

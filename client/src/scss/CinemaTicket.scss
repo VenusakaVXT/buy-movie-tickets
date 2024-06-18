@@ -7,6 +7,14 @@ $cinema_ticket_title: rgb(227 215 192);
 $cinema_ticket_text-color: rgb(65 54 32);
 $width_background_1: 530px;
 
+.flex-box {
+    display: flex;
+
+    p:not(:last-child) {
+        margin-right: 25px;
+    }
+}
+
 .cinema-ticket__wrapper {
     display: flex;
     align-items: center;

@@ -7,6 +7,7 @@ import Movie from "../models/Movie.js"
 import CinemaRoom from "../models/CinemaRoom.js"
 import Cinema from "../models/Cinema.js"
 import qrCode from "qrcode"
+import CancelBooking from "../models/CancelBooking.js"
 
 export const newBooking = async (req, res, next) => {
     const { screening, seats, user } = req.body
@@ -103,9 +104,11 @@ export const getBookingById = async (req, res, next) => {
                 path: "screening",
                 populate: [
                     { path: "movie", select: "title time" },
-                    { path: "cinemaRoom", select: "roomNumber", populate: {
-                        path: "cinema", select: "name"
-                    } }
+                    {
+                        path: "cinemaRoom", select: "roomNumber", populate: {
+                            path: "cinema", select: "name"
+                        }
+                    }
                 ]
             })
 
@@ -119,42 +122,10 @@ export const getBookingById = async (req, res, next) => {
     }
 }
 
-export const cancelBooking = async (req, res, next) => {
-    let booking
-
-    try {
-        booking = await Booking.findByIdAndRemove(req.params.id).populate("user screening seats")
-
-        const session = await mongoose.startSession()
-        session.startTransaction()
-
-        for (const seat of booking.seats) {
-            seat.selected = false
-            seat.bookings.pull(booking)
-            await seat.save({ session })
-        }
-
-        await booking.user.bookings.pull(booking)
-        await booking.screening.bookings.pull(booking)
-
-        await booking.user.save({ session })
-        await booking.screening.save({ session })
-
-        session.commitTransaction()
-    } catch (err) {
-        console.error(err)
-    }
-
-    if (!booking) {
-        return res.status(500).json({ message: "unable to cancel..." })
-    }
-
-    return res.status(200).json({ message: "successfully cancel!!!" })
-}
-
 export const detailAllBooking = async (req, res, next) => {
     try {
         const bookings = await Booking.find({})
+        const cancelBookingsLength = (await CancelBooking.find({})).length
         const users = await User.find({})
 
         bookings.forEach((booking) => {
@@ -212,7 +183,182 @@ export const detailAllBooking = async (req, res, next) => {
             booking.seatPositions = seatPositions.join(", ")
         }
 
-        res.render("booking/booking-detail", { bookings })
+        res.render("booking/booking-detail", { bookings, cancelBookingsLength })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const cancelBooking = async (req, res, next) => {
+    const { userId, bookingId, reason, refunds, compensationPercent } = req.body
+
+    try {
+        const user = await User.findById(userId)
+        if (!user) {
+            return res.status(404).json({ message: "user not found..." })
+        }
+
+        const booking = await Booking.findById(bookingId)
+        if (!booking) {
+            return res.status(404).json({ message: "booking not found..." })
+        }
+
+        const cancelBooking = new CancelBooking({
+            user: userId,
+            booking: bookingId,
+            reason,
+            refunds,
+            compensationPercent,
+            approveRequest: false
+        })
+
+        user.cancelBookings.push(cancelBooking._id)
+        booking.cancelled = true
+
+        await user.save()
+        await booking.save()
+        await cancelBooking.save()
+
+        res.status(201).json({ cancelBooking })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const detailCancelBooking = async (req, res, next) => {
+    try {
+        const cancelBooking = await CancelBooking.findById(req.params.id)
+            .populate("user", "name")
+            .populate({
+                path: "booking",
+                populate: [
+                    { path: "seats", select: "rowSeat seatNumber" },
+                    {
+                        path: "screening",
+                        populate: [
+                            { path: "movie", select: "title time" },
+                            {
+                                path: "cinemaRoom", select: "roomNumber",
+                                populate: { path: "cinema", select: "name" }
+                            }
+                        ]
+                    }
+                ]
+            })
+
+        if (!cancelBooking) {
+            return res.status(404).json({ message: "cancel booking not found..." })
+        }
+
+        res.status(200).json({ cancelBooking })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const restoreBooking = async (req, res, next) => {
+    try {
+        const cancelBooking = await CancelBooking.findById(req.params.id)
+        if (!cancelBooking) {
+            return res.status(404).json({ message: "cancel booking not found..." })
+        }
+
+        const booking = await Booking.findById(cancelBooking.booking)
+        if (!booking) {
+            return res.status(404).json({ message: "booking not found..." })
+        }
+
+        booking.cancelled = false
+        await booking.save()
+        await CancelBooking.findByIdAndDelete(cancelBooking._id)
+
+        res.status(200).json({ message: "booking restored successfully..." })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const getAllCancelBooking = async (req, res, next) => {
+    try {
+        const cancelBookings = await CancelBooking.find()
+            .populate("user", "name")
+            .populate({
+                path: "booking",
+                populate: [
+                    { path: "seats", select: "rowSeat seatNumber" },
+                    {
+                        path: "screening",
+                        populate: [
+                            { path: "movie", select: "title" },
+                            {
+                                path: "cinemaRoom", select: "roomNumber",
+                                populate: { path: "cinema", select: "name" }
+                            }
+                        ]
+                    }
+                ]
+            })
+
+        cancelBookings.forEach((cancelBooking) => {
+            if (cancelBooking.booking
+                && cancelBooking.booking.screening.timeSlot
+                && cancelBooking.booking.screening.movieDate) {
+                const screeningTime =
+                    `${cancelBooking.booking.screening.timeSlot}, 
+                    ${cancelBooking.booking.screening.movieDate}`
+                cancelBooking.booking.screeningTime = screeningTime
+            }
+        })
+
+        cancelBookings.forEach((cancelBooking) => {
+            if (cancelBooking.booking
+                && cancelBooking.booking.screening.cinemaRoom.roomNumber
+                && cancelBooking.booking.screening.cinemaRoom.cinema.name) {
+                const screeningAt =
+                    `${cancelBooking.booking.screening.cinemaRoom.roomNumber}
+                    - ${cancelBooking.booking.screening.cinemaRoom.cinema.name}`
+                cancelBooking.booking.screeningAt = screeningAt
+            }
+        })
+
+        cancelBookings.forEach((cancelBooking) => {
+            if (cancelBooking.booking && cancelBooking.booking.seats) {
+                const seatArr = cancelBooking.booking.seats
+                const seats = seatArr.map(seat => `${seat.rowSeat}-${seat.seatNumber.padStart(3, "0")}`)
+                cancelBooking.booking.seatDisplay = seats.join(", ")
+            }
+        })
+
+        res.render("booking/cancel-booking", { cancelBookings })
+    } catch (err) {
+        next(err)
+    }
+}
+
+export const approveRequestCancelBooking = async (req, res, next) => {
+    try {
+        const cancelBooking = await CancelBooking.findById(req.params.id)
+            .populate("booking")
+            .populate("user")
+            .exec()
+
+        if (!cancelBooking) {
+            return res.status(404).json({ message: "cancel booking not found..." })
+        }
+
+        cancelBooking.approveRequest = true
+        await cancelBooking.save()
+
+        const user = cancelBooking.user
+        const booking = cancelBooking.booking
+
+        user.ratingPoints -= (booking.seats.length * 5)
+        user.bookings = user.bookings.filter((bookingId) =>
+            bookingId.toString() !== booking._id.toString()
+        )
+        await user.save()
+
+        res.status(200).json({message: "Admin has approved"})
     } catch (err) {
         next(err)
     }

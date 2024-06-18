@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useParams, Link } from "react-router-dom"
+import { useNavigate, useParams, Link } from "react-router-dom"
 import {
     Box,
     Card,
@@ -27,6 +27,7 @@ const MovieDetail = () => {
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
     const slug = useParams().slug
+    const navigate = useNavigate()
 
     useEffect(() => {
         getMovieDetail(slug)
@@ -43,7 +44,7 @@ const MovieDetail = () => {
     const handleCommentSubmit = async (e) => {
         e.preventDefault()
         try {
-            if (isCustomerLoggedIn && !isManagerLoggedIn) {
+            if (isCustomerLoggedIn) {
                 const res = await userComment({
                     userId: localStorage.getItem("customerId"),
                     movieId: movie._id,
@@ -52,8 +53,11 @@ const MovieDetail = () => {
 
                 setComments([...comments, res.comment])
                 setNewComment("")
-            } else {
+            } else if (isManagerLoggedIn) {
                 alert("You are using a staff account that cannot comment!!!")
+            } else {
+                alert("You need to log in to comment!!!")
+                navigate("/customer/login")
             }
         } catch {
             alert("Error send comment!!!")
@@ -312,23 +316,13 @@ const MovieDetail = () => {
                     aria-labelledby="modal__title"
                     aria-describedby="modal__content"
                 >
-                    <Box sx={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        width: 500,
-                        p: "20px",
-                        bgcolor: "#1a1b1e",
-                        borderRadius: "0.25rem",
-                        boxShadow: 24
-                    }}>
+                    <Box width={500} className="modal">
                         <Typography id="modal__title" variant="h6" component="h2" color={"#e50914"}>
                             Delete comment?
                         </Typography>
                         <Typography id="modal__content" m={"16px 0"} color={"#fff"}>
                             Are you sure you want to delete this comment?
-                            If you delete your comment, 5 rating points will be deducted
+                            If you delete your comment, <span style={{ color: "#ff0000" }}>5 rating points</span> will be deducted
                         </Typography>
 
                         <Box display={"flex"} justifyContent={"flex-end"}>

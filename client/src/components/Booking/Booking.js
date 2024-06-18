@@ -8,6 +8,7 @@ import {
     getScreeningsByMovie,
     getScreeningsByCinema
 } from "../../api/movieApi"
+import NoDataComponent from "../NotFoundPage/NoDataComponent"
 import "../../scss/App.scss"
 import "../../scss/Booking.scss"
 
@@ -98,12 +99,11 @@ const Booking = () => {
                     <Typography color={"#fff"} paddingTop={2}>Movie screenings:</Typography>
 
                     <Box className="screening__list">
-                        {isLoading ? <Box className="loading-spinner"></Box> :
+                        {isLoading ? <Box mb={12}><Box className="loading-spinner"></Box></Box> :
                             screenings && screenings.length !== 0 ? screenings.map((screening) => (
-                                <Box className="screening__item" key={screening._id} onClick={() => {
-                                    //localStorage.setItem("screeningId", screening._id)
+                                <Box className="screening__item" key={screening._id} onClick={() =>
                                     navigate(`/booking/${slug}/${screening._id}`)
-                                }}>
+                                }>
                                     <Box>
                                         <Typography>Movie Date</Typography>
                                         <Typography>{screening.movieDate}</Typography>
@@ -125,17 +125,7 @@ const Booking = () => {
                                     </Box>
                                 </Box>
                             )) :
-                                <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
-                                    <img
-                                        src={`${process.env.REACT_APP_API_URL}/img/astronaut_with_magnifying_glass.png`}
-                                        width={"30%"}
-                                        height={"60%"}
-                                        alt="Not found"
-                                    />
-                                    <Typography variant="h5" color={"#2d2d2e"}>
-                                        Sorry!!! No screenings found for this movie :/
-                                    </Typography>
-                                </Box>}
+                                <NoDataComponent content={"Sorry!!! No screenings found for this movie :/"} />}
                     </Box>
                 </Box>
             }

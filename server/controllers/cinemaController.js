@@ -2,22 +2,35 @@ import Cinema from "../models/Cinema.js"
 import CinemaRoom from "../models/CinemaRoom.js"
 import Screening from "../models/Screening.js"
 import Movie from "../models/Movie.js"
+import CancelBooking from "../models/CancelBooking.js"
 
 class CinemaController {
     getApiCinema = async (req, res, next) => {
-        let cinemas
-
         try {
-            cinemas = await Cinema.find()
+            const cinemas = await Cinema.find()
+
+            if (!cinemas) {
+                res.status(500).json({ message: "request failed..." })
+            }
+
+            res.status(200).json({ cinemas })
         } catch (err) {
             console.error(err)
         }
+    }
 
-        if (!cinemas) {
-            res.status(500).json({ message: "request failed..." })
+    getCinemaById = async (req, res, next) => {
+        try {
+            const cinema = await Cinema.findById(req.params.id)
+
+            if (!cinema) {
+                return res.status(404).json({ message: "cinema not found..." })
+            }
+
+            res.status(200).json({ cinema })
+        } catch (err) {
+            console.error(err)
         }
-
-        res.status(200).json({ cinemas })
     }
 
     getCinemaRoomFromCinema = (req, res, next) => {
@@ -95,6 +108,38 @@ class CinemaController {
             return res.status(200).json({ screenings })
         } catch {
             return res.status(500).json({ message: next })
+        }
+    }
+
+    getCancelBookingsByCinema = async (req, res, next) => {
+        try {
+            const cinema = await Cinema.findById(req.params.id)
+                .populate({
+                    path: "cinemaRooms",
+                    populate: {
+                        path: "screenings",
+                        select: "_id bookings"
+                    }
+                })
+                .lean()
+
+            if (!cinema) {
+                return res.status(404).json({ message: "cinema not found..." })
+            }
+
+            const bookingIds = []
+            cinema.cinemaRooms.forEach((room) => {
+                room.screenings.forEach((screening) => {
+                    screening.bookings.forEach((booking) => {
+                        bookingIds.push(booking)
+                    })
+                })
+            })
+
+            const cancelBookings = await CancelBooking.find({ booking: { $in: bookingIds } })
+            res.status(200).json({ cancelBookingRows: cancelBookings })
+        } catch (err) {
+            next(err)
         }
     }
 }

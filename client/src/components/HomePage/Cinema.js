@@ -37,7 +37,7 @@ const Cinema = () => {
                         <img
                             width={"60%"}
                             height={"60%"}
-                            src={cinema.logo}
+                            src={`${process.env.REACT_APP_API_URL}/${cinema.logo}`}
                             alt={`Logo ${cinema.name}`}
                             data-tooltip-content={cinema.name}
                             data-tooltip-id={`tooltip${index}`}

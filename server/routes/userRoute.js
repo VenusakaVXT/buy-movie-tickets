@@ -10,6 +10,8 @@ import {
     getCustomersRanking,
     userComment,
     userDeleteComment,
+    comparePassword,
+    getCancelBookingsByUser,
 } from "../controllers/userController.js"
 
 const userRouter = express.Router()
@@ -24,5 +26,7 @@ userRouter.get("/:id/bookings", getBookingOfUser)
 userRouter.get("/customers/ranking", getCustomersRanking)
 userRouter.post("/create-comment", userComment)
 userRouter.delete("/delete-comment/:commentId", userDeleteComment)
+userRouter.post("/:id/compare-password", comparePassword)
+userRouter.get("/:id/cancel-bookings", getCancelBookingsByUser)
 
 export default userRouter

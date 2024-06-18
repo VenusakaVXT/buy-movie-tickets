@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Box } from "@mui/material"
 import "./scss/App.scss"
 import { Routes, Route, useLocation } from "react-router-dom"
 import { Helmet } from "react-helmet"
 import { useDispatch, useSelector } from "react-redux"
 import { customerActions, managerActions } from "./store"
-import { getManagerProfile } from "./api/userApi"
 import Header from "./components/Header/Header"
 import Home from "./components/HomePage/Home"
 import Release from "./components/HomePage/Release"
@@ -30,6 +29,9 @@ import AddScreening from "./components/Manager/AddScreening"
 import ListData from "./components/Manager/ListData"
 import Statistical from "./components/Manager/Statistical"
 import Charts from "./components/Charts/Charts"
+import CancelBooking from "./components/CancelBooking/CancelBooking"
+import ListCancelBooking from "./components/CancelBooking/ListCancelBooking"
+import CancelBookingInfo from "./components/CancelBooking/CancelBookingInfo"
 
 const formatTitle = (pathname) => {
     const convertPathname = pathname.replace(/\//g, " ").replace(/-/g, " ").trim()
@@ -37,10 +39,10 @@ const formatTitle = (pathname) => {
 }
 
 const App = () => {
-    const [manager, setManager] = useState()
     const dispatch = useDispatch()
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
+    const decision = isCustomerLoggedIn && !isManagerLoggedIn ? "customer" : "manager"
     const location = useLocation()
     const isHomePage = location.pathname === "/"
     const title = "Buy Movie Tickets"
@@ -57,17 +59,6 @@ const App = () => {
             console.log("Not logged in yet...")
         }
     }, [dispatch])
-
-    useEffect(() => {
-        getManagerProfile(localStorage.getItem("managerId"))
-            .then((res) => setManager(res.manager))
-            .catch((err) => console.error(err))
-    }, [])
-
-    const handlePathAndTitle = (type) => {
-        const str = manager && manager.position === "Manage movies" ? "Movie" : "Screening"
-        return type === "lower" ? str.toLowerCase() : str
-    }
 
     // disable default scrollRestoration() of RRD
     const ScrollRestoration = () => {
@@ -94,35 +85,57 @@ const App = () => {
                     <Route path="/category" element={<Category />} />
                     <Route path="/cinema" element={<Cinema />} />
                     <Route path="/all-movies" element={<Movie />} />
-                    <Route path="/customer/login" element={<CustomerLogin />} />
-                    <Route path="/manager/login" element={<ManagerLogin />} />
-                    <Route path="/register" element={<Register />} />
                     <Route path="/movie-details/:slug" element={<MovieDetail />} />
                     <Route path="/booking/:slug" element={<Booking />} />
                     <Route path="/booking/:movieSlug/:screeningId" element={
                         <SeatDiagram title={`${title} | Seat Diagram`} />
                     } />
-                    <Route path="/booking/:bookingId/detail" element={
-                        <CinemaTicket title={`${title} | Movie Ticket`} />
-                    } />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route
-                        path={`${isCustomerLoggedIn ? "/customer" : "/manager"}/profile`}
-                        element={<Profile />}
-                    />
-                    <Route path="/manager/add-movie" element={
-                        <AddMovie title={`${title} | Add Movie`} />
-                    } />
-                    <Route path="/manager/add-screening" element={
-                        <AddScreening title={`${title} | Add Screening`} />
-                    } />
-                    <Route path={`/manager/list-${handlePathAndTitle("lower")}`} element={
-                        <ListData title={`${title} | List ${handlePathAndTitle("upper")}`} />
-                    } />
-                    <Route path="/manager/statistical" element={
-                        <Statistical title={`${title} | Statistical`} />
-                    } />
                     <Route path="/charts" element={<Charts />} />
+                    {!isCustomerLoggedIn && <>
+                        <Route path="/customer/login" element={<CustomerLogin />} />
+                        <Route path="/register" element={<Register />} />
+                    </>}
+                    {!isManagerLoggedIn && <>
+                        <Route path="/manager/login" element={<ManagerLogin />} />
+                    </>}
+                    {isCustomerLoggedIn && <>
+                        <Route path="/booking/:bookingId/detail"
+                            element={<CinemaTicket title={`${title} | Movie Ticket`} />}
+                        />
+                        <Route path="/cart" element={<Cart />} />
+                        <Route path={"/customer/cancel-booking/:bookingId"} element={
+                            <CancelBooking title={`${title} | Reason Cancel Booking`} />
+                        } />
+                    </>}
+                    {isManagerLoggedIn && <>
+                        <Route path="/manager/add-movie" element={
+                            <AddMovie title={`${title} | Add Movie`} />
+                        } />
+                        <Route path="/manager/add-screening" element={
+                            <AddScreening title={`${title} | Add Screening`} />
+                        } />
+                        <Route path={`/manager/list-movie`}
+                            element={<ListData title={`${title} | List Movie`} />}
+                        />
+                        <Route path={`/manager/list-screening`}
+                            element={<ListData title={`${title} | List Screening`} />}
+                        />
+                        <Route path="/manager/statistical" element={
+                            <Statistical title={`${title} | Statistical`} />
+                        } />
+                    </>}
+                    {(isCustomerLoggedIn || isManagerLoggedIn) && <>
+                        <Route
+                            path={`${isCustomerLoggedIn ? "/customer" : "/manager"}/profile`}
+                            element={<Profile />}
+                        />
+                        <Route path={`/${decision}/cancel-booking/list`} element={
+                            <ListCancelBooking title={`${title} | List Cancel Booking`} />
+                        } />
+                        <Route path={`/${decision}/cancel-booking/:id/detail`} element={
+                            <CancelBookingInfo title={`${title} | Cancel Booking Detail`} />
+                        } />
+                    </>}
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </section>

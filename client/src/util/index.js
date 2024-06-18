@@ -35,3 +35,13 @@ export const formatDateInput = (dateStr) => {
     const date = new Date(dateStr)
     return date.toISOString().split("T")[0]
 }
+
+export const calculateDaysBetween = (movieDate, bookingDate) => {
+    const md = new Date(movieDate)
+    const bd = new Date(bookingDate)
+
+    const milisecondsBetweenDates = md - bd
+    const miliSecondConvertDays = milisecondsBetweenDates / (1000 * 60 * 60 * 24)
+
+    return Math.ceil(miliSecondConvertDays)
+}

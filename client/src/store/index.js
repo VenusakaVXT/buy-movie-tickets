@@ -13,6 +13,9 @@ const customerSlice = createSlice({
             localStorage.removeItem("customerName")
             localStorage.removeItem("screeningId")
             localStorage.removeItem("seatBookeds")
+            localStorage.removeItem("seatLength")
+            localStorage.removeItem("refunds")
+            localStorage.removeItem("compensationPercent")
             sessionStorage.removeItem("tabState")
             sessionStorage.removeItem("activeTab")
             state.isLoggedIn = false

@@ -25,6 +25,9 @@ const bookingSchema = new Schema({
     qrCode: {
         type: String,
         required: true
+    },
+    cancelled: {
+        type: Boolean
     }
 }, { timestamps: true })
 

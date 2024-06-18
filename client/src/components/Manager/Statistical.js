@@ -37,7 +37,7 @@ const colorStyle = {
     txtColor: "#fff"
 }
 
-const useStyles = {
+export const useStyles = {
     datagridview: {
         ".MuiDataGrid-container--top [role=row], .MuiDataGrid-cell": {
             backgroundColor: colorStyle.secondBackground,

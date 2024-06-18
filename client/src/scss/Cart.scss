@@ -47,6 +47,10 @@
                 }
             }
 
+            .col3, .col4 {
+                width: 130px;
+            }
+
             &:hover {
                 background: $third-background;
             }

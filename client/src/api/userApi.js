@@ -125,3 +125,29 @@ export const getEmployeeStatistics = async () => {
     const resData = await res.data
     return resData
 }
+
+export const comparePassword = async (id, password) => {
+    const res = await axios
+        .post(`/user/${id}/compare-password`, { password })
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200 && res.status !== 201) {
+        console.log(`${password} does not match the user's password`)
+    }
+
+    const resData = await res.data
+    return resData
+}
+
+export const getCancelBookingsByUser = async (id) => {
+    const res = await axios
+        .get(`/user/${id}/cancel-bookings`)
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200 && res.status !== 201) {
+        console.log("no data...")
+    }
+
+    const resData = await res.data
+    return resData
+}
