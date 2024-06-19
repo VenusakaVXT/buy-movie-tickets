@@ -174,7 +174,7 @@ class ScreeningController {
                     ? `${cinemaRoom.roomNumber}-${cinema.name}` : "Unknown"
             })
 
-            res.render("screening/now-showing", { screenings })
+            res.render("screening/now-showing", { screenings: screenings.reverse() })
         } catch (err) {
             next(err)
         }

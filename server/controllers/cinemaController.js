@@ -137,6 +137,8 @@ class CinemaController {
             })
 
             const cancelBookings = await CancelBooking.find({ booking: { $in: bookingIds } })
+                .sort({ createdAt: -1 })
+                
             res.status(200).json({ cancelBookingRows: cancelBookings })
         } catch (err) {
             next(err)

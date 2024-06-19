@@ -138,6 +138,9 @@ export const getManagerById = async (req, res, next) => {
             return res.status(500).json({ message: "manager not found..." })
         }
 
+        manager.addedMovies.reverse()
+        manager.addedScreenings.reverse()
+
         return res.status(200).json({ manager })
     } catch (err) {
         next(err)

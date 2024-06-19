@@ -124,7 +124,7 @@ export const getBookingById = async (req, res, next) => {
 
 export const detailAllBooking = async (req, res, next) => {
     try {
-        const bookings = await Booking.find({})
+        const bookings = await Booking.find({}).sort({ createdAt: -1 })
         const cancelBookingsLength = (await CancelBooking.find({})).length
         const users = await User.find({})
 
@@ -298,6 +298,7 @@ export const getAllCancelBooking = async (req, res, next) => {
                     }
                 ]
             })
+            .sort({ createdAt: -1 })
 
         cancelBookings.forEach((cancelBooking) => {
             if (cancelBooking.booking

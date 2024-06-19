@@ -200,6 +200,7 @@ export const getBookingOfUser = async (req, res, next) => {
                     path: "movie", select: "title trailerId slug"
                 }
             })
+            .sort({ createdAt: -1 })
 
         if (!bookings) {
             return res.status(500).json({ message: "unable to get booking..." })
@@ -339,6 +340,7 @@ export const getCancelBookingsByUser = async (req, res, next) => {
                     }
                 }
             })
+            .sort({ createdAt: -1 })
             .lean()
 
         const cancelBookingItems = cancelBookings.map(cancelBooking => {
