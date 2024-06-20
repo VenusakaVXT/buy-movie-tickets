@@ -359,7 +359,10 @@ export const approveRequestCancelBooking = async (req, res, next) => {
         )
         await user.save()
 
-        res.status(200).json({message: "Admin has approved"})
+        const seatIds = booking.seats
+        await Seat.updateMany({ _id: { $in: seatIds } }, { $set: { selected: false } })
+
+        res.status(200).json({ message: "Admin has approved" })
     } catch (err) {
         next(err)
     }

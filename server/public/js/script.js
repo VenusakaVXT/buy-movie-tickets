@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })
 
-    document.querySelectorAll(".restore-btn").forEach((btn) => {
+    document.querySelectorAll(".restore-cancel-booking-btn").forEach((btn) => {
         btn.addEventListener("click", async function () {
             const id = this.getAttribute("data-id")
             try {

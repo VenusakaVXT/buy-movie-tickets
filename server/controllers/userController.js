@@ -225,11 +225,13 @@ export const getCustomersRanking = async (req, res, next) => {
 
         customersData.sort((a, b) => b.ratingPoints - a.ratingPoints)
 
-        customersData.forEach((customer, index) => {
+        const topCustomers = customersData.slice(0, 10)
+
+        topCustomers.forEach((customer, index) => {
             customer.rank = index + 1
         })
 
-        return res.status(200).json({ customersStatistics: customersData })
+        return res.status(200).json({ customersStatistics: topCustomers })
     } catch (err) {
         next(err)
     }
