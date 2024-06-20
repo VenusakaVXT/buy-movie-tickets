@@ -23,6 +23,7 @@ import nunjucks from "nunjucks"
 import lessMiddleware from "less-middleware"
 import methodOverride from "method-override"
 import flash from "connect-flash"
+import cors from "cors"
 
 dotenv.config()
 const PORT = process.env.PORT || 5000
@@ -39,6 +40,7 @@ app.use(methodOverride("_method"))
 
 // Fix CORS
 configCors(app)
+app.use(cors("*"))
 
 // Router
 app.use("/", homeRouter)

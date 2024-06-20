@@ -23,7 +23,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Seat position</th>
-                    <th scope="col">Type seat</th>
+                    <th scope="col">Book status</th>
                     <th scope="col">Cinema room</th>
                     <th scope="col">Customs</th>
                 </tr>
@@ -35,7 +35,7 @@
                     <td>
                         {{seat.rowSeat}}{% if seat.seatNumber < 10 %}-00{{seat.seatNumber}}{% else %}-0{{seat.seatNumber}}{% endif %}
                     </td>
-                    <td>{{ seat.seatType }}</td>
+                    <td>{% if seat.selected %}Booked{% else %}Not booked{% endif %}</td>
                     <td>{{ seat.cinemaRoom.roomNumber }}</td>
                     <td>
                         <button type="button" class="btn btn-outline-warning">
