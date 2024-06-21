@@ -6,13 +6,34 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 
 const banners = [
-    `${process.env.REACT_APP_API_URL}/img/banner/banner1.png`,
-    `${process.env.REACT_APP_API_URL}/img/banner/banner2.png`,
-    `${process.env.REACT_APP_API_URL}/img/banner/banner3.png`,
-    `${process.env.REACT_APP_API_URL}/img/banner/banner4.png`,
-    `${process.env.REACT_APP_API_URL}/img/banner/banner5.png`,
-    `${process.env.REACT_APP_API_URL}/img/banner/banner6.png`,
-    `${process.env.REACT_APP_API_URL}/img/banner/banner7.png`,
+    {
+        imgIndex: 1,
+        path: "happy-weekend"
+    },
+    {
+        imgIndex: 2,
+        path: "movie-night"
+    },
+    {
+        imgIndex: 3,
+        path: "movie-corner"
+    },
+    {
+        imgIndex: 4,
+        path: "movie-club"
+    },
+    {
+        imgIndex: 5,
+        path: "jrivia-night"
+    },
+    {
+        imgIndex: 6,
+        path: "movie-time-cinema"
+    },
+    {
+        imgIndex: 7,
+        path: "conventions-of-film"
+    },
 ]
 
 const Banner = () => {
@@ -53,7 +74,7 @@ const Banner = () => {
                 {banners.map((banner, index) => (
                     <img
                         key={index}
-                        src={banner}
+                        src={`${process.env.REACT_APP_API_URL}/img/banner/banner${banner.imgIndex}.png`}
                         alt={`Banner ${index + 1}`}
                         className={
                             Math.floor(index / itemsPerPage) ===
@@ -61,7 +82,7 @@ const Banner = () => {
                                 ? "visible"
                                 : ""
                         }
-                        onClick={() => navigate("/special-offers/")}
+                        onClick={() => navigate(`/special-offers/${banner.path}`)}
                     />
                 ))}
             </div>

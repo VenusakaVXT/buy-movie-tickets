@@ -41,3 +41,14 @@ export const getCancelBookingsByCinema = async (id) => {
     const resData = await res.data
     return resData
 }
+
+export const getCinemaStatistical = async () => {
+    const res = await axios
+        .get("/cinema/statistical")
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200) console.log("no data...")
+
+    const resData = await res.data
+    return resData
+}

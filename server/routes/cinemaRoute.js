@@ -13,6 +13,7 @@ cinemaRouter.delete("/:id", cinemaController.delete)
 cinemaRouter.get("/:cinemaId/cinema-rooms", cinemaController.getCinemaRoomFromCinema)
 cinemaRouter.get("/:cinemaId/cinema-room/screenings/:movieSlug", cinemaController.getScreeningsFromCinemaRooms)
 cinemaRouter.get("/:id/cancel-bookings", cinemaController.getCancelBookingsByCinema)
+cinemaRouter.get("/statistical", cinemaController.getCinemaStatistical)
 cinemaRouter.get("/:id", cinemaController.getCinemaById)
 
 export default cinemaRouter

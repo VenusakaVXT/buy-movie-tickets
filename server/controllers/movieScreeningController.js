@@ -58,19 +58,25 @@ class MovieScreeningController {
         })
         movie.slug = slugify(movie.title, { lower: true })
 
-        await movie.save()
-            .then(async () => {
-                producerObj.movies.push(movie._id)
-                await producerObj.save()
+        try {
+            await movie.save()
 
-                // Avoid re-caching the old cache 
-                // when switching to the "/movie-screening/table-lists" page
-                res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate")
-                res.setHeader("Pragma", "no-cache")
-                res.setHeader("Expires", "0")
-                res.redirect("/movie-screening/table-lists")
-            })
-            .catch(next)
+            producerObj.movies.push(movie._id)
+            await producerObj.save()
+
+            // Avoid re-caching the old cache 
+            // when switching to the "/movie-screening/table-lists" page
+            res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate")
+            res.setHeader("Pragma", "no-cache")
+            res.setHeader("Expires", "0")
+            res.redirect("/movie-screening/table-lists")
+        } catch (err) {
+            if (err.code === 11000) {
+                res.status(400).send("The movie is available on the system")
+            } else {
+                next(err)
+            }
+        }
     }
 
     tableLists(req, res, next) {

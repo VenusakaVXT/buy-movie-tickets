@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { Helmet } from "react-helmet"
 import { getMovieStatistics } from "../../api/movieApi"
 import { getCustomersRanking, getEmployeeStatistics } from "../../api/userApi"
+import { getCinemaStatistical } from "../../api/cinemaApi"
 import Loading from "../Loading/Loading"
 import BarChartIcon from "@mui/icons-material/BarChart"
 import {
@@ -85,6 +86,7 @@ const Statistical = ({ title }) => {
     const [moviesStatistics, setMoviesStatistics] = useState([])
     const [employeesStatistics, setEmployeesStatistics] = useState({})
     const [customersRanking, setCustomersRanking] = useState([])
+    const [cinemaStatistical, setCinemaStatistical] = useState([])
     const [selectedMovie, setSelectedMovie] = useState({})
     const [columnVisibilityModel, setColumnVisibilityModel] = useState({
         percentSeatBooked: false,
@@ -122,6 +124,12 @@ const Statistical = ({ title }) => {
             case 3:
                 getCustomersRanking()
                     .then((res) => setCustomersRanking(res.customersStatistics))
+                    .catch((err) => console.error(err))
+                    .finally(() => setIsLoading(false))
+                break
+            case 4:
+                getCinemaStatistical()
+                    .then((res) => setCinemaStatistical(res.cinemaStatistical))
                     .catch((err) => console.error(err))
                     .finally(() => setIsLoading(false))
                 break
@@ -220,6 +228,15 @@ const Statistical = ({ title }) => {
         }
     ]
 
+    const cinemaColumns = [
+        { field: "id", headerName: "ID", type: "number", width: 100 },
+        { field: "name", headerName: "Cinema name", width: 180 },
+        { field: "cinemaRoomLength", headerName: "Cinema rooms", type: "number", width: 180 },
+        { field: "employeeLength", headerName: "Employees", type: "number", width: 180 },
+        { field: "screeningLength", headerName: "Screenings", type: "number", width: 180 },
+        { field: "cinemaRevenue", headerName: "Revenue", type: "number", width: 180 },
+    ]
+
     const movieRows = moviesStatistics.map((row, index) => ({
         id: index + 1,
         title: row.title,
@@ -249,6 +266,15 @@ const Statistical = ({ title }) => {
         ratingPoints: row.ratingPoints
     }))
 
+    const cinemaRows = cinemaStatistical.map((row, index) => ({
+        id: index + 1,
+        name: row.name,
+        cinemaRoomLength: row.cinemaRoomLength,
+        employeeLength: row.employeeLength,
+        screeningLength: row.screeningLength,
+        cinemaRevenue: row.cinemaRevenue
+    }))
+
     const handleMovieRowClick = (params) => {
         const clickedMovie = moviesStatistics.find(movie => movie.title === params.row.title)
 
@@ -263,7 +289,11 @@ const Statistical = ({ title }) => {
 
     const CustomToolbar = () => {
         const apiRef = useGridApiContext()
-        const dataName = tab === 1 ? "movie" : tab === 2 ? "employee" : tab === 3 ? "customer" : "data"
+        const dataName =
+            tab === 1 ? "movie"
+                : tab === 2 ? "employee"
+                    : tab === 3 ? "customer"
+                        : tab === 4 ? "cinema" : "data"
         const options = { allColumns: true, fileName: `bmt_${dataName}_statistical` }
 
         const setColumnDimensions = useCallback(() => {
@@ -323,6 +353,12 @@ const Statistical = ({ title }) => {
                             onClick={() => handleTabClick(3)}
                         >
                             Customers
+                        </Box>
+                        <Box
+                            className={`statistical__tab-item ${tab === 4 ? "active" : ""}`}
+                            onClick={() => handleTabClick(4)}
+                        >
+                            Cinemas
                         </Box>
                     </Box>
                 </Box>
@@ -518,9 +554,7 @@ const Statistical = ({ title }) => {
                                             sx={{
                                                 [`.${axisClasses.root} line`]: { stroke: colorStyle.txtColor },
                                                 [`.${axisClasses.root} text`]: { fill: colorStyle.txtColor },
-                                                ".css-1u0lry5-MuiChartsLegend-root": {
-                                                    display: "none"
-                                                },
+                                                "text": { fill: `${colorStyle.txtColor} !important` }
                                             }}
                                         />
                                     </Box>
@@ -626,6 +660,52 @@ const Statistical = ({ title }) => {
                                 disableSelectionOnClick
                             />
                         </Box>
+                    ) : tab === 4 ? (
+                        <>
+                            <Box className="chart-wrapper" flexDirection={"column"}>
+                                <Box className="chart-item" height={"100%"}>
+                                    <BarChart
+                                        margin={{ top: 16, right: 20, left: 40, bottom: 30 }}
+                                        xAxis={[{
+                                            data: cinemaRows.map(cinema => cinema.name),
+                                            scaleType: "band",
+                                            tickLabelStyle: theme.typography.body2
+                                        }]}
+                                        yAxis={[{
+                                            label: "Unit: .000VNĐ",
+                                            labelStyle: { fill: colorStyle.txtColor },
+                                            tickLabelStyle: theme.typography.body2,
+                                            tickNumber: 4,
+                                        }]}
+                                        series={[{
+                                            data: cinemaRows.map(cinema => cinema.cinemaRevenue / 1000),
+                                            label: "Revenue",
+                                            color: colorStyle.mainColor
+                                        }]}
+                                        sx={{
+                                            [`.${axisClasses.root} line`]: { stroke: colorStyle.txtColor },
+                                            [`.${axisClasses.root} text`]: { fill: colorStyle.txtColor },
+                                            ".css-1u0lry5-MuiChartsLegend-root": { display: "none" }
+                                        }}
+                                    />
+                                </Box>
+                            </Box>
+
+                            <Box className="statistical__tables">
+                                <DataGrid
+                                    rows={cinemaRows}
+                                    columns={cinemaColumns}
+                                    initialState={{
+                                        pagination: {
+                                            paginationModel: { page: 0, pageSize: 5 }
+                                        }
+                                    }}
+                                    pageSizeOptions={[5, 10]}
+                                    sx={useStyles.datagridview}
+                                    slots={{ toolbar: CustomToolbar }}
+                                />
+                            </Box>
+                        </>
                     ) : null}
                 </Box>
             </Box>

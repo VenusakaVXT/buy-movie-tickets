@@ -138,8 +138,66 @@ class CinemaController {
 
             const cancelBookings = await CancelBooking.find({ booking: { $in: bookingIds } })
                 .sort({ createdAt: -1 })
-                
+
             res.status(200).json({ cancelBookingRows: cancelBookings })
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    getCinemaStatistical = async (req, res, next) => {
+        try {
+            const cinemaStatistical = await Cinema.aggregate([
+                {
+                    $lookup: {
+                        from: "cinemarooms",
+                        localField: "cinemaRooms",
+                        foreignField: "_id",
+                        as: "cinemaRoomsDetails"
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "screenings",
+                        localField: "cinemaRoomsDetails._id",
+                        foreignField: "cinemaRoom",
+                        as: "screeningsDetails"
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "bookings",
+                        localField: "screeningsDetails._id",
+                        foreignField: "screening",
+                        as: "bookingsDetails"
+                    }
+                },
+                {
+                    $addFields: {
+                        cinemaRoomLength: { $size: "$cinemaRooms" },
+                        employeeLength: { $size: "$employees" },
+                        screeningLength: { $size: "$screeningsDetails" }
+                    }
+                },
+                {
+                    $addFields: {
+                        cinemaRevenue: {
+                            $sum: "$bookingsDetails.totalMoney"
+                        }
+                    }
+                },
+                {
+                    $project: {
+                        name: 1,
+                        cinemaRoomLength: 1,
+                        employeeLength: 1,
+                        screeningLength: 1,
+                        cinemaRevenue: 1
+                    }
+                }
+            ])
+
+            res.status(200).json({ cinemaStatistical })
         } catch (err) {
             next(err)
         }
