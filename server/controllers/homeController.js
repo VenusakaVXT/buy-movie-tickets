@@ -1,4 +1,3 @@
-import mongoose from "mongoose"
 import Movie from "../models/Movie.js"
 
 class HomeController {
@@ -9,6 +8,18 @@ class HomeController {
                 movies
             }))
             .catch(next)
+    }
+
+    adminLogin(req, res, next) {
+        const { adminAccountName, adminPassword } = req.body
+
+        if (adminAccountName == process.env.ADMIN_ACCOUNTNAME
+            && adminPassword == process.env.ADMIN_PASSWORD) {
+            req.session.isLoggedIn = true
+            res.redirect("/")
+        } else {
+            res.status(400).send("Admin account or password is incorrect...")
+        }
     }
 }
 

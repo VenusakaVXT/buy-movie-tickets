@@ -24,6 +24,7 @@ import lessMiddleware from "less-middleware"
 import methodOverride from "method-override"
 import flash from "connect-flash"
 import cors from "cors"
+import session from "express-session"
 
 dotenv.config()
 const PORT = process.env.PORT || 5000
@@ -37,6 +38,14 @@ app.use(flash())
 
 // Convert HTTPS Method
 app.use(methodOverride("_method"))
+
+// Session control
+app.use(session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }
+}))
 
 // Fix CORS
 configCors(app)

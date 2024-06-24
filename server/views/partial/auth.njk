@@ -1,0 +1,40 @@
+<section class="vh-100" style="background: #151517;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem; overflow: hidden;">
+                    <form class="card-body p-5 text-center" style="background: #1a1b1e; margin-block-end: 0;"
+                        action="/admin/login" method="POST">
+                        <h3 class="mb-4 text-white">Admin Login</h3>
+                        
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <label class="form-label w-100 text-left text-white" for="admin-account-name">
+                                Admin account:
+                            </label>
+                            <input type="text" name="adminAccountName" id="admin-account-name" 
+                                class="form-control form-control-lg" />
+                        </div>
+
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <label class="form-label w-100 text-left text-white" for="admin-password">
+                                Admin password:
+                            </label>
+                            <input type="password" name="adminPassword" id="admin-password" 
+                                class="form-control form-control-lg" />
+                        </div>
+
+                        <button 
+                            data-mdb-button-init 
+                            data-mdb-ripple-init 
+                            class="btn btn-primary btn-lg btn-block"
+                            style="background: #e50914; border: none; outline: none;"
+                            type="submit"
+                        >
+                            Login
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
