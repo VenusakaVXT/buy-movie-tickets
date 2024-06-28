@@ -196,8 +196,13 @@ export const getBookingOfUser = async (req, res, next) => {
         const bookings = await Booking.find({ _id: { $in: user.bookings } })
             .populate("seats", "rowSeat seatNumber")
             .populate({
-                path: "screening", select: "movieDate", populate: {
-                    path: "movie", select: "title trailerId slug"
+                path: "screening",
+                select: "movieDate",
+                options: { withDeleted: true },
+                populate: {
+                    path: "movie",
+                    options: { withDeleted: true },
+                    select: "title trailerId slug"
                 }
             })
             .sort({ createdAt: -1 })
@@ -337,8 +342,11 @@ export const getCancelBookingsByUser = async (req, res, next) => {
                 populate: {
                     path: "screening",
                     select: "movie movieDate",
+                    options: { withDeleted: true },
                     populate: {
-                        path: "movie", select: "title trailerId slug"
+                        path: "movie", 
+                        options: { withDeleted: true },
+                        select: "title trailerId slug"
                     }
                 }
             })

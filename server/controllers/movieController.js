@@ -79,7 +79,6 @@ export const addMovie = async (req, res, next) => {
         }
     })
 
-    // create new movie
     const {
         title,
         description,
@@ -122,7 +121,7 @@ export const addMovie = async (req, res, next) => {
             trailerId,
             manager: managerId,
         })
-        movie.slug = slugify(movie.title, { lower: true })
+        movie.slug = slugify(movie.title.replace(/:/g, ""), { lower: true })
 
         const session = await mongoose.startSession()
         session.startTransaction()
@@ -193,7 +192,8 @@ export const updateMovie = async (req, res, next) => {
             time,
             trailerId,
             wasReleased,
-            producer
+            producer,
+            slug: slugify(title.replace(/:/g, ""), { lower: true })
         }, { new: true })
 
         if (!updatedMovie) {

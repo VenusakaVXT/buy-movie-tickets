@@ -86,14 +86,17 @@ const AddMovie = ({ title }) => {
         setInputs((prevState) => ({ ...prevState, wasReleased: val }))
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        addMovie({ ...inputs })
-            .then((res) => {
+        try {
+            const res = await addMovie({ ...inputs })
+            if (res !== null) {
                 console.log(res)
                 navigate("/manager/list-movie")
-            })
-            .catch((err) => console.error(err))
+            }
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     return (

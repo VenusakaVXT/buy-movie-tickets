@@ -57,7 +57,7 @@ const Cart = () => {
 
                             <Box className="col2">
                                 <Typography>Seat number:</Typography>
-                                <ListItemText>{handleSeatArr(booking.seats)}</ListItemText>
+                                <ListItemText>{booking.seats ? handleSeatArr(booking.seats) : "Unknown"}</ListItemText>
                             </Box>
 
                             <Box className="col3">

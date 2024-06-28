@@ -44,14 +44,17 @@ const AddScreening = ({ title }) => {
         setInputs((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        addScreening({ ...inputs })
-            .then((res) => {
+        try {
+            const res = await addScreening({ ...inputs })
+            if (res !== null) {
                 console.log(res)
                 navigate("/manager/list-screening")
-            })
-            .catch((err) => console.error(err))
+            }
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     return (

@@ -118,6 +118,7 @@ class CinemaController {
                     path: "cinemaRooms",
                     populate: {
                         path: "screenings",
+                        options: { withDeleted: true },
                         select: "_id bookings"
                     }
                 })

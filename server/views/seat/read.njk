@@ -41,7 +41,7 @@
                         <button type="button" class="btn btn-outline-warning">
                             <a href="/seat/{{ seat._id }}/edit">Edit</a>
                         </button>
-                        <button type="button" class="btn btn-outline-danger">
+                        <button type="button" class="btn btn-outline-danger" {% if seat.selected %}disabled{% endif %}>
                             <a href="" data-toggle="modal" data-id="{{ seat._id }}" data-target="#deleteSeatModal">
                                 Delete
                             </a>

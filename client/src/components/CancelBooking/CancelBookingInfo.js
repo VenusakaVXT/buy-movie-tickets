@@ -88,13 +88,15 @@ const CancelBookingInfo = ({ title }) => {
 
                                 <Box className="flex-box">
                                     <Typography>
-                                        Seat: <span>{handleSeatArr(cancelBooking.booking.seats)}</span>
+                                        Seat: {cancelBooking.booking.seats ? <span>
+                                            {handleSeatArr(cancelBooking.booking.seats)}
+                                        </span> : "Unknown"}
                                     </Typography>
-                                    <Typography>Screening at:
-                                        <span style={{ marginLeft: "4px" }}>
+                                    <Typography>Screening at: {cancelBooking.booking.screening.cinemaRoom
+                                        ? <span>
                                             {cancelBooking.booking.screening.cinemaRoom.roomNumber}
                                             -{cancelBooking.booking.screening.cinemaRoom.cinema.name}
-                                        </span>
+                                        </span> : "Unknown"}
                                     </Typography>
                                 </Box>
 

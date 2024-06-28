@@ -102,11 +102,19 @@ export const getBookingById = async (req, res, next) => {
             .populate("seats", "rowSeat seatNumber")
             .populate({
                 path: "screening",
+                options: { withDeleted: true },
                 populate: [
-                    { path: "movie", select: "title time" },
                     {
-                        path: "cinemaRoom", select: "roomNumber", populate: {
-                            path: "cinema", select: "name"
+                        path: "movie",
+                        options: { withDeleted: true },
+                        select: "title time"
+                    },
+                    {
+                        path: "cinemaRoom",
+                        select: "roomNumber",
+                        populate: {
+                            path: "cinema",
+                            select: "name"
                         }
                     }
                 ]
@@ -135,8 +143,8 @@ export const detailAllBooking = async (req, res, next) => {
             booking.userName = user ? user.name : "Unknown"
         })
 
-        const screenings = await Screening.find({})
-        const movies = await Movie.find({})
+        const screenings = await Screening.findWithDeleted({})
+        const movies = await Movie.findWithDeleted({})
         const cinemaRooms = await CinemaRoom.find({})
         const cinemas = await Cinema.find({})
 
@@ -235,11 +243,20 @@ export const detailCancelBooking = async (req, res, next) => {
                     { path: "seats", select: "rowSeat seatNumber" },
                     {
                         path: "screening",
+                        options: { withDeleted: true },
                         populate: [
-                            { path: "movie", select: "title time" },
                             {
-                                path: "cinemaRoom", select: "roomNumber",
-                                populate: { path: "cinema", select: "name" }
+                                path: "movie",
+                                options: { withDeleted: true },
+                                select: "title time"
+                            },
+                            {
+                                path: "cinemaRoom",
+                                select: "roomNumber",
+                                populate: {
+                                    path: "cinema",
+                                    select: "name"
+                                }
                             }
                         ]
                     }
@@ -288,11 +305,20 @@ export const getAllCancelBooking = async (req, res, next) => {
                     { path: "seats", select: "rowSeat seatNumber" },
                     {
                         path: "screening",
+                        options: { withDeleted: true },
                         populate: [
-                            { path: "movie", select: "title" },
                             {
-                                path: "cinemaRoom", select: "roomNumber",
-                                populate: { path: "cinema", select: "name" }
+                                path: "movie",
+                                options: { withDeleted: true },
+                                select: "title"
+                            },
+                            {
+                                path: "cinemaRoom",
+                                select: "roomNumber",
+                                populate: {
+                                    path: "cinema",
+                                    select: "name"
+                                }
                             }
                         ]
                     }
@@ -319,6 +345,8 @@ export const getAllCancelBooking = async (req, res, next) => {
                     `${cancelBooking.booking.screening.cinemaRoom.roomNumber}
                     - ${cancelBooking.booking.screening.cinemaRoom.cinema.name}`
                 cancelBooking.booking.screeningAt = screeningAt
+            } else {
+                cancelBooking.booking.screeningAt = "Unknown"
             }
         })
 
@@ -327,6 +355,8 @@ export const getAllCancelBooking = async (req, res, next) => {
                 const seatArr = cancelBooking.booking.seats
                 const seats = seatArr.map(seat => `${seat.rowSeat}-${seat.seatNumber.padStart(3, "0")}`)
                 cancelBooking.booking.seatDisplay = seats.join(", ")
+            } else {
+                cancelBooking.booking.seatDisplay = "Unknown"
             }
         })
 

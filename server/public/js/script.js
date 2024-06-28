@@ -23,12 +23,12 @@ menuItems.forEach(item => {
 })
 
 // Handle menu dropdown of Sidebar
-$(document).ready(function () {
-    const dropdownTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="dropdown"]'))
-    dropdownTriggerList.forEach(function (dropdownTriggerEl) {
-        new bootstrap.Dropdown(dropdownTriggerEl)
-    })
-})
+// $(document).ready(function () {
+//     const dropdownTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="dropdown"]'))
+//     dropdownTriggerList.forEach(function (dropdownTriggerEl) {
+//         new bootstrap.Dropdown(dropdownTriggerEl)
+//     })
+// })
 
 // Handle add wasReleased to DB Movie
 function setWasReleased(value) {

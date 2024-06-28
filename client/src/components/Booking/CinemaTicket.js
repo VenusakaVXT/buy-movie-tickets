@@ -65,11 +65,12 @@ const CinemaTicket = ({ title }) => {
                                 End: <span>{getEndTime(booking.screening.timeSlot, booking.screening.movie.time)}</span>
                             </Typography>
                         </Box>
-                        <Typography>Seat: <span>{handleSeatArr(booking.seats)}</span></Typography>
-                        <Typography>Screening at:
-                            <span style={{ marginLeft: "4px" }}>
+                        <Typography>Seat: <span>{booking.seats ? handleSeatArr(booking.seats) : "Unknown"}</span></Typography>
+                        <Typography>Screening at: {booking.screening.cinemaRoom
+                            ? <span>
                                 {booking.screening.cinemaRoom.roomNumber}-{booking.screening.cinemaRoom.cinema.name}
                             </span>
+                            : "Unknown"}
                         </Typography>
                         <Typography>
                             Unit price: <span>{booking.screening.price.toLocaleString("vi-VN")} VNĐ</span>

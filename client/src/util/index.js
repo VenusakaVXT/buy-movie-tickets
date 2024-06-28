@@ -4,7 +4,7 @@ export const getEndTime = (startTime, minutesPlus) => {
     const minutes = parseInt(minutesStr)
 
     const totalMinutes = hours * 60 + minutes + minutesPlus
-    const newHours = Math.floor(totalMinutes / 60)
+    const newHours = Math.floor(totalMinutes / 60) % 24
     const newMinutes = totalMinutes % 60
 
     const newHoursStr = newHours < 10 ? "0" + newHours : "" + newHours

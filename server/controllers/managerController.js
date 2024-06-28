@@ -90,19 +90,17 @@ export const managerLogin = async (req, res, next) => {
 }
 
 export const getManagers = async (req, res, next) => {
-    let managers
-
     try {
-        managers = await Manager.find()
+        const managers = await Manager.find()
+
+        if (!managers) {
+            return res.status(500).json({ message: "internal server error..." })
+        }
+    
+        return res.status(200).json({ managers })
     } catch (err) {
         console.error(err)
     }
-
-    if (!managers) {
-        return res.status(500).json({ message: "internal server error..." })
-    }
-
-    return res.status(200).json({ managers })
 }
 
 export const getManagerById = async (req, res, next) => {
@@ -117,6 +115,7 @@ export const getManagerById = async (req, res, next) => {
             .populate("cinema", "name")
             .populate({
                 path: "addedMovies",
+                options: { withDeleted: true },
                 populate: [
                     { path: "category", select: "category" },
                     { path: "producer", select: "producerName" }
@@ -124,11 +123,19 @@ export const getManagerById = async (req, res, next) => {
             })
             .populate({
                 path: "addedScreenings",
+                options: { withDeleted: true },
                 populate: [
-                    { path: "movie", select: "title trailerId slug time" },
+                    { 
+                        path: "movie", 
+                        options: { withDeleted: true },
+                        select: "title trailerId slug time" 
+                    },
                     {
-                        path: "cinemaRoom", select: "roomNumber", populate: {
-                            path: "cinema", select: "name"
+                        path: "cinemaRoom", 
+                        select: "roomNumber", 
+                        populate: {
+                            path: "cinema", 
+                            select: "name"
                         }
                     }
                 ],

@@ -5,24 +5,23 @@ import Cinema from "../models/Cinema.js"
 import Manager from "../models/Employee.js"
 import mongoose, { isValidObjectId } from "mongoose"
 import jwt from "jsonwebtoken"
+import Seat from "../models/Seat.js"
 
 class ScreeningController {
     getApiScreening = async (req, res, next) => {
-        let screenings
-
         try {
-            screenings = await Screening.find()
+            const screenings = await Screening.find()
                 .populate("movie", "title")
                 .populate("cinemaRoom", "roomNumber")
+
+            if (!screenings) {
+                return res.status(500).json({ message: "request failed..." })
+            }
+
+            res.status(200).json({ screenings })
         } catch (err) {
             console.error(err)
         }
-
-        if (!screenings) {
-            res.status(500).json({ message: "request failed..." })
-        }
-
-        res.status(200).json({ screenings })
     }
 
     addScreening = async (req, res, next) => {
@@ -58,7 +57,41 @@ class ScreeningController {
             const cinemaRoomObj = await CinemaRoom.findById(cinemaRoom)
 
             if (!movieObj || !cinemaRoomObj) {
-                return res.status(404).json({ message: "movie or cinemaroom not found..." })
+                return res.status(404).json({ message: "Movie or Cinemaroom not found..." })
+            }
+
+            const newScreeningDate = new Date(`${movieDate}T${timeSlot}:00`)
+            const currentDate = new Date()
+
+            if (newScreeningDate < currentDate) {
+                return res.status(409).json({ message: "Cannot add screening for a past date." })
+            }
+
+            const existScreening = await Screening.findOne({
+                cinemaRoom: cinemaRoomObj._id,
+                movieDate,
+                timeSlot
+            })
+
+            if (existScreening) {
+                return res.status(409).json({
+                    message: `There was a screening at ${timeSlot} on ${movieDate} in ${cinemaRoomObj.roomNumber} room.`
+                })
+            }
+
+            const screenings = await Screening.find({ cinemaRoom, movieDate })
+
+            for (let screening of screenings) {
+                const existScreeningStart = new Date(`${screening.movieDate}T${screening.timeSlot}:00`)
+                const existScreeningEnd = new Date(existScreeningStart.getTime() + movieObj.time * 60000)
+
+                if (newScreeningDate < existScreeningEnd) {
+                    return res.status(409).json({
+                        message: `Cannot add screening at ${timeSlot} on ${movieDate} for ${cinemaRoomObj.roomNumber} room. 
+                        Because the previous screening ends at ${existScreeningEnd.getHours()}
+                        :${String(existScreeningEnd.getMinutes()).padStart(2, '0')}.`
+                    })
+                }
             }
 
             screening = new Screening({
@@ -77,7 +110,7 @@ class ScreeningController {
 
             movieObj.screenings.push(screening._id)
             await movieObj.save({ session })
-            
+
             cinemaRoomObj.screenings.push(screening._id)
             await cinemaRoomObj.save({ session })
 
@@ -87,15 +120,15 @@ class ScreeningController {
 
             await session.commitTransaction()
             session.endSession()
+
+            if (!screening) {
+                return res.status(500).json({ message: "request failed..." })
+            }
+
+            return res.status(201).json({ screening })
         } catch (err) {
             next(err)
         }
-
-        if (!screening) {
-            return res.status(500).json({ message: "request failed..." })
-        }
-
-        return res.status(201).json({ screening })
     }
 
     create(req, res, next) {
@@ -116,62 +149,100 @@ class ScreeningController {
     }
 
     store = async (req, res, next) => {
-        const { movieDate, timeSlot, price } = req.body
-        const movieObj = await Movie.findOne({ _id: req.body.movie })
-        const cinemaRoomObj = await CinemaRoom.findOne({ _id: req.body.cinemaRoom })
+        const { movieDate, timeSlot, price, movie, cinemaRoom } = req.body
 
-        const screening = new Screening({
-            movie: movieObj._id,
-            movieDate,
-            timeSlot,
-            price,
-            cinemaRoom: cinemaRoomObj._id,
-            wasReleased: movieObj.wasReleased === true ? true : false
-        })
+        try {
+            const movieObj = await Movie.findOne({ _id: movie })
+            const cinemaRoomObj = await CinemaRoom.findOne({ _id: cinemaRoom })
+            const newScreeningDate = new Date(`${movieDate}T${timeSlot}:00`)
+            const currentDate = new Date()
 
-        await screening.save()
-            .then(async () => {
-                movieObj.screenings.push(screening._id)
-                await movieObj.save()
+            if (newScreeningDate < currentDate) {
+                return res.status(400).send("Cannot add screening for a past date.")
+            }
 
-                cinemaRoomObj.screenings.push(screening._id)
-                await cinemaRoomObj.save()
-
-                if (screening.wasReleased === true) {
-                    res.redirect("/screening/now-showing")
-                } else {
-                    res.redirect("/screening/comming-soon")
-                }
+            const existScreening = await Screening.findOne({
+                cinemaRoom: cinemaRoomObj._id,
+                movieDate,
+                timeSlot
             })
-            .catch(next)
+
+            if (existScreening) {
+                return res.status(400).send(
+                    `There was a screening at ${timeSlot} on ${movieDate} in ${cinemaRoomObj.roomNumber} room.`
+                )
+            }
+
+            const screenings = await Screening.find({ cinemaRoom, movieDate })
+
+            for (let screening of screenings) {
+                const existScreeningStart = new Date(`${screening.movieDate}T${screening.timeSlot}:00`)
+                const existScreeningEnd = new Date(existScreeningStart.getTime() + movieObj.time * 60000)
+
+                if (newScreeningDate < existScreeningEnd) {
+                    return res.status(400).send(
+                        `Cannot add screening at ${timeSlot} on ${movieDate} for ${cinemaRoomObj.roomNumber} room. 
+                        Because the previous screening ends at ${existScreeningEnd.getHours()}
+                        :${String(existScreeningEnd.getMinutes()).padStart(2, '0')}.`
+                    )
+                }
+            }
+
+            const screening = new Screening({
+                movie: movieObj._id,
+                movieDate,
+                timeSlot,
+                price,
+                cinemaRoom: cinemaRoomObj._id,
+                wasReleased: movieObj.wasReleased === true ? true : false
+            })
+
+            await screening.save()
+
+            movieObj.screenings.push(screening._id)
+            await movieObj.save()
+
+            cinemaRoomObj.screenings.push(screening._id)
+            await cinemaRoomObj.save()
+
+            if (screening.wasReleased === true) {
+                res.redirect("/screening/now-showing")
+            } else {
+                res.redirect("/screening/comming-soon")
+            }
+        } catch (err) {
+            next(err)
+        }
     }
 
     lstNowShowing = async (req, res, next) => {
         try {
             const screenings = await Screening.find({ wasReleased: true })
             const movies = await Movie.find({})
+            const cinemaRooms = await CinemaRoom.find({})
+            const cinemas = await Cinema.find({})
 
             screenings.forEach((screening) => {
                 const movie = movies.find((m) =>
                     m._id.toString() === screening.movie.toString()
                 )
+
                 screening.movieName = movie ? movie.title : "Unknown"
-            })
 
-            const cinemaRooms = await CinemaRoom.find({})
-            const cinemas = await Cinema.find({})
-
-            screenings.forEach((screening) => {
                 const cinemaRoom = cinemaRooms.find((cr) =>
                     cr._id.toString() === screening.cinemaRoom.toString()
                 )
-
                 const cinema = cinemas.find((c) =>
                     cinemaRoom && c._id.toString() === cinemaRoom.cinema.toString()
                 )
 
                 screening.screeningAt = cinemaRoom && cinema
                     ? `${cinemaRoom.roomNumber}-${cinema.name}` : "Unknown"
+
+                const screeningDate = new Date(screening.movieDate + "T" + screening.timeSlot + ":00")
+                const currentDate = new Date()
+
+                screening.showtimeOver = screeningDate < currentDate
             })
 
             res.render("screening/now-showing", { screenings: screenings.reverse() })
@@ -205,71 +276,134 @@ class ScreeningController {
             .catch(next)
     }
 
-    update(req, res, next) {
-        Promise.all([
-            Movie.findById({ _id: req.body.movie }),
-            CinemaRoom.findById({ _id: req.body.cinemaRoom })
-        ])
-            .then(([movie, cinemaRoom]) => {
-                const screeningId = req.params.id
+    update = async (req, res, next) => {
+        const { movieDate, timeSlot, price, movie, cinemaRoom } = req.body
+        const screeningId = req.params.id
 
-                Screening.updateOne({ _id: screeningId }, {
-                    movie: movie._id,
-                    movieDate: req.body.movieDate,
-                    timeSlot: req.body.timeSlot,
-                    price: req.body.price,
-                    cinemaRoom: cinemaRoom._id
-                })
-                    .then(() => {
-                        if (movie.screenings.indexOf(screeningId) == -1) {
-                            movie.screenings.push(screeningId)
-                            movie.save()
-                        }
+        try {
+            const [movieObj, cinemaRoomObj] = await Promise.all([
+                Movie.findById({ _id: movie }),
+                CinemaRoom.findById({ _id: cinemaRoom })
+            ])
 
-                        if (cinemaRoom.screenings.indexOf(screeningId) == -1) {
-                            cinemaRoom.screenings.push(screeningId)
-                            cinemaRoom.save()
-                        }
+            if (!movieObj || !cinemaRoomObj) {
+                return res.status(404).send("Movie or CinemaRoom not found...")
+            }
 
-                        res.redirect("/screening/table-lists")
-                    })
-                    .catch(next)
+            const newScreeningDate = new Date(`${movieDate}T${timeSlot}:00`)
+            const currentDate = new Date()
+
+            if (newScreeningDate < currentDate) {
+                return res.status(400).send("Cannot add screening for a past date.")
+            }
+
+            const existScreening = await Screening.findOne({
+                _id: { $ne: screeningId },
+                cinemaRoom: cinemaRoomObj._id,
+                movieDate,
+                timeSlot
             })
-            .catch(next)
+
+            if (existScreening) {
+                return res.status(400).send(
+                    `There was a screening at ${timeSlot} on ${movieDate} in ${cinemaRoomObj.roomNumber} room.`
+                )
+            }
+
+            const screenings = await Screening.find({
+                cinemaRoom,
+                movieDate,
+                _id: { $ne: screeningId }
+            })
+
+            for (let screening of screenings) {
+                const existScreeningStart = new Date(`${screening.movieDate}T${screening.timeSlot}:00`)
+                const existScreeningEnd = new Date(existScreeningStart.getTime() + movieObj.time * 60000)
+
+                if (newScreeningDate < existScreeningEnd) {
+                    return res.status(400).send(
+                        `Cannot add screening at ${timeSlot} on ${movieDate} for ${cinemaRoomObj.roomNumber} room. 
+                        Because the previous screening ends at ${existScreeningEnd.getHours()}
+                        :${String(existScreeningEnd.getMinutes()).padStart(2, '0')}.`
+                    )
+                }
+            }
+
+            const updateObj = { movie: movieObj._id, movieDate, timeSlot, price, cinemaRoom: cinemaRoomObj._id }
+            const updatedScreening = await Screening.findByIdAndUpdate(screeningId, updateObj, { new: true })
+
+            if (!updatedScreening) {
+                return res.status(404).send("Screening not found...")
+            }
+
+            if (!movieObj.screenings.includes(screeningId)) {
+                movieObj.screenings.push(screeningId)
+                await movieObj.save()
+            }
+
+            if (!cinemaRoomObj.screenings.includes(screeningId)) {
+                cinemaRoomObj.screenings.push(screeningId)
+                await cinemaRoomObj.save()
+            }
+
+            res.redirect("/screening/table-lists")
+        } catch (err) {
+            next(err)
+        }
     }
 
-    delete(req, res, next) {
-        Screening.deleteOne({ _id: req.params.id })
-            .then(() => res.redirect("/screening/table-lists"))
-            .catch(next)
+    delete = async (req, res, next) => {
+        try {
+            const screening = await Screening.findById(req.params.id)
+            if (!screening) {
+                return res.status(404).send("screening not found...")
+            }
+
+            const cinemaRoom = await CinemaRoom.findById(screening.cinemaRoom)
+            if (!cinemaRoom) {
+                return res.status(404).send("cinemaRoom not found...")
+            }
+
+            await Seat.updateMany({ _id: { $in: cinemaRoom.seats } }, { $set: { selected: false } })
+            await screening.delete()
+
+            cinemaRoom.screenings = cinemaRoom.screenings.filter(id => id.toString() !== screening._id.toString())
+            await cinemaRoom.save()
+
+            res.redirect("back")
+        } catch (err) {
+            next(err)
+        }
     }
 
     lstCommingSoon = async (req, res, next) => {
         try {
             const screenings = await Screening.find({ wasReleased: false })
             const movies = await Movie.find({})
+            const cinemaRooms = await CinemaRoom.find({})
+            const cinemas = await Cinema.find({})
 
             screenings.forEach((screening) => {
                 const movie = movies.find((m) =>
                     m._id.toString() === screening.movie.toString()
                 )
+
                 screening.movieName = movie ? movie.title : "Unknown"
-            })
 
-            const cinemaRooms = await CinemaRoom.find({})
-            const cinemas = await Cinema.find({})
-
-            screenings.forEach((screening) => {
                 const cinemaRoom = cinemaRooms.find((cr) =>
                     cr._id.toString() === screening.cinemaRoom.toString()
                 )
-
                 const cinema = cinemas.find((c) =>
                     cinemaRoom && c._id.toString() === cinemaRoom.cinema.toString()
                 )
 
                 screening.screeningAt = cinemaRoom && cinema
                     ? `${cinemaRoom.roomNumber}-${cinema.name}` : "Unknown"
+
+                const screeningDate = new Date(screening.movieDate + "T" + screening.timeSlot + ":00")
+                const currentDate = new Date()
+
+                screening.showtimeOver = screeningDate < currentDate
             })
 
             res.render("screening/comming-soon", { screenings })
@@ -280,7 +414,13 @@ class ScreeningController {
 
     getAllSeatsFromCinemaRoom = async (req, res, next) => {
         try {
-            const screening = await Screening.findById(req.params.id)
+            const screeningId = req.params.id
+
+            if (!isValidObjectId(screeningId)) {
+                return res.status(400).json({ message: "invalid screening id..." })
+            }
+
+            const screening = await Screening.findById(screeningId)
             if (!screening) {
                 return res.status(404).json({ message: "screening not found..." })
             }

@@ -1,5 +1,6 @@
 import Cinema from "../models/Cinema.js"
 import CinemaRoom from "../models/CinemaRoom.js"
+import Screening from "../models/Screening.js"
 import Seat from "../models/Seat.js"
 import { isValidObjectId } from "mongoose"
 
@@ -34,29 +35,33 @@ class CinemaRoomController {
     }
 
     store = async (req, res, next) => {
-        const { roomNumber, totalNumSeat } = req.body
-        const cinemaObj = await Cinema.findOne({ _id: req.body.cinema })
+        try {
+            const { roomNumber, totalNumSeat } = req.body
 
-        if (!cinemaObj) {
-            return res.status(404).send("cinema not found...")
+            const cinemaObj = await Cinema.findOne({ _id: req.body.cinema })
+            if (!cinemaObj) {
+                return res.status(404).send("cinema not found...")
+            }
+
+            const existCinemaRoom = await CinemaRoom.findOne({ roomNumber, cinema: cinemaObj._id })
+            if (existCinemaRoom) {
+                return res.status(409).send(`Room ${roomNumber} already exists in cinema ${cinemaObj.name}`)
+            }
+
+            const cinemaRoom = new CinemaRoom({ roomNumber, totalNumSeat, cinema: cinemaObj._id })
+            const savedCinemaRoom = await cinemaRoom.save()
+            const seatIds = await this.createSeatsAuto(savedCinemaRoom._id, totalNumSeat)
+
+            savedCinemaRoom.seats = seatIds
+            await savedCinemaRoom.save()
+
+            cinemaObj.cinemaRooms.push(cinemaRoom._id)
+            await cinemaObj.save()
+
+            res.redirect("/cinemaroom/table-lists")
+        } catch (err) {
+            next(err)
         }
-
-        const cinemaRoom = new CinemaRoom({
-            roomNumber,
-            totalNumSeat,
-            cinema: cinemaObj._id
-        })
-
-        const savedCinemaRoom = await cinemaRoom.save()
-        const seatIds = await this.createSeatsAuto(savedCinemaRoom._id, totalNumSeat)
-
-        savedCinemaRoom.seats = seatIds
-        await savedCinemaRoom.save()
-
-        cinemaObj.cinemaRooms.push(cinemaRoom._id)
-        await cinemaObj.save()
-
-        res.redirect("/cinemaroom/table-lists")
     }
 
     tableLists = async (req, res, next) => {
@@ -89,35 +94,64 @@ class CinemaRoomController {
             .catch(next)
     }
 
-    update(req, res, next) {
-        Cinema.findById({ _id: req.body.cinema })
-            .then((cinema) => {
-                const cinemaRoomId = req.params.id
+    update = async (req, res, next) => {
+        try {
+            const { roomNumber, totalNumSeat, cinema } = req.body
+            const cinemaRoomId = req.params.id
+            const cinemaObj = await Cinema.findById(cinema)
 
-                CinemaRoom.updateOne({ _id: cinemaRoomId }, {
-                    roomNumber: req.body.roomNumber,
-                    totalNumSeat: req.body.totalNumSeat,
-                    cinema: cinema._id
-                })
-                    .then(() => {
-                        const foundCinemaRoom = cinema.cinemaRooms.indexOf(cinemaRoomId)
+            if (!cinemaObj) {
+                return res.status(404).send("cinema not found...")
+            }
 
-                        if (foundCinemaRoom == -1) {
-                            cinema.cinemaRooms.push(cinemaRoomId)
-                            cinema.save()
-                        }
-
-                        res.redirect("/cinemaroom/table-lists")
-                    })
-                    .catch(next)
+            const existCinemaRoom = await CinemaRoom.findOne({
+                roomNumber,
+                cinema: cinemaObj._id,
+                _id: { $ne: cinemaRoomId }
             })
-            .catch(next)
+
+            if (existCinemaRoom) {
+                return res.status(409).send(`Room ${roomNumber} already exists in cinema ${cinemaObj.name}`)
+            }
+
+            await CinemaRoom.updateOne({ _id: cinemaRoomId }, { roomNumber, totalNumSeat, cinema: cinemaObj._id })
+
+            if (!cinemaObj.cinemaRooms.includes(cinemaRoomId)) {
+                cinemaObj.cinemaRooms.push(cinemaRoomId)
+                await cinemaObj.save()
+            }
+
+            res.redirect("/cinemaroom/table-lists")
+        } catch (err) {
+            next(err)
+        }
     }
 
-    delete(req, res, next) {
-        CinemaRoom.deleteOne({ _id: req.params.id })
-            .then(() => res.redirect("/cinemaroom/table-lists"))
-            .catch(next)
+    delete = async (req, res, next) => {
+        try {
+            const cinemaRoomId = req.params.id
+
+            const cinemaRoom = await CinemaRoom.findById(cinemaRoomId)
+            if (!cinemaRoom) {
+                return res.status(404).send("Cinema room does not exist...")
+            }
+
+            const cinema = await Cinema.findById(cinemaRoom.cinema)
+            if (!cinema) {
+                return res.status(404).send("Cinema does not exist...")
+            }
+
+            cinema.cinemaRooms = cinema.cinemaRooms.filter(id => id.toString() !== cinemaRoomId)
+
+            await cinema.save()
+            await Screening.delete({ cinemaRoom: cinemaRoomId })
+            await Seat.deleteMany({ _id: { $in: cinemaRoom.seats } })
+            await CinemaRoom.deleteOne({ _id: cinemaRoomId })
+
+            res.redirect("/cinema-room/table-lists")
+        } catch (err) {
+            next(err)
+        }
     }
 }
 

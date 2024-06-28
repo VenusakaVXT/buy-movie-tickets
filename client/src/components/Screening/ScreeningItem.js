@@ -25,6 +25,7 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, d
         .replace(/[:,]/g, "")
         .replace(/\s+/g, "-")
         .replace(/-{2,}/g, "-")
+        .replace(/&/g, "and")
 
     const handleLikeClick = (e) => {
         e.stopPropagation()

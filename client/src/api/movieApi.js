@@ -56,57 +56,65 @@ export const getScreeningsByCinema = async (id, slug) => {
 }
 
 export const addMovie = async (data) => {
-    const res = await axios
-        .post("/movie/", {
-            title: data.title,
-            description: data.description,
-            director: data.director,
-            contentWritter: data.contentWritter,
-            actors: data.actors,
-            category: data.category,
-            releaseDate: data.releaseDate,
-            time: data.time,
-            trailerId: data.trailerId,
-            producer: data.producer,
-            wasReleased: data.wasReleased,
-            manager: localStorage.getItem("managerId")
-        }, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        })
-        .catch((err) => console.error(err))
+    try {
+        const res = await axios
+            .post("/movie/", {
+                title: data.title,
+                description: data.description,
+                director: data.director,
+                contentWritter: data.contentWritter,
+                actors: data.actors,
+                category: data.category,
+                releaseDate: data.releaseDate,
+                time: data.time,
+                trailerId: data.trailerId,
+                producer: data.producer,
+                wasReleased: data.wasReleased,
+                manager: localStorage.getItem("managerId")
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            })
 
-    if (res.status !== 200 && res.status !== 201) {
-        console.log("Add movie failed...")
+        const resData = res.data
+        return resData
+    } catch (err) {
+        console.error(err)
+        if (err.response.status !== 200 && err.response.status !== 201) {
+            alert("Add movie failed...")
+        }
+        return null
     }
-
-    const resData = await res.data
-    return resData
 }
 
 export const addScreening = async (data) => {
-    const res = await axios
-        .post("/screening/", {
-            movie: data.movie,
-            movieDate: data.movieDate,
-            timeSlot: data.timeSlot,
-            price: data.price,
-            cinemaRoom: data.cinemaRoom,
-            manager: localStorage.getItem("managerId")
-        }, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-        })
-        .catch((err) => console.error(err))
+    try {
+        const res = await axios
+            .post("/screening/", {
+                movie: data.movie,
+                movieDate: data.movieDate,
+                timeSlot: data.timeSlot,
+                price: data.price,
+                cinemaRoom: data.cinemaRoom,
+                manager: localStorage.getItem("managerId")
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            })
 
-    if (res.status !== 200 && res.status !== 201) {
-        console.log("Add screening failed...")
+        const resData = res.data
+        return resData
+    } catch (err) {
+        console.error(err)
+        if (err.response.status === 409) {
+            alert(err.response.data.message.replace(/\s+/g, " "))
+        } else {
+            alert("Add screening failed...")
+        }
+        return null
     }
-
-    const resData = await res.data
-    return resData
 }
 
 export const getMovieStatistics = async () => {

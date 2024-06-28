@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import mongooseDelete from "mongoose-delete"
 
 const Schema = mongoose.Schema
 const screeningSchema = new Schema({
@@ -35,6 +36,11 @@ const screeningSchema = new Schema({
             ref: "Booking",
         },
     ],
+})
+
+screeningSchema.plugin(mongooseDelete, {
+    deletedAt: true,
+    overrideMethods: "all"
 })
 
 export default mongoose.model("Screening", screeningSchema)

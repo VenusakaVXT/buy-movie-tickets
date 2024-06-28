@@ -29,18 +29,18 @@
                 </tr>
             </thead>
             <tbody>
-                {% for cinemaroom in cinemaRooms %}
+                {% for cinemaRoom in cinemaRooms %}
                 <tr>
                     <th scope="row">{{ loop.index }}</th>
-                    <td>{{ cinemaroom.roomNumber }}</td>
-                    <td>{{ cinemaroom.totalNumSeat }}</td>
-                    <td>{{ cinemaroom.cinema.name }}</td>
+                    <td>{{ cinemaRoom.roomNumber }}</td>
+                    <td>{{ cinemaRoom.totalNumSeat }}</td>
+                    <td>{{ cinemaRoom.cinema.name }}</td>
                     <td>
                         <button type="button" class="btn btn-outline-warning">
-                            <a href="/cinemaroom/{{ cinemaroom._id }}/edit">Edit</a>
+                            <a href="/cinemaroom/{{ cinemaRoom._id }}/edit">Edit</a>
                         </button>
-                        <button type="button" class="btn btn-outline-danger">
-                            <a href="" data-toggle="modal" data-id="{{ cinemaroom._id }}" data-target="#deleteCinemaRoomModal">
+                        <button type="button" class="btn btn-outline-danger" {% if cinemaRoom.screenings.length %}disabled{% endif %}>
+                            <a href="" data-toggle="modal" data-id="{{ cinemaRoom._id }}" data-target="#deleteCinemaRoomModal">
                                 Delete
                             </a>
                         </button>

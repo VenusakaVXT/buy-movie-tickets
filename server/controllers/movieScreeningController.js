@@ -56,7 +56,7 @@ class MovieScreeningController {
             wasReleased,
             producer: producerObj._id
         })
-        movie.slug = slugify(movie.title, { lower: true })
+        movie.slug = slugify(movie.title.replace(/:/g, ""), { lower: true })
 
         try {
             await movie.save()
@@ -72,7 +72,7 @@ class MovieScreeningController {
             res.redirect("/movie-screening/table-lists")
         } catch (err) {
             if (err.code === 11000) {
-                res.status(400).send("The movie is available on the system")
+                res.status(400).send(`The movie title ${title} is available on the system`)
             } else {
                 next(err)
             }
@@ -109,7 +109,7 @@ class MovieScreeningController {
             ])
 
             const movieId = req.params.id
-            const slug = slugify(req.body.title, { lower: true })
+            const slug = slugify(req.body.title.replace(/:/g, ""), { lower: true })
 
             await Movie.updateOne({ _id: movieId }, {
                 title: req.body.title,
@@ -140,7 +140,11 @@ class MovieScreeningController {
 
             res.redirect(`/movie-screening/${slug}/detail`)
         } catch (err) {
-            next(err)
+            if (err.code === 11000) {
+                res.status(400).send("The movie is available on the system")
+            } else {
+                next(err)
+            }
         }
     }
 
@@ -148,7 +152,7 @@ class MovieScreeningController {
         try {
             const movieId = req.params.id
 
-            await Screening.deleteMany({ movie: movieId })
+            await Screening.delete({ movie: movieId })
             await Movie.delete({ _id: movieId })
 
             res.redirect("/movie-screening/table-lists")
@@ -171,10 +175,17 @@ class MovieScreeningController {
             .catch(next)
     }
 
-    forceDelete(req, res, next) {
-        Movie.deleteOne({ _id: req.params.id })
-            .then(() => res.redirect("back"))
-            .catch(next)
+    forceDelete = async (req, res, next) => {
+        try {
+            const movieId = req.params.id
+
+            await Screening.deleteMany({ movie: movieId })
+            await Movie.deleteOne({ _id: movieId })
+
+            res.redirect("back")
+        } catch (err) {
+            next(err)
+        }
     }
 
     handleDeleteActionFrm(req, res, next) {

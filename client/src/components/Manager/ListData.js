@@ -116,7 +116,9 @@ const ListData = ({ title }) => {
                                     <Box className="col2">
                                         <Typography>Cinema room:</Typography>
                                         <ListItemText>
-                                            {`${screening.cinemaRoom.roomNumber}-${screening.cinemaRoom.cinema.name}`}
+                                            {screening.cinemaRoom
+                                                ? `${screening.cinemaRoom.roomNumber}-${screening.cinemaRoom.cinema.name}`
+                                                : "Unknown"}
                                         </ListItemText>
                                     </Box>
                                 </ListItem>

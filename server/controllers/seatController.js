@@ -4,19 +4,17 @@ import { isValidObjectId } from "mongoose"
 
 class SeatController {
     getApiSeat = async (req, res, next) => {
-        let seats
-
         try {
-            seats = await Seat.find().populate("cinemaRoom", "roomNumber")
+            const seats = await Seat.find().populate("cinemaRoom", "roomNumber")
+
+            if (!seats) {
+                return res.status(500).json({ message: "request failed..." })
+            }
+
+            res.status(200).json({ seats })
         } catch (err) {
-            console.error(err)
+            next(err)
         }
-
-        if (!seats) {
-            res.status(500).json({ message: "request failed..." })
-        }
-
-        res.status(200).json({ seats })
     }
 
     create(req, res, next) {
@@ -26,25 +24,39 @@ class SeatController {
     }
 
     store = async (req, res, next) => {
-        const { rowSeat, seatNumber, seatType, selected = false } = req.body
-        const cinemaRoomObj = await CinemaRoom.findOne({ _id: req.body.cinemaRoom })
+        const { rowSeat, seatNumber, seatType, selected = false, cinemaRoom } = req.body
 
-        const seat = new Seat({
-            rowSeat,
-            seatNumber,
-            seatType,
-            cinemaRoom: cinemaRoomObj._id,
-            selected
-        })
-
-        await seat.save()
-            .then(async () => {
-                cinemaRoomObj.seats.push(seat._id)
-                cinemaRoomObj.totalNumSeat = cinemaRoomObj.seats.length
-                await cinemaRoomObj.save()
-                res.redirect("/seat/table-lists")
+        try {
+            const cinemaRoomObj = await CinemaRoom.findOne({ _id: cinemaRoom })
+            const existSeat = await Seat.findOne({
+                rowSeat,
+                seatNumber,
+                cinemaRoom: cinemaRoomObj._id
             })
-            .catch(next)
+
+            if (existSeat) {
+                return res.status(400).send(
+                    `Seat ${rowSeat}-${seatNumber.padStart(3, "0")} already exists in room ${cinemaRoomObj.roomNumber}`
+                )
+            }
+
+            const seat = new Seat({
+                rowSeat,
+                seatNumber,
+                seatType,
+                cinemaRoom: cinemaRoomObj._id,
+                selected
+            })
+            await seat.save()
+
+            cinemaRoomObj.seats.push(seat._id)
+            cinemaRoomObj.totalNumSeat = cinemaRoomObj.seats.length
+            await cinemaRoomObj.save()
+
+            res.redirect("/seat/table-lists")
+        } catch (err) {
+            next(err)
+        }
     }
 
     tableLists = async (req, res, next) => {
@@ -77,52 +89,86 @@ class SeatController {
             .catch(next)
     }
 
-    update(req, res, next) {
-        const newCinemaRoomId = req.body.cinemaRoom
-        const seatId = req.params.id
+    update = async (req, res, next) => {
+        try {
+            const { rowSeat, seatNumber, seatType, cinemaRoom: newCinemaRoomId } = req.body
+            const seatId = req.params.id
 
-        const updateSeatObj = {
-            rowSeat: req.body.rowSeat,
-            seatNumber: req.body.seatNumber,
-            seatType: req.body.seatType,
-            cinemaRoom: newCinemaRoomId
-        }
+            const seat = await Seat.findById(seatId).populate("cinemaRoom")
+            if (!seat) {
+                return res.status(404).json({ message: "seat not found..." })
+            }
 
-        Seat.findById(seatId).populate("cinemaRoom")
-            .then((seat) => {
-                if (!seat) {
-                    return res.status(404).json({ message: "seat not found..." })
-                }
-
-                const oldCinemaRoomId = seat.cinemaRoom ? seat.cinemaRoom._id : null
-
-                Seat.findByIdAndUpdate(seatId, updateSeatObj, { new: true })
-                    .then(() => {
-                        if (oldCinemaRoomId && oldCinemaRoomId !== newCinemaRoomId) {
-                            CinemaRoom.findByIdAndUpdate(
-                                oldCinemaRoomId,
-                                { $pull: { seats: seatId } },
-                                { new: true }
-                            ).catch(next)
-                        }
-
-                        CinemaRoom.findByIdAndUpdate(
-                            newCinemaRoomId,
-                            { $addToSet: { seats: seatId } },
-                            { new: true }
-                        ).catch(next)
-
-                        res.redirect("/seat/table-lists")
-                    })
-                    .catch(next)
+            const existSeat = await Seat.findOne({
+                rowSeat: rowSeat,
+                seatNumber: seatNumber,
+                cinemaRoom: newCinemaRoomId,
+                _id: { $ne: seatId }
             })
-            .catch(next)
+
+            if (existSeat) {
+                return res.status(409).send(
+                    `Seat ${rowSeat}-${seatNumber.padStart(3, "0")} already exists in room ${newCinemaRoomId}`
+                )
+            }
+
+            const updateSeatObj = {
+                rowSeat,
+                seatNumber,
+                seatType,
+                cinemaRoom: newCinemaRoomId
+            }
+
+            const oldCinemaRoomId = seat.cinemaRoom ? seat.cinemaRoom._id : null
+
+            await Seat.findByIdAndUpdate(seatId, updateSeatObj, { new: true })
+
+            if (oldCinemaRoomId && oldCinemaRoomId.toString() !== newCinemaRoomId) {
+                await CinemaRoom.findByIdAndUpdate(
+                    oldCinemaRoomId,
+                    { $pull: { seats: seatId } },
+                    { new: true }
+                )
+            }
+
+            await CinemaRoom.findByIdAndUpdate(
+                newCinemaRoomId,
+                { $addToSet: { seats: seatId } },
+                { new: true }
+            )
+
+            res.redirect("/seat/table-lists")
+        } catch (err) {
+            next(err)
+        }
     }
 
-    delete(req, res, next) {
-        Seat.deleteOne({ _id: req.params.id })
-            .then(() => res.redirect("/seat/table-lists"))
-            .catch(next)
+    delete = async (req, res, next) => {
+        try {
+            const seatId = req.params.id
+            const seat = await Seat.findById(seatId)
+
+            if (!seat) {
+                return res.status(404).send("Seat does not exist...")
+            }
+
+            const cinemaRoom = await CinemaRoom.findById(seat.cinemaRoom)
+
+            if (!cinemaRoom) {
+                return res.status(404).send("Cinemaroom does not exist...")
+            }
+
+            await Seat.deleteOne({ _id: seatId })
+
+            cinemaRoom.seats = cinemaRoom.seats.filter(id => id.toString() !== seatId)
+            cinemaRoom.totalNumSeat = cinemaRoom.seats.length
+
+            await cinemaRoom.save()
+
+            res.redirect("/seat/table-lists")
+        } catch (err) {
+            next(err)
+        }
     }
 }
 
