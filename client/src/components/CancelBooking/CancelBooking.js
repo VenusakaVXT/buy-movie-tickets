@@ -123,7 +123,15 @@ const CancelBooking = ({ title }) => {
                     <Button className="btn" onClick={() => navigate("/cart")}>
                         Back To Cart
                     </Button>
-                    <Button className="btn" onClick={() => setIsModalOpen(true)}>
+                    <Button className="btn" onClick={() => {
+                        if (reason === "") {
+                            alert("Please select a reason before submitting a cancellation request!!!")
+                        } else if (otherReason.trim() === "") {
+                            alert("Please enter a reason in the Other before submitting a cancellation request!!!")
+                        } else {
+                            setIsModalOpen(true)
+                        }
+                    }}>
                         Request To Cancel Booking
                     </Button>
                 </Box>
