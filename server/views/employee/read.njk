@@ -12,6 +12,7 @@
                     <th scope="col">Password (hashed)</th>
                     <th scope="col">Position</th>
                     <th scope="col">Cinema</th>
+                    <th scope="col">Lock account</th>
                 </tr>
             </thead>
             <tbody>
@@ -19,9 +20,24 @@
                 <tr>
                     <th scope="row">{{ loop.index }}</th>
                     <td>{{ employee.email }}</td>
-                    <td>{{ employee.password }}</td>
+                    <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        {{ employee.password }}
+                    </td>
                     <td>{{ employee.position }}</td>
                     <td>{{ employee.cinemaName }}</td>
+                    <td>
+                        {% if employee.locked %}
+                        <button style="width: 75px;" type="button" class="btn btn-outline-info unlock-btn" 
+                            data-id="{{employee._id}}">
+                            Unlock
+                        </button>
+                        {% else %}
+                        <button style="width: 75px;" type="button" class="btn btn-outline-danger lock-btn" 
+                            data-id="{{employee._id}}">
+                            Lock
+                        </button>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% else %}
                 <tr style="text-align: center">

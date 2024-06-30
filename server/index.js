@@ -25,10 +25,30 @@ import methodOverride from "method-override"
 import flash from "connect-flash"
 import cors from "cors"
 import session from "express-session"
+import http from "http"
+import { Server } from "socket.io"
 
 dotenv.config()
 const PORT = process.env.PORT || 5000
 const app = express()
+
+// Socket.IO
+const server = http.createServer(app)
+const io = new Server(server, {
+    cors: {
+        origin: process.env.REACT_URL,
+        methods: ["GET", "POST"]
+    }
+})
+
+io.on("connection", (socket) => {
+    console.log("a user connected")
+    socket.on("disconnect", () => {
+        console.log("user disconnected")
+    })
+})
+
+export { io }
 
 // Middlewares
 app.use(express.json())
@@ -88,8 +108,8 @@ mongoose
         `mongodb+srv://admin:${process.env.MONGODB_PASSWORD}@cluster0.awc33ii.mongodb.net/?retryWrites=true&w=majority`,
     )
     .then(() =>
-        app.listen(5000, () => {
+        server.listen(5000, () => {
             console.log(`Run project on url localhost:${PORT}`)
-        }),
+        })
     )
     .catch((err) => console.error(err))

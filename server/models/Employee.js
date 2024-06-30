@@ -31,7 +31,11 @@ const managerSchema = new Schema({
             type: mongoose.Types.ObjectId,
             ref: "Screening",
         },
-    ]
+    ],
+    locked: {
+        type: Boolean,
+        default: false
+    }
 })
 
 export default mongoose.model("Manager", managerSchema)

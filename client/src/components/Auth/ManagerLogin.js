@@ -11,7 +11,7 @@ const Login = () => {
 
     const onResReceived = (data) => {
         console.log(data)
-        dispatch(managerActions.login())
+        dispatch(managerActions.login({ id: data.id }))
         localStorage.setItem("token", data.token)
         localStorage.setItem("managerId", data.id)
         localStorage.setItem("managerEmail", data.email)
@@ -27,7 +27,7 @@ const Login = () => {
     }
 
     return <div>
-        <Auth onSubmit={getData} signUp={false} role={"manager"}/>
+        <Auth onSubmit={getData} signUp={false} role={"manager"} />
     </div>
 }
 

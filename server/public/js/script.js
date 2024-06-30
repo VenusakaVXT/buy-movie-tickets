@@ -196,6 +196,24 @@ function handleSelectGroup(element, path) {
     }
 }
 
+// AJAX handles lock employee accounts
+$(document).ready(function () {
+    $(".lock-btn, .unlock-btn").click(function () {
+        const employeeId = $(this).data("id")
+        const action = $(this).hasClass("lock-btn") ? "lock" : "unlock"
+
+        $.ajax({
+            url: `/employee/${employeeId}/${action}`,
+            method: "PATCH",
+            success: function (res) { location.reload() },
+            error: function(xhr, status, err) {
+                console.error(err)
+                alert("An error occurred while processing your request!!!")
+            }
+        })
+    })
+})
+
 // AJAX handles ticket cancellations
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".approve-btn").forEach((btn) => {

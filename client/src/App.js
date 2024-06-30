@@ -3,6 +3,7 @@ import { Box } from "@mui/material"
 import "./scss/App.scss"
 import { Routes, Route, useLocation } from "react-router-dom"
 import { Helmet } from "react-helmet"
+import { io } from "socket.io-client"
 import { useDispatch, useSelector } from "react-redux"
 import { customerActions, managerActions } from "./store"
 import Header from "./components/Header/Header"
@@ -38,10 +39,13 @@ const formatTitle = (pathname) => {
     return convertPathname.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
 }
 
+const socket = io(process.env.REACT_APP_API_URL)
+
 const App = () => {
     const dispatch = useDispatch()
-    const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
+    const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
+    const managerId = useSelector((state) => state.manager.id)
     const decision = isCustomerLoggedIn && !isManagerLoggedIn ? "customer" : "manager"
     const location = useLocation()
     const isHomePage = location.pathname === "/"
@@ -49,6 +53,21 @@ const App = () => {
 
     console.log("isManagerLoggedIn", isManagerLoggedIn)
     console.log("isCustomerLoggedIn", isCustomerLoggedIn)
+
+    useEffect(() => {
+        if (isManagerLoggedIn) {
+            socket.on("accountLocked", ({ id }) => {
+                if (id === managerId) {
+                    alert("This account has been disabled")
+                    dispatch(managerActions.logout())
+                }
+            })
+        }
+
+        return () => { 
+            socket.off("accountLocked") 
+        }
+    }, [isManagerLoggedIn, managerId, dispatch])
 
     useEffect(() => {
         if (localStorage.getItem("customerId")) {

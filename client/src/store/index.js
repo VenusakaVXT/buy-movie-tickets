@@ -25,10 +25,11 @@ const customerSlice = createSlice({
 
 const managerSlice = createSlice({
     name: "manager",
-    initialState: { isLoggedIn: false },
+    initialState: { isLoggedIn: false, id: null },
     reducers: {
-        login(state) {
+        login(state, action) {
             state.isLoggedIn = true
+            state.id = action.payload.id
             sessionStorage.removeItem("tabState")
             sessionStorage.removeItem("activeTab")
             localStorage.removeItem("seatBookeds")
@@ -42,6 +43,7 @@ const managerSlice = createSlice({
             sessionStorage.removeItem("tabState")
             sessionStorage.removeItem("activeTab")
             state.isLoggedIn = false
+            state.id = null
         }
     }
 })

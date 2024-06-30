@@ -32,7 +32,8 @@
     "nodemailer": "^6.9.14",
     "nunjucks": "^3.2.4",
     "qrcode": "^1.5.3",
-    "slugify": "^1.6.6"
+    "slugify": "^1.6.6",
+    "socket.io": "^4.7.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.23.0",

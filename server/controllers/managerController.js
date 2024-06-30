@@ -67,13 +67,17 @@ export const managerLogin = async (req, res, next) => {
     }
 
     if (!existManager) {
-        return res.status(400).json({ message: "manager not found..." })
+        return res.status(400).json({ message: "Manager not found..." })
+    }
+
+    if (existManager.locked) {
+        return res.status(400).json({ message: "This account has been disabled" })
     }
 
     const isPasswordCorrect = bcrypt.compareSync(password, existManager.password)
 
     if (!isPasswordCorrect) {
-        return res.status(400).json({ message: "incorrect password..." })
+        return res.status(400).json({ message: "Incorrect password..." })
     }
 
     const token = jwt.sign({ id: existManager._id }, process.env.SECRET_KEY, {
@@ -81,7 +85,7 @@ export const managerLogin = async (req, res, next) => {
     })
 
     res.status(200).json({
-        message: "login successfully!!!",
+        message: "Login successfully!!!",
         token,
         id: existManager._id,
         email,
@@ -96,7 +100,7 @@ export const getManagers = async (req, res, next) => {
         if (!managers) {
             return res.status(500).json({ message: "internal server error..." })
         }
-    
+
         return res.status(200).json({ managers })
     } catch (err) {
         console.error(err)
@@ -125,16 +129,16 @@ export const getManagerById = async (req, res, next) => {
                 path: "addedScreenings",
                 options: { withDeleted: true },
                 populate: [
-                    { 
-                        path: "movie", 
+                    {
+                        path: "movie",
                         options: { withDeleted: true },
-                        select: "title trailerId slug time" 
+                        select: "title trailerId slug time"
                     },
                     {
-                        path: "cinemaRoom", 
-                        select: "roomNumber", 
+                        path: "cinemaRoom",
+                        select: "roomNumber",
                         populate: {
-                            path: "cinema", 
+                            path: "cinema",
                             select: "name"
                         }
                     }

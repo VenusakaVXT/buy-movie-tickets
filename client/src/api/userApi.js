@@ -26,15 +26,19 @@ export const customerSendLoginRequest = async (data, signUp) => {
 }
 
 export const managerSendLoginRequest = async (data) => {
-    const res = await axios.post("/manager/login", {
-        email: data.email,
-        password: data.password
-    })
-        .catch((err) => alert("Login failed because:", err))
-
-    if (res.status !== 200 && res.status !== 201) {
-        console.log("Error sending manager login request...")
-    }
+    const res = await axios
+        .post("/manager/login", {
+            email: data.email,
+            password: data.password
+        })
+        .catch((err) => {
+            console.error(err)
+            if (err.response.status === 400) {
+                alert(err.response.data.message)
+            } else {
+                alert("Error sending manager login request...")
+            }
+        })
 
     const resData = await res.data
     return resData
