@@ -33,6 +33,7 @@ import BarChartIcon from "@mui/icons-material/BarChart"
 import ListIcon from "@mui/icons-material/List"
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong"
 import { Tooltip } from "react-tooltip"
+import { socket } from "../../App"
 import "../../scss/App.scss"
 
 const Header = () => {
@@ -48,7 +49,7 @@ const Header = () => {
     const dispatch = useDispatch()
     const location = useLocation()
     const customerId = localStorage.getItem("customerId")
-    const managerId = localStorage.getItem("managerId")
+    const managerId = useSelector((state) => state.manager.id)
 
     useEffect(() => {
         if (location.pathname === "/") setActive(0)
@@ -380,6 +381,7 @@ const Header = () => {
                                         navigate("/")
                                         logout(true)
                                         handleMenuClose()
+                                        socket.emit("employeeLogout", { id: managerId })
                                     }}
                                     sx={{
                                         ":hover": { color: "#e50914" }

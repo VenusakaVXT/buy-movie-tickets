@@ -39,7 +39,7 @@ const formatTitle = (pathname) => {
     return convertPathname.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
 }
 
-const socket = io(process.env.REACT_APP_API_URL)
+export const socket = io(process.env.REACT_APP_API_URL)
 
 const App = () => {
     const dispatch = useDispatch()
@@ -57,15 +57,16 @@ const App = () => {
     useEffect(() => {
         if (isManagerLoggedIn) {
             socket.on("accountLocked", ({ id }) => {
-                if (id === managerId) {
+                socket.emit("employeeLogout", { id: managerId })
+                if (id === localStorage.getItem("managerId")) {
                     alert("This account has been disabled")
                     dispatch(managerActions.logout())
                 }
             })
         }
 
-        return () => { 
-            socket.off("accountLocked") 
+        return () => {
+            socket.off("accountLocked")
         }
     }, [isManagerLoggedIn, managerId, dispatch])
 
@@ -73,11 +74,12 @@ const App = () => {
         if (localStorage.getItem("customerId")) {
             dispatch(customerActions.login())
         } else if (localStorage.getItem("managerId")) {
-            dispatch(managerActions.login())
+            dispatch(managerActions.login({ id: managerId }))
+            socket.emit("employeeLogin", { id: managerId })
         } else {
             console.log("Not logged in yet...")
         }
-    }, [dispatch])
+    }, [dispatch, managerId])
 
     // disable default scrollRestoration() of RRD
     const ScrollRestoration = () => {

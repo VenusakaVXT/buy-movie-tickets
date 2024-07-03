@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 import Manager from "../models/Employee.js"
+import { io } from "../index.js"
 
 dotenv.config()
 
@@ -82,6 +83,26 @@ export const managerLogin = async (req, res, next) => {
 
     const token = jwt.sign({ id: existManager._id }, process.env.SECRET_KEY, {
         expiresIn: "7d", // the token chain will expire after 7 days
+    })
+
+    io.on("connection", (socket) => {
+        socket.on("employeeLogin", async ({ id }) => {
+            try {
+                await Manager.findByIdAndUpdate(id, { isOnline: true })
+            } catch (err) {
+                console.error("Error updating employee login status:", err)
+            }
+        })
+
+        socket.on("employeeLogout", async ({ id }) => {
+            try {
+                await Manager.findByIdAndUpdate(id, { isOnline: false })
+            } catch (err) {
+                console.error("Error updating employee logout status:", err)
+            }
+        })
+
+        socket.on("disconnect", () => console.log("Socket.io disconnected..."))
     })
 
     res.status(200).json({
@@ -181,7 +202,8 @@ export const getEmployeeStatistics = async (req, res, next) => {
                 email: employee.email,
                 position: employee.position,
                 cinemaName: employee.cinema ? employee.cinema.name : "No cinema",
-                amountOfWorkDone: addedMoviesLength + addedScreeningsLength
+                amountOfWorkDone: addedMoviesLength + addedScreeningsLength,
+                isOnline: employee.isOnline
             }
         })
 

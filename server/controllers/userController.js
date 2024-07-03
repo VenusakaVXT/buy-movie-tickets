@@ -225,7 +225,8 @@ export const getCustomersRanking = async (req, res, next) => {
             name: customer.name,
             totalBookings: customer.bookings.length,
             feedbacks: customer.comments.length,
-            ratingPoints: customer.ratingPoints
+            ratingPoints: customer.ratingPoints,
+            isOnline: customer.isOnline
         }))
 
         customersData.sort((a, b) => b.ratingPoints - a.ratingPoints)
@@ -344,7 +345,7 @@ export const getCancelBookingsByUser = async (req, res, next) => {
                     select: "movie movieDate",
                     options: { withDeleted: true },
                     populate: {
-                        path: "movie", 
+                        path: "movie",
                         options: { withDeleted: true },
                         select: "title trailerId slug"
                     }

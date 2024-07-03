@@ -32,6 +32,10 @@ const managerSchema = new Schema({
             ref: "Screening",
         },
     ],
+    isOnline: {
+        type: Boolean,
+        default: false
+    },
     locked: {
         type: Boolean,
         default: false

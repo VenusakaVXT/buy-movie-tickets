@@ -23,6 +23,7 @@ import {
 import { useTheme, styled } from "@mui/material/styles"
 import { convertToAcronym } from "../../util"
 import { Tooltip } from "react-tooltip"
+import CircleIcon from "@mui/icons-material/Circle"
 import "../../scss/App.scss"
 import "../../scss/Statistical.scss"
 
@@ -176,25 +177,46 @@ const Statistical = ({ title }) => {
     ]
 
     const employeeColumns = [
-        { field: "id", headerName: "ID", type: "number", width: 100 },
+        { field: "id", headerName: "ID", type: "number", width: 85 },
         { field: "email", headerName: "Email", width: 300 },
-        { field: "position", headerName: "Position", width: 230 },
-        { field: "cinemaName", headerName: "Cinema", width: 180 },
+        { field: "position", headerName: "Position", width: 225 },
+        { field: "cinemaName", headerName: "Cinema", width: 150 },
         {
             field: "amountOfWorkDone",
-            headerName: "Amount Of Work Done",
+            headerName: "Work done",
             type: "number",
-            width: 180,
-            description: "Is the number of movies, screenings and other data that that employee has added"
+            width: 120,
+            description:
+                "Amount Of Work Done is the number of movies, screenings and other data that that employee has added"
+        },
+        {
+            field: "isOnline",
+            headerName: "Status",
+            width: 120,
+            renderCell: (params) => (
+                <span style={{ position: "relative" }}>
+                    <CircleIcon
+                        fontSize="6px"
+                        htmlColor={params.row.isOnline ? "#20be22" : "#ff0000"}
+                        style={{
+                            position: "absolute",
+                            top: 0,
+                            borderRadius: "50%",
+                            boxShadow: "0 0 10px rgba(52, 152, 219, 0.8)",
+                        }}
+                    />
+                    <span style={{ marginLeft: 20 }}>{params.row.isOnline ? "Online" : "Offline"}</span>
+                </span>
+            )
         }
     ]
 
     const customerColumns = [
-        { field: "id", headerName: "ID", type: "number", width: 100 },
+        { field: "id", headerName: "ID", type: "number", width: 50 },
         {
             field: "rank",
             headerName: "Rank",
-            width: 120,
+            width: 100,
             renderCell: (params) => (
                 <img
                     src={`${process.env.REACT_APP_API_URL}/img/rank/${params.row.rank}.png`}
@@ -217,14 +239,34 @@ const Statistical = ({ title }) => {
                 </Stack>
             )
         },
-        { field: "totalBookings", headerName: "Total bookings", type: "number", width: 200 },
-        { field: "feedbacks", headerName: "Feedbacks", type: "number", width: 150 },
+        { field: "totalBookings", headerName: "Total bookings", type: "number", width: 180 },
+        { field: "feedbacks", headerName: "Feedbacks", type: "number", width: 120 },
         {
             field: "ratingPoints",
             headerName: "Rating points",
-            width: 200,
+            width: 180,
             type: "number",
             description: "This point is calculated based on the number of tickets booked + the number of feedbacks"
+        },
+        {
+            field: "isOnline",
+            headerName: "Status",
+            width: 120,
+            renderCell: (params) => (
+                <span style={{ position: "relative" }}>
+                    <CircleIcon
+                        fontSize="6px"
+                        htmlColor={params.row.isOnline ? "#20be22" : "#ff0000"}
+                        style={{
+                            position: "absolute",
+                            top: 0,
+                            borderRadius: "50%",
+                            boxShadow: "0 0 10px rgba(52, 152, 219, 0.8)",
+                        }}
+                    />
+                    <span style={{ marginLeft: 20 }}>{params.row.isOnline ? "Online" : "Offline"}</span>
+                </span>
+            )
         }
     ]
 
@@ -254,7 +296,8 @@ const Statistical = ({ title }) => {
         email: row.email,
         position: row.position,
         cinemaName: row.cinemaName,
-        amountOfWorkDone: row.amountOfWorkDone
+        amountOfWorkDone: row.amountOfWorkDone,
+        isOnline: row.isOnline
     }))
 
     const customerRows = customersRanking.map((row) => ({
@@ -263,7 +306,8 @@ const Statistical = ({ title }) => {
         name: row.name,
         totalBookings: row.totalBookings,
         feedbacks: row.feedbacks,
-        ratingPoints: row.ratingPoints
+        ratingPoints: row.ratingPoints,
+        isOnline: row.isOnline
     }))
 
     const cinemaRows = cinemaStatistical.map((row, index) => ({
