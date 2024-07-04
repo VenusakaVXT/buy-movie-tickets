@@ -27,7 +27,7 @@ export const getCommentsByMovie = async (slug) => {
         .get(`/movie/${slug}/comments`)
         .catch((err) => console.error(err))
 
-    if (res.status !== 200) console.log("no data...")
+    if (res.status !== 200) console.log("0 CMT...")
 
     const resData = await res.data
     return resData
@@ -44,12 +44,44 @@ export const getScreeningsByMovie = async (slug) => {
     return resData
 }
 
-export const getScreeningsByCinema = async (id, slug) => {
-    const res = await axios
-        .get(`/cinema/${id}/cinema-room/screenings/${slug}`)
+export const getCurrentDateAnd8DaysLater = async () => {
+    const res = await axios.get("/screening/dates")
         .catch((err) => console.error(err))
 
-    if (res.status !== 200) console.log("no data...")
+    if (res.status !== 200) console.log("no dates...")
+
+    const resData = await res.data
+    return resData
+}
+
+export const getScreeningsByDate = async (movieSlug, movieDate) => {
+    const res = await axios
+        .get(`/screening/${movieSlug}/${movieDate}`)
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200) console.log("no screenings...")
+
+    const resData = await res.data
+    return resData
+}
+
+export const getScreeningsByCinema = async (cinemaId, movieSlug) => {
+    const res = await axios
+        .get(`/screening/${movieSlug}/cinema/${cinemaId}`)
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200) console.log("no screenings...")
+
+    const resData = await res.data
+    return resData
+}
+
+export const getScreeningsByCinemaAndDate = async (movieSlug, movieDate, cinemaId) => {
+    const res = await axios
+        .get(`/screening/${movieSlug}/${movieDate}/${cinemaId}`)
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200) console.log("no screenings...")
 
     const resData = await res.data
     return resData

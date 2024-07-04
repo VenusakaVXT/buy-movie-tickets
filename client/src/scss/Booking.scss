@@ -3,13 +3,13 @@
 .booking__wrapper {
     margin: 30px 92px;
 
-    .cinema__list {
+    .cinema__list, .lst-dates {
         display: flex;
         justify-content: space-between;
         padding: 16px 0;
         border-bottom: 1px solid #ccc;
 
-        .cinema__item {
+        .cinema__item, .date-item {
             color: #fff;
             padding: 6px;
             width: 120px;

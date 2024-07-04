@@ -6,7 +6,10 @@ import {
     getMovieDetail,
     getApiFromBE,
     getScreeningsByMovie,
-    getScreeningsByCinema
+    getCurrentDateAnd8DaysLater,
+    getScreeningsByDate,
+    getScreeningsByCinema,
+    getScreeningsByCinemaAndDate
 } from "../../api/movieApi"
 import NoDataComponent from "../NotFoundPage/NoDataComponent"
 import "../../scss/App.scss"
@@ -15,7 +18,10 @@ import "../../scss/Booking.scss"
 const Booking = () => {
     const [movie, setMovie] = useState()
     const [cinemas, setCinemas] = useState()
+    const [dates, setDates] = useState([])
     const [screenings, setScreenings] = useState()
+    const [selectedCinema, setSelectedCinema] = useState("")
+    const [selectedDate, setSelectedDate] = useState("")
     const [isLoading, setIsLoading] = useState(false)
     const slug = useParams().slug
     const navigate = useNavigate()
@@ -33,6 +39,12 @@ const Booking = () => {
     }, [])
 
     useEffect(() => {
+        getCurrentDateAnd8DaysLater()
+            .then((data) => setDates(data.dates))
+            .catch((err) => console.error(err))
+    }, [])
+
+    useEffect(() => {
         setIsLoading(true)
 
         getScreeningsByMovie(slug)
@@ -41,28 +53,73 @@ const Booking = () => {
             .finally(() => setIsLoading(false))
     }, [slug])
 
-    const handleCinemaItemClick = (event, id) => {
-        const { target } = event
-
-        document.querySelectorAll(".cinema__item").forEach((item) => {
+    const handleSelectActive = (target, queryClass) => {
+        document.querySelectorAll(queryClass).forEach((item) => {
             if (item !== target) {
                 item.classList.remove("active")
             }
         })
         target.classList.add("active")
+    }
 
+    const renderAllScreenings = () => {
+        getScreeningsByMovie(slug)
+            .then((res) => setScreenings(res.screenings))
+            .catch((err) => console.error(err))
+            .finally(() => setIsLoading(false))
+    }
+
+    const handleSelectCinema = (event, cinemaId) => {
+        const { target } = event
+
+        handleSelectActive(target, ".cinema__list .cinema__item")
+        setSelectedCinema(cinemaId)
         setIsLoading(true)
 
-        if (id.toString() !== "") {
-            getScreeningsByCinema(id, slug)
+        if (cinemaId && selectedDate) {
+            getScreeningsByCinemaAndDate(slug, selectedDate, cinemaId)
+                .then((res) => setScreenings(res.screenings))
+                .catch((err) => console.error(err))
+                .finally(() => setIsLoading(false))
+        } else if (cinemaId) {
+            getScreeningsByCinema(cinemaId, slug)
+                .then((res) => setScreenings(res.screenings))
+                .catch((err) => console.error(err))
+                .finally(() => setIsLoading(false))
+        } else if (selectedDate) {
+            getScreeningsByDate(slug, selectedDate)
                 .then((res) => setScreenings(res.screenings))
                 .catch((err) => console.error(err))
                 .finally(() => setIsLoading(false))
         } else {
-            getScreeningsByMovie(slug)
+            renderAllScreenings()
+        }
+    }
+
+    const handleSelectDate = (event, date) => {
+        const { target } = event
+
+        handleSelectActive(target, ".lst-dates .date-item")
+        setSelectedDate(date)
+        setIsLoading(true)
+
+        if (date && selectedCinema) {
+            getScreeningsByCinemaAndDate(slug, date, selectedCinema)
                 .then((res) => setScreenings(res.screenings))
                 .catch((err) => console.error(err))
                 .finally(() => setIsLoading(false))
+        } else if (date) {
+            getScreeningsByDate(slug, date)
+                .then((res) => setScreenings(res.screenings))
+                .catch((err) => console.error(err))
+                .finally(() => setIsLoading(false))
+        } else if (selectedCinema) {
+            getScreeningsByCinema(selectedCinema, slug)
+                .then((res) => setScreenings(res.screenings))
+                .catch((err) => console.error(err))
+                .finally(() => setIsLoading(false))
+        } else {
+            renderAllScreenings()
         }
     }
 
@@ -78,20 +135,38 @@ const Booking = () => {
                         <Typography className="breadcrumb__item">{movie.title}</Typography>
                     </Box>
 
-                    <Typography color={"#fff"} paddingTop={2}>Choose a cinema</Typography>
+                    <Typography color={"#fff"} paddingTop={2}>Select cinema</Typography>
 
                     <Box className="cinema__list">
                         <Typography className="cinema__item active" onClick={(e) => {
-                            handleCinemaItemClick(e, "")
+                            handleSelectCinema(e, "")
                         }}>
                             All Cinemas
                         </Typography>
 
                         {cinemas.map((cinema) => (
                             <Typography key={cinema._id} className="cinema__item" onClick={(e) => {
-                                handleCinemaItemClick(e, cinema._id)
+                                handleSelectCinema(e, cinema._id)
                             }}>
                                 {cinema.name}
+                            </Typography>
+                        ))}
+                    </Box>
+
+                    <Typography color={"#fff"} paddingTop={2}>Select date</Typography>
+
+                    <Box className="lst-dates">
+                        <Typography className="date-item active" onClick={(e) => {
+                            handleSelectDate(e, "")
+                        }}>
+                            All Days
+                        </Typography>
+
+                        {dates.map((date) => (
+                            <Typography key={date} className="date-item" onClick={(e) => {
+                                handleSelectDate(e, date)
+                            }}>
+                                {date}
                             </Typography>
                         ))}
                     </Box>

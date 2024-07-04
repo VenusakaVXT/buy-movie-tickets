@@ -13,5 +13,9 @@ screeningRouter.put("/:id", screeningController.update)
 screeningRouter.delete("/:id", screeningController.delete)
 screeningRouter.get("/comming-soon", screeningController.lstCommingSoon)
 screeningRouter.get("/:id/cinema-room/all-seats", screeningController.getAllSeatsFromCinemaRoom)
+screeningRouter.get("/dates", screeningController.getCurrentDateAnd8DaysLater)
+screeningRouter.get("/:movieSlug/:movieDate", screeningController.getScreeningsByDate)
+screeningRouter.get("/:movieSlug/cinema/:cinemaId", screeningController.getScreeningsByCinema)
+screeningRouter.get("/:movieSlug/:movieDate/:cinemaId", screeningController.getScreeningsByCinemaAndDate)
 
 export default screeningRouter

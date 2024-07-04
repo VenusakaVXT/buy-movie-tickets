@@ -6,6 +6,7 @@ import Manager from "../models/Employee.js"
 import mongoose, { isValidObjectId } from "mongoose"
 import jwt from "jsonwebtoken"
 import Seat from "../models/Seat.js"
+import moment from "moment"
 
 class ScreeningController {
     getApiScreening = async (req, res, next) => {
@@ -410,6 +411,91 @@ class ScreeningController {
         } catch (err) {
             next(err)
         }
+    }
+
+    getCurrentDateAnd8DaysLater = (req, res, next) => {
+        try {
+            const currentDate = moment()
+            const dates = []
+
+            for (let i = 0; i <= 7; i++) {
+                dates.push(currentDate.clone().add(i, "days").format("YYYY-MM-DD"))
+            }
+
+            res.status(200).json({ dates })
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    getScreeningsByDate = async (req, res, next) => {
+        try {
+            const { movieSlug, movieDate } = req.params
+
+            const movie = await Movie.findOne({ slug: movieSlug })
+            if (!movie) {
+                return res.status(404).json({ message: "Movie not found..." })
+            }
+
+            const screenings = await Screening.find({ movie: movie._id, movieDate })
+                .populate("cinemaRoom", "roomNumber")
+            res.status(200).json({ screenings })
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    getScreeningsByCinema = async (req, res, next) => {
+        try {
+            const cinema = await Cinema.findById(req.params.cinemaId)
+
+            if (!cinema) {
+                return res.status(404).json({ message: "Cinema not found..." })
+            }
+
+            const cinemaRoomIds = cinema.cinemaRooms
+            const cinemaRooms = await CinemaRoom.find({ _id: { $in: cinemaRoomIds } })
+
+            let screenings = []
+
+            for (const cinemaRoom of cinemaRooms) {
+                const screeningsOfCinemaRoom = await Screening
+                    .find({ cinemaRoom: cinemaRoom._id })
+                    .populate({ path: "cinemaRoom", select: "roomNumber" })
+
+                const movie = await Movie.findOne({ slug: req.params.movieSlug })
+                const screeningsMovie = screeningsOfCinemaRoom.filter((screening) => screening.movie.equals(movie._id))
+
+                screenings = [...screenings, ...screeningsMovie]
+            }
+
+            return res.status(200).json({ screenings })
+        } catch {
+            return res.status(500).json({ message: next })
+        }
+    }
+
+    getScreeningsByCinemaAndDate = async (req, res, next) => {
+        const { movieSlug, movieDate, cinemaId } = req.params
+
+        const movie = await Movie.findOne({ slug: movieSlug })
+        if (!movie) {
+            return res.status(404).json({ message: "Movie not found..." })
+        }
+
+        const cinemaRooms = await CinemaRoom.find({ cinema: cinemaId })
+        if (!cinemaRooms.length) {
+            return res.status(404).json({ message: "No cinema rooms found for this cinema" })
+        }
+
+        const cinemaRoomIds = cinemaRooms.map(room => room._id)
+        const screenings = await Screening.find({
+            movie: movie._id,
+            movieDate,
+            cinemaRoom: { $in: cinemaRoomIds }
+        }).populate("cinemaRoom", "roomNumber")
+
+        res.status(200).json({ screenings })
     }
 
     getAllSeatsFromCinemaRoom = async (req, res, next) => {

@@ -1,7 +1,5 @@
 import Cinema from "../models/Cinema.js"
 import CinemaRoom from "../models/CinemaRoom.js"
-import Screening from "../models/Screening.js"
-import Movie from "../models/Movie.js"
 import CancelBooking from "../models/CancelBooking.js"
 
 class CinemaController {
@@ -79,36 +77,6 @@ class CinemaController {
         Cinema.deleteOne({ _id: req.params.id })
             .then(() => res.redirect("/cinema/table-lists"))
             .catch(next)
-    }
-
-    getScreeningsFromCinemaRooms = async (req, res, next) => {
-        try {
-            const cinema = await Cinema.findById(req.params.cinemaId)
-
-            if (!cinema) {
-                return res.status(404).json({ message: "cinema not found..." })
-            }
-
-            const cinemaRoomIds = cinema.cinemaRooms
-            const cinemaRooms = await CinemaRoom.find({ _id: { $in: cinemaRoomIds } })
-
-            let screenings = []
-
-            for (const cinemaRoom of cinemaRooms) {
-                const screeningsOfCinemaRoom = await Screening.find({ cinemaRoom: cinemaRoom._id })
-                    .select("_id movieDate timeSlot price movie")
-                    .populate({ path: "cinemaRoom", select: "roomNumber" })
-
-                const movie = await Movie.findOne({ slug: req.params.movieSlug })
-                const screeningsMovie = screeningsOfCinemaRoom.filter((screening) => screening.movie.equals(movie._id))
-
-                screenings = [...screenings, ...screeningsMovie]
-            }
-
-            return res.status(200).json({ screenings })
-        } catch {
-            return res.status(500).json({ message: next })
-        }
     }
 
     getCancelBookingsByCinema = async (req, res, next) => {
