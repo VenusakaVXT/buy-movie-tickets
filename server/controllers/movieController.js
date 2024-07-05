@@ -62,7 +62,7 @@ export const getMovieBySlug = async (req, res, next) => {
 
 export const addMovie = async (req, res, next) => {
     // omit the word "Bearer" and just take the string <token>
-    const extractedToken = req.headers.authorization.split(" ")[1]
+    const extractedToken = req.headers.authorization?.split(" ")[1]
 
     if (!extractedToken && extractedToken.trim() === "") {
         return res.status(404).json({ message: "token not found..." })
@@ -106,6 +106,9 @@ export const addMovie = async (req, res, next) => {
 
     let movie
 
+    const session = await mongoose.startSession()
+    session.startTransaction()
+
     try {
         movie = new Movie({
             title,
@@ -121,10 +124,8 @@ export const addMovie = async (req, res, next) => {
             trailerId,
             manager: managerId,
         })
-        movie.slug = slugify(movie.title.replace(/:/g, ""), { lower: true })
 
-        const session = await mongoose.startSession()
-        session.startTransaction()
+        movie.slug = slugify(movie.title.replace(/:/g, ""), { lower: true })
         await movie.save({ session })
 
         const producerMovie = await Producer.findById(movie.producer)
@@ -138,17 +139,15 @@ export const addMovie = async (req, res, next) => {
         await session.commitTransaction()
         res.status(200).json({ movie, message: "Add movie successfully..." })
     } catch (err) {
+        await session.abortTransaction()
         console.error(err)
         if (err.code === 11000) {
             return res.status(409).json({ message: `The movie title ${title} is available on the system` })
         }
+        return res.status(500).json({ message: "Request failed..." })
+    } finally {
+        session.endSession()
     }
-
-    if (!movie) {
-        return res.status(500).json({ message: "request failed..." })
-    }
-
-    return res.status(201).json({ movie })
 }
 
 export const deleteMovie = async (req, res, next) => {
