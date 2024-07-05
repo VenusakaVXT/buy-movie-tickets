@@ -67,12 +67,12 @@ const MovieDetail = () => {
 
     const handleDeleteComment = async (id) => {
         try {
-            const res = await userDeleteComment(id)
+            await userDeleteComment(id)
             setComments(comments.filter(comment => comment._id !== id))
             setIsModalOpen(false)
-            toast.success(res.message)
+            toast.success("Delete comment successfully...")
         } catch {
-            toast.error("Delete cmt failed!!!")
+            toast.error("Delete comment failed...")
         }
     }
 

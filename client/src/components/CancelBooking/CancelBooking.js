@@ -127,7 +127,7 @@ const CancelBooking = ({ title }) => {
                     <Button className="btn" onClick={() => {
                         if (reason === "") {
                             toast.warn("Please select a reason before submitting a cancellation request!!!")
-                        } else if (otherReason.trim() === "") {
+                        } else if (reason === "Other" && otherReason.trim() === "") {
                             toast.warn("Please enter a reason in the Other before submitting a cancellation request!!!")
                         } else {
                             setIsModalOpen(true)
