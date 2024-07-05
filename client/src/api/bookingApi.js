@@ -1,9 +1,10 @@
 import axios from "axios"
+import { toast } from "react-toastify"
 
 export const newBooking = async (screeningId, seats, customerId) => {
     const res = await axios
         .post("/booking", { screening: screeningId, seats, user: customerId })
-        .catch((err) => alert("Tickets cannot be booked because:", err))
+        .catch(() => toast.error("Tickets cannot be booked"))
 
     if (res.status !== 200 && res.status !== 201) console.log("no data...")
 
@@ -38,7 +39,7 @@ export const getBookingsFromUser = async () => {
 export const cancelBooking = async ({ userId, bookingId, reason, refunds, compensationPercent }) => {
     const res = await axios
         .post("/booking/cancel-booking", { userId, bookingId, reason, refunds, compensationPercent })
-        .catch(() => { alert("There is a problem with the process of canceling screening tickets") })
+        .catch(() => toast.error("There is a problem with the process of canceling screening tickets"))
 
     if (res.status !== 200 && res.status !== 201) console.log("no data...")
 

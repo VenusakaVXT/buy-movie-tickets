@@ -7,6 +7,7 @@ import {
     Link,
     Button
 } from "@mui/material"
+import { toast } from "react-toastify"
 import Brand from "../Brand/Brand"
 import "../../scss/Auth.scss"
 
@@ -44,13 +45,14 @@ const Auth = ({ onSubmit, signUp, role }) => {
 
         if (isSignUp) {
             if (inputs.password !== inputs.confirmPassword) {
-                alert("Passwords do not match!!!")
+                toast.error("Passwords do not match!!!")
                 return
             }
 
             const passwordPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&]).{6,}/
             if (!passwordPattern.test(inputs.password)) {
-                alert("Password must contain at least one uppercase letter, one number, and one special character")
+                toast.error("Password must contain at least one uppercase letter" +
+                    ", one number, and one special character Xyz123!&%")
                 return
             }
         }

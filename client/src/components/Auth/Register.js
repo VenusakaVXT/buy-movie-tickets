@@ -2,6 +2,7 @@ import React from "react"
 import Auth from "./Auth"
 import { customerSendLoginRequest } from "../../api/userApi"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 const Register = () => {
     const navigate = useNavigate()
@@ -11,6 +12,7 @@ const Register = () => {
             .then((res) => {
                 console.log(res)
                 navigate("/customer/login")
+                toast.success(res.message)
             })
             .catch(err => console.error(err))
     }

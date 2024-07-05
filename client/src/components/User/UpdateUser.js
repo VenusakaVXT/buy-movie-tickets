@@ -14,12 +14,13 @@ import {
 import CloseIcon from "@mui/icons-material/Close"
 import { updateUser } from "../../api/userApi"
 import { formatDateInput } from "../../util"
+import { toast } from "react-toastify"
 
 const setWidth = { width: "510px" }
 const frmRow = { display: "flex", marginBottom: 2 }
 const frmCol = { display: "flex", flexDirection: "column" }
 
-const UserUpdateModal = ({ customerData, open, onClose }) => {
+const UserUpdateModal = ({ customerData, open, onClose, onProfileUpdate }) => {
     const [inputs, setInputs] = useState({
         name: customerData.name,
         email: customerData.email,
@@ -40,8 +41,9 @@ const UserUpdateModal = ({ customerData, open, onClose }) => {
         try {
             const res = await updateUser(customerId, inputs)
             if (res) {
-                alert("User updated successfully")
-                window.location.reload()
+                toast.success(res.message)
+                onProfileUpdate(inputs)
+                onClose()
             }
         } catch (err) {
             console.error(err)

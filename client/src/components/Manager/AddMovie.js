@@ -17,6 +17,7 @@ import {
 import { useNavigate } from "react-router-dom"
 import { addMovie, getApiFromBE } from "../../api/movieApi"
 import { Helmet } from "react-helmet"
+import { toast } from "react-toastify"
 import "../../scss/App.scss"
 
 const AddMovie = ({ title }) => {
@@ -93,6 +94,7 @@ const AddMovie = ({ title }) => {
             if (res !== null) {
                 console.log(res)
                 navigate("/manager/list-movie")
+                toast.success(res.message)
             }
         } catch (err) {
             console.error(err)

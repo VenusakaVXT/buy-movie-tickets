@@ -1,4 +1,5 @@
 import axios from "axios"
+import { toast } from "react-toastify"
 
 export const customerSendLoginRequest = async (data, signUp) => {
     const res = await axios
@@ -15,7 +16,10 @@ export const customerSendLoginRequest = async (data, signUp) => {
             nameAccount: data.nameAccount,
             password: data.password,
         })
-        .catch((err) => alert("Login failed because:", err))
+        .catch(() => {
+            toast.error("Login failed...")
+            return
+        })
 
     if (res.status !== 200 && res.status !== 201) {
         console.log("Error sending customer login request...")
@@ -34,9 +38,9 @@ export const managerSendLoginRequest = async (data) => {
         .catch((err) => {
             console.error(err)
             if (err.response.status === 400) {
-                alert(err.response.data.message)
+                toast.error(err.response.data.message)
             } else {
-                alert("Error sending manager login request...")
+                toast.error("Error sending manager login request...")
             }
         })
 

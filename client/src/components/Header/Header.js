@@ -34,6 +34,7 @@ import ListIcon from "@mui/icons-material/List"
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong"
 import { Tooltip } from "react-tooltip"
 import { socket } from "../../App"
+import { toast } from "react-toastify"
 import "../../scss/App.scss"
 
 const Header = () => {
@@ -303,6 +304,7 @@ const Header = () => {
                                         navigate("/")
                                         logout(false)
                                         handleMenuClose()
+                                        toast.info("Logout successfully...")
                                     }}
                                     sx={{
                                         ":hover": { color: "#e50914" }
@@ -382,6 +384,7 @@ const Header = () => {
                                         logout(true)
                                         handleMenuClose()
                                         socket.emit("employeeLogout", { id: managerId })
+                                        toast.info("Logout successfully...")
                                     }}
                                     sx={{
                                         ":hover": { color: "#e50914" }

@@ -6,6 +6,7 @@ import { getCustomerProfile, getManagerProfile } from "../../api/userApi"
 import { handleDate } from "../../util"
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import UserUpdateModal from "./UpdateUser"
+import { toast } from "react-toastify"
 import "../../scss/App.scss"
 
 const Profile = () => {
@@ -35,11 +36,13 @@ const Profile = () => {
         if (isCustomerLoggedIn) {
             navigate(path)
         } else if (isManagerLoggedIn) {
-            alert(`Account ${manager.email} has not been authorized`)
+            toast.info(`Account ${manager.email} has not been authorized`)
         } else {
-            alert("Unable to access")
+            toast.info("Unable to access")
         }
     }
+
+    const handleProfileUpdate = (updatedUser) => setCustomer(updatedUser)
 
     return (
         <Box className="wrapper" color={"#fff"}>
@@ -139,7 +142,7 @@ const Profile = () => {
                                 <Button className="btn lowercase" onClick={() => setRender(true)}>
                                     Back
                                 </Button>
-                                <Button className="btn lowercase" onClick={() => alert("Unable to save new password")}>
+                                <Button className="btn lowercase" onClick={() => toast.info("Unable to save new password")}>
                                     Save Password
                                 </Button>
                             </Box>
@@ -148,9 +151,12 @@ const Profile = () => {
                 </Box>
             </Box>
 
-            {isModalOpen &&
-                <UserUpdateModal customerData={customer} open={isModalOpen} onClose={() => setIsModalOpen(false)} />
-            }
+            {isModalOpen && <UserUpdateModal
+                customerData={customer}
+                open={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onProfileUpdate={handleProfileUpdate}
+            />}
         </Box>
     )
 }

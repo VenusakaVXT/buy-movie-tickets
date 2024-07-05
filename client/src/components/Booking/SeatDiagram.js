@@ -8,6 +8,7 @@ import { newBooking } from "../../api/bookingApi"
 import Loading from "../Loading/Loading"
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined"
 import DragHandleOutlinedIcon from "@mui/icons-material/DragHandleOutlined"
+import { toast } from "react-toastify"
 import "../../scss/SeatDiagram.scss"
 import "../../scss/App.scss"
 
@@ -76,8 +77,7 @@ const SeatDiagram = ({ title }) => {
         const customerId = localStorage.getItem("customerId")
 
         if (!screeningId || seats.length === 0 || !customerId) {
-            alert("Please choose your seat before booking!!!")
-            return
+            return toast.info("Please choose your seat before booking!!!")
         }
 
         try {
@@ -85,10 +85,11 @@ const SeatDiagram = ({ title }) => {
             const bookingId = bookingData.booking._id
 
             navigate(`/booking/${bookingId}/detail`)
+            toast.success("Booked ticket successfully...")
 
             localStorage.removeItem("seatBookeds")
         } catch (err) {
-            alert("Tickets cannot be booked because:", err)
+            toast.error("Tickets cannot be booked")
         }
     }
 
@@ -189,9 +190,9 @@ const SeatDiagram = ({ title }) => {
                             localStorage.setItem("screeningId", screeningId)
                             handleBookNowClick()
                         } else if (isManagerLoggedIn) {
-                            alert("You are using a staff account that is not used to book tickets")
+                            toast.warn("You are using a staff account that is not used to book tickets")
                         } else {
-                            alert("You need to log in to be able to book tickets")
+                            toast.info("You need to log in to be able to book tickets")
                             navigate("/customer/login")
                         }
                     }}>

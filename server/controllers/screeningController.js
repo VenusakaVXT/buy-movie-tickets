@@ -126,7 +126,7 @@ class ScreeningController {
                 return res.status(500).json({ message: "request failed..." })
             }
 
-            return res.status(201).json({ screening })
+            return res.status(201).json({ screening, message: "Add screening successfully..." })
         } catch (err) {
             next(err)
         }
@@ -413,7 +413,7 @@ class ScreeningController {
         }
     }
 
-    getCurrentDateAnd8DaysLater = (req, res, next) => {
+    getCurrentDateAnd7DaysLater = (req, res, next) => {
         try {
             const currentDate = moment()
             const dates = []

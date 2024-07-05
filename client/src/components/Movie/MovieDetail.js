@@ -15,6 +15,7 @@ import { getMovieDetail, getCommentsByMovie } from "../../api/movieApi"
 import { userComment, userDeleteComment } from "../../api/userApi"
 import SendIcon from "@mui/icons-material/Send"
 import { useSelector } from "react-redux"
+import { toast } from "react-toastify"
 import "../../scss/MovieDetail.scss"
 import "../../scss/App.scss"
 
@@ -54,23 +55,24 @@ const MovieDetail = () => {
                 setComments([...comments, res.comment])
                 setNewComment("")
             } else if (isManagerLoggedIn) {
-                alert("You are using a staff account that cannot comment!!!")
+                toast.info("You are using a staff account that cannot comment!!!")
             } else {
-                alert("You need to log in to comment!!!")
+                toast.info("You need to log in to comment!!!")
                 navigate("/customer/login")
             }
         } catch {
-            alert("Error send comment!!!")
+            toast.error("Error send comment!!!")
         }
     }
 
     const handleDeleteComment = async (id) => {
         try {
-            await userDeleteComment(id)
+            const res = await userDeleteComment(id)
             setComments(comments.filter(comment => comment._id !== id))
             setIsModalOpen(false)
+            toast.success(res.message)
         } catch {
-            alert("Delete cmt failed!!!")
+            toast.error("Delete cmt failed!!!")
         }
     }
 
@@ -245,7 +247,7 @@ const MovieDetail = () => {
                                                 {comment.user.name === localStorage.getItem("customerName") && <>
                                                     <Button
                                                         sx={{ p: 0, minWidth: 0, textTransform: "none" }}
-                                                        onClick={() => alert("Edit cmt under maintenance")}
+                                                        onClick={() => toast.warn("Edit cmt under maintenance")}
                                                     >
                                                         <Typography sx={{
                                                             marginRight: 2,

@@ -101,7 +101,7 @@ export const addMovie = async (req, res, next) => {
         !trailerId &&
         trailerId.trim() === ""
     ) {
-        return res.status(422).json({ message: "invalid inputs..." })
+        return res.status(422).json({ message: "Invalid inputs..." })
     }
 
     let movie
@@ -136,8 +136,12 @@ export const addMovie = async (req, res, next) => {
         await managerUser.save({ session })
 
         await session.commitTransaction()
+        res.status(200).json({ movie, message: "Add movie successfully..." })
     } catch (err) {
         console.error(err)
+        if (err.code === 11000) {
+            return res.status(409).json({ message: `The movie title ${title} is available on the system` })
+        }
     }
 
     if (!movie) {
@@ -202,6 +206,9 @@ export const updateMovie = async (req, res, next) => {
 
         res.status(200).json(updatedMovie)
     } catch (err) {
+        if (err.code === 11000) {
+            return res.status(409).json({ message: `The movie title ${title} is available on the system` })
+        }
         res.status(500).json({ error: err.message })
     }
 }

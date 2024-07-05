@@ -9,6 +9,7 @@ import SupportAgentIcon from "@mui/icons-material/SupportAgent"
 import RestoreIcon from "@mui/icons-material/Restore"
 import ReplyIcon from "@mui/icons-material/Reply"
 import { useSelector } from "react-redux"
+import { toast } from "react-toastify"
 import "../../scss/CinemaTicket.scss"
 import "../../scss/App.scss"
 
@@ -32,10 +33,10 @@ const CancelBookingInfo = ({ title }) => {
     const handleRestoreBooking = () => {
         restoreBooking(cancelBookingId)
             .then(() => {
-                alert("Restore successfully")
+                toast.success("Restore successfully...")
                 navigate("/cart")
             })
-            .catch((err) => alert("Restore failed:\n", err))
+            .catch(() => toast.error("Restore failed..."))
     }
 
     return (

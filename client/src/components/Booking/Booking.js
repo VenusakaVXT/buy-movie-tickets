@@ -6,7 +6,7 @@ import {
     getMovieDetail,
     getApiFromBE,
     getScreeningsByMovie,
-    getCurrentDateAnd8DaysLater,
+    getCurrentDateAnd7DaysLater,
     getScreeningsByDate,
     getScreeningsByCinema,
     getScreeningsByCinemaAndDate
@@ -39,7 +39,7 @@ const Booking = () => {
     }, [])
 
     useEffect(() => {
-        getCurrentDateAnd8DaysLater()
+        getCurrentDateAnd7DaysLater()
             .then((data) => setDates(data.dates))
             .catch((err) => console.error(err))
     }, [])

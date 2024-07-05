@@ -1,4 +1,5 @@
 import axios from "axios"
+import { toast } from "react-toastify"
 
 export const getApiFromBE = async (destination) => {
     const res = await axios
@@ -44,7 +45,7 @@ export const getScreeningsByMovie = async (slug) => {
     return resData
 }
 
-export const getCurrentDateAnd8DaysLater = async () => {
+export const getCurrentDateAnd7DaysLater = async () => {
     const res = await axios.get("/screening/dates")
         .catch((err) => console.error(err))
 
@@ -113,8 +114,10 @@ export const addMovie = async (data) => {
         return resData
     } catch (err) {
         console.error(err)
-        if (err.response.status !== 200 && err.response.status !== 201) {
-            alert("Add movie failed...")
+        if (err.response.status === 409) {
+            toast.error(err.response.data.message)
+        } else {
+            toast.error("Add movie failed...")
         }
         return null
     }
@@ -141,9 +144,9 @@ export const addScreening = async (data) => {
     } catch (err) {
         console.error(err)
         if (err.response.status === 409) {
-            alert(err.response.data.message.replace(/\s+/g, " "))
+            toast.error(err.response.data.message.replace(/\s+/g, " "))
         } else {
-            alert("Add screening failed...")
+            toast.error("Add screening failed...")
         }
         return null
     }

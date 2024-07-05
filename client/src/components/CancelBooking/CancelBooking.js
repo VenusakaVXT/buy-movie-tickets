@@ -15,6 +15,7 @@ import CloseIcon from "@mui/icons-material/Close"
 import { comparePassword } from "../../api/userApi"
 import { cancelBooking } from "../../api/bookingApi"
 import { Helmet } from "react-helmet"
+import { toast } from "react-toastify"
 import "../../scss/App.scss"
 
 const reasons = [
@@ -70,7 +71,7 @@ const CancelBooking = ({ title }) => {
                 alert("Request to cancel booking successfully! Please, wait for the system to process in 1-2 days.")
                 navigate(`/customer/cancel-booking/${cancelBookingId}/detail`)
             } else {
-                alert("Passwords do not match!!!")
+                toast.error("Passwords do not match!!!")
                 setIsModalOpen(false)
             }
         } catch (err) {
@@ -125,9 +126,9 @@ const CancelBooking = ({ title }) => {
                     </Button>
                     <Button className="btn" onClick={() => {
                         if (reason === "") {
-                            alert("Please select a reason before submitting a cancellation request!!!")
+                            toast.warn("Please select a reason before submitting a cancellation request!!!")
                         } else if (otherReason.trim() === "") {
-                            alert("Please enter a reason in the Other before submitting a cancellation request!!!")
+                            toast.warn("Please enter a reason in the Other before submitting a cancellation request!!!")
                         } else {
                             setIsModalOpen(true)
                         }

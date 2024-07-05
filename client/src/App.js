@@ -6,6 +6,8 @@ import { Helmet } from "react-helmet"
 import { io } from "socket.io-client"
 import { useDispatch, useSelector } from "react-redux"
 import { customerActions, managerActions } from "./store"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 import Header from "./components/Header/Header"
 import Home from "./components/HomePage/Home"
 import Release from "./components/HomePage/Release"
@@ -164,6 +166,19 @@ const App = () => {
             {isHomePage ? <Footer /> : <PageEnding />}
 
             <GoToTopButton />
+
+            <ToastContainer
+                position="bottom-left"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
         </Box>
     )
 }

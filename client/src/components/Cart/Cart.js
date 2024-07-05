@@ -10,6 +10,7 @@ import { Tooltip } from "react-tooltip"
 import { calculateDaysBetween } from "../../util"
 import CancelSendIcon from "@mui/icons-material/CancelScheduleSend"
 import NoDataComponent from "../NotFoundPage/NoDataComponent"
+import { toast } from "react-toastify"
 import "../../scss/Cart.scss"
 import "../../scss/App.scss"
 
@@ -121,7 +122,7 @@ const Cart = () => {
                                                     localStorage.setItem("compensationPercent", percent[2])
                                                     localStorage.setItem("refunds", booking.totalMoney * (percent[2] / 100))
                                                 } else {
-                                                    alert("Conditions are not met to return tickets")
+                                                    toast.info("Conditions are not met to return tickets")
                                                 }
 
                                                 navigate(`/customer/cancel-booking/${booking._id}`)

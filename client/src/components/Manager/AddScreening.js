@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom"
 import { Helmet } from "react-helmet"
 import { addScreening, getApiFromBE } from "../../api/movieApi"
 import { getCinemaRoomFromCinema } from "../../api/cinemaApi"
+import { toast } from "react-toastify"
 import "../../scss/App.scss"
 
 const AddScreening = ({ title }) => {
@@ -51,6 +52,7 @@ const AddScreening = ({ title }) => {
             if (res !== null) {
                 console.log(res)
                 navigate("/manager/list-screening")
+                toast.success(res.message)
             }
         } catch (err) {
             console.error(err)

@@ -4,6 +4,7 @@ import { managerSendLoginRequest } from "../../api/userApi"
 import { useDispatch } from "react-redux"
 import { managerActions } from "../../store"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 const Login = () => {
     const dispatch = useDispatch()
@@ -17,6 +18,7 @@ const Login = () => {
         localStorage.setItem("managerEmail", data.email)
         localStorage.setItem("cinemaId", data.cinemaId)
         navigate("/")
+        toast.success(data.message)
     }
 
     const getData = (data) => {

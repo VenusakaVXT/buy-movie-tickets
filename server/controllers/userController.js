@@ -82,7 +82,7 @@ export const register = async (req, res, next) => {
         })
     }
 
-    return res.status(201).json({ user })
+    return res.status(201).json({ user, message: "Register successfully..." })
 }
 
 export const updateUser = async (req, res, next) => {
@@ -169,17 +169,17 @@ export const login = async (req, res, next) => {
     }
 
     if (!existUser) {
-        return res.status(404).json({ message: "user not found..." })
+        return res.status(404).json({ message: "User not found..." })
     }
 
     const isPasswordCorrect = bcrypt.compareSync(password, existUser.password)
 
     if (!isPasswordCorrect) {
-        return res.status(400).json({ message: "incorrect password..." })
+        return res.status(400).json({ message: "Incorrect password..." })
     }
 
     res.status(200).json({
-        message: "login successfully!!!",
+        message: "Login successfully!!!",
         id: existUser._id,
         name: existUser.name
     })
