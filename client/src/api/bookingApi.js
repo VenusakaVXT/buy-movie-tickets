@@ -23,9 +23,7 @@ export const getBookingDetail = async (id) => {
     return resData
 }
 
-export const getBookingsFromUser = async () => {
-    const userId = localStorage.getItem("customerId")
-
+export const getBookingsFromUser = async (userId) => {
     const res = await axios
         .get(`/user/${userId}/bookings`)
         .catch((err) => console.error(err))

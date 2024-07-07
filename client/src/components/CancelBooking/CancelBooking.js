@@ -157,7 +157,7 @@ const CancelBooking = ({ title }) => {
                             <Typography textAlign={"justify"} m={"8px 0"}>
                                 To submit a request to cancel a booking, you need to authenticate your password.
                                 If your ticket cancellation request is approved, <span style={{ color: "#ff0000" }}>
-                                    {localStorage.getItem("seatLength")} rating points will be deducted
+                                    {localStorage.getItem("ratingPointsDeducted")} rating points will be deducted
                                 </span> and <span style={{ color: "#ff0000" }}>
                                     the refund amount will be reduced by {100 - compensationPercent}%.
                                 </span> That means you will receive <span style={{ fontWeight: 600 }}>

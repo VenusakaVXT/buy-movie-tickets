@@ -47,6 +47,10 @@ const App = () => {
     const dispatch = useDispatch()
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
+    const customerId = useSelector((state) => state.customer.id)
+    const customerName = useSelector((state) => state.customer.name)
+    const bookings = useSelector((state) => state.customer.bookings)
+    const ratingPoints = useSelector((state) => state.customer.ratingPoints)
     const managerId = useSelector((state) => state.manager.id)
     const decision = isCustomerLoggedIn && !isManagerLoggedIn ? "customer" : "manager"
     const location = useLocation()
@@ -74,14 +78,19 @@ const App = () => {
 
     useEffect(() => {
         if (localStorage.getItem("customerId")) {
-            dispatch(customerActions.login())
+            dispatch(customerActions.login({
+                id: customerId,
+                name: customerName,
+                bookings,
+                ratingPoints
+            }))
         } else if (localStorage.getItem("managerId")) {
             dispatch(managerActions.login({ id: managerId }))
             socket.emit("employeeLogin", { id: managerId })
         } else {
             console.log("Not logged in yet...")
         }
-    }, [dispatch, managerId])
+    }, [dispatch, customerId, customerName, bookings, ratingPoints, managerId])
 
     // disable default scrollRestoration() of RRD
     const ScrollRestoration = () => {

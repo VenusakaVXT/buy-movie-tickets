@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { Box, Typography, Button } from "@mui/material"
 import { useNavigate, useParams } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { customerActions } from "../../store"
 import { Helmet } from "react-helmet"
 import { getAllSeatsFromCinemaRoom } from "../../api/cinemaApi"
 import { newBooking } from "../../api/bookingApi"
@@ -22,6 +23,7 @@ const SeatDiagram = ({ title }) => {
     const movieSlug = useParams().movieSlug
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const handleBeforeUnload = () => localStorage.removeItem("seatBookeds")
@@ -72,18 +74,27 @@ const SeatDiagram = ({ title }) => {
     }
 
     const handleBookNowClick = async () => {
-        const screeningId = localStorage.getItem("screeningId")
         const seats = JSON.parse(localStorage.getItem("seatBookeds")) || []
         const customerId = localStorage.getItem("customerId")
 
-        if (!screeningId || seats.length === 0 || !customerId) {
+        if (!screeningId) {
+            return toast.error("Screening not found...")
+        }
+
+        if (seats.length === 0) {
             return toast.info("Please choose your seat before booking!!!")
+        }
+
+        if (!customerId) {
+            return toast.error("Customer not found...")
         }
 
         try {
             const bookingData = await newBooking(screeningId, seats, customerId)
             const bookingId = bookingData.booking._id
 
+            dispatch(customerActions.addBooking(bookingData.booking))
+            dispatch(customerActions.setRatingPoints(seats.length * 5))
             navigate(`/booking/${bookingId}/detail`)
             toast.success("Booked ticket successfully...")
 
@@ -187,7 +198,6 @@ const SeatDiagram = ({ title }) => {
                     <Button className="btn" fontSize={"1.5rem"} onClick={() => {
                         if (isCustomerLoggedIn) {
                             setIsLoading(true)
-                            localStorage.setItem("screeningId", screeningId)
                             handleBookNowClick()
                         } else if (isManagerLoggedIn) {
                             toast.warn("You are using a staff account that is not used to book tickets")

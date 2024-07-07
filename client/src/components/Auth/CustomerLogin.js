@@ -12,7 +12,12 @@ const Login = () => {
 
     const onResReceived = (data) => {
         console.log(data)
-        dispatch(customerActions.login())
+        dispatch(customerActions.login({
+            id: data.id,
+            name: data.name,
+            bookings: data.bookings,
+            ratingPoints: data.ratingPoints
+        }))
         localStorage.setItem("customerId", data.id)
         localStorage.setItem("customerName", data.name)
         navigate("/")

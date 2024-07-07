@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Box, Typography, Button } from "@mui/material"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { customerActions } from "../../store"
 import { getCustomerProfile, getManagerProfile } from "../../api/userApi"
 import { handleDate } from "../../util"
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"
@@ -14,13 +15,15 @@ const Profile = () => {
     const [manager, setManager] = useState()
     const [render, setRender] = useState(true)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const customerId = localStorage.getItem("customerId")
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
+    const dispatch = useDispatch()
     const navigate = useNavigate()
 
     useEffect(() => {
         if (isCustomerLoggedIn) {
-            getCustomerProfile(localStorage.getItem("customerId"))
+            getCustomerProfile(customerId)
                 .then((res) => setCustomer(res.user))
                 .catch((err) => console.error(err))
         } else if (isManagerLoggedIn) {
@@ -30,7 +33,7 @@ const Profile = () => {
         } else {
             console.log("Can't get profile because no account is logged in yet")
         }
-    }, [isCustomerLoggedIn, isManagerLoggedIn])
+    }, [isCustomerLoggedIn, isManagerLoggedIn, customerId])
 
     const handleNavigate = (path) => {
         if (isCustomerLoggedIn) {
@@ -42,7 +45,10 @@ const Profile = () => {
         }
     }
 
-    const handleProfileUpdate = (updatedUser) => setCustomer(updatedUser)
+    const handleProfileUpdate = (updatedUser) => {
+        dispatch(customerActions.updateName({ name: updatedUser.name }))
+        setCustomer(updatedUser)
+    }
 
     return (
         <Box className="wrapper" color={"#fff"}>
@@ -152,6 +158,7 @@ const Profile = () => {
             </Box>
 
             {isModalOpen && <UserUpdateModal
+                id={customerId}
                 customerData={customer}
                 open={isModalOpen}
                 onClose={() => setIsModalOpen(false)}

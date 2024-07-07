@@ -20,7 +20,7 @@ const setWidth = { width: "510px" }
 const frmRow = { display: "flex", marginBottom: 2 }
 const frmCol = { display: "flex", flexDirection: "column" }
 
-const UserUpdateModal = ({ customerData, open, onClose, onProfileUpdate }) => {
+const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) => {
     const [inputs, setInputs] = useState({
         name: customerData.name,
         email: customerData.email,
@@ -36,12 +36,11 @@ const UserUpdateModal = ({ customerData, open, onClose, onProfileUpdate }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const customerId = localStorage.getItem("customerId")
-
         try {
-            const res = await updateUser(customerId, inputs)
+            const res = await updateUser(id, inputs)
             if (res) {
                 toast.success(res.message)
+                localStorage.setItem("customerName", inputs.name)
                 onProfileUpdate(inputs)
                 onClose()
             }

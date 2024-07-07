@@ -22,7 +22,7 @@ const Cart = () => {
     useEffect(() => {
         setIsLoading(true)
 
-        getBookingsFromUser()
+        getBookingsFromUser(localStorage.getItem("customerId"))
             .then((res) => setBookings(res.bookings))
             .catch((err) => console.error(err))
             .finally(() => setIsLoading(false))
@@ -110,7 +110,7 @@ const Cart = () => {
                                                     booking.createdAt
                                                 )
 
-                                                localStorage.setItem("seatLength", booking.seats.length * 5)
+                                                localStorage.setItem("ratingPointsDeducted", booking.seats.length * 5)
 
                                                 if (dayNum >= 7) {
                                                     localStorage.setItem("compensationPercent", percent[0])

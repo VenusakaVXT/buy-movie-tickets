@@ -27,6 +27,7 @@ const MovieDetail = () => {
     const [idCommentDeleted, setIdCommentDeleted] = useState()
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
+    const userId = localStorage.getItem("customerId")
     const slug = useParams().slug
     const navigate = useNavigate()
 
@@ -47,10 +48,14 @@ const MovieDetail = () => {
         try {
             if (isCustomerLoggedIn) {
                 const res = await userComment({
-                    userId: localStorage.getItem("customerId"),
+                    userId,
                     movieId: movie._id,
                     content: newComment
                 })
+
+                // if (res) {
+                //     dispatch(customerActions.setRatingPoints(5))
+                // }
 
                 setComments([...comments, res.comment])
                 setNewComment("")
@@ -71,6 +76,7 @@ const MovieDetail = () => {
             setComments(comments.filter(comment => comment._id !== id))
             setIsModalOpen(false)
             toast.success("Delete comment successfully...")
+            // dispatch(customerActions.setRatingPoints(-5))
         } catch {
             toast.error("Delete comment failed...")
         }
@@ -244,7 +250,7 @@ const MovieDetail = () => {
                                             </Typography>
 
                                             <Box display={"flex"}>
-                                                {comment.user.name === localStorage.getItem("customerName") && <>
+                                                {comment.user._id === userId && <>
                                                     <Button
                                                         sx={{ p: 0, minWidth: 0, textTransform: "none" }}
                                                         onClick={() => toast.warn("Edit cmt under maintenance")}

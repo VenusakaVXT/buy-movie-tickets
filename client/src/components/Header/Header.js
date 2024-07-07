@@ -51,6 +51,9 @@ const Header = () => {
     const location = useLocation()
     const customerId = localStorage.getItem("customerId")
     const managerId = useSelector((state) => state.manager.id)
+    const customerName = useSelector((state) => state.customer.name)
+    const bookingsLength = useSelector((state) => state.customer.bookings.length)
+    const ratingPoints = useSelector((state) => state.customer.ratingPoints)
 
     useEffect(() => {
         if (location.pathname === "/") setActive(0)
@@ -63,16 +66,16 @@ const Header = () => {
     }, [])
 
     useEffect(() => {
-        isCustomerLoggedIn && getCustomerProfile(customerId)
-            .then((res) => setCustomer(res.user))
-            .catch((err) => console.error(err))
-    }, [isCustomerLoggedIn, customerId])
+        if (isCustomerLoggedIn) {
+            getCustomerProfile(customerId)
+                .then((res) => setCustomer(res.user))
+                .catch((err) => console.error(err))
 
-    useEffect(() => {
-        isCustomerLoggedIn && getBookingsFromUser()
-            .then((res) => setBookings(res.bookings))
-            .catch((err) => console.error(err))
-    }, [isCustomerLoggedIn])
+            getBookingsFromUser(customerId)
+                .then((res) => setBookings(res.bookings))
+                .catch((err) => console.error(err))
+        }
+    }, [isCustomerLoggedIn, customerId])
 
     useEffect(() => {
         isManagerLoggedIn && getManagerProfile(managerId)
@@ -233,7 +236,7 @@ const Header = () => {
                             </Tabs>
                         </>}
 
-                        {isCustomerLoggedIn && <>
+                        {isCustomerLoggedIn && customer && <>
                             <Link to="/cart" className="header__cart">
                                 <ShoppingCartIcon
                                     sx={{ color: "#fff", ":hover": { color: "#e50914" } }}
@@ -241,7 +244,7 @@ const Header = () => {
                                     data-tooltip-id="cart"
                                 />
 
-                                <span>{bookings.length.toString()}</span>
+                                <span>{bookingsLength !== 0 ? bookingsLength : bookings.length}</span>
                             </Link>
 
                             <Tooltip
@@ -256,7 +259,7 @@ const Header = () => {
 
                             <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer" }} onClick={handleMenuOpen}>
                                 <Avatar style={{ width: "39px", height: "38px" }} alt="user avt" />
-                                <Typography paddingLeft={"10px"}>{customer && customer.name}</Typography>
+                                <Typography paddingLeft={"10px"}>{customerName ? customerName : customer.name}</Typography>
                             </Box>
 
                             <Menu
@@ -277,7 +280,7 @@ const Header = () => {
                                 <MenuItem sx={{ cursor: "default" }}>
                                     <StarsIcon htmlColor="#ffff00" sx={{ marginRight: "2px" }} />
                                     <Typography lineHeight={"21px"}>
-                                        {`Raiting: ${customer && customer.ratingPoints} point`}
+                                        Raiting: {ratingPoints !== 0 ? ratingPoints : customer.ratingPoints} point
                                     </Typography>
                                 </MenuItem>
 
