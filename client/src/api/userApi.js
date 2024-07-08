@@ -1,9 +1,9 @@
 import axios from "axios"
 import { toast } from "react-toastify"
 
-export const customerSendLoginRequest = async (data, signUp) => {
+export const customerSendRegisterRequest = async (data) => {
     const res = await axios
-        .post(`/user/${signUp ? "register" : "login"}`, signUp ? {
+        .post("/user/register", {
             name: data.name,
             email: data.email,
             phone: data.phone,
@@ -12,7 +12,23 @@ export const customerSendLoginRequest = async (data, signUp) => {
             address: data.address,
             password: data.password,
             confirmPassword: data.confirmPassword
-        } : {
+        })
+        .catch(() => {
+            toast.error("Register failed...")
+            return
+        })
+
+    if (res.status !== 200 && res.status !== 201) {
+        console.log("Error sending customer register request...")
+    }
+
+    const resData = await res.data
+    return resData
+}
+
+export const customerSendLoginRequest = async (data) => {
+    const res = await axios
+        .post("/user/login", {
             nameAccount: data.nameAccount,
             password: data.password,
         })
@@ -32,7 +48,7 @@ export const customerSendLoginRequest = async (data, signUp) => {
 export const managerSendLoginRequest = async (data) => {
     const res = await axios
         .post("/manager/login", {
-            email: data.email,
+            email: data.nameAccount,
             password: data.password
         })
         .catch((err) => {

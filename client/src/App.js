@@ -13,9 +13,8 @@ import Home from "./components/HomePage/Home"
 import Release from "./components/HomePage/Release"
 import Category from "./components/HomePage/Category"
 import Cinema from "./components/HomePage/Cinema"
-import Register from "./components/Auth/Register"
-import CustomerLogin from "./components/Auth/CustomerLogin"
-import ManagerLogin from "./components/Auth/ManagerLogin"
+import Register from "./components/Register/Register"
+import Login from "./components/Login/Login"
 import Footer from "./components/Footer/Footer"
 import PageEnding from "./components/Footer/PageEnding"
 import NotFoundPage from "./components/NotFoundPage/NotFoundPage"
@@ -123,12 +122,9 @@ const App = () => {
                         <SeatDiagram title={`${title} | Seat Diagram`} />
                     } />
                     <Route path="/charts" element={<Charts />} />
-                    {!isCustomerLoggedIn && <>
-                        <Route path="/customer/login" element={<CustomerLogin />} />
+                    {(!isCustomerLoggedIn && !isManagerLoggedIn) && <>
                         <Route path="/register" element={<Register />} />
-                    </>}
-                    {!isManagerLoggedIn && <>
-                        <Route path="/manager/login" element={<ManagerLogin />} />
+                        <Route path="/login" element={<Login />} />
                     </>}
                     {isCustomerLoggedIn && <>
                         <Route path="/booking/:bookingId/detail"

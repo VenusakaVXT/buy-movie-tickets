@@ -24,9 +24,8 @@
             color: #6d6d6e;
             text-decoration: none;
             cursor: pointer;
-            position: relative;
-            right: -61.5%;
-            padding-top: 12px;
+            padding-right: 7px;
+            line-height: 1.5;
 
             &:hover {
                 color: $main-color;

@@ -223,15 +223,15 @@ const Header = () => {
                             <Tabs className="header__option" textColor="#fff">
                                 <Tab
                                     className="header__option-item"
-                                    label="Customer"
+                                    label="Sign up"
                                     LinkComponent={Link}
-                                    to="/customer/login"
+                                    to="/register"
                                 />
                                 <Tab
                                     className="header__option-item"
-                                    label="Manager"
+                                    label="Sign in"
                                     LinkComponent={Link}
-                                    to="/manager/login"
+                                    to="/login"
                                 />
                             </Tabs>
                         </>}
