@@ -73,21 +73,74 @@ const SeatDiagram = ({ title }) => {
         }
     }
 
+    // const checkDistanceBetweenSelectedSeats = (seats) => {
+    //     const seatsArr = seats.map(seatId => synthesizeData.seats.find(seat => seat._id === seatId))
+    //     const rows = [...new Set(seatsArr.map(seat => seat.rowSeat))]
+
+    //     for (const row of rows) {
+    //         const rowSeats = synthesizeData.seats.filter(seat => seat.rowSeat === row)
+    //         const selectedSeatNumbers = seatsArr.filter(seat => seat.rowSeat === row)
+    //             .map(seat => parseInt(seat.seatNumber))
+
+    //         for (let i = 0; i < rowSeats.length; i++) {
+    //             if ((rowSeats[i].selected && selectedSeatNumbers.includes(parseInt(rowSeats[i].seatNumber) + 2)) ||
+    //                 (rowSeats[i].selected && selectedSeatNumbers.includes(parseInt(rowSeats[i].seatNumber) - 2))) {
+    //                 return false
+    //             }
+    //         }
+    //     }
+
+    //     return true
+    // }
+
+    // const isValidSeatSelection = (seats, selectedSeats) => {
+    //     const bookedSeats = seats.filter(seat => seat.selected)
+    //     for (const selectedSeat of selectedSeats) {
+    //         const row = selectedSeat.rowSeat
+    //         const seatNumber = parseInt(selectedSeat.seatNumber)
+    //         for (const bookedSeat of bookedSeats) {
+    //             if (bookedSeat.rowSeat === row) {
+    //                 const bookedSeatNumber = parseInt(bookedSeat.seatNumber)
+    //                 if (Math.abs(seatNumber - bookedSeatNumber) === 1) {
+    //                     return false
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return true
+    // }
+
     const handleBookNowClick = async () => {
         const seats = JSON.parse(localStorage.getItem("seatBookeds")) || []
         const customerId = localStorage.getItem("customerId")
 
         if (!screeningId) {
-            return toast.error("Screening not found...")
+            toast.error("Screening not found...")
+            setIsLoading(false)
+            return
         }
 
         if (seats.length === 0) {
-            return toast.info("Please choose your seat before booking!!!")
+            toast.info("Please choose your seat before booking!!!")
+            setIsLoading(false)
+            return
         }
 
         if (!customerId) {
-            return toast.error("Customer not found...")
+            toast.error("Customer not found...")
+            setIsLoading(false)
+            return
         }
+
+        // const selectedSeats = synthesizeData.seats.filter(seat => seats.includes(seat._id))
+
+        // if (!isValidSeatSelection(synthesizeData.seats, selectedSeats) 
+        //     || !checkDistanceBetweenSelectedSeats(seats)) {
+        //     toast.info("Do not place seats at least 1 seat away from selected seats.")
+        //     setIsLoading(false)
+        //     return
+        // }
 
         try {
             const bookingData = await newBooking(screeningId, seats, customerId)
@@ -203,7 +256,7 @@ const SeatDiagram = ({ title }) => {
                             toast.warn("You are using a staff account that is not used to book tickets")
                         } else {
                             toast.info("You need to log in to be able to book tickets")
-                            navigate("/customer/login")
+                            navigate("/login")
                         }
                     }}>
                         Book Now

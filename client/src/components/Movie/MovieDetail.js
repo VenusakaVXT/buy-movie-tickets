@@ -63,7 +63,7 @@ const MovieDetail = () => {
                 toast.info("You are using a staff account that cannot comment!!!")
             } else {
                 toast.info("You need to log in to comment!!!")
-                navigate("/customer/login")
+                navigate("/login")
             }
         } catch {
             toast.error("Error send comment!!!")
