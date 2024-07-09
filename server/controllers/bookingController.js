@@ -405,7 +405,7 @@ export const getAllCancelBooking = async (req, res, next) => {
                     }
                 ]
             })
-            .sort({ createdAt: -1 })
+            .sort({ approveRequest: 1, createdAt: -1 })
 
         cancelBookings.forEach((cancelBooking) => {
             if (cancelBooking.booking
