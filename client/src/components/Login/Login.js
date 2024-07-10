@@ -97,7 +97,7 @@ const Login = () => {
                 <Box mt={1} display={"flex"} justifyContent={"space-between"}>
                     <Box display={"flex"}>
                         <Switch defaultChecked color="error" size="small" onChange={handleSwitchChange} />
-                        <Typography color={"#6d6d6e"}>Customer/Manager</Typography>
+                        <Typography color={"#6d6d6e"}>{isCustomer ? "Customer" : "Manager"}</Typography>
                     </Box>
                     <Link className="forgot-password">Forgot password?</Link>
                 </Box>

@@ -269,8 +269,8 @@ const Header = () => {
                                 sx={{
                                     marginTop: "12px",
                                     ".css-6hp17o-MuiList-root-MuiMenu-list": {
-                                        backgroundColor: "#141212",
-                                        color: "#fff"
+                                        backgroundColor: "#141212 !important",
+                                        color: "#fff !important"
                                     }
                                 }}
                             >
@@ -331,8 +331,8 @@ const Header = () => {
                                 sx={{
                                     marginTop: "12px",
                                     ".css-6hp17o-MuiList-root-MuiMenu-list": {
-                                        backgroundColor: "#141212",
-                                        color: "#fff"
+                                        backgroundColor: "#141212 !important",
+                                        color: "#fff !important"
                                     }
                                 }}
                             >

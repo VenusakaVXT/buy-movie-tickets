@@ -163,17 +163,17 @@ const Movie = () => {
                     <FormControl sx={{
                         width: "250px",
                         ".css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#fff"
+                            borderColor: "#fff !important"
                         },
                         ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select": {
                             padding: "8px",
-                            color: "#fff"
+                            color: "#fff !important"
                         },
                         ".css-hfutr2-MuiSvgIcon-root-MuiSelect-icon": {
-                            color: "#fff"
+                            color: "#fff !important"
                         },
                         ".css-bpeome-MuiSvgIcon-root-MuiSelect-icon": {
-                            color: "#fff"
+                            color: "#fff !important"
                         }
                     }}>
                         <Select

@@ -75,9 +75,10 @@ const AddMovie = ({ title }) => {
 
     const handleRadioBtnClick = (event) => {
         const label = event.target.closest("label")
-        const targetSvg = label.querySelector(".css-1hbvpl3-MuiSvgIcon-root")
+        const queryClass = ".frm-wrapper .css-1hbvpl3-MuiSvgIcon-root"
+        const targetSvg = label.querySelector(queryClass)
 
-        document.querySelectorAll(".css-1hbvpl3-MuiSvgIcon-root").forEach((option) => {
+        document.querySelectorAll(queryClass).forEach((option) => {
             option.classList.remove("active")
         })
 

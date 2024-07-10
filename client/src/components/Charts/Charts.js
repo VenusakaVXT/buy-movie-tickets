@@ -69,7 +69,7 @@ const Charts = () => {
             />
 
             {customersRanking && !isLoading ?
-                <Table fontSize="1rem" color="#fff">
+                <Table fontSize="1rem" color="#fff !important">
                     <TableHead>
                         <TableRow>
                             <TableCell>Rank</TableCell>

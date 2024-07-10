@@ -47,20 +47,20 @@ export const useStyles = {
             fontSize: "16px"
         },
         ".css-128fb87-MuiDataGrid-toolbarContainer": {
-            display: "flex",
-            justifyContent: "flex-end"
+            display: "flex !important",
+            justifyContent: "flex-end !important"
         },
         ".css-1knaqv7-MuiButtonBase-root-MuiButton-root": {
             color: `${colorStyle.mainColor} !important`
         },
         ".css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root": {
-            color: colorStyle.txtColor
+            color: `${colorStyle.txtColor} !important`
         },
         ".css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar, .MuiDataGrid-footerContainer": {
-            color: colorStyle.txtColor
+            color: `${colorStyle.txtColor} !important`
         },
         ".css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon, .css-1mf6u8l-MuiSvgIcon-root-MuiSelect-icon": {
-            color: colorStyle.txtColor
+            color: `${colorStyle.txtColor} !important`
         }
     }
 }
@@ -489,7 +489,7 @@ const Statistical = ({ title }) => {
                                         sx={{
                                             marginLeft: "21px",
                                             ".css-1u0lry5-MuiChartsLegend-root": {
-                                                display: "none"
+                                                display: "none !important"
                                             },
                                         }}
                                     >
@@ -640,7 +640,7 @@ const Statistical = ({ title }) => {
                                         }]}
                                         sx={{
                                             ".css-1u0lry5-MuiChartsLegend-root": {
-                                                display: "none"
+                                                display: "none !important"
                                             }
                                         }}
                                     />
@@ -729,7 +729,7 @@ const Statistical = ({ title }) => {
                                         sx={{
                                             [`.${axisClasses.root} line`]: { stroke: colorStyle.txtColor },
                                             [`.${axisClasses.root} text`]: { fill: colorStyle.txtColor },
-                                            ".css-1u0lry5-MuiChartsLegend-root": { display: "none" }
+                                            ".css-1u0lry5-MuiChartsLegend-root": { display: "none !important" }
                                         }}
                                     />
                                 </Box>

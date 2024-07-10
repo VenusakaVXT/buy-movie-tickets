@@ -40,7 +40,7 @@ const CancelBooking = ({ title }) => {
 
     const handleChangeReason = (e) => {
         const label = e.target.closest("label")
-        const queryClass = ".css-1hbvpl3-MuiSvgIcon-root"
+        const queryClass = ".frm-wrapper .css-1hbvpl3-MuiSvgIcon-root"
         const targetSvg = label.querySelector(queryClass)
 
         document.querySelectorAll(queryClass).forEach((option) => {
