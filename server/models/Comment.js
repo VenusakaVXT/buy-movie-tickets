@@ -17,7 +17,7 @@ const commentSchema = new Schema({
     },
 }, { timestamps: true })
 
-commentSchema.virtual("periodAfterCreation").get(function() {
+commentSchema.virtual("periodAfterCreation").get(function () {
     const now = moment()
     const createdAt = moment(this.createdAt)
     const duration = moment.duration(now.diff(createdAt))
@@ -31,9 +31,11 @@ commentSchema.virtual("periodAfterCreation").get(function() {
     } else if (duration.asWeeks() < 4) {
         return `${Math.floor(duration.asWeeks())} weeks ago`
     } else if (duration.asMonths() < 12) {
-        return `${Math.floor(duration.asMonths())} months ago`
+        const months = Math.floor(duration.asMonths())
+        return `${months} ${months === 1 ? "month" : "months"} ago`
     } else {
-        return `${Math.floor(duration.asYears())} years ago`
+        const years = Math.floor(duration.asYears())
+        return `${years} ${years === 1 ? "year" : "years"} ago`
     }
 })
 

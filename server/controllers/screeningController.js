@@ -347,7 +347,9 @@ class ScreeningController {
                 await cinemaRoomObj.save()
             }
 
-            res.redirect("/screening/table-lists")
+            // const checkIsWasreleased = movieObj.wasReleased ? "now-showing" : "comming-soon"
+
+            res.redirect("/screening/now-showing")
         } catch (err) {
             next(err)
         }
