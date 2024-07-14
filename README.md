@@ -18,13 +18,16 @@ This is the final class diagram that I have designed. It may be necessary to edi
 Launch the backend (NodeJS, Express):
 ```
 $ cd server
+$ npm install
 $ npm start
+#Enable LESS compiler
 $ npm run watch
 ```
 
 Launch the frontend (React):
 ```
 $ cd client
+$ npm install
 $ npm start
 ```
 
@@ -32,14 +35,77 @@ $ npm start
 
 <div align="center">
   
-![image](https://github.com/VenusakaVXT/buy-movie-tickets/assets/125566811/428bb399-b410-465b-94c1-f55b366eece7)
-*Book movie tickets.*
+![image](https://github.com/user-attachments/assets/f804f49d-8d5e-44d0-92e9-906edd4ca77f)
+*Movie details page.*
+
+</div>
+
+<div align="center">
+  
+![image](https://github.com/user-attachments/assets/af8498c6-7604-49f0-8306-2fe497e370c7)
+*Screenings page.*
   
 </div>
 
 <div align="center">
   
-![image](https://github.com/VenusakaVXT/buy-movie-tickets/assets/125566811/55bc9ea1-559c-461f-a971-78f81f9880c9)
+![image](https://github.com/VenusakaVXT/buy-movie-tickets/assets/125566811/428bb399-b410-465b-94c1-f55b366eece7)
+*Seat diagram.*
+  
+</div>
+
+<div align="center">
+  
+![image](https://github.com/user-attachments/assets/d074488c-9210-457b-9dc5-ebc9d2ee6f53)
+*Movie ticket details.*
+  
+</div>
+
+<div align="center">
+  
+![image](https://github.com/user-attachments/assets/d287f224-cfdd-4fc0-bdd1-1b4bda9bc686)
+*The system sends an email to the customer notifying them of successful ticket booking.*
+  
+</div>
+
+<div align="center">
+  
+![image](https://github.com/user-attachments/assets/1d8183ec-44bd-4d4d-8811-d04d7a9ae3fd)
 *Cancel movie ticket booking.*
+  
+</div>
+
+<div align="center">
+  
+![image](https://github.com/user-attachments/assets/6ca725cb-2ea9-4585-9c72-8250b379558e)
+*Admin moderates ticket cancellation requests.*
+  
+</div>
+
+<div align="center">
+  
+![image](https://github.com/user-attachments/assets/bcbef213-fb4f-49a9-9f1c-468f5e4fa99f)
+*BXH top 10 Customers.*
+  
+</div>
+
+<div align="center">
+  
+![image](https://github.com/user-attachments/assets/a75d9de8-8cb7-4f89-955e-412256ce6cd9)
+*Movie statistics.*
+  
+</div>
+
+<div align="center">
+  
+![image](https://github.com/user-attachments/assets/85fa4fae-564b-4f5d-9647-c32d6c7077dc)
+*Employee statistics.*
+  
+</div>
+
+<div align="center">
+  
+![image](https://github.com/user-attachments/assets/d6c3881c-0c7e-49a2-a3d2-71d6ca2fbf4c)
+*Export report to excel file.*
   
 </div>
