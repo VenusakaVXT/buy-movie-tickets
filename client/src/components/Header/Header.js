@@ -268,7 +268,7 @@ const Header = () => {
                                 onClose={handleMenuClose}
                                 sx={{
                                     marginTop: "12px",
-                                    ".css-6hp17o-MuiList-root-MuiMenu-list": {
+                                    ".css-6hp17o-MuiList-root-MuiMenu-list, .css-pwxzbm": {
                                         backgroundColor: "#141212 !important",
                                         color: "#fff !important"
                                     }
@@ -330,7 +330,7 @@ const Header = () => {
                                 onClose={handleMenuClose}
                                 sx={{
                                     marginTop: "12px",
-                                    ".css-6hp17o-MuiList-root-MuiMenu-list": {
+                                    ".css-6hp17o-MuiList-root-MuiMenu-list, .css-pwxzbm": {
                                         backgroundColor: "#141212 !important",
                                         color: "#fff !important"
                                     }

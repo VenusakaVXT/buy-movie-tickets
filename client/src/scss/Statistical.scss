@@ -43,6 +43,13 @@
             background: $second-background;
             padding: 16px;
 
+            .MuiChartsLegend-root,
+            .MuiChartsLegend-column,
+            .MuiChartsLegend-row,
+            .css-0 {
+                display: none !important;
+            }
+
             .chart-note {
                 display: flex;
                 align-items: center;

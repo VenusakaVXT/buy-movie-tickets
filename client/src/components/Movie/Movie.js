@@ -162,7 +162,7 @@ const Movie = () => {
 
                     <FormControl sx={{
                         width: "250px",
-                        ".css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                        ".css-1d3z3hw-MuiOutlinedInput-notchedOutline, .css-igs3ac": {
                             borderColor: "#fff !important"
                         },
                         ".css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select": {
@@ -173,6 +173,12 @@ const Movie = () => {
                             color: "#fff !important"
                         },
                         ".css-bpeome-MuiSvgIcon-root-MuiSelect-icon": {
+                            color: "#fff !important"
+                        },
+                        ".css-qiwgdb": {
+                            padding: "8px !important"
+                        },
+                        ".css-qiwgdb, .css-1636szt, .css-1yhq19e": {
                             color: "#fff !important"
                         }
                     }}>

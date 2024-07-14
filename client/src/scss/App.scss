@@ -181,13 +181,14 @@ hr {
     .MuiFormLabel-colorPrimary,
     .css-1x51dt5-MuiInputBase-input-MuiInput-input,
     .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root,
-    .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+    .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input,
+    .css-qiwgdb, .css-mnn31 {
         color: #fff !important;
     }
     
     .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon, 
     .css-bpeome-MuiSvgIcon-root-MuiSelect-icon,
-    .css-1hbvpl3-MuiSvgIcon-root {
+    .css-1hbvpl3-MuiSvgIcon-root, .css-1a5icme.Mui-checked {
         color: $frm-color !important;
     
         &.active {

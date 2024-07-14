@@ -69,7 +69,9 @@ const Charts = () => {
             />
 
             {customersRanking && !isLoading ?
-                <Table fontSize="1rem" color="#fff !important">
+                <Table fontSize="1rem" color="#fff !important" sx={{
+                    ".css-1bigob2, .css-q34dxg": { color: "#fff !important" }
+                }}>
                     <TableHead>
                         <TableRow>
                             <TableCell>Rank</TableCell>

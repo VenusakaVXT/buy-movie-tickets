@@ -46,11 +46,11 @@ export const useStyles = {
             color: colorStyle.txtColor,
             fontSize: "16px"
         },
-        ".css-128fb87-MuiDataGrid-toolbarContainer": {
+        ".css-128fb87-MuiDataGrid-toolbarContainer, .css-1yqais2": {
             display: "flex !important",
             justifyContent: "flex-end !important"
         },
-        ".css-1knaqv7-MuiButtonBase-root-MuiButton-root": {
+        ".css-1knaqv7-MuiButtonBase-root-MuiButton-root, .css-1rtnrqa": {
             color: `${colorStyle.mainColor} !important`
         },
         ".css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root": {
@@ -60,6 +60,9 @@ export const useStyles = {
             color: `${colorStyle.txtColor} !important`
         },
         ".css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon, .css-1mf6u8l-MuiSvgIcon-root-MuiSelect-icon": {
+            color: `${colorStyle.txtColor} !important`
+        },
+        ".css-8nphli, .css-1utq5rl, .css-1wkhih1": {
             color: `${colorStyle.txtColor} !important`
         }
     }

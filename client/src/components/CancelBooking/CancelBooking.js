@@ -40,7 +40,7 @@ const CancelBooking = ({ title }) => {
 
     const handleChangeReason = (e) => {
         const label = e.target.closest("label")
-        const queryClass = ".frm-wrapper .css-1hbvpl3-MuiSvgIcon-root"
+        const queryClass = ".radio-btn .css-1hbvpl3-MuiSvgIcon-root"
         const targetSvg = label.querySelector(queryClass)
 
         document.querySelectorAll(queryClass).forEach((option) => {
@@ -103,10 +103,10 @@ const CancelBooking = ({ title }) => {
                 <RadioGroup value={reason} onChange={handleChangeReason}>
                     {reasons.map((reasonItem, index) =>
                         <FormControlLabel
-                            key={index} value={reasonItem} label={reasonItem} control={<Radio />}
+                            key={index} value={reasonItem} label={reasonItem} control={<Radio className="radio-btn" />}
                         />
                     )}
-                    <FormControlLabel value={"Other"} label="Other" control={<Radio />} />
+                    <FormControlLabel value={"Other"} label="Other" control={<Radio className="radio-btn" />} />
                 </RadioGroup>
 
                 <textarea
