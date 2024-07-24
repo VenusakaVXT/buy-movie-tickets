@@ -3,11 +3,14 @@ import { getApiFromBE } from "../../api/movieApi"
 import { Box, Card, CardContent, Typography } from "@mui/material"
 import CategoryIcon from "@mui/icons-material/Category"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
+import { convertStr } from "../../util"
 import "../../scss/Category.scss"
 
 const Category = () => {
     const [categories, setCategories] = useState([])
     const navigate = useNavigate()
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         getApiFromBE("category")
@@ -17,16 +20,16 @@ const Category = () => {
 
     return (
         <div id="category" className="category__wrapper">
-            <h2>
-                <span>#</span>CATEGORY
-            </h2>
+            <h2><span>#</span>{t("header.category").toUpperCase()}</h2>
 
             <Box className="category__grid">
                 {categories.map((category, index) => (
                     <div key={index} className="category__item">
                         <h3 className="category__title">
-                            <CategoryIcon htmlColor="#e50914" />{" "}
-                            {`${category.category} Movies`}
+                            <CategoryIcon htmlColor="#e50914" /> {i18n.language === "us"
+                                ? `${t(`category.${convertStr(category.category)}`)} Movies`
+                                : `Phim ${t(`category.${convertStr(category.category)}`)}`
+                            }
                         </h3>
 
                         <div className="category__movies">
@@ -35,7 +38,8 @@ const Category = () => {
                                     key={index}
                                     className="category__movie-card"
                                     onClick={() => {
-                                        const path = `/category/${category.category.toLowerCase()}/${movie.title.toLowerCase()}`
+                                        const movieTitle = movie.title.toLowerCase()
+                                        const path = `/category/${convertStr(category.category)}/${movieTitle}`
                                         const handlePath = path
                                             .replace(/[:,]/g, "")
                                             .replace(/\s+/g, "-")

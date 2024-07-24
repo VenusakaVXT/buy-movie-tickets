@@ -16,6 +16,7 @@ import {
 import { useDispatch } from "react-redux"
 import { customerActions, managerActions } from "../../store"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { toast } from "react-toastify"
 
 const Login = () => {
@@ -23,6 +24,7 @@ const Login = () => {
     const [inputs, setInputs] = useState({ nameAccount: "", password: "" })
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { t, i18n } = useTranslation()
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -46,7 +48,7 @@ const Login = () => {
                     localStorage.setItem("customerId", data.id)
                     localStorage.setItem("customerName", data.name)
                     navigate("/")
-                    toast.success(data.message)
+                    toast.success(i18n.language === "us" ? data.message : t("login.toastSuccess"))
                 })
                 .catch(err => console.error(err))
             : managerSendLoginRequest(inputs)
@@ -58,7 +60,7 @@ const Login = () => {
                     localStorage.setItem("managerEmail", data.email)
                     localStorage.setItem("cinemaId", data.cinemaId)
                     navigate("/")
-                    toast.success(data.message)
+                    toast.success(i18n.language === "us" ? data.message : t("login.toastSuccess"))
                 })
                 .catch(err => console.error(err))
     }
@@ -68,7 +70,7 @@ const Login = () => {
             <Brand />
 
             <form height={430} className="auth__frm" onSubmit={handleSubmit}>
-                <Typography variant="h5" color="#ff0000">Login</Typography>
+                <Typography variant="h5" color="#ff0000">{t("login.title")}</Typography>
 
                 <TextField
                     value={inputs.nameAccount}
@@ -76,7 +78,7 @@ const Login = () => {
                     margin="normal"
                     variant="standard"
                     type="text"
-                    placeholder="Email/Phone number"
+                    placeholder={`Email/${t("register.phoneNumber")}`}
                     name="nameAccount"
                     onChange={handleChange}
                     required
@@ -88,7 +90,7 @@ const Login = () => {
                     margin="normal"
                     variant="standard"
                     type="password"
-                    placeholder="Password"
+                    placeholder={t("register.password")}
                     name="password"
                     onChange={handleChange}
                     required
@@ -97,16 +99,18 @@ const Login = () => {
                 <Box mt={1} display={"flex"} justifyContent={"space-between"}>
                     <Box display={"flex"}>
                         <Switch defaultChecked color="error" size="small" onChange={handleSwitchChange} />
-                        <Typography color={"#6d6d6e"}>{isCustomer ? "Customer" : "Manager"}</Typography>
+                        <Typography color={"#6d6d6e"}>
+                            {isCustomer ? t("login.customer") : t("login.manager")}
+                        </Typography>
                     </Box>
-                    <Link className="forgot-password">Forgot password?</Link>
+                    <Link className="forgot-password">{t("login.forgotPassword")}</Link>
                 </Box>
 
-                <Button className="auth__btn" type="submit">LOGIN</Button>
+                <Button className="auth__btn" type="submit">{t("login.btn")}</Button>
 
                 <Box className="other">
                     <Box className="line"></Box>
-                    <span>OR</span>
+                    <span>{t("register.or").toUpperCase()}</span>
                     <Box className="line"></Box>
                 </Box>
 
@@ -126,12 +130,12 @@ const Login = () => {
                             opacity: 0.8
                         }
                     }}>
-                        <Typography>Social Other</Typography>
+                        <Typography>{t("register.btn2")}</Typography>
                     </Box>
                 </Box>
 
                 <Typography className="question-switch">
-                    New to Buy Movie Tickets? <Link onClick={() => navigate("/register")}>Sign up</Link>
+                    {t("login.question")} <Link onClick={() => navigate("/register")}>{t("login.switch")}</Link>
                 </Typography>
             </form>
         </Box>

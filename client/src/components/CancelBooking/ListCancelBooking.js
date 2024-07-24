@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { Box, Typography, List, ListItem, ListItemText } from "@mui/material"
 import { Helmet } from "react-helmet"
 import { useSelector } from "react-redux"
@@ -22,6 +23,7 @@ const ListCancelBooking = ({ title }) => {
     const userId = localStorage.getItem("customerId")
     const cinemaId = localStorage.getItem("cinemaId")
     const navigate = useNavigate()
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         setIsLoading(true)
@@ -49,14 +51,14 @@ const ListCancelBooking = ({ title }) => {
 
     const cancelBookingColumns = [
         { field: "id", headerName: "ID", type: "number", width: 50 },
-        { field: "userId", headerName: "UserID", width: 250 },
-        { field: "bookingId", headerName: "BookingID", width: 250 },
-        { field: "cancellationDate", headerName: "Date", width: 180 },
-        { field: "refunds", headerName: "Refunds", width: 180 },
-        { field: "approveRequest", headerName: "Status", width: 180 },
+        { field: "userId", headerName: t("cancelBooking.userId"), width: 250 },
+        { field: "bookingId", headerName: t("cancelBooking.bookingId"), width: 250 },
+        { field: "cancellationDate", headerName: t("cinemaTicket.date"), width: 180 },
+        { field: "refunds", headerName: t("cancelBooking.refunds"), width: 180 },
+        { field: "approveRequest", headerName: t("cancelBooking.status"), width: 180 },
         {
             field: "cancelBookingId",
-            headerName: "View details",
+            headerName: t("cart.viewDetails"),
             width: 120,
             renderCell: (params) => (
                 <Typography
@@ -65,7 +67,7 @@ const ListCancelBooking = ({ title }) => {
                     className="txt-hover"
                     textAlign={"center"}
                 >
-                    View
+                    {i18n.language === "us" ? "View" : "Xem"}
                 </Typography>
             )
         }
@@ -77,7 +79,7 @@ const ListCancelBooking = ({ title }) => {
         bookingId: row.booking,
         cancellationDate: handleDate(row.createdAt),
         refunds: `${row.refunds.toLocaleString("vi-VN")} VNĐ`,
-        approveRequest: row.approveRequest ? "Approved" : "Awaiting approval",
+        approveRequest: row.approveRequest ? t("cancelBooking.approved") : t("cancelBooking.awaitApproval"),
         cancelBookingId: row._id
     }))
 
@@ -89,10 +91,10 @@ const ListCancelBooking = ({ title }) => {
                 <Box className="cart__wrapper">
                     <Box className="breadcrumb" m={0}>
                         <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
-                            Home
+                            {t("header.home")}
                         </Typography>
                         <Typography className="breadcrumb__item">
-                            List Cancel Booking
+                            {t("header.lstCancelBooking")}
                         </Typography>
                     </Box>
 
@@ -119,32 +121,37 @@ const ListCancelBooking = ({ title }) => {
                                     />
 
                                     <Box className="col1">
-                                        <Typography>{cancelBooking.booking.screening.movie.title}</Typography>
+                                        <Typography>{t(`movies.${cancelBooking.booking.screening.movie.slug}`)}</Typography>
                                         <Typography>{cancelBooking.booking.screening.movieDate}</Typography>
                                     </Box>
 
                                     <Box className="col2">
-                                        <Typography>Cancellation date</Typography>
+                                        <Typography>{t("cancelBooking.cancelDate")}</Typography>
                                         <Typography>{handleDate(cancelBooking.cancellationTime)}</Typography>
                                     </Box>
 
                                     <Box className="col3">
-                                        <Typography>Refunds</Typography>
+                                        <Typography>{t("cancelBooking.refunds")}</Typography>
                                         <Typography>{cancelBooking.refunds.toLocaleString("vi-VN")} VNĐ</Typography>
                                     </Box>
 
                                     <Box className="col4">
-                                        <ListItemText>
-                                            {cancelBooking.approveRequest ? "Approved" : "Awaiting approval"}
+                                        <ListItemText>{cancelBooking.approveRequest
+                                            ? t("cancelBooking.approved") : t("cancelBooking.awaitApproval")}
                                         </ListItemText>
                                     </Box>
                                 </ListItem>
-                            )) : <NoDataComponent content={"You haven't canceled any screenings yet"} />}
+                            )) : <NoDataComponent content={(t("cancelBooking.noData"))} />}
                         </List>
                         : isManagerLoggedIn && cancelBookingsByCinema && <Box mb={12}>
-                            <Typography variant="h5" color={"#fff"} m={"20px 0"}>
-                                List of <span style={{ color: "#e50914" }}>{cinemaName}</span>'s canceled bookings
-                            </Typography>
+                            {i18n.language === "us"
+                                ? <Typography variant="h5" color={"#fff"} m={"20px 0"}>
+                                    List of <span style={{ color: "#e50914" }}>{cinemaName}</span>'s canceled bookings
+                                </Typography>
+                                : <Typography variant="h5" color={"#fff"} m={"20px 0"}>
+                                    {t("cancelBooking.h5")} <span style={{ color: "#e50914" }}>{cinemaName}</span>
+                                </Typography>
+                            }
 
                             <DataGrid
                                 rows={cancelBookingRows}

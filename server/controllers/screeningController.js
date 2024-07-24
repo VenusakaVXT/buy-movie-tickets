@@ -513,11 +513,6 @@ class ScreeningController {
                 return res.status(404).json({ message: "screening not found..." })
             }
 
-            const movie = await Movie.findById(screening.movie)
-            if (!movie) {
-                return res.status(404).json({ message: "movie not found..." })
-            }
-
             const cinemaRoom = await CinemaRoom.findById(screening.cinemaRoom)
                 .populate("seats", "_id rowSeat seatNumber selected")
             if (!cinemaRoom) {
@@ -530,7 +525,6 @@ class ScreeningController {
             }
 
             const synthesizeData = {
-                movieTitle: movie.title,
                 roomNumber: cinemaRoom.roomNumber,
                 cinemaName: cinema.name,
                 seats: cinemaRoom.seats,

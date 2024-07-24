@@ -11,6 +11,7 @@ import {
     Avatar
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { getCustomersRanking } from "../../api/userApi"
 import Loading from "../Loading/Loading"
 import { Tooltip } from "react-tooltip"
@@ -20,6 +21,7 @@ const Charts = () => {
     const [customersRanking, setCustomersRanking] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     useEffect(() => {
         setIsLoading(true)
@@ -34,9 +36,9 @@ const Charts = () => {
         <Box className="wrapper">
             <Box className="breadcrumb" margin={0}>
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
-                    Home
+                    {t("header.home")}
                 </Typography>
-                <Typography className="breadcrumb__item">Charts</Typography>
+                <Typography className="breadcrumb__item">{t("charts.title")}</Typography>
             </Box>
 
             <Typography
@@ -44,12 +46,7 @@ const Charts = () => {
                 variant="h4"
                 color={"#fff"}
                 margin={"20px 0"}
-                data-tooltip-content="
-                    Potential customer rankings are rankings of the 10 most potential customers 
-                    of the Buy Movie Tickets system based on rating points of each customer. 
-                    Rating points are calculated based on the number of tickets customers 
-                    have ordered and the number of feedback customers leave for each movie. 
-                    From there, we present 10 typical customers below. Are you in this top 10?"
+                data-tooltip-content={t("charts.description")}
                 data-tooltip-id="chartDescription"
             >
                 <span style={{ color: "#ff0000" }}>#</span>CHARTS
@@ -74,11 +71,11 @@ const Charts = () => {
                 }}>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Rank</TableCell>
-                            <TableCell>Name</TableCell>
-                            <TableCell>Total bookings</TableCell>
-                            <TableCell>Feedbacks</TableCell>
-                            <TableCell>Rating points</TableCell>
+                            <TableCell>{t("charts.rank")}</TableCell>
+                            <TableCell>{t("cinemaTicket.customerName")}</TableCell>
+                            <TableCell>{t("charts.totalBookings")}</TableCell>
+                            <TableCell>{t("comment.feedback")}</TableCell>
+                            <TableCell>{t("header.ratingPoints")}</TableCell>
                         </TableRow>
                     </TableHead>
 
@@ -110,7 +107,7 @@ const Charts = () => {
 
                                 <TableCell>{customer.totalBookings}</TableCell>
                                 <TableCell>{customer.feedbacks}</TableCell>
-                                <TableCell>{customer.ratingPoints} point</TableCell>
+                                <TableCell>{customer.ratingPoints} {t("charts.points")}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

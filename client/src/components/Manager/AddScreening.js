@@ -11,10 +11,14 @@ import {
     Button
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { Helmet } from "react-helmet"
 import { addScreening, getApiFromBE } from "../../api/movieApi"
 import { getCinemaRoomFromCinema } from "../../api/cinemaApi"
 import { toast } from "react-toastify"
+import Flatpickr from "react-flatpickr"
+import "flatpickr/dist/flatpickr.min.css"
+import { Vietnamese } from "flatpickr/dist/l10n/vn"
 import "../../scss/App.scss"
 
 const AddScreening = ({ title }) => {
@@ -28,6 +32,7 @@ const AddScreening = ({ title }) => {
     const [movies, setMovies] = useState([])
     const [cinemaRooms, setCinemaRooms] = useState([])
     const navigate = useNavigate()
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         getApiFromBE("movie")
@@ -45,6 +50,14 @@ const AddScreening = ({ title }) => {
         setInputs((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
     }
 
+    const handleChangeDateTime = (date = null, time = null) => {
+        if (date) {
+            setInputs((prevState) => ({ ...prevState, movieDate: date[0] }))
+        } else {
+            setInputs((prevState) => ({ ...prevState, timeSlot: time[0] }))
+        }
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -52,7 +65,7 @@ const AddScreening = ({ title }) => {
             if (res !== null) {
                 console.log(res)
                 navigate("/manager/list-screening")
-                toast.success(res.message)
+                toast.success(i18n.language === "us" ? res.message : t("addScreening.toastSuccess"))
             }
         } catch (err) {
             console.error(err)
@@ -66,61 +79,70 @@ const AddScreening = ({ title }) => {
             <Box className="wrapper">
                 <Box className="breadcrumb" margin={0}>
                     <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
-                        Home
+                        {t("header.home")}
                     </Typography>
-                    <Typography className="breadcrumb__item">Add Screening</Typography>
+                    <Typography className="breadcrumb__item" textTransform={"capitalize"}>
+                        {t("addScreening.title")}
+                    </Typography>
                 </Box>
 
                 <form onSubmit={handleSubmit}>
-                    <Box className="frm-wrapper">
+                    <Box className="frm-wrapper frm-add-screening">
                         <FormLabel>
-                            <span className="txt-span">*</span> Movie (
-                            <span className="text-italic">NS: Now Showing, CM: Comming Soon</span>
-                            ):
+                            <span className="txt-span">*</span> {t("cinemaTicket.movie")} (<span className="text-italic">
+                                {`${t("addScreening.acronymNowShowing")}: ${t("homepage.nowShowing")}, 
+                                ${t("addScreening.acronymCommingSoon")}: ${t("homepage.commingSoon")}`}
+                            </span>):
                         </FormLabel>
                         <FormControl fullWidth>
-                            <InputLabel className="input-label" id="label-movie">Movie</InputLabel>
+                            <InputLabel className="input-label" id="label-movie">{t("cinemaTicket.movie")}</InputLabel>
                             <Select
                                 labelId="label-movie"
                                 id="movie"
                                 name="movie"
-                                label="Movie"
+                                label={t("cinemaTicket.movie")}
                                 value={inputs.movie}
                                 onChange={handleChange}
                                 required
                             >
                                 {movies.map((movie) =>
                                     <MenuItem key={movie._id} value={movie._id}>
-                                        {movie.title} ({movie.wasReleased ? "NS" : "CM"})
+                                        {t(`movies.${movie.slug}`)} ({movie.wasReleased
+                                            ? t("addScreening.acronymNowShowing") : t("addScreening.acronymCommingSoon")})
                                     </MenuItem>)
                                 }
                             </Select>
                         </FormControl>
 
                         <Box display={"flex"} margin={"8px 0"}>
-                            <Box>
-                                <FormLabel><span className="txt-span">*</span> Movie date:</FormLabel>
-                                <input
+                            <Box display={"flex"} flexDirection={"column"}>
+                                <FormLabel><span className="txt-span">*</span> {t("addScreening.movieDate")}:</FormLabel>
+                                <Flatpickr
                                     type="date"
                                     className="calendar"
                                     name="movieDate"
                                     value={inputs.movieDate}
-                                    onChange={handleChange}
+                                    onChange={(date) => handleChangeDateTime(date, null)}
                                     required
-                                    style={{ width: "calc(1086px / 2)" }}
+                                    options={{
+                                        locale: i18n.language === "vn" ? Vietnamese : undefined,
+                                        altInput: true,
+                                        altFormat: i18n.language === "vn" ? "d/m/Y" : "Y-m-d",
+                                        dateFormat: "Y-m-d"
+                                    }}
                                 />
                             </Box>
 
-                            <Box>
-                                <FormLabel><span className="txt-span">*</span> Time slot:</FormLabel>
-                                <input
+                            <Box display={"flex"} flexDirection={"column"}>
+                                <FormLabel><span className="txt-span">*</span> {t("addScreening.timeSlot")}:</FormLabel>
+                                <Flatpickr
                                     type="time"
                                     className="calendar"
                                     name="timeSlot"
                                     value={inputs.timeSlot}
-                                    onChange={handleChange}
+                                    onChange={(time) => handleChangeDateTime(null, time)}
                                     required
-                                    style={{ width: "calc((1086px / 2) - 8px)", height: "55px", marginLeft: "8px" }}
+                                    options={{ enableTime: true, noCalendar: true, dateFormat: "H:i K" }}
                                 />
                             </Box>
                         </Box>
@@ -128,16 +150,16 @@ const AddScreening = ({ title }) => {
                         <Box display={"flex"}>
                             <Box display={"flex"} flexDirection={"column"}>
                                 <FormLabel>
-                                    <span className="txt-span">*</span> Price (
-                                    <span className="text-italic">xx000 = xx.000VNĐ</span>
-                                    ):
+                                    <span className="txt-span">*</span> {
+                                        t("addScreening.price")
+                                    } (<span className="text-italic">xx000 = xx.000VNĐ</span>):
                                 </FormLabel>
                                 <TextField
                                     type="number"
                                     name="price"
                                     variant="standard"
                                     margin="normal"
-                                    placeholder="Enter price..."
+                                    placeholder={t("addScreening.placeholderPrice")}
                                     value={inputs.price}
                                     onChange={handleChange}
                                     required
@@ -146,14 +168,16 @@ const AddScreening = ({ title }) => {
                             </Box>
 
                             <Box width={"100%"} marginLeft={"8px"}>
-                                <FormLabel><span className="txt-span">*</span> Cinema room:</FormLabel>
+                                <FormLabel><span className="txt-span">*</span> {t("addScreening.cinemaRoom")}:</FormLabel>
                                 <FormControl fullWidth>
-                                    <InputLabel className="input-label" id="label-cinemaRoom">Cinema room</InputLabel>
+                                    <InputLabel className="input-label" id="label-cinemaRoom">
+                                        {t("addScreening.cinemaRoom")}
+                                    </InputLabel>
                                     <Select
                                         labelId="label-cinemaRoom"
                                         id="cinemaRoom"
                                         name="cinemaRoom"
-                                        label="Cinema room"
+                                        label={t("addScreening.cinemaRoom")}
                                         value={inputs.cinemaRoom}
                                         onChange={handleChange}
                                         required
@@ -169,7 +193,7 @@ const AddScreening = ({ title }) => {
                         </Box>
 
                         <Box display={"flex"} justifyContent={"flex-end"}>
-                            <Button className="btn lowercase" type="submit">Add screening</Button>
+                            <Button className="btn lowercase" type="submit">{t("addScreening.title")}</Button>
                         </Box>
                     </Box>
                 </form >

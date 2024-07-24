@@ -8,6 +8,7 @@ import {
     Box
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import AccessTimeIcon from "@mui/icons-material/AccessTime"
 import VideocamIcon from "@mui/icons-material/Videocam"
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart"
@@ -15,17 +16,9 @@ import FavoriteIcon from "@mui/icons-material/Favorite"
 import { Tooltip } from "react-tooltip"
 import "../../scss/Screening.scss"
 
-const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, displayType }) => {
+const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, slug, displayType }) => {
     const navigate = useNavigate()
-
-    const isDigits = (str) => /^\d+$/.test(str)
-
-    const handlePath = title
-        .toLowerCase()
-        .replace(/[:,]/g, "")
-        .replace(/\s+/g, "-")
-        .replace(/-{2,}/g, "-")
-        .replace(/&/g, "and")
+    const { t, i18n } = useTranslation()
 
     const handleLikeClick = (e) => {
         e.stopPropagation()
@@ -51,7 +44,7 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, d
                     src={`https://img.youtube.com/vi/${trailerId}/maxresdefault.jpg`}
                     alt={title}
                     style={{ cursor: "pointer" }}
-                    onClick={() => navigate(`/movie-details/${handlePath}`)}
+                    onClick={() => navigate(`/movie-details/${slug}`)}
                 />
 
                 <CardContent sx={{ padding: 1 }}>
@@ -60,19 +53,21 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, d
                         gutterBottom
                         variant="h5"
                         component="div"
-                        onClick={() => navigate(`/movie-details/${handlePath}`)}
+                        onClick={() => navigate(`/movie-details/${slug}`)}
                     >
-                        {title}
+                        {i18n.language === "us" ? title : t(`movies.${slug}`)}
                     </Typography>
 
                     <Typography variant="body2" color="text.secondary">
                         <VideocamIcon fontSize="1rem" className="customic" />
-                        {new Date(releaseDate).toDateString()}
+                        {i18n.language === "us"
+                            ? new Date(releaseDate).toDateString()
+                            : releaseDate ? releaseDate : t("movieDetail.notyet")}
                     </Typography>
 
                     <Typography variant="body2" color="text.secondary">
                         <AccessTimeIcon fontSize="0.8rem" className="customic" />
-                        { isDigits(time) ? `Time: ${time} minute` : "none"}
+                        {time ? t("movieDetail.time", { time }) : t("movieDetail.notyet")}
                     </Typography>
                 </CardContent>
 
@@ -87,9 +82,9 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, d
                                 background: "#e50914",
                             },
                         }}
-                        onClick={() => navigate(`/booking/${handlePath}`)}
+                        onClick={() => navigate(`/booking/${slug}`)}
                     >
-                        Booking
+                        {t("movieDetail.booking")}
                     </Button>
                 </CardActions>
             </Card>
@@ -114,7 +109,7 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, d
                         src={`https://img.youtube.com/vi/${trailerId}/maxresdefault.jpg`}
                         alt={title}
                         style={{ cursor: "pointer" }}
-                        onClick={() => navigate(`/movie-details/${handlePath}`)}
+                        onClick={() => navigate(`/movie-details/${slug}`)}
                     />
                 </Box>
 
@@ -124,25 +119,31 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, d
                             variant="h5"
                             component="div"
                             sx={{ cursor: "pointer" }}
-                            onClick={() => navigate(`/movie-details/${handlePath}`)}
+                            onClick={() => navigate(`/movie-details/${slug}`)}
                             color={"#fff"}
                         >
-                            {title}
+                            {i18n.language === "us" ? title : t(`movies.${slug}`)}
                         </Typography>
 
-                        <Typography className="desciption-hw" variant="body2" color="#f2f2f2">
-                            {description}
+                        <Typography className="desciption-hw" variant="body2" color="#f2f2f2" textAlign={"justify"}>
+                            {i18n.language === "vn"
+                                ? t(`moviesDescription.${slug}`)
+                                : description !== "" ? description : t("movieDetail.noDescription")}
                         </Typography>
 
                         <Box display={"flex"} margin={"8px 0"}>
                             <Typography variant="body2" color="#f2f2f2" marginRight={3}>
                                 <VideocamIcon fontSize="1rem" className="customic" />
-                                {`Premiere: ${new Date(releaseDate).toDateString()}`}
+                                {t("movieDetail.releaseDate", {
+                                    releaseDate: i18n.language === "us"
+                                        ? new Date(releaseDate).toDateString()
+                                        : releaseDate ? releaseDate : t("movieDetail.notyet")
+                                })}
                             </Typography>
 
                             <Typography variant="body2" color="#f2f2f2">
                                 <AccessTimeIcon fontSize="0.8rem" className="customic" />
-                                { isDigits(time) ? `Time: ${time} minute` : "none"}
+                                {time ? t("movieDetail.time", { time }) : t("movieDetail.notyet")}
                             </Typography>
                         </Box>
                     </CardContent>
@@ -158,7 +159,7 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, d
                                 },
                             }}
                             data-tooltip-id="favorite"
-                            data-tooltip-content="Favorite"
+                            data-tooltip-content={t("movieDetail.favorite")}
                             onClick={handleLikeClick}
                         >
                             <FavoriteIcon />
@@ -181,8 +182,8 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, d
                                 },
                             }}
                             data-tooltip-id="book-tickets"
-                            data-tooltip-content="Book Tickets"
-                            onClick={() => navigate(`/booking/${handlePath}`)}
+                            data-tooltip-content={t("movieDetail.booking")}
+                            onClick={() => navigate(`/booking/${slug}`)}
                         >
                             <AddShoppingCartIcon />
                         </Button>

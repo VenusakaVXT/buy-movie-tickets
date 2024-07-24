@@ -15,9 +15,14 @@ import {
     Button
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { addMovie, getApiFromBE } from "../../api/movieApi"
 import { Helmet } from "react-helmet"
 import { toast } from "react-toastify"
+import { convertStr } from "../../util"
+import Flatpickr from "react-flatpickr"
+import "flatpickr/dist/flatpickr.min.css"
+import { Vietnamese } from "flatpickr/dist/l10n/vn"
 import "../../scss/App.scss"
 
 const AddMovie = ({ title }) => {
@@ -37,6 +42,7 @@ const AddMovie = ({ title }) => {
     const [categories, setCategories] = useState([])
     const [producers, setProducers] = useState([])
     const navigate = useNavigate()
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         getApiFromBE("category")
@@ -69,8 +75,12 @@ const AddMovie = ({ title }) => {
         return () => { resizeObserver.disconnect() }
     }, [])
 
-    const handleChange = (e) => {
-        setInputs((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
+    const handleChange = (e, date = null) => {
+        if (date) {
+            setInputs((prevState) => ({ ...prevState, releaseDate: date[0] }))
+        } else {
+            setInputs((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
+        }
     }
 
     const handleRadioBtnClick = (event) => {
@@ -84,7 +94,7 @@ const AddMovie = ({ title }) => {
 
         targetSvg.classList.add("active")
 
-        const val = label.textContent === "Already"
+        const val = label.textContent === t("addMovie.already")
         setInputs((prevState) => ({ ...prevState, wasReleased: val }))
     }
 
@@ -95,7 +105,7 @@ const AddMovie = ({ title }) => {
             if (res !== null) {
                 console.log(res)
                 navigate("/manager/list-movie")
-                toast.success(res.message)
+                toast.success(i18n.language === "us" ? res.message : t("addMovie.toastSuccess"))
             }
         } catch (err) {
             console.error(err)
@@ -109,129 +119,161 @@ const AddMovie = ({ title }) => {
             <Box className="wrapper">
                 <Box className="breadcrumb" margin={0}>
                     <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
-                        Home
+                        {t("header.home")}
                     </Typography>
-                    <Typography className="breadcrumb__item">Add Movie</Typography>
+                    <Typography className="breadcrumb__item" textTransform={"capitalize"}>
+                        {t("addMovie.title")}
+                    </Typography>
                 </Box>
 
                 <form onSubmit={handleSubmit}>
-                    <Box className="frm-wrapper">
-                        <FormLabel><span className="txt-span">*</span> Movie title:</FormLabel>
+                    <Box className="frm-wrapper frm-add-movie">
+                        <FormLabel><span className="txt-span">*</span> {t("addMovie.movieTitle")}:</FormLabel>
                         <TextField
                             name="title"
                             variant="standard"
                             margin="normal"
-                            placeholder="Enter movie title..."
+                            placeholder={t("addMovie.placeholderMovieTitle")}
                             value={inputs.title}
                             onChange={handleChange}
                             required
                         />
 
-                        <FormLabel><span className="txt-span">*</span> Movie description:</FormLabel>
+                        <FormLabel><span className="txt-span">*</span> {t("addMovie.movieDescription")}:</FormLabel>
                         <TextareaAutosize
                             name="description"
                             variant="standard"
                             margin="normal"
-                            placeholder="Enter movie description..."
+                            placeholder={t("addMovie.placeholderMovieDescription")}
                             value={inputs.description}
                             onChange={handleChange}
                             required
                         />
 
-                        <FormLabel><span className="txt-span">*</span> Movie director:</FormLabel>
+                        <FormLabel>
+                            <span className="txt-span">*</span> {t("addMovie.movieDirector")} (<span class="text-italic">
+                                {t("addMovie.noteActors")}
+                            </span>):
+                        </FormLabel>
                         <TextField
                             name="director"
                             variant="standard"
                             margin="normal"
-                            placeholder="Enter movie director..."
+                            placeholder={t("addMovie.placeholderMovieDirector")}
                             value={inputs.director}
                             onChange={handleChange}
                             required
                         />
 
-                        <FormLabel><span className="txt-span">*</span> Content writter:</FormLabel>
+                        <FormLabel>
+                            <span className="txt-span">*</span> {t("addMovie.contentWritter")} (<span class="text-italic">
+                                {t("addMovie.noteActors")}
+                            </span>):
+                        </FormLabel>
                         <TextField
                             name="contentWritter"
                             variant="standard"
                             margin="normal"
-                            placeholder="Enter content writter..."
+                            placeholder={t("addMovie.placeholderContentWritter")}
                             value={inputs.contentWritter}
                             onChange={handleChange}
                             required
                         />
 
-                        <FormLabel><span className="txt-span">*</span> Actors:</FormLabel>
+                        <FormLabel>
+                            <span className="txt-span">*</span> {t("addMovie.actors")} (<span class="text-italic">
+                                {t("addMovie.noteActors")}
+                            </span>):
+                        </FormLabel>
                         <TextField
                             name="actors"
                             variant="standard"
                             margin="normal"
-                            placeholder="Enter actors..."
+                            placeholder={t("addMovie.placeholderActors")}
                             value={inputs.actors}
                             onChange={handleChange}
                             required
                         />
 
-                        <FormLabel><span className="txt-span">*</span> Category:</FormLabel>
+                        <FormLabel><span className="txt-span">*</span> {t("header.category")}:</FormLabel>
                         <FormControl fullWidth>
-                            <InputLabel className="input-label" id="label-category">Category</InputLabel>
+                            <InputLabel className="input-label" id="label-category">{t("header.category")}</InputLabel>
                             <Select
                                 labelId="label-category"
                                 id="category"
                                 name="category"
-                                label="Category"
+                                label={t("header.category")}
                                 value={inputs.category}
                                 onChange={handleChange}
                                 required
                             >
                                 {categories.map((category) =>
-                                    <MenuItem key={category._id} value={category._id}>{category.category}</MenuItem>)
-                                }
+                                    <MenuItem key={category._id} value={category._id}>
+                                        {t(`category.${convertStr(category.category)}`)}
+                                    </MenuItem>
+                                )}
                             </Select>
                         </FormControl>
 
                         <FormLabel>
-                            <span className="txt-span">*</span> Release date (<span class="text-italic">mm/dd/yyyy</span>):
+                            <span className="txt-span">*</span> {t("addMovie.releaseDate")} (<span class="text-italic">
+                                {i18n.language === "us" ? "yyyy-mm-dd" : "mm/dd/yyyy"}
+                            </span>):
                         </FormLabel>
-                        <input
+                        <Flatpickr
                             type="date"
                             className="calendar"
                             name="releaseDate"
                             value={inputs.releaseDate}
-                            onChange={handleChange}
+                            onChange={(date) => handleChange(null, date)}
                             required
+                            options={{
+                                locale: i18n.language === "vn" ? Vietnamese : undefined,
+                                altInput: true,
+                                altFormat: i18n.language === "vn" ? "d/m/Y" : "Y-m-d",
+                                dateFormat: "Y-m-d"
+                            }}
                         />
 
-                        <FormLabel><span className="txt-span">*</span> Movie time:</FormLabel>
+                        <FormLabel>
+                            <span className="txt-span">*</span> {t("addMovie.movieTime")} (<span class="text-italic">
+                                {t("addMovie.noteMovieTime")}
+                            </span>):
+                        </FormLabel>
                         <TextField
                             type="number"
                             name="time"
                             variant="standard"
                             margin="normal"
-                            placeholder="Enter movie time..."
+                            placeholder={t("addMovie.placeholderMovieTime")}
                             value={inputs.time}
                             onChange={handleChange}
                             required
                         />
 
-                        <FormLabel><span className="txt-span">*</span> Trailer ID:</FormLabel>
+                        <FormLabel>
+                            <span className="txt-span">*</span> Trailer ID (<span class="text-italic">
+                                https://www.youtube.com/watch?v=trailerId
+                            </span>):
+                        </FormLabel>
                         <TextField
                             name="trailerId"
                             variant="standard"
                             margin="normal"
-                            placeholder="Enter trailer id..."
+                            placeholder={t("addMovie.placeholderTrailerId")}
                             value={inputs.trailerId}
                             onChange={handleChange}
                             required
                         />
 
-                        <FormLabel><span className="txt-span">*</span> Producer:</FormLabel>
-                        <FormControl fullWidth >
-                            <InputLabel className="input-label" id="label-producer">Producer</InputLabel>
+                        <FormLabel><span className="txt-span">*</span> {t("addMovie.producer")}:</FormLabel>
+                        <FormControl fullWidth>
+                            <InputLabel className="input-label" id="label-producer">{t("addMovie.producer")}</InputLabel>
                             <Select
                                 labelId="label-producer"
                                 id="producer"
                                 name="producer"
-                                label="Producer"
+                                label={t("addMovie.producer")}
                                 value={inputs.producer}
                                 onChange={handleChange}
                                 required
@@ -244,18 +286,24 @@ const AddMovie = ({ title }) => {
 
                         <Box display={"flex"}>
                             <FormLabel sx={{ paddingRight: "10px", lineHeight: 2.5 }}>
-                                Was released (<span class="text-italic">If not selected, the default will be "Not yet"</span>):
+                                {t("addMovie.wasReleased")} (<span class="text-italic">
+                                    {t("addMovie.noteWasReleased")} "{t("addMovie.notYet")}"
+                                </span>):
                             </FormLabel>
                             <RadioGroup row>
-                                <FormControlLabel value={true} label="Already" control={<Radio onClick={handleRadioBtnClick} />} />
-                                <FormControlLabel value={false} label="Not yet" control={<Radio onClick={handleRadioBtnClick} />} />
+                                <FormControlLabel value={true} label={t("addMovie.already")} control={
+                                    <Radio onClick={handleRadioBtnClick} />
+                                } />
+                                <FormControlLabel value={false} label={t("addMovie.notYet")} control={
+                                    <Radio onClick={handleRadioBtnClick} />
+                                } />
                             </RadioGroup>
                         </Box>
 
                         <input type="hidden" id="wasReleased" name="wasReleased" value={inputs.wasReleased} />
 
                         <Box display={"flex"} justifyContent={"flex-end"}>
-                            <Button className="btn lowercase" type="submit">Add movie</Button>
+                            <Button className="btn lowercase" type="submit">{t("addMovie.title")}</Button>
                         </Box>
                     </Box>
                 </form>

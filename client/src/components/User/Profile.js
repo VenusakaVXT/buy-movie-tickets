@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { Box, Typography, Button } from "@mui/material"
 import { useSelector, useDispatch } from "react-redux"
 import { customerActions } from "../../store"
@@ -20,6 +21,7 @@ const Profile = () => {
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         if (isCustomerLoggedIn) {
@@ -39,9 +41,9 @@ const Profile = () => {
         if (isCustomerLoggedIn) {
             navigate(path)
         } else if (isManagerLoggedIn) {
-            toast.info(`Account ${manager.email} has not been authorized`)
+            toast.info(t("profile.toastInfo1", { managerEmail: manager.email }))
         } else {
-            toast.info("Unable to access")
+            toast.info(t("profile.toastInfo2"))
         }
     }
 
@@ -54,13 +56,18 @@ const Profile = () => {
         <Box className="wrapper" color={"#fff"}>
             <Box className="breadcrumb">
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
-                    Home
+                    {t("header.home")}
                 </Typography>
-                <Typography className="breadcrumb__item disable">
-                    {`${isCustomerLoggedIn ? "Customer" : "Manager"} Profile`}
-                </Typography>
+                {i18n.language === "us"
+                    ? <Typography className="breadcrumb__item disable">
+                        {isCustomerLoggedIn ? t("login.customer") : t("login.manager")} {t("profile.title")}
+                    </Typography>
+                    : <Typography className="breadcrumb__item disable">
+                        {t("profile.title")} {isCustomerLoggedIn ? t("login.customer") : t("login.manager")}
+                    </Typography>
+                }
                 {!render && <Typography className="breadcrumb__item">
-                    Change Password
+                    {t("profile.changePassword")}
                 </Typography>}
             </Box>
 
@@ -72,20 +79,25 @@ const Profile = () => {
                     borderRadius: "6px",
                     ".txt-hover.css-ahj2mt-MuiTypography-root": { mb: "12px" }
                 }}>
-                    <Typography className="txt-hover">Personal information</Typography>
-                    <Typography className="txt-hover">Passwords and security</Typography>
+                    <Typography className="txt-hover">{t("profile.personalInfo")}</Typography>
+                    <Typography className="txt-hover">{t("profile.passwordsAndSecurity")}</Typography>
                     <hr style={{ marginBottom: "12px" }} />
-                    <Typography className="txt-hover">Your powers</Typography>
-                    <Typography className="txt-hover">Online payment</Typography>
+                    <Typography className="txt-hover">{t("profile.yourPowers")}</Typography>
+                    <Typography className="txt-hover">{t("profile.onlinePayment")}</Typography>
                     <hr style={{ marginBottom: "12px" }} />
-                    <Typography className="txt-hover">Terms of service</Typography>
-                    <Typography className="txt-hover">Help</Typography>
+                    <Typography className="txt-hover">{t("profile.termsOfService")}</Typography>
+                    <Typography className="txt-hover">{t("profile.help")}</Typography>
                 </Box>
 
                 <Box width={"calc(100% - 250px)"} margin={"0 18px"}>
-                    <Typography variant="h4" textAlign={"center"}>
-                        {`${isCustomerLoggedIn ? "Customer" : "Manager"} Profile`}
-                    </Typography>
+                    {i18n.language === "us"
+                        ? <Typography variant="h4" textAlign={"center"}>
+                            {isCustomerLoggedIn ? t("login.customer") : t("login.manager")} {t("profile.title")}
+                        </Typography>
+                        : <Typography variant="h4" textAlign={"center"} textTransform={"capitalize"}>
+                            {t("profile.title")} {isCustomerLoggedIn ? t("login.customer") : t("login.manager")}
+                        </Typography>
+                    }
 
                     {render ? <>
                         <Box width={"100%"} display={"flex"} alignItems={"center"} justifyContent={"center"}>
@@ -93,24 +105,35 @@ const Profile = () => {
 
                             <Box height={180} margin={"24px"}>
                                 {isCustomerLoggedIn && customer && <>
-                                    <Typography className="txt-line">Name: {customer.name}</Typography>
+                                    <Typography className="txt-line">{t("profile.name")}: {customer.name}</Typography>
                                     <Typography className="txt-line">Email: {customer.email}</Typography>
-                                    <Typography className="txt-line">Phone number: {customer.phone}</Typography>
                                     <Typography className="txt-line">
-                                        Birthday: {customer.birthDay ? handleDate(customer.birthDay) : "No information"}
+                                        {t("register.phoneNumber")}: {customer.phone}
                                     </Typography>
                                     <Typography className="txt-line">
-                                        Gender: {customer.gender ? customer.gender : "No information"}
+                                        {t("profile.birthday")}: {customer.birthDay
+                                            ? handleDate(customer.birthDay) : t("profile.noInfo")}
                                     </Typography>
                                     <Typography className="txt-line">
-                                        Address: {customer.address ? customer.address : "No information"}
+                                        {t("profile.gender")}: {customer.gender
+                                            ? t(`profile.${customer.gender.toLowerCase()}`) : t("profile.noInfo")}
+                                    </Typography>
+                                    <Typography className="txt-line">
+                                        {t("profile.address")}: {customer.address ? customer.address : t("profile.noInfo")}
                                     </Typography>
                                 </>}
 
                                 {isManagerLoggedIn && manager && <>
                                     <Typography className="txt-line">Email: {manager.email}</Typography>
-                                    <Typography className="txt-line">Position: {manager.position}</Typography>
-                                    <Typography className="txt-line">Work at {manager.cinema.name}</Typography>
+                                    <Typography className="txt-line">
+                                        {t("profile.position")}: {
+                                            i18n.language === "us" ? manager.position
+                                                : manager.position === "Manage screenings" ? t("statistical.manageScreenings")
+                                                    : manager.position === "Manage movies" ? t("statistical.manageMovies")
+                                                        : t("profile.noInfo")
+                                        }
+                                    </Typography>
+                                    <Typography className="txt-line">{t("profile.workAt")} {manager.cinema.name}</Typography>
                                 </>}
                             </Box>
                         </Box>
@@ -123,7 +146,7 @@ const Profile = () => {
                                     handleNavigate("edit-profile")
                                 }
                             }}>
-                                Edit profile
+                                {t("profile.editProfile")}
                             </Button>
                             <Button className="btn lowercase" onClick={() => {
                                 if (isManagerLoggedIn) {
@@ -132,24 +155,24 @@ const Profile = () => {
                                     setRender(false)
                                 }
                             }}>
-                                Change Password
+                                {t("profile.changePassword")}
                             </Button>
                         </Box>
                     </> : <Box>
                         <form>
-                            <label>Current password:</label>
-                            <input className="input-form" placeholder="Enter current password..." />
-                            <label>New password:</label>
-                            <input className="input-form" placeholder="Enter new password..." />
-                            <label>Re-enter password:</label>
-                            <input className="input-form" placeholder="Re-enter password..." />
+                            <label>{t("password.currentPassword")}</label>
+                            <input className="input-form" placeholder={t("password.placeholderCurrentPassword")} />
+                            <label>{t("password.newPassword")}</label>
+                            <input className="input-form" placeholder={t("password.placeholderNewPassword")} />
+                            <label>{t("password.reEnterPassword")}</label>
+                            <input className="input-form" placeholder={t("password.placeholderReEnterPassword")} />
 
                             <Box display={"flex"} justifyContent={"center"}>
                                 <Button className="btn lowercase" onClick={() => setRender(true)}>
-                                    Back
+                                    {t("back")}
                                 </Button>
-                                <Button className="btn lowercase" onClick={() => toast.info("Unable to save new password")}>
-                                    Save Password
+                                <Button className="btn lowercase" onClick={() => toast.info(t("profile.toastInfo3"))}>
+                                    {t("password.savePassword")}
                                 </Button>
                             </Box>
                         </form>

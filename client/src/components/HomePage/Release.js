@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Box, Button } from "@mui/material"
 import { Link } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import ScreeningItem from "../Screening/ScreeningItem"
 import { getApiFromBE } from "../../api/movieApi"
 import "../../scss/Release.scss"
@@ -8,6 +9,7 @@ import "../../scss/Release.scss"
 const Release = () => {
     const [movies, setMovies] = useState([])
     const [showing, setShowing] = useState(true)
+    const { t } = useTranslation()
 
     useEffect(() => {
         const savedTabState = sessionStorage.getItem("tabState")
@@ -29,30 +31,26 @@ const Release = () => {
     }
 
     const filterMoviesByRelease = (movies, showing) => {
-        return movies.filter(
-            (movie) => showing ? movie.wasReleased : !movie.wasReleased
-        )
+        return movies.filter((movie) => showing ? movie.wasReleased : !movie.wasReleased)
     }
 
     return (
         <Box id="release" className="release__wrapper">
-            <h2>
-                <span>#</span>RELEASE
-            </h2>
+            <h2><span>#</span>{t("header.release").toUpperCase()}</h2>
 
             <h4 className="release__title">
                 <span
                     className={`release__tab ${showing ? "selected" : ""}`}
                     onClick={() => handleTabClick(true)}
                 >
-                    NOW SHOWING
+                    {t("homepage.nowShowing").toUpperCase()}
                 </span>
                 <span style={{ padding: "0 8px", fontSize: "40px" }}>|</span>
                 <span
                     className={`release__tab ${!showing ? "selected" : ""}`}
                     onClick={() => handleTabClick(false)}
                 >
-                    COMMING SOON
+                    {t("homepage.commingSoon").toUpperCase()}
                 </span>
             </h4>
 
@@ -67,6 +65,7 @@ const Release = () => {
                             releaseDate={movie.releaseDate}
                             time={movie.time}
                             trailerId={movie.trailerId}
+                            slug={movie.slug}
                             displayType={false}
                         />
                     ))}
@@ -88,7 +87,7 @@ const Release = () => {
                     LinkComponent={Link}
                     to="/all-movies"
                 >
-                    See All Movies
+                    {t("homepage.allMovieBtn")}
                 </Button>
             </Box>
         </Box>

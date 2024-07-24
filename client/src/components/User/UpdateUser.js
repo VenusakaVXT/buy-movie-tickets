@@ -15,6 +15,7 @@ import CloseIcon from "@mui/icons-material/Close"
 import { updateUser } from "../../api/userApi"
 import { formatDateInput } from "../../util"
 import { toast } from "react-toastify"
+import { useTranslation } from "react-i18next"
 
 const setWidth = { width: "510px" }
 const frmRow = { display: "flex", marginBottom: 2 }
@@ -29,6 +30,7 @@ const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) =
         gender: customerData.gender,
         address: customerData.address
     })
+    const { t, i18n } = useTranslation()
 
     const handleChange = (e) => {
         setInputs((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
@@ -39,13 +41,14 @@ const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) =
         try {
             const res = await updateUser(id, inputs)
             if (res) {
-                toast.success(res.message)
+                toast.success(i18n.language === "us" ? res.message : t("profile.toastSuccessUpdateUser"))
                 localStorage.setItem("customerName", inputs.name)
                 onProfileUpdate(inputs)
                 onClose()
             }
         } catch (err) {
             console.error(err)
+            toast.error(t("profile.toastErrorUpdateUser"))
         }
     }
 
@@ -60,7 +63,7 @@ const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) =
                     transform: "translate(-50%, -50%)"
                 }}>
                     <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"} marginBottom={2}>
-                        <Typography variant="h5" color={"#e50914"}>Edit Profile</Typography>
+                        <Typography variant="h5" color={"#e50914"}>{t("profile.editProfile")}</Typography>
                         <IconButton onClick={onClose}>
                             <CloseIcon sx={{ ":hover": { color: "#e50914" } }} />
                         </IconButton>
@@ -68,7 +71,7 @@ const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) =
 
                     <Box sx={frmRow}>
                         <Box sx={frmCol} marginRight={"20px"}>
-                            <FormLabel>Customer name:</FormLabel>
+                            <FormLabel>{t("cinemaTicket.customerName")}:</FormLabel>
                             <TextField
                                 name="name"
                                 variant="standard"
@@ -96,7 +99,7 @@ const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) =
 
                     <Box sx={frmRow}>
                         <Box sx={frmCol} marginRight={"20px"}>
-                            <FormLabel>Phone number:</FormLabel>
+                            <FormLabel>{t("register.phoneNumber")}:</FormLabel>
                             <TextField
                                 name="phone"
                                 variant="standard"
@@ -109,7 +112,7 @@ const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) =
                         </Box>
 
                         <Box sx={frmCol}>
-                            <FormLabel>Birthday:</FormLabel>
+                            <FormLabel>{t("profile.birthday")}:</FormLabel>
                             <input
                                 type="date"
                                 className="calendar"
@@ -123,17 +126,17 @@ const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) =
 
                     <Box sx={frmRow}>
                         <Box sx={frmCol} marginRight={"20px"}>
-                            <FormLabel>Gender:</FormLabel>
+                            <FormLabel>{t("profile.gender")}:</FormLabel>
                             <FormControl sx={setWidth}>
                                 <Select name="gender" value={inputs.gender} onChange={handleChange}>
-                                    <MenuItem value={"Male"}>Male</MenuItem>
-                                    <MenuItem value={"Female"}>Female</MenuItem>
+                                    <MenuItem value={"Male"}>{t("profile.male")}</MenuItem>
+                                    <MenuItem value={"Female"}>{t("profile.female")}</MenuItem>
                                 </Select>
                             </FormControl>
                         </Box>
 
                         <Box sx={frmCol}>
-                            <FormLabel>Address:</FormLabel>
+                            <FormLabel>{t("profile.address")}:</FormLabel>
                             <TextField
                                 name="address"
                                 variant="standard"
@@ -146,7 +149,7 @@ const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) =
                     </Box>
 
                     <Box display={"flex"} justifyContent={"flex-end"}>
-                        <Button className="btn lowercase" type="submit">Save</Button>
+                        <Button className="btn lowercase" type="submit">{t("save")}</Button>
                     </Box>
                 </Box>
             </form>

@@ -43,10 +43,8 @@
             background: $second-background;
             padding: 16px;
 
-            .MuiChartsLegend-root,
-            .MuiChartsLegend-column,
-            .MuiChartsLegend-row,
-            .css-0 {
+            .MuiChartsLegend-root.MuiChartsLegend-column.css-0,
+            .MuiChartsLegend-root.MuiChartsLegend-row.css-0 {
                 display: none !important;
             }
 

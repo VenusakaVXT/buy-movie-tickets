@@ -13,7 +13,7 @@ import {
     Typography
 } from "@mui/material"
 import MovieIcon from "@mui/icons-material/Movie"
-import LanguageMenu from "../Language/LanguageMenu"
+import LanguageMenu from "./LanguageMenu"
 import { getApiFromBE } from "../../api/movieApi"
 import { getBookingsFromUser } from "../../api/bookingApi"
 import { getCustomerProfile, getManagerProfile } from "../../api/userApi"
@@ -35,6 +35,7 @@ import ReceiptLongIcon from "@mui/icons-material/ReceiptLong"
 import { Tooltip } from "react-tooltip"
 import { socket } from "../../App"
 import { toast } from "react-toastify"
+import { useTranslation } from "react-i18next"
 import "../../scss/App.scss"
 
 const Header = () => {
@@ -49,6 +50,7 @@ const Header = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const location = useLocation()
+    const { t } = useTranslation()
     const customerId = localStorage.getItem("customerId")
     const managerId = useSelector((state) => state.manager.id)
     const customerName = useSelector((state) => state.customer.name)
@@ -127,9 +129,15 @@ const Header = () => {
     const determinePosition = (position) => {
         switch (position) {
             case "Manage movies":
-                return { path: ["add-movie", "list-movie"], menu: ["Add movie", "List movie"] }
+                return {
+                    path: ["add-movie", "list-movie"],
+                    menu: [t("header.addMovie"), t("header.lstMovie")]
+                }
             case "Manage screenings":
-                return { path: ["add-screening", "list-screening"], menu: ["Add screening", "List screening"] }
+                return {
+                    path: ["add-screening", "list-screening"],
+                    menu: [t("header.addScreening"), t("header.lstScreening")]
+                }
             default:
                 return { path: ["add-data", "list-data"], menu: ["Add data", "List data"] }
         }
@@ -137,7 +145,7 @@ const Header = () => {
 
     return (
         <AppBar position="sticky" className="header" sx={{ bgcolor: "#000" }}>
-            <Toolbar className="header__wrapper">
+            <Toolbar className="header__wrapper" sx={{ ".MuiTab-root": { p: 1 } }}>
                 <div className="header__container">
                     <Link
                         className="header__brand-wrapper"
@@ -160,25 +168,25 @@ const Header = () => {
                         >
                             <Tab
                                 className="header__navitem"
-                                label="Home"
+                                label={t("header.home")}
                                 data-id="home"
                                 onClick={handleTabClick}
                             />
                             <Tab
                                 className="header__navitem"
-                                label="Release"
+                                label={t("header.release")}
                                 data-id="release"
                                 onClick={handleTabClick}
                             />
                             <Tab
                                 className="header__navitem"
-                                label="Category"
+                                label={t("header.category")}
                                 data-id="category"
                                 onClick={handleTabClick}
                             />
                             <Tab
                                 className="header__navitem"
-                                label="Cinema"
+                                label={t("header.cinema")}
                                 data-id="cinema"
                                 onClick={handleTabClick}
                             />
@@ -198,7 +206,7 @@ const Header = () => {
                                 <TextField
                                     variant="standard"
                                     {...params}
-                                    label="Search for movies..."
+                                    label={t("header.labelSearch")}
                                 />
                             )}
                             renderOption={(props, option, { inputValue }) => (
@@ -223,13 +231,13 @@ const Header = () => {
                             <Tabs className="header__option" textColor="#fff">
                                 <Tab
                                     className="header__option-item"
-                                    label="Sign up"
+                                    label={t("header.signup")}
                                     LinkComponent={Link}
                                     to="/register"
                                 />
                                 <Tab
                                     className="header__option-item"
-                                    label="Sign in"
+                                    label={t("header.signin")}
                                     LinkComponent={Link}
                                     to="/login"
                                 />
@@ -240,7 +248,7 @@ const Header = () => {
                             <Link to="/cart" className="header__cart">
                                 <ShoppingCartIcon
                                     sx={{ color: "#fff", ":hover": { color: "#e50914" } }}
-                                    data-tooltip-content="Screening Cart"
+                                    data-tooltip-content={t("header.screeningCart")}
                                     data-tooltip-id="cart"
                                 />
 
@@ -274,31 +282,32 @@ const Header = () => {
                                     }
                                 }}
                             >
-                                <MenuItem sx={{ cursor: "default" }}>Account type: Customer</MenuItem>
+                                <MenuItem sx={{ cursor: "default" }}>{t("header.customerAccountType")}</MenuItem>
                                 <hr />
 
                                 <MenuItem sx={{ cursor: "default" }}>
                                     <StarsIcon htmlColor="#ffff00" sx={{ marginRight: "2px" }} />
                                     <Typography lineHeight={"21px"}>
-                                        Raiting: {ratingPoints !== 0 ? ratingPoints : customer.ratingPoints} point
+                                        {t("header.ratingPoints")}
+                                        : {ratingPoints !== 0 ? ratingPoints : customer.ratingPoints}
                                     </Typography>
                                 </MenuItem>
 
                                 <MenuItem component={Link} to="/customer/cancel-booking/list" onClick={handleMenuClose}>
-                                    <ReceiptLongIcon sx={{ marginRight: "2px" }} />List cancel booking
+                                    <ReceiptLongIcon sx={{ marginRight: "2px" }} />{t("header.lstCancelBooking")}
                                 </MenuItem>
 
                                 <MenuItem component={Link} to="/charts" onClick={handleMenuClose}>
-                                    <TrendingUpIcon sx={{ marginRight: "2px" }} />Customer charts
+                                    <TrendingUpIcon sx={{ marginRight: "2px" }} />{t("header.customerCharts")}
                                 </MenuItem>
                                 <hr />
 
                                 <MenuItem component={Link} to="/customer/profile" onClick={handleMenuClose}>
-                                    <PersonIcon sx={{ margin: "0 2px 3px 0" }} />Account information
+                                    <PersonIcon sx={{ margin: "0 2px 3px 0" }} />{t("header.accountInfo")}
                                 </MenuItem>
 
                                 <MenuItem component={Link} to="/customer/setting" onClick={handleMenuClose}>
-                                    <SettingsIcon sx={{ margin: "0 2px 3px 0" }} />Settings
+                                    <SettingsIcon sx={{ margin: "0 2px 3px 0" }} />{t("header.settings")}
                                 </MenuItem>
                                 <hr />
 
@@ -307,13 +316,13 @@ const Header = () => {
                                         navigate("/")
                                         logout(false)
                                         handleMenuClose()
-                                        toast.info("Logout successfully...")
+                                        toast.info(t("header.toastLogout"))
                                     }}
                                     sx={{
                                         ":hover": { color: "#e50914" }
                                     }}
                                 >
-                                    <LogoutIcon sx={{ marginRight: "2px" }} />Log out
+                                    <LogoutIcon sx={{ marginRight: "2px" }} />{t("header.logout")}
                                 </MenuItem>
                             </Menu>
                         </>}
@@ -336,15 +345,15 @@ const Header = () => {
                                     }
                                 }}
                             >
-                                <MenuItem sx={{ cursor: "default" }}>Account type: Manager</MenuItem>
+                                <MenuItem sx={{ cursor: "default" }}>{t("header.managerAccountType")}</MenuItem>
                                 <hr />
 
                                 <MenuItem component={Link} to="/manager/profile" onClick={handleMenuClose}>
-                                    <PersonIcon sx={{ margin: "0 2px 3px 0" }} />Account information
+                                    <PersonIcon sx={{ margin: "0 2px 3px 0" }} />{t("header.accountInfo")}
                                 </MenuItem>
 
                                 <MenuItem component={Link} to="/manager/mission" onClick={handleMenuClose}>
-                                    <RuleIcon sx={{ marginRight: "2px" }} />Today works
+                                    <RuleIcon sx={{ marginRight: "2px" }} />{t("header.todayWorks")}
                                 </MenuItem>
                                 <hr />
 
@@ -372,12 +381,12 @@ const Header = () => {
                                 <hr />
 
                                 <MenuItem component={Link} to="/manager/cancel-booking/list" onClick={handleMenuClose}>
-                                    <ReceiptLongIcon sx={{ marginRight: "2px" }} />List cancel booking
+                                    <ReceiptLongIcon sx={{ marginRight: "2px" }} />{t("header.lstCancelBooking")}
                                 </MenuItem>
 
                                 <MenuItem component={Link} to="/manager/statistical" onClick={handleMenuClose}>
                                     <BarChartIcon sx={{ marginRight: "2px" }} />
-                                    <Typography lineHeight={"21px"}>Statistical</Typography>
+                                    <Typography lineHeight={"21px"}>{t("header.statistical")}</Typography>
                                 </MenuItem>
                                 <hr />
 
@@ -387,13 +396,13 @@ const Header = () => {
                                         logout(true)
                                         handleMenuClose()
                                         socket.emit("employeeLogout", { id: managerId })
-                                        toast.info("Logout successfully...")
+                                        toast.info(t("header.toastLogout"))
                                     }}
                                     sx={{
                                         ":hover": { color: "#e50914" }
                                     }}
                                 >
-                                    <LogoutIcon sx={{ marginRight: "2px" }} />Log out
+                                    <LogoutIcon sx={{ marginRight: "2px" }} />{t("header.logout")}
                                 </MenuItem>
                             </Menu>
                         </>}

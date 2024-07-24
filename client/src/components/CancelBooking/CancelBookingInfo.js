@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Box, Typography, Button } from "@mui/material"
 import { useNavigate, useParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import Loading from "../Loading/Loading"
 import { detailCancelBooking, restoreBooking } from "../../api/bookingApi"
 import { getEndTime, handleSeatArr } from "../../util"
@@ -20,6 +21,7 @@ const CancelBookingInfo = ({ title }) => {
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
     const rolePath = isCustomerLoggedIn ? "customer" : "manager"
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     useEffect(() => {
         setIsLoading(true)
@@ -33,10 +35,10 @@ const CancelBookingInfo = ({ title }) => {
     const handleRestoreBooking = () => {
         restoreBooking(cancelBookingId)
             .then(() => {
-                toast.success("Restore successfully...")
+                toast.success(t("restore.toastSuccess"))
                 navigate("/cart")
             })
-            .catch(() => toast.error("Restore failed..."))
+            .catch(() => toast.error(t("restore.toastFailed")))
     }
 
     return (
@@ -45,15 +47,15 @@ const CancelBookingInfo = ({ title }) => {
                 <Box className="wrapper">
                     <Box className="breadcrumb" margin={0}>
                         <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
-                            Home
+                            {t("header.home")}
                         </Typography>
                         <Typography className="breadcrumb__item" onClick={() =>
                             navigate(`/${rolePath}/cancel-booking/list`)
                         }>
-                            List Cancel Booking
+                            {t("header.lstCancelBooking")}
                         </Typography>
                         <Typography className="breadcrumb__item">
-                            Cancel Booking Detail
+                            {t("cancelBooking.cancelBookingDetail")}
                         </Typography>
                     </Box>
 
@@ -64,21 +66,22 @@ const CancelBookingInfo = ({ title }) => {
                             <img src={`${process.env.REACT_APP_API_URL}/img/cinema_ticket.png`} alt="cinema-ticket" />
 
                             <Box className="cinema-ticket__content" width={"100% !important"}>
-                                <Typography variant="h3" mb={1}>Cancel Booking Detail</Typography>
-
-                                <Typography>Customer name: <span>{cancelBooking.user.name}</span></Typography>
-                                <Typography>Movie: <span>
-                                    {cancelBooking.booking.screening.movie.title}</span>
+                                <Typography variant="h3" mb={1}>{t("cancelBooking.cancelBookingDetail")}</Typography>
+                                <Typography>
+                                    {t("cinemaTicket.customerName")}: <span>{cancelBooking.user.name}</span>
+                                </Typography>
+                                <Typography>
+                                    {t("cinemaTicket.movie")}: <span>{cancelBooking.booking.screening.movie.title}</span>
                                 </Typography>
 
                                 <Box className="flex-box">
                                     <Typography>
-                                        Date: <span>{cancelBooking.booking.screening.movieDate}</span>
+                                        {t("cinemaTicket.date")}: <span>{cancelBooking.booking.screening.movieDate}</span>
                                     </Typography>
                                     <Typography>
-                                        Start: <span>{cancelBooking.booking.screening.timeSlot}</span>
+                                        {t("cinemaTicket.start")}: <span>{cancelBooking.booking.screening.timeSlot}</span>
                                     </Typography>
-                                    <Typography>End: <span>
+                                    <Typography>{t("cinemaTicket.end")}: <span>
                                         {getEndTime(
                                             cancelBooking.booking.screening.timeSlot,
                                             cancelBooking.booking.screening.movie.time
@@ -89,46 +92,49 @@ const CancelBookingInfo = ({ title }) => {
 
                                 <Box className="flex-box">
                                     <Typography>
-                                        Seat: {cancelBooking.booking.seats ? <span>
-                                            {handleSeatArr(cancelBooking.booking.seats)}
-                                        </span> : "Unknown"}
+                                        {t("cinemaTicket.seat")}: {cancelBooking.booking.seats
+                                            ? <span>{handleSeatArr(cancelBooking.booking.seats)}</span>
+                                            : t("unknown")}
                                     </Typography>
-                                    <Typography>Screening at: {cancelBooking.booking.screening.cinemaRoom
+                                    <Typography>{t("cinemaTicket.screeningAt")}: {cancelBooking.booking.screening.cinemaRoom
                                         ? <span>
                                             {cancelBooking.booking.screening.cinemaRoom.roomNumber}
                                             -{cancelBooking.booking.screening.cinemaRoom.cinema.name}
-                                        </span> : "Unknown"}
+                                        </span>
+                                        : t("unknown")}
                                     </Typography>
                                 </Box>
 
                                 <Box className="flex-box">
                                     <Typography>
-                                        Unit price: <span>
+                                        {t("seatDiagram.unitPrice")}: <span>
                                             {cancelBooking.booking.screening.price.toLocaleString("vi-VN")} VNĐ
                                         </span>
                                     </Typography>
                                     <Typography>
-                                        Seat quantity: <span>{cancelBooking.booking.seats.length}</span>
+                                        {t("seatDiagram.quantity")}: <span>{cancelBooking.booking.seats.length}</span>
                                     </Typography>
                                     <Typography>
-                                        Total money: <span>
+                                        {t("seatDiagram.totalMoney")}: <span>
                                             {cancelBooking.booking.totalMoney.toLocaleString("vi-VN")} VNĐ
                                         </span>
                                     </Typography>
                                 </Box>
 
-                                <Typography>Booking time: <span>{cancelBooking.booking.createdAt}</span></Typography>
-                                <Typography>Reason: <span>{cancelBooking.reason}</span></Typography>
-                                <Typography>Refunds: <span>
+                                <Typography>
+                                    {t("cinemaTicket.bookingTime")}: <span>{cancelBooking.booking.createdAt}</span>
+                                </Typography>
+                                <Typography>{t("cancelBooking.reason")}: <span>{cancelBooking.reason}</span></Typography>
+                                <Typography>{t("cancelBooking.refunds")}: <span>
                                     {cancelBooking.refunds.toLocaleString("vi-VN")} VNĐ
-                                    (You get {cancelBooking.compensationPercent}
-                                    % refund of total ticket booking amount)
+                                    ({t("cancelBooking.contentRefunds", { percent: cancelBooking.compensationPercent })})
                                 </span></Typography>
-                                <Typography>Cancellation time: <span>{cancelBooking.createdAt}</span></Typography>
-                                <Typography>Status:
-                                    {!cancelBooking.approveRequest
-                                        ? <span> Awaiting approval (Waiting time may take 1-2 days)</span>
-                                        : <span> Approved</span>}
+                                <Typography>
+                                    {t("cancelBooking.cancelTime")}: <span>{cancelBooking.createdAt}</span>
+                                </Typography>
+                                <Typography>{t("cancelBooking.status")}: {!cancelBooking.approveRequest
+                                    ? <span>{t("cancelBooking.awaitApproval")} ({t("cancelBooking.waitCaption")})</span>
+                                    : <span>{t("cancelBooking.approved")}</span>}
                                 </Typography>
                             </Box>
                         </Box>
@@ -136,14 +142,14 @@ const CancelBookingInfo = ({ title }) => {
                         {isCustomerLoggedIn && <Box className="cinema-ticket__btn">
                             {!cancelBooking.approveRequest
                                 ? <Button className="btn" onClick={handleRestoreBooking}>
-                                    <RestoreIcon /><span>Revoke Ticket Cancellation</span>
+                                    <RestoreIcon /><span>{t("cancelBooking.revoke")}</span>
                                 </Button>
                                 : <Button className="btn" onClick={() => navigate("/customer/cancel-booking/list")}>
-                                    <ReplyIcon /><span>Come Back</span>
+                                    <ReplyIcon /><span>{t("cancelBooking.comeback")}</span>
                                 </Button>
                             }
                             <Button className="btn" onClick={() => navigate("/support")}>
-                                <SupportAgentIcon /><span>Support Counseling</span>
+                                <SupportAgentIcon /><span>{t("cancelBooking.supportCounseling")}</span>
                             </Button>
                         </Box>}
                     </Box>

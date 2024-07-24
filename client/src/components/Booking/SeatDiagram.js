@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Box, Typography, Button } from "@mui/material"
 import { useNavigate, useParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { useSelector, useDispatch } from "react-redux"
 import { customerActions } from "../../store"
 import { Helmet } from "react-helmet"
@@ -24,6 +25,7 @@ const SeatDiagram = ({ title }) => {
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
     const dispatch = useDispatch()
+    const { t } = useTranslation()
 
     useEffect(() => {
         const handleBeforeUnload = () => localStorage.removeItem("seatBookeds")
@@ -116,19 +118,19 @@ const SeatDiagram = ({ title }) => {
         const customerId = localStorage.getItem("customerId")
 
         if (!screeningId) {
-            toast.error("Screening not found...")
+            toast.error(t("seatDiagram.toastScreeningNotFound"))
             setIsLoading(false)
             return
         }
 
         if (seats.length === 0) {
-            toast.info("Please choose your seat before booking!!!")
+            toast.info(t("seatDiagram.toastChooseSeat"))
             setIsLoading(false)
             return
         }
 
         if (!customerId) {
-            toast.error("Customer not found...")
+            toast.error(t("seatDiagram.toastCustomerNotFound"))
             setIsLoading(false)
             return
         }
@@ -149,11 +151,12 @@ const SeatDiagram = ({ title }) => {
             dispatch(customerActions.addBooking(bookingData.booking))
             dispatch(customerActions.setRatingPoints(seats.length * 5))
             navigate(`/booking/${bookingId}/detail`)
-            toast.success("Booked ticket successfully...")
+            toast.success(t("seatDiagram.toastSuccess"))
 
             localStorage.removeItem("seatBookeds")
         } catch (err) {
-            toast.error("Tickets cannot be booked")
+            console.error(err)
+            toast.error(t("seatDiagram.toastError"))
         }
     }
 
@@ -166,15 +169,15 @@ const SeatDiagram = ({ title }) => {
 
                 <Box className="breadcrumb" margin={0}>
                     <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
-                        Home
+                        {t("header.home")}
                     </Typography>
 
                     <Typography className="breadcrumb__item" onClick={() => navigate(`/booking/${movieSlug}`)}>
-                        All Screenings
+                        {t("booking.allScreenings")}
                     </Typography>
 
                     <Typography className="breadcrumb__item disable">
-                        {synthesizeData.movieTitle}
+                        {t(`movies.${movieSlug}`)}
                     </Typography>
 
                     <Typography className="breadcrumb__item">
@@ -184,15 +187,15 @@ const SeatDiagram = ({ title }) => {
 
                 <Box className="seat-statistics">
                     <Typography className="textitem">
-                        Total seats: {synthesizeData.seats.length}
+                        {t("seatDiagram.totalSeats")}: {synthesizeData.seats.length}
                     </Typography>
 
                     <Typography className="textitem">
-                        Seats booked: {synthesizeData.seats.filter(seat => seat.selected === true).length}
+                        {t("seatDiagram.seatsBooked")}: {synthesizeData.seats.filter(seat => seat.selected === true).length}
                     </Typography>
 
                     <Typography className="textitem">
-                        Seats not booked: {synthesizeData.seats.filter(seat => seat.selected === false).length}
+                        {t("seatDiagram.seatsNotBooked")}: {synthesizeData.seats.filter(seat => seat.selected === false).length}
                     </Typography>
                 </Box>
 
@@ -214,37 +217,37 @@ const SeatDiagram = ({ title }) => {
                 <Box className="seat-caption">
                     <Box className="seat-caption__item">
                         <div className="seat-color not-booked"></div>:
-                        <Typography className="text-caption">Seat not booked</Typography>
+                        <Typography className="text-caption">{t("seatDiagram.seatNotBooked")}</Typography>
                     </Box>
 
                     <Box className="seat-caption__item">
                         <div className="seat-color booked"></div>:
-                        <Typography className="text-caption">Seat booked</Typography>
+                        <Typography className="text-caption">{t("seatDiagram.seatBooked")}</Typography>
                     </Box>
 
                     <Box className="seat-caption__item">
                         <div className="seat-color choice"></div>:
-                        <Typography className="text-caption">Seat your choice</Typography>
+                        <Typography className="text-caption">{t("seatDiagram.seatChoice")}</Typography>
                     </Box>
                 </Box>
 
                 <Box className="seat-fee">
                     <Box className="seat-unit-price">
-                        <Typography fontSize={"1.5rem"}>Unit Price</Typography>
+                        <Typography fontSize={"1.5rem"}>{t("seatDiagram.unitPrice")}</Typography>
                         <Typography fontSize={"1.5rem"}>{price}</Typography>
                     </Box>
 
                     <ClearOutlinedIcon />
 
                     <Box className="seat-quantity">
-                        <Typography fontSize={"1.5rem"}>Quantity</Typography>
+                        <Typography fontSize={"1.5rem"}>{t("seatDiagram.quantity")}</Typography>
                         <Typography fontSize={"1.5rem"}>{quantity}</Typography>
                     </Box>
 
                     <DragHandleOutlinedIcon />
 
                     <Box className="total-money">
-                        <Typography fontSize={"1.5rem"}>Total money</Typography>
+                        <Typography fontSize={"1.5rem"}>{t("seatDiagram.totalMoney")}</Typography>
                         <Typography fontSize={"1.5rem"}>{price * quantity}</Typography>
                     </Box>
 
@@ -253,13 +256,13 @@ const SeatDiagram = ({ title }) => {
                             setIsLoading(true)
                             handleBookNowClick()
                         } else if (isManagerLoggedIn) {
-                            toast.warn("You are using a staff account that is not used to book tickets")
+                            toast.warn(t("seatDiagram.toastWarnStaff"))
                         } else {
-                            toast.info("You need to log in to be able to book tickets")
+                            toast.info(t("seatDiagram.toastInfoLogIn"))
                             navigate("/login")
                         }
                     }}>
-                        Book Now
+                        {t("seatDiagram.bookNow")}
                     </Button>
                 </Box>
             </Box> : <Loading />}

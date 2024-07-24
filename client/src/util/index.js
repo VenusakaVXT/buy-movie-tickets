@@ -45,3 +45,5 @@ export const calculateDaysBetween = (movieDate, bookingDate) => {
 
     return Math.ceil(miliSecondConvertDays)
 }
+
+export const convertStr = (str) => str.toLowerCase().replace(/[\s,]+/g, "-")

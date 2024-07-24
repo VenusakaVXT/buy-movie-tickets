@@ -9,6 +9,7 @@ import {
     MenuItem
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { getApiFromBE } from "../../api/movieApi"
 import ScreeningItem from "../Screening/ScreeningItem"
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber"
@@ -19,17 +20,13 @@ import "../../scss/Movie.scss"
 
 const Movie = () => {
     const navigate = useNavigate()
+    const { t } = useTranslation()
     const [movies, setMovies] = useState([])
     const [active, setActive] = useState(0)
     const [sort, setSort] = useState(0)
     const [isLoading, setIsLoading] = useState(false)
     const [tabStates, setTabStates] = useState([true, false])
-
-    const listSelectSort = [
-        "Relevance",
-        "Name (A - Z)",
-        "Price (Low - High)"
-    ]
+    const listSelectSort = t("moviePage.selectSort", { returnObjects: true })
 
     useEffect(() => {
         const storedActiveTab = sessionStorage.getItem("activeTab")
@@ -81,6 +78,7 @@ const Movie = () => {
                             releaseDate={movie.releaseDate}
                             time={movie.time}
                             trailerId={movie.trailerId}
+                            slug={movie.slug}
                             displayType={true}
                         />
                     ))}
@@ -97,6 +95,7 @@ const Movie = () => {
                             releaseDate={movie.releaseDate}
                             time={movie.time}
                             trailerId={movie.trailerId}
+                            slug={movie.slug}
                             displayType={false}
                         />
                     ))}
@@ -118,15 +117,15 @@ const Movie = () => {
         <Box className="movie__wrappper">
             <Box className="breadcrumb">
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
-                    Home
+                    {t("header.home")}
                 </Typography>
                 <Typography className="breadcrumb__item">
-                    All Movies
+                    {t("moviePage.allMovies")}
                 </Typography>
             </Box>
 
             <Typography textAlign={"center"} variant="h4" color={"#fff"} marginTop={"30px"}>
-                <span style={{ color: "#ff0000" }}>#</span>ALL MOVIES
+                <span style={{ color: "#ff0000" }}>#</span>{t("moviePage.allMovies").toUpperCase()}
             </Typography>
 
             <Box className="topbar">
@@ -154,11 +153,11 @@ const Movie = () => {
                         />
                     </Tabs>
 
-                    <Typography marginLeft={4}>{`There are ${movies.length} movies.`}</Typography>
+                    <Typography marginLeft={2}>{t("moviePage.moviesCount", { count: movies.length })}</Typography>
                 </Box>
 
                 <Box className="topbar__item">
-                    <Typography marginRight={2}>Sort by:</Typography>
+                    <Typography marginRight={1}>{t("moviePage.sortBy")}</Typography>
 
                     <FormControl sx={{
                         width: "250px",
@@ -196,8 +195,8 @@ const Movie = () => {
             </Box>
 
             {isLoading ? <Box mb={12}><Box className="loading-spinner"></Box></Box> : <>
-                {renderMovieList("now showing", true)}
-                {renderMovieList("comming soon", false)}
+                {renderMovieList(t("homepage.nowShowing"), true)}
+                {renderMovieList(t("homepage.commingSoon"), false)}
             </>}
         </Box>
     )

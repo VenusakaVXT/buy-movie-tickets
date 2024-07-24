@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react"
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp"
 import { Tooltip } from "react-tooltip"
+import { useTranslation } from "react-i18next"
 import "../../scss/GoToTopButton.scss"
 
 const GoToTopButton = () => {
     const [isVisible, setIsVisible] = useState(false)
+    const { t } = useTranslation()
 
     const handleScroll = () => {
         setIsVisible(window.scrollY > 100)
@@ -29,7 +31,7 @@ const GoToTopButton = () => {
             {isVisible && (
                 <button
                     className="go-to-top-btn bottom-up-animation"
-                    data-tooltip-content="Go To Top"
+                    data-tooltip-content={t("gototop")}
                     data-tooltip-id="gtt"
                     onClick={() => {
                         scrollToTop()

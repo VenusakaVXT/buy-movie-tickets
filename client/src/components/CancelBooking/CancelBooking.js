@@ -11,21 +11,13 @@ import {
     Avatar
 } from "@mui/material"
 import { useNavigate, useParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import CloseIcon from "@mui/icons-material/Close"
 import { comparePassword } from "../../api/userApi"
 import { cancelBooking } from "../../api/bookingApi"
 import { Helmet } from "react-helmet"
 import { toast } from "react-toastify"
 import "../../scss/App.scss"
-
-const reasons = [
-    "I don't want to watch this movie anymore",
-    "I want to book more tickets",
-    "I want to reduce the number of seats booked",
-    "I want to see another day",
-    "I want to watch it at another time that day",
-    "I accidentally booked this movie ticket by mistake"
-]
 
 const CancelBooking = ({ title }) => {
     const [reason, setReason] = useState("")
@@ -37,6 +29,16 @@ const CancelBooking = ({ title }) => {
     const refunds = localStorage.getItem("refunds")
     const compensationPercent = localStorage.getItem("compensationPercent")
     const navigate = useNavigate()
+    const { t } = useTranslation()
+
+    const reasons = [
+        t("cancelBooking.reason1"),
+        t("cancelBooking.reason2"),
+        t("cancelBooking.reason3"),
+        t("cancelBooking.reason4"),
+        t("cancelBooking.reason5"),
+        t("cancelBooking.reason6")
+    ]
 
     const handleChangeReason = (e) => {
         const label = e.target.closest("label")
@@ -68,14 +70,14 @@ const CancelBooking = ({ title }) => {
                 })
                 const cancelBookingId = cancelBookingData.cancelBooking._id
 
-                alert("Request to cancel booking successfully! Please, wait for the system to process in 1-2 days.")
+                alert(t("cancelBooking.alert"))
                 navigate(`/customer/cancel-booking/${cancelBookingId}/detail`)
             } else {
-                toast.error("Passwords do not match!!!")
+                toast.error(t("register.toastError1"))
                 setIsModalOpen(false)
             }
-        } catch (err) {
-            console.error(err)
+        } catch {
+            toast.error(t("cancelBooking.toastError"))
         }
     }
 
@@ -85,19 +87,19 @@ const CancelBooking = ({ title }) => {
 
             <Box className="breadcrumb" margin={0}>
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
-                    Home
+                    {t("header.home")}
                 </Typography>
                 <Typography className="breadcrumb__item" onClick={() => navigate("/cart")}>
-                    Cart
+                    {t("cart.title")}
                 </Typography>
                 <Typography className="breadcrumb__item">
-                    Cancel Booking
+                    {t("cancelBooking.title")}
                 </Typography>
             </Box>
 
             <Box className="frm-wrapper" p={"20px 40px"}>
                 <Typography variant="h5" component="h2" color={"#e50914"} marginBottom={2}>
-                    Select the reason for canceling the movie ticket
+                    {t("cancelBooking.selectReason")}
                 </Typography>
 
                 <RadioGroup value={reason} onChange={handleChangeReason}>
@@ -106,14 +108,16 @@ const CancelBooking = ({ title }) => {
                             key={index} value={reasonItem} label={reasonItem} control={<Radio className="radio-btn" />}
                         />
                     )}
-                    <FormControlLabel value={"Other"} label="Other" control={<Radio className="radio-btn" />} />
+                    <FormControlLabel
+                        value={"Other"} label={t("cancelBooking.other")} control={<Radio className="radio-btn" />}
+                    />
                 </RadioGroup>
 
                 <textarea
                     name="otherReason"
                     variant="standard"
                     margin="normal"
-                    placeholder="Please enter other reason..."
+                    placeholder={t("cancelBooking.placeholderReason")}
                     value={otherReason}
                     onChange={(e) => setOtherReason(e.target.value)}
                     required
@@ -122,18 +126,18 @@ const CancelBooking = ({ title }) => {
 
                 <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
                     <Button className="btn" onClick={() => navigate("/cart")}>
-                        Back To Cart
+                        {t("cancelBooking.backToCart")}
                     </Button>
                     <Button className="btn" onClick={() => {
                         if (reason === "") {
-                            toast.warn("Please select a reason before submitting a cancellation request!!!")
+                            toast.warn(t("cancelBooking.toastWarn1"))
                         } else if (reason === "Other" && otherReason.trim() === "") {
-                            toast.warn("Please enter a reason in the Other before submitting a cancellation request!!!")
+                            toast.warn(t("cancelBooking.toastWarn2"))
                         } else {
                             setIsModalOpen(true)
                         }
                     }}>
-                        Request To Cancel Booking
+                        {t("cancelBooking.requestBtn")}
                     </Button>
                 </Box>
 
@@ -155,13 +159,16 @@ const CancelBooking = ({ title }) => {
                             </Box>
 
                             <Typography textAlign={"justify"} m={"8px 0"}>
-                                To submit a request to cancel a booking, you need to authenticate your password.
-                                If your ticket cancellation request is approved, <span style={{ color: "#ff0000" }}>
-                                    {localStorage.getItem("ratingPointsDeducted")} rating points will be deducted
-                                </span> and <span style={{ color: "#ff0000" }}>
-                                    the refund amount will be reduced by {100 - compensationPercent}%.
-                                </span> That means you will receive <span style={{ fontWeight: 600 }}>
-                                    {Number(refunds).toLocaleString("vi-VN")} VNĐ </span> back.
+                                {t("cancelBooking.modalContent1")}
+                                <span style={{ color: "#ff0000" }}>{t("cancelBooking.modalContent2",
+                                    { ratingPoints: localStorage.getItem("ratingPointsDeducted") })}
+                                </span>
+                                {t("and")}
+                                <span style={{ color: "#ff0000" }}>
+                                    {t("cancelBooking.modalContent3", { percent: 100 - compensationPercent })}
+                                </span>
+                                {t("cancelBooking.modalContent4")}
+                                <span style={{ fontWeight: 600 }}>{Number(refunds).toLocaleString("vi-VN")} VNĐ.</span>
                             </Typography>
 
                             <input
@@ -176,7 +183,7 @@ const CancelBooking = ({ title }) => {
                                 type="password"
                                 value={passwordAuth}
                                 onChange={(e) => setPasswordAuth(e.target.value)}
-                                placeholder="Please password authentication..."
+                                placeholder={t("cancelBooking.placeholderPassword")}
                             />
 
                             <Button
@@ -188,7 +195,7 @@ const CancelBooking = ({ title }) => {
                                     ":hover": { transform: "none" }
                                 }}
                             >
-                                Authentication
+                                {t("cancelBooking.authBtn")}
                             </Button>
                         </form>
                     </Modal>

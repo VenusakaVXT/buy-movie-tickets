@@ -1,46 +1,35 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { Typography, IconButton, Paper, Container, Grid } from "@mui/material"
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material"
+import { useTranslation } from "react-i18next"
 import "../../scss/Carousel.scss"
 
-const carousel = [
-    {
-        src: `${process.env.REACT_APP_API_URL}/img/slider/avatar.jpeg`,
-        content:
-            "Avatar: The Way Of Water after 13 years, the audience's wait is truly worth it",
-    },
-    {
-        src: `${process.env.REACT_APP_API_URL}/img/slider/ant-man-quantuminia.jpg`,
-        content:
-            "Ant-Man 3 expands the Marvel Cinematic Universe, bringing audiences to the quantum world - a land that has not been introduced much in previous films.",
-    },
-    {
-        src: `${process.env.REACT_APP_API_URL}/img/slider/theflash2.jpg`,
-        content:
-            "The Flash 2, Barry will face a new threat from a parallel universe in the form of Speedster Zoom",
-    },
-]
-
 const Carousel = () => {
+    const { t } = useTranslation()
     const [index, setIndex] = useState(0)
+    const carousel = [
+        {
+            src: `${process.env.REACT_APP_API_URL}/img/slider/avatar.jpeg`,
+            content: t("carousel.contentCarousel1")
+        },
+        {
+            src: `${process.env.REACT_APP_API_URL}/img/slider/ant-man-quantuminia.jpg`,
+            content: t("carousel.contentCarousel2")
+        },
+        {
+            src: `${process.env.REACT_APP_API_URL}/img/slider/theflash2.jpg`,
+            content: t("carousel.contentCarousel3")
+        },
+    ]
+    const carouselLength = carousel.length
 
-    const handlePrev = () => {
-        setIndex(
-            (prevIndex) => (prevIndex - 1 + carousel.length) % carousel.length,
-        )
-    }
-
-    const handleNext = () => {
-        setIndex((nextIndex) => (nextIndex + 1) % carousel.length)
-    }
+    const handlePrev = () => setIndex((prevIndex) => (prevIndex - 1 + carouselLength) % carouselLength)
+    const handleNext = useCallback(() => setIndex((nextIndex) => (nextIndex + 1) % carouselLength), [carouselLength])
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            handleNext()
-        }, 5000)
-
+        const interval = setInterval(() => handleNext(), 5000)
         return () => clearInterval(interval)
-    }, [])
+    }, [handleNext])
 
     return (
         <Container className="carousel__wrapper">
@@ -71,8 +60,7 @@ const Carousel = () => {
                             className="carousel__tick-item"
                             key={i}
                             style={{
-                                backgroundColor:
-                                    i === index ? "#fff" : "#808080",
+                                backgroundColor: i === index ? "#fff" : "#808080",
                             }}
                         />
                     ))}

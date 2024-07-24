@@ -1,0 +1,44 @@
+{
+    "newBooking": {
+        "subject": "Successfully booked tickets at Buy Movie Tickets",
+        "greeting": "Dear {{name}},",
+        "intro": "About time {{createdAt}}, you have booked movie tickets at our BMT system.",
+        "details": "Ticket booking details:",
+        "movie": "Movie: {{title}}",
+        "screeningTime": "Screening time: {{timeSlot}}, {{movieDate}}",
+        "screeningAt": "Screening at: {{roomNumber}}-{{cinemaName}}",
+        "seats": "Seats: {{seats}}",
+        "totalMoney": "Total money: {{totalMoney}} VNĐ",
+        "thanks": "Sincerely thank our customer for always trusting and supporting Buy Movie Tickets!!!",
+        "cta": "Visit the BMT homepage to see movie ticket details.",
+        "ctaButton": "BMT Home Page"
+    },
+    "restoreBooking": {
+        "subject": "Revoke ticket cancellation",
+        "greeting": "Dear {{name}},",
+        "intro": "Your cancellation request was not approved by the Buy Movie Tickets system and the cinema. Or you manually pressed to revoke the request.",
+        "details": "Details of ticket cancellation information:",
+        "bookingId": "Booking ID: {{bookingId}}",
+        "bookingTime": "Booking time: {{createdAt}}",
+        "cancellationTime": "Cancellation time: {{createdAt}}",
+        "reason": "Reason: {{reason}}",
+        "thanks": "Sincerely thank our customer for always trusting and supporting Buy Movie Tickets!!!",
+        "cta": "Visit the BMT homepage to see movie ticket cancellation details.",
+        "ctaButton": "BMT Home Page"
+    },
+    "cancelBooking": {
+        "subject": "Your cancellation request has been approved",
+        "greeting": "Dear {{name}},",
+        "intro": "After review by the system and cinema, your request to cancel your ticket reservation has been approved.",
+        "details": "Details of ticket cancellation information:",
+        "bookingId": "Booking ID: {{bookingId}}",
+        "bookingTime": "Booking time: {{createdAt}}",
+        "cancellationTime": "Cancellation time: {{createdAt}}",
+        "reason": "Reason: {{reason}}",
+        "compensationPercent": "The percentage you have to compensate the cinema: {{percent}}%",
+        "refunds": "The amount of money you get back: {{refunds}} VND",
+        "thanks": "Sincerely thank our customer for always trusting and supporting Buy Movie Tickets!!!",
+        "cta": "Visit the BMT homepage to see movie ticket cancellation details.",
+        "ctaButton": "BMT Home Page"
+    }
+}

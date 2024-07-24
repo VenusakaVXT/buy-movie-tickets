@@ -15,7 +15,9 @@ import { getMovieDetail, getCommentsByMovie } from "../../api/movieApi"
 import { userComment, userDeleteComment } from "../../api/userApi"
 import SendIcon from "@mui/icons-material/Send"
 import { useSelector } from "react-redux"
+import { useTranslation } from "react-i18next"
 import { toast } from "react-toastify"
+import { convertStr } from "../../util"
 import "../../scss/MovieDetail.scss"
 import "../../scss/App.scss"
 
@@ -30,6 +32,7 @@ const MovieDetail = () => {
     const userId = localStorage.getItem("customerId")
     const slug = useParams().slug
     const navigate = useNavigate()
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         getMovieDetail(slug)
@@ -60,13 +63,13 @@ const MovieDetail = () => {
                 setComments([...comments, res.comment])
                 setNewComment("")
             } else if (isManagerLoggedIn) {
-                toast.info("You are using a staff account that cannot comment!!!")
+                toast.info(t("comment.toastInfoStaff"))
             } else {
-                toast.info("You need to log in to comment!!!")
+                toast.info(t("comment.toastInfoLogIn"))
                 navigate("/login")
             }
         } catch {
-            toast.error("Error send comment!!!")
+            toast.error(t("comment.toastErrorSend"))
         }
     }
 
@@ -75,10 +78,10 @@ const MovieDetail = () => {
             await userDeleteComment(id)
             setComments(comments.filter(comment => comment._id !== id))
             setIsModalOpen(false)
-            toast.success("Delete comment successfully...")
+            toast.success(t("comment.toastSuccessDelete"))
             // dispatch(customerActions.setRatingPoints(-5))
         } catch {
-            toast.error("Delete comment failed...")
+            toast.error(t("comment.toastErrorDelete"))
         }
     }
 
@@ -127,51 +130,67 @@ const MovieDetail = () => {
                         >
                             <CardContent>
                                 <Typography className="text-border" variant="h4" component="h2">
-                                    {movie.title}
+                                    {i18n.language === "us" ? movie.title : t(`movies.${movie.slug}`)}
                                 </Typography>
 
-                                <Typography className="text-border" variant="body1">{movie.description}</Typography>
-
-                                <Typography className="text-border" variant="body1">
-                                    Director: {movie.director}
+                                <Typography className="text-border" variant="body1" width={856} textAlign={"justify"}>
+                                    {i18n.language === "vn"
+                                        ? t(`moviesDescription.${movie.slug}`)
+                                        : movie.description !== "" ? movie.description : t("movieDetail.noDescription")}
                                 </Typography>
 
                                 <Typography className="text-border" variant="body1">
-                                    Content Writter: {movie.contentWritter}
+                                    {t("movieDetail.director", {
+                                        director: movie.director !== "" ? movie.director : t("movieDetail.notyet")
+                                    })}
+                                </Typography>
+
+                                <Typography className="text-border" variant="body1">
+                                    {t("movieDetail.contentWritter", {
+                                        contentWritter:
+                                            movie.contentWritter !== "" ? movie.contentWritter : t("movieDetail.notyet")
+                                    })}
                                 </Typography>
 
                                 <Typography className="text-border" variant="body1" display={"flex !important"}>
-                                    Actors: {
-                                        movie.actors !== "" ?
-                                            movie.actors.split(",").map(actor => (
-                                                <a
-                                                    className="text-border actor-info"
-                                                    href={`https://vi.wikipedia.org/wiki/${actor.replace(/ /g, "_")}`}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                >
-                                                    {actor.trim()}
-                                                </a>
-                                            )) : "Not yet published"
+                                    {t("movieDetail.actors")}: {movie.actors !== ""
+                                        ? movie.actors.split(",").map(actor => (
+                                            <a
+                                                className="text-border actor-info"
+                                                href={`https://vi.wikipedia.org/wiki/${actor.replace(/ /g, "_")}`}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                {actor.trim()}
+                                            </a>
+                                        ))
+                                        : t("movieDetail.notyet")
                                     }
                                 </Typography>
 
                                 <Typography className="text-border" variant="body1">
-                                    Category: {
-                                        movie.category ? movie.category.map(c => c.category).join(", ") : "none"
-                                    }
+                                    {t("movieDetail.category", {
+                                        category: movie.category.length > 0
+                                            ? movie.category.map(c => t(`category.${convertStr(c.category)}`)).join(", ")
+                                            : t("movieDetail.notyet")
+                                    })}
                                 </Typography>
 
                                 <Typography className="text-border" variant="body1">
-                                    Release Date: {movie.releaseDate !== "" ? movie.releaseDate : "Not yet published"}
+                                    {t("movieDetail.releaseDate", {
+                                        releaseDate: movie.releaseDate ? movie.releaseDate : t("movieDetail.notyet")
+                                    })}
                                 </Typography>
 
-                                <Typography className="text-border" variant="body1">Time: {movie.time} minute</Typography>
+                                <Typography className="text-border" variant="body1">
+                                    {t("movieDetail.time", { time: movie.time ? movie.time : t("movieDetail.notyet") })}
+                                </Typography>
 
                                 <Typography className="text-border" variant="body1">
-                                    Producer: {
-                                        movie.producer ? movie.producer.map(p => p.producerName).join(", ") : "none"
-                                    }
+                                    {t("movieDetail.producer", {
+                                        producer: movie.producer.length > 0
+                                            ? movie.producer.map(p => p.producerName).join(", ") : t("movieDetail.notyet")
+                                    })}
                                 </Typography>
                             </CardContent>
                         </Box>
@@ -206,12 +225,12 @@ const MovieDetail = () => {
                         }}
                     >
                         <Button className="btn" variant="contained" LinkComponent={Link} to={`/booking/${slug}`}>
-                            Booking
+                            {t("movieDetail.booking")}
                         </Button>
                         <Button className="btn" variant="contained" onClick={() => {
                             window.scrollBy({ top: 500, left: 0, behavior: "smooth" })
                         }}>
-                            See reviews
+                            {t("movieDetail.seeReviews")}
                         </Button>
                     </Box>
 
@@ -224,7 +243,7 @@ const MovieDetail = () => {
                         }}
                     >
                         <Typography variant="h4" color={"#e50914"} fontFamily={"600"} mb={1}>
-                            Feedbacks
+                            {t("comment.feedback")}
                         </Typography>
 
                         <form onSubmit={handleCommentSubmit} style={{ width: "100%" }}>
@@ -253,7 +272,7 @@ const MovieDetail = () => {
                                                 {comment.user._id === userId && <>
                                                     <Button
                                                         sx={{ p: 0, minWidth: 0, textTransform: "none" }}
-                                                        onClick={() => toast.warn("Edit cmt under maintenance")}
+                                                        onClick={() => toast.warn(t("comment.toastWarnEdit"))}
                                                     >
                                                         <Typography sx={{
                                                             marginRight: 2,
@@ -264,7 +283,7 @@ const MovieDetail = () => {
                                                                 cursor: "pointer"
                                                             }
                                                         }}>
-                                                            Edit
+                                                            {t("comment.edit")}
                                                         </Typography>
                                                     </Button>
 
@@ -283,13 +302,13 @@ const MovieDetail = () => {
                                                                 cursor: "pointer"
                                                             }
                                                         }}>
-                                                            Delete
+                                                            {t("comment.delete")}
                                                         </Typography>
                                                     </Button>
                                                 </>}
                                             </Box>
                                         </Box>
-                                    </Box>) : <Typography color={"#fff"}>No comments available</Typography>}
+                                    </Box>) : <Typography color={"#fff"}>{t("comment.noCmt")}</Typography>}
                             </Box>
 
                             <Box position={"relative"}>
@@ -298,7 +317,7 @@ const MovieDetail = () => {
                                     name="content"
                                     variant="standard"
                                     margin="normal"
-                                    placeholder="Please leave your review here..."
+                                    placeholder={t("comment.placeholder")}
                                     value={newComment}
                                     onChange={(e) => setNewComment(e.target.value)}
                                     required
@@ -326,11 +345,12 @@ const MovieDetail = () => {
                 >
                     <Box width={500} className="modal">
                         <Typography id="modal__title" variant="h6" component="h2" color={"#e50914"}>
-                            Delete comment?
+                            {t("comment.modalTitle")}
                         </Typography>
                         <Typography id="modal__content" m={"16px 0"} color={"#fff"}>
-                            Are you sure you want to delete this comment?
-                            If you delete your comment, <span style={{ color: "#ff0000" }}>5 rating points</span> will be deducted
+                            {t("comment.modalContent")} <span style={{ color: "#ff0000" }}>
+                                5 {t("header.ratingPoints").toLowerCase()}
+                            </span>.
                         </Typography>
 
                         <Box display={"flex"} justifyContent={"flex-end"}>
@@ -339,7 +359,7 @@ const MovieDetail = () => {
                                 sx={{ mr: "0 !important" }}
                                 onClick={() => handleDeleteComment(idCommentDeleted)}
                             >
-                                OK
+                                {t("comment.ok")}
                             </Button>
                             <Button
                                 className="btn"
@@ -349,13 +369,13 @@ const MovieDetail = () => {
                                 }}
                                 onClick={() => setIsModalOpen(false)}
                             >
-                                Cancel
+                                {t("comment.cancel")}
                             </Button>
                         </Box>
                     </Box>
                 </Modal>
             }
-        </Box>
+        </Box >
     )
 }
 

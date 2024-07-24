@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, Suspense } from "react"
 import { Box } from "@mui/material"
 import "./scss/App.scss"
 import { Routes, Route, useLocation } from "react-router-dom"
@@ -34,6 +34,7 @@ import Charts from "./components/Charts/Charts"
 import CancelBooking from "./components/CancelBooking/CancelBooking"
 import ListCancelBooking from "./components/CancelBooking/ListCancelBooking"
 import CancelBookingInfo from "./components/CancelBooking/CancelBookingInfo"
+import Loading from "./components/Loading/Loading"
 
 const formatTitle = (pathname) => {
     const convertPathname = pathname.replace(/\//g, " ").replace(/-/g, " ").trim()
@@ -101,90 +102,92 @@ const App = () => {
     }
 
     return (
-        <Box className="App__wrapper">
-            <Helmet>
-                <title>{isHomePage ? `${title}` : `${title} | ${formatTitle(location.pathname)}`}</title>
-            </Helmet>
+        <Suspense fallback={<Loading />}>
+            <Box className="App__wrapper">
+                <Helmet>
+                    <title>{isHomePage ? `${title}` : `${title} | ${formatTitle(location.pathname)}`}</title>
+                </Helmet>
 
-            <ScrollRestoration />
-            <Header />
+                <ScrollRestoration />
+                <Header />
 
-            <section>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/release" element={<Release />} />
-                    <Route path="/category" element={<Category />} />
-                    <Route path="/cinema" element={<Cinema />} />
-                    <Route path="/all-movies" element={<Movie />} />
-                    <Route path="/movie-details/:slug" element={<MovieDetail />} />
-                    <Route path="/booking/:slug" element={<Booking />} />
-                    <Route path="/booking/:movieSlug/:screeningId" element={
-                        <SeatDiagram title={`${title} | Seat Diagram`} />
-                    } />
-                    <Route path="/charts" element={<Charts />} />
-                    {(!isCustomerLoggedIn && !isManagerLoggedIn) && <>
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/login" element={<Login />} />
-                    </>}
-                    {isCustomerLoggedIn && <>
-                        <Route path="/booking/:bookingId/detail"
-                            element={<CinemaTicket title={`${title} | Movie Ticket`} />}
-                        />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route path={"/customer/cancel-booking/:bookingId"} element={
-                            <CancelBooking title={`${title} | Reason Cancel Booking`} />
+                <section>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/release" element={<Release />} />
+                        <Route path="/category" element={<Category />} />
+                        <Route path="/cinema" element={<Cinema />} />
+                        <Route path="/all-movies" element={<Movie />} />
+                        <Route path="/movie-details/:slug" element={<MovieDetail />} />
+                        <Route path="/booking/:slug" element={<Booking />} />
+                        <Route path="/booking/:movieSlug/:screeningId" element={
+                            <SeatDiagram title={`${title} | Seat Diagram`} />
                         } />
-                    </>}
-                    {isManagerLoggedIn && <>
-                        <Route path="/manager/add-movie" element={
-                            <AddMovie title={`${title} | Add Movie`} />
-                        } />
-                        <Route path="/manager/add-screening" element={
-                            <AddScreening title={`${title} | Add Screening`} />
-                        } />
-                        <Route path={`/manager/list-movie`}
-                            element={<ListData title={`${title} | List Movie`} />}
-                        />
-                        <Route path={`/manager/list-screening`}
-                            element={<ListData title={`${title} | List Screening`} />}
-                        />
-                        <Route path="/manager/statistical" element={
-                            <Statistical title={`${title} | Statistical`} />
-                        } />
-                    </>}
-                    {(isCustomerLoggedIn || isManagerLoggedIn) && <>
-                        <Route
-                            path={`${isCustomerLoggedIn ? "/customer" : "/manager"}/profile`}
-                            element={<Profile />}
-                        />
-                        <Route path={`/${decision}/cancel-booking/list`} element={
-                            <ListCancelBooking title={`${title} | List Cancel Booking`} />
-                        } />
-                        <Route path={`/${decision}/cancel-booking/:id/detail`} element={
-                            <CancelBookingInfo title={`${title} | Cancel Booking Detail`} />
-                        } />
-                    </>}
-                    <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-            </section>
+                        <Route path="/charts" element={<Charts />} />
+                        {(!isCustomerLoggedIn && !isManagerLoggedIn) && <>
+                            <Route path="/register" element={<Register />} />
+                            <Route path="/login" element={<Login />} />
+                        </>}
+                        {isCustomerLoggedIn && <>
+                            <Route path="/booking/:bookingId/detail"
+                                element={<CinemaTicket title={`${title} | Movie Ticket`} />}
+                            />
+                            <Route path="/cart" element={<Cart />} />
+                            <Route path={"/customer/cancel-booking/:bookingId"} element={
+                                <CancelBooking title={`${title} | Reason Cancel Booking`} />
+                            } />
+                        </>}
+                        {isManagerLoggedIn && <>
+                            <Route path="/manager/add-movie" element={
+                                <AddMovie title={`${title} | Add Movie`} />
+                            } />
+                            <Route path="/manager/add-screening" element={
+                                <AddScreening title={`${title} | Add Screening`} />
+                            } />
+                            <Route path={`/manager/list-movie`}
+                                element={<ListData title={`${title} | List Movie`} />}
+                            />
+                            <Route path={`/manager/list-screening`}
+                                element={<ListData title={`${title} | List Screening`} />}
+                            />
+                            <Route path="/manager/statistical" element={
+                                <Statistical title={`${title} | Statistical`} />
+                            } />
+                        </>}
+                        {(isCustomerLoggedIn || isManagerLoggedIn) && <>
+                            <Route
+                                path={`${isCustomerLoggedIn ? "/customer" : "/manager"}/profile`}
+                                element={<Profile />}
+                            />
+                            <Route path={`/${decision}/cancel-booking/list`} element={
+                                <ListCancelBooking title={`${title} | List Cancel Booking`} />
+                            } />
+                            <Route path={`/${decision}/cancel-booking/:id/detail`} element={
+                                <CancelBookingInfo title={`${title} | Cancel Booking Detail`} />
+                            } />
+                        </>}
+                        <Route path="*" element={<NotFoundPage />} />
+                    </Routes>
+                </section>
 
-            {isHomePage ? <Footer /> : <PageEnding />}
+                {isHomePage ? <Footer /> : <PageEnding />}
 
-            <GoToTopButton />
+                <GoToTopButton />
 
-            <ToastContainer
-                position="bottom-left"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            />
-        </Box>
+                <ToastContainer
+                    position="bottom-left"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                />
+            </Box>
+        </Suspense>
     )
 }
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Box, Typography } from "@mui/material"
 import { useNavigate, useParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { getEndTime } from "../../util"
 import {
     getMovieDetail,
@@ -25,6 +26,7 @@ const Booking = () => {
     const [isLoading, setIsLoading] = useState(false)
     const slug = useParams().slug
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     useEffect(() => {
         getMovieDetail(slug)
@@ -129,19 +131,19 @@ const Booking = () => {
                 <Box className="booking__wrapper">
                     <Box className="breadcrumb" margin={0}>
                         <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
-                            Home
+                            {t("header.home")}
                         </Typography>
-                        <Typography className="breadcrumb__item disable">All Screenings</Typography>
-                        <Typography className="breadcrumb__item">{movie.title}</Typography>
+                        <Typography className="breadcrumb__item disable">{t("booking.allScreenings")}</Typography>
+                        <Typography className="breadcrumb__item">{t(`movies.${movie.slug}`)}</Typography>
                     </Box>
 
-                    <Typography color={"#fff"} paddingTop={2}>Select cinema</Typography>
+                    <Typography color={"#fff"} paddingTop={2}>{t("booking.selectCinema")}</Typography>
 
                     <Box className="cinema__list">
                         <Typography className="cinema__item active" onClick={(e) => {
                             handleSelectCinema(e, "")
                         }}>
-                            All Cinemas
+                            {t("booking.allCinemas")}
                         </Typography>
 
                         {cinemas.map((cinema) => (
@@ -153,13 +155,13 @@ const Booking = () => {
                         ))}
                     </Box>
 
-                    <Typography color={"#fff"} paddingTop={2}>Select date</Typography>
+                    <Typography color={"#fff"} paddingTop={2}>{t("booking.selectDate")}</Typography>
 
                     <Box className="lst-dates">
                         <Typography className="date-item active" onClick={(e) => {
                             handleSelectDate(e, "")
                         }}>
-                            All Days
+                            {t("booking.allDays")}
                         </Typography>
 
                         {dates.map((date) => (
@@ -171,7 +173,7 @@ const Booking = () => {
                         ))}
                     </Box>
 
-                    <Typography color={"#fff"} paddingTop={2}>Movie screenings:</Typography>
+                    <Typography color={"#fff"} paddingTop={2}>{t("booking.movieScreenings")}</Typography>
 
                     <Box className="screening__list">
                         {isLoading ? <Box mb={12}><Box className="loading-spinner"></Box></Box> :
@@ -180,27 +182,26 @@ const Booking = () => {
                                     navigate(`/booking/${slug}/${screening._id}`)
                                 }>
                                     <Box>
-                                        <Typography>Movie Date</Typography>
+                                        <Typography>{t("booking.movieDate")}</Typography>
                                         <Typography>{screening.movieDate}</Typography>
                                     </Box>
 
                                     <Box>
-                                        <Typography>Start Time</Typography>
+                                        <Typography>{t("booking.startTime")}</Typography>
                                         <Typography>{screening.timeSlot}</Typography>
                                     </Box>
 
                                     <Box>
-                                        <Typography>End Time</Typography>
+                                        <Typography>{t("booking.endTime")}</Typography>
                                         <Typography>{getEndTime(screening.timeSlot, movie.time)}</Typography>
                                     </Box>
 
                                     <Box>
-                                        <Typography>Cinema Room</Typography>
+                                        <Typography>{t("booking.cinemaRoom")}</Typography>
                                         <Typography>{screening.cinemaRoom.roomNumber}</Typography>
                                     </Box>
                                 </Box>
-                            )) :
-                                <NoDataComponent content={"Sorry!!! No screenings found for this movie :/"} />}
+                            )) : <NoDataComponent content={t("booking.noData")} />}
                     </Box>
                 </Box>
             }

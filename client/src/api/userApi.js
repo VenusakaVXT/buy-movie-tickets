@@ -13,14 +13,7 @@ export const customerSendRegisterRequest = async (data) => {
             password: data.password,
             confirmPassword: data.confirmPassword
         })
-        .catch(() => {
-            toast.error("Register failed...")
-            return
-        })
-
-    if (res.status !== 200 && res.status !== 201) {
-        console.log("Error sending customer register request...")
-    }
+        .catch(err => console.error("Register failed because:", err))
 
     const resData = await res.data
     return resData
@@ -32,14 +25,14 @@ export const customerSendLoginRequest = async (data) => {
             nameAccount: data.nameAccount,
             password: data.password,
         })
-        .catch(() => {
-            toast.error("Login failed...")
-            return
+        .catch((err) => {
+            console.error("Login failed because:", err)
+            if (err.response.status === 400 || err.response.status === 404) {
+                toast.error(err.response.data.message)
+            } else {
+                toast.error("Login failed...")
+            }
         })
-
-    if (res.status !== 200 && res.status !== 201) {
-        console.log("Error sending customer login request...")
-    }
 
     const resData = await res.data
     return resData
@@ -52,7 +45,7 @@ export const managerSendLoginRequest = async (data) => {
             password: data.password
         })
         .catch((err) => {
-            console.error(err)
+            console.error("Login failed because:", err)
             if (err.response.status === 400) {
                 toast.error(err.response.data.message)
             } else {

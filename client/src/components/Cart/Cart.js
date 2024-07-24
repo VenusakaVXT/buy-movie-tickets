@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { Box, Typography, List, ListItem, ListItemText } from "@mui/material"
 import { getBookingsFromUser } from "../../api/bookingApi"
 import { handleSeatArr } from "../../util"
@@ -18,6 +19,7 @@ const Cart = () => {
     const [bookings, setBookings] = useState()
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const { t } = useTranslation()
 
     useEffect(() => {
         setIsLoading(true)
@@ -33,9 +35,9 @@ const Cart = () => {
             {bookings && !isLoading ? <Box className="cart__wrapper">
                 <Box className="breadcrumb" margin={0}>
                     <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
-                        Home
+                        {t("header.home")}
                     </Typography>
-                    <Typography className="breadcrumb__item">Cart</Typography>
+                    <Typography className="breadcrumb__item">{t("cart.title")}</Typography>
                 </Box>
 
                 <List className="lst-booking" sx={{ mb: bookings.length < 3 ? 17 : 0 }}>
@@ -50,19 +52,19 @@ const Cart = () => {
                                 <Typography className="link" onClick={() =>
                                     navigate(`/movie-details/${booking.screening.movie.slug}`)
                                 }>
-                                    {booking.screening.movie.title}
+                                    {t(`movies.${booking.screening.movie.slug}`)}
                                 </Typography>
 
                                 <ListItemText>{booking.screening.movieDate}</ListItemText>
                             </Box>
 
                             <Box className="col2">
-                                <Typography>Seat number:</Typography>
-                                <ListItemText>{booking.seats ? handleSeatArr(booking.seats) : "Unknown"}</ListItemText>
+                                <Typography>{t("cart.seatNumber")}</Typography>
+                                <ListItemText>{booking.seats ? handleSeatArr(booking.seats) : t("unknown")}</ListItemText>
                             </Box>
 
                             <Box className="col3">
-                                <Typography>Price ticket:</Typography>
+                                <Typography>{t("cart.priceTicket")}</Typography>
                                 <ListItemText>{booking.totalMoney.toLocaleString("vi-VN")} VNĐ</ListItemText>
                             </Box>
 
@@ -74,7 +76,7 @@ const Cart = () => {
                                             color: "#e50914"
                                         }
                                     }}
-                                    data-tooltip-content="This movie screening has been canceled and is awaiting approval"
+                                    data-tooltip-content={t("cart.waitCancel")}
                                     data-tooltip-id="iconPendingCancellation"
                                     onClick={() => navigate("/customer/cancel-booking/list")}
                                 /> :
@@ -87,7 +89,7 @@ const Cart = () => {
                                                 color: "#e50914"
                                             }
                                         }}
-                                        data-tooltip-content="View Details"
+                                        data-tooltip-content={t("cart.viewDetails")}
                                         data-tooltip-id="cinemaTicketDetails"
                                         onClick={() => navigate(`/booking/${booking._id}/detail`)}
                                     />
@@ -101,7 +103,7 @@ const Cart = () => {
                                                     color: "#e50914"
                                                 }
                                             }}
-                                            data-tooltip-content="Cancel Booking"
+                                            data-tooltip-content={t("cart.cancelBooking")}
                                             data-tooltip-id="cancelBookingIcon"
                                             onClick={() => {
                                                 const percent = [90, 80, 70]
@@ -122,7 +124,7 @@ const Cart = () => {
                                                     localStorage.setItem("compensationPercent", percent[2])
                                                     localStorage.setItem("refunds", booking.totalMoney * (percent[2] / 100))
                                                 } else {
-                                                    toast.info("Conditions are not met to return tickets")
+                                                    toast.error(t("cart.toastCancelBooking"))
                                                 }
 
                                                 navigate(`/customer/cancel-booking/${booking._id}`)
@@ -160,7 +162,7 @@ const Cart = () => {
                                 }}
                             />
                         </ListItem>
-                    )) : <NoDataComponent content={"You haven't booked any tickets yet"} />}
+                    )) : <NoDataComponent content={t("cart.noBooking")} />}
                 </List>
             </Box> : <Loading />}
         </>

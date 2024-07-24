@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Box, Typography, List, ListItem, ListItemText } from "@mui/material"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { Helmet } from "react-helmet"
 import { getManagerProfile } from "../../api/userApi"
 import { handleDate, getEndTime } from "../../util"
@@ -12,7 +13,7 @@ import "../../scss/Cart.scss"
 const ListData = ({ title }) => {
     const [manager, setManager] = useState()
     const [isLoading, setIsLoading] = useState(false)
-    const dataName = manager && manager.position === "Manage movies" ? "movies" : "screenings"
+    const { t } = useTranslation()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -31,10 +32,10 @@ const ListData = ({ title }) => {
 
                 <Box className="breadcrumb" margin={0}>
                     <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
-                        Home
+                        {t("header.home")}
                     </Typography>
-                    <Typography className="breadcrumb__item">
-                        {`List ${manager && manager.position === "Manage movies" ? "Movie" : "Screening"}`}
+                    <Typography className="breadcrumb__item" textTransform={"capitalize"}>
+                        {manager && manager.position === "Manage movies" ? t("header.lstMovie") : t("header.lstScreening")}
                     </Typography>
                 </Box>
 
@@ -59,24 +60,24 @@ const ListData = ({ title }) => {
                                         <Typography className="link" onClick={() =>
                                             navigate(`/movie-details/${movie.slug}`)
                                         }>
-                                            {movie.title}
+                                            {t(`movies.${movie.slug}`)}
                                         </Typography>
 
-                                        <ListItemText>{`Time: ${movie.time} minute`}</ListItemText>
+                                        <ListItemText>{t("movieDetail.time", { time: movie.time })}</ListItemText>
                                     </Box>
 
                                     <Box className="col2">
-                                        <Typography>Release date:</Typography>
+                                        <Typography>{t("addMovie.releaseDate")}:</Typography>
                                         <ListItemText>{handleDate(movie.releaseDate)}</ListItemText>
                                     </Box>
 
                                     <Box className="col2">
-                                        <Typography>Category:</Typography>
+                                        <Typography>{t("header.category")}:</Typography>
                                         <ListItemText>{movie.category[0].category}</ListItemText>
                                     </Box>
 
                                     <Box className="col2">
-                                        <Typography>Producer:</Typography>
+                                        <Typography>{t("addMovie.producer")}:</Typography>
                                         <ListItemText>{movie.producer[0].producerName}</ListItemText>
                                     </Box>
                                 </ListItem>
@@ -95,7 +96,7 @@ const ListData = ({ title }) => {
                                         <Typography className="link" onClick={() =>
                                             navigate(`/movie-details/${screening.movie.slug}`)
                                         }>
-                                            {screening.movie.title}
+                                            {t(`movies.${screening.movie.slug}`)}
                                         </Typography>
 
                                         <ListItemText>
@@ -104,28 +105,32 @@ const ListData = ({ title }) => {
                                     </Box>
 
                                     <Box className="col2">
-                                        <Typography>Movie date:</Typography>
+                                        <Typography>{t("addScreening.movieDate")}:</Typography>
                                         <ListItemText>{screening.movieDate}</ListItemText>
                                     </Box>
 
                                     <Box className="col2">
-                                        <Typography>Price:</Typography>
+                                        <Typography>{t("addScreening.price")}:</Typography>
                                         <ListItemText>{screening.price.toLocaleString("vi-VN")} VNĐ</ListItemText>
                                     </Box>
 
                                     <Box className="col2">
-                                        <Typography>Cinema room:</Typography>
+                                        <Typography>{t("addScreening.cinemaRoom")}:</Typography>
                                         <ListItemText>
                                             {screening.cinemaRoom
                                                 ? `${screening.cinemaRoom.roomNumber}-${screening.cinemaRoom.cinema.name}`
-                                                : "Unknown"}
+                                                : t("unknown")}
                                         </ListItemText>
                                     </Box>
                                 </ListItem>
                             )
                         }
                     </List> :
-                    <NoDataComponent content={`You haven't added any ${dataName} yet`} />}
+                    <NoDataComponent content={t("lstData.noData", {
+                        dataName: manager && manager.position === "Manage movies"
+                            ? t("lstData.movies")
+                            : t("lstData.screenings")
+                    })} />}
             </Box> : <Loading />}
         </>
     )

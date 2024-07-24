@@ -209,11 +209,28 @@ hr {
         background: transparent;
         color: #fff;
         font-size: 1rem;
+        cursor: pointer;
     
         &::-webkit-calendar-picker-indicator {
-            cursor: pointer;
             color: $frm-color !important;
         }
+    }  
+}
+
+// Datetime
+.flatpickr-day.selected {
+    background: $main-color !important;
+    border-color: $main-color !important;
+}
+
+.frm-add-screening {
+    .calendar.form-control.input {
+        width: calc(1086px / 2);
+    }
+
+    .calendar.flatpickr-input {
+        width: calc((1086px / 2) - 8px);
+        margin-left: 8px;
     }
 }
 

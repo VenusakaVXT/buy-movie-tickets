@@ -24,6 +24,7 @@ import { useTheme, styled } from "@mui/material/styles"
 import { convertToAcronym } from "../../util"
 import { Tooltip } from "react-tooltip"
 import CircleIcon from "@mui/icons-material/Circle"
+import { useTranslation } from "react-i18next"
 import "../../scss/App.scss"
 import "../../scss/Statistical.scss"
 
@@ -79,9 +80,26 @@ const PieCenterLabel = ({ children }) => {
     const { width, height, left, top } = useDrawingArea()
 
     return (
-        <StyledText x={left + width / 2} y={top + height / 2}>
-            {children}
-        </StyledText>
+        <>
+            <StyledText
+                x={left + width / 2}
+                y={top + height / 2}
+                data-tooltip-content={children}
+                data-tooltip-id="movieTitle"
+            >
+                {convertToAcronym(children)}
+            </StyledText>
+
+            <Tooltip
+                id="movieTitle"
+                place="top"
+                effect="solid"
+                style={{
+                    background: "rgba(37, 37, 38, 0.95)",
+                    borderRadius: "16px",
+                }}
+            />
+        </>
     )
 }
 
@@ -99,6 +117,7 @@ const Statistical = ({ title }) => {
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
     const theme = useTheme()
+    const { t, i18n } = useTranslation()
 
     useEffect(() => {
         setIsLoading(true)
@@ -171,30 +190,29 @@ const Statistical = ({ title }) => {
 
     const movieColumns = [
         { field: "id", headerName: "ID", type: "number", width: 100 },
-        { field: "title", headerName: "Movie title", width: 300 },
-        { field: "totalScreenings", headerName: "Total screenings", type: "number", width: 210 },
-        { field: "ticketsBookedLength", headerName: "Tickets booked", type: "number", width: 180 },
-        { field: "revenue", headerName: "Revenue", type: "number", width: 180 },
-        { field: "percentSeatBooked", headerName: "Seats booked", valueFormatter, width: 180 },
-        { field: "percentSeatNotBooked", headerName: "Seats not booked", valueFormatter, width: 180 }
+        { field: "title", headerName: t("addMovie.movieTitle"), width: 300 },
+        { field: "totalScreenings", headerName: t("statistical.totalScreenings"), type: "number", width: 210 },
+        { field: "ticketsBookedLength", headerName: t("statistical.ticketsBooked"), type: "number", width: 180 },
+        { field: "revenue", headerName: t("statistical.revenue"), type: "number", width: 180 },
+        { field: "percentSeatBooked", headerName: t("seatDiagram.seatsBooked"), valueFormatter, width: 180 },
+        { field: "percentSeatNotBooked", headerName: t("seatDiagram.seatsNotBooked"), valueFormatter, width: 180 }
     ]
 
     const employeeColumns = [
         { field: "id", headerName: "ID", type: "number", width: 85 },
         { field: "email", headerName: "Email", width: 300 },
-        { field: "position", headerName: "Position", width: 225 },
-        { field: "cinemaName", headerName: "Cinema", width: 150 },
+        { field: "position", headerName: t("profile.position"), width: 225 },
+        { field: "cinemaName", headerName: t("header.cinema"), width: 150 },
         {
             field: "amountOfWorkDone",
-            headerName: "Work done",
+            headerName: t("statistical.workDone"),
             type: "number",
             width: 120,
-            description:
-                "Amount Of Work Done is the number of movies, screenings and other data that that employee has added"
+            description: t("statistical.descriptionWorkDone")
         },
         {
             field: "isOnline",
-            headerName: "Status",
+            headerName: t("statistical.status"),
             width: 120,
             renderCell: (params) => (
                 <span style={{ position: "relative" }}>
@@ -218,7 +236,7 @@ const Statistical = ({ title }) => {
         { field: "id", headerName: "ID", type: "number", width: 50 },
         {
             field: "rank",
-            headerName: "Rank",
+            headerName: t("charts.rank"),
             width: 100,
             renderCell: (params) => (
                 <img
@@ -231,7 +249,7 @@ const Statistical = ({ title }) => {
         },
         {
             field: "name",
-            headerName: "Name",
+            headerName: t("cinemaTicket.customerName"),
             width: 320,
             renderCell: (params) => (
                 <Stack sx={{ alignItems: "center" }} direction="row" spacing={2} marginTop={"5px"}>
@@ -242,18 +260,18 @@ const Statistical = ({ title }) => {
                 </Stack>
             )
         },
-        { field: "totalBookings", headerName: "Total bookings", type: "number", width: 180 },
-        { field: "feedbacks", headerName: "Feedbacks", type: "number", width: 120 },
+        { field: "totalBookings", headerName: t("charts.totalBookings"), type: "number", width: 180 },
+        { field: "feedbacks", headerName: t("comment.feedback"), type: "number", width: 120 },
         {
             field: "ratingPoints",
-            headerName: "Rating points",
+            headerName: t("header.ratingPoints"),
             width: 180,
             type: "number",
-            description: "This point is calculated based on the number of tickets booked + the number of feedbacks"
+            description: t("statistical.descriptionRatingPoints")
         },
         {
             field: "isOnline",
-            headerName: "Status",
+            headerName: t("statistical.status"),
             width: 120,
             renderCell: (params) => (
                 <span style={{ position: "relative" }}>
@@ -275,11 +293,11 @@ const Statistical = ({ title }) => {
 
     const cinemaColumns = [
         { field: "id", headerName: "ID", type: "number", width: 100 },
-        { field: "name", headerName: "Cinema name", width: 180 },
-        { field: "cinemaRoomLength", headerName: "Cinema rooms", type: "number", width: 180 },
-        { field: "employeeLength", headerName: "Employees", type: "number", width: 180 },
-        { field: "screeningLength", headerName: "Screenings", type: "number", width: 180 },
-        { field: "cinemaRevenue", headerName: "Revenue", type: "number", width: 180 },
+        { field: "name", headerName: t("statistical.cinemaName"), width: 180 },
+        { field: "cinemaRoomLength", headerName: t("statistical.cinemaRooms"), type: "number", width: 180 },
+        { field: "employeeLength", headerName: t("statistical.employees"), type: "number", width: 180 },
+        { field: "screeningLength", headerName: t("statistical.screenings"), type: "number", width: 180 },
+        { field: "cinemaRevenue", headerName: t("statistical.revenue"), type: "number", width: 180 },
     ]
 
     const movieRows = moviesStatistics.map((row, index) => ({
@@ -297,7 +315,9 @@ const Statistical = ({ title }) => {
     const employeeRows = Array.isArray(employeeDetails) && employeeDetails.map((row, index) => ({
         id: index + 1,
         email: row.email,
-        position: row.position,
+        position: i18n.language === "us" ? row.position : row.position === "Manage screenings"
+            ? t("statistical.manageScreenings") : row.position === "Manage movies"
+                ? t("statistical.manageMovies") : t("profile.noInfo"),
         cinemaName: row.cinemaName,
         amountOfWorkDone: row.amountOfWorkDone,
         isOnline: row.isOnline
@@ -372,14 +392,14 @@ const Statistical = ({ title }) => {
 
             <Box className="breadcrumb" margin={0}>
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
-                    Home
+                    {t("header.home")}
                 </Typography>
-                <Typography className="breadcrumb__item">Statistical</Typography>
+                <Typography className="breadcrumb__item">{t("statistical.title")}</Typography>
             </Box>
 
             <Box display={"flex"} marginTop={"15px"}>
                 <Box width={215} height={"100vh"} bgcolor={"#1a1b1e"} borderRadius={"0.25rem"} marginRight={"15px"}>
-                    <Typography variant="h4"><BarChartIcon fontSize="2rem" />Statistical</Typography>
+                    <Typography variant="h4"><BarChartIcon fontSize="2rem" />{t("statistical.title")}</Typography>
                     <hr />
 
                     <Box className="statistical__tabs">
@@ -387,25 +407,25 @@ const Statistical = ({ title }) => {
                             className={`statistical__tab-item ${tab === 1 ? "active" : ""}`}
                             onClick={() => handleTabClick(1)}
                         >
-                            Movies
+                            {t("statistical.movies")}
                         </Box>
                         <Box
                             className={`statistical__tab-item ${tab === 2 ? "active" : ""}`}
                             onClick={() => handleTabClick(2)}
                         >
-                            Employees
+                            {t("statistical.employees")}
                         </Box>
                         <Box
                             className={`statistical__tab-item ${tab === 3 ? "active" : ""}`}
                             onClick={() => handleTabClick(3)}
                         >
-                            Customers
+                            {t("statistical.customers")}
                         </Box>
                         <Box
                             className={`statistical__tab-item ${tab === 4 ? "active" : ""}`}
                             onClick={() => handleTabClick(4)}
                         >
-                            Cinemas
+                            {t("statistical.cinemas")}
                         </Box>
                     </Box>
                 </Box>
@@ -418,7 +438,7 @@ const Statistical = ({ title }) => {
                             <Box className="chart-wrapper">
                                 <Box className="chart-item chart-growth">
                                     <Typography variant="h6" color={colorStyle.mainColor}>
-                                        Booking speed
+                                        {t("statistical.bookingSpeed")}
                                     </Typography>
 
                                     <Box className="chart-display">
@@ -435,7 +455,7 @@ const Statistical = ({ title }) => {
                                             ]}
                                             yAxis={[
                                                 {
-                                                    label: "Unit: 1$ = 25,453VND",
+                                                    label: t("statistical.convertUnitPrice"),
                                                     labelStyle: {
                                                         ...theme.typography.body1,
                                                         fill: colorStyle.txtColor
@@ -465,11 +485,11 @@ const Statistical = ({ title }) => {
 
                                 <Box className="chart-item chart-pie">
                                     <Typography variant="h6" color={colorStyle.mainColor}>
-                                        Booking percent chart
+                                        {t("statistical.bookingPercentChart")}
                                     </Typography>
 
                                     <Typography color={colorStyle.txtColor} fontSize={"0.875rem"}>
-                                        Unit: Percent (%)
+                                        {t("statistical.unitPercent")}
                                     </Typography>
 
                                     <PieChart
@@ -477,12 +497,12 @@ const Statistical = ({ title }) => {
                                             data: selectedMovie ? [
                                                 {
                                                     value: selectedMovie.percentSeatBooked,
-                                                    label: "Seat booked",
+                                                    label: t("seatDiagram.seatBooked"),
                                                     color: colorStyle.mainColor
                                                 },
                                                 {
                                                     value: selectedMovie.percentSeatNotBooked,
-                                                    label: "Seat not booked",
+                                                    label: t("seatDiagram.seatNotBooked"),
                                                     color: colorStyle.frmColor
                                                 }
                                             ] : [],
@@ -496,38 +516,21 @@ const Statistical = ({ title }) => {
                                             },
                                         }}
                                     >
-                                        {selectedMovie && <>
-                                            <PieCenterLabel
-                                                data-tooltip-content={selectedMovie.title}
-                                                data-tooltip-id="movieTitle"
-                                            >
-                                                {convertToAcronym(selectedMovie.title)}
-                                            </PieCenterLabel>
-
-                                            <Tooltip
-                                                id="movieTitle"
-                                                place="top"
-                                                effect="solid"
-                                                style={{
-                                                    background: "rgba(37, 37, 38, 0.95)",
-                                                    borderRadius: "16px",
-                                                }}
-                                            />
-                                        </>}
+                                        {selectedMovie && <PieCenterLabel>{selectedMovie.title}</PieCenterLabel>}
                                     </PieChart>
 
                                     <Box className="chart-note">
                                         <Box className="chart-note-item" m={"0 36px 0 32px"}>
                                             <Box className="chart-note-color" bgcolor={colorStyle.mainColor}></Box>
                                             <Typography color={colorStyle.txtColor} fontSize={"0.875rem"}>
-                                                : Seat booked
+                                                : {t("seatDiagram.seatBooked")}
                                             </Typography>
                                         </Box>
 
                                         <Box className="chart-note-item">
                                             <Box className="chart-note-color" bgcolor={colorStyle.frmColor}></Box>
                                             <Typography color={colorStyle.txtColor} fontSize={"0.875rem"}>
-                                                : Seat not booked
+                                                : {t("seatDiagram.seatNotBooked")}
                                             </Typography>
                                         </Box>
                                     </Box>
@@ -559,7 +562,7 @@ const Statistical = ({ title }) => {
                             <Box className="chart-wrapper">
                                 <Box className="chart-item chart-growth">
                                     <Typography variant="h6" color={colorStyle.mainColor}>
-                                        Job goals
+                                        {t("statistical.jobGoals")}
                                     </Typography>
 
                                     <Box className="chart-display">
@@ -570,30 +573,22 @@ const Statistical = ({ title }) => {
                                             series={[
                                                 {
                                                     data: [22, 22, 31, 53, 60, 70, 75],
-                                                    label: "Targets set",
+                                                    label: t("statistical.targetsSet"),
                                                     color: colorStyle.frmColor
                                                 },
                                                 {
                                                     data: [40, 42, 48, 61, 70, 80, 85],
-                                                    label: "Level of completion",
+                                                    label: t("statistical.levelOfCompletion"),
                                                     color: colorStyle.mainColor
                                                 }
                                             ]}
                                             xAxis={[{
-                                                data: [
-                                                    "Monday",
-                                                    "Tuesday",
-                                                    "Wednesday",
-                                                    "Thursday",
-                                                    "Friday",
-                                                    "Saturday",
-                                                    "Sunday"
-                                                ],
+                                                data: t("statistical.daysArr", { returnObjects: true }),
                                                 scaleType: "band",
                                                 tickLabelStyle: theme.typography.body2
                                             }]}
                                             yAxis={[{
-                                                label: "Unit: percent(%)",
+                                                label: t("statistical.unitPercent"),
                                                 labelStyle: { fill: colorStyle.txtColor },
                                                 tickLabelStyle: theme.typography.body2,
                                                 max: 100
@@ -609,11 +604,11 @@ const Statistical = ({ title }) => {
 
                                 <Box className="chart-item chart-pie" width={"calc(100% - (65% + 15px)) !important"}>
                                     <Typography variant="h6" color={colorStyle.mainColor}>
-                                        Percent of employees
+                                        {t("statistical.percentEmployees")}
                                     </Typography>
 
                                     <Typography color={colorStyle.txtColor} fontSize={"0.875rem"}>
-                                        Unit: Percent (%)
+                                        {t("statistical.unitPercent")}
                                     </Typography>
 
                                     <PieChart
@@ -624,19 +619,19 @@ const Statistical = ({ title }) => {
                                                 {
                                                     value: employeesStatistics.percents &&
                                                         employeesStatistics.percents.manageMovies,
-                                                    label: "Manage movies",
+                                                    label: t("statistical.manageMovies"),
                                                     color: colorStyle.mainColor
                                                 },
                                                 {
                                                     value: employeesStatistics.percents &&
                                                         employeesStatistics.percents.manageScreenings,
-                                                    label: "Manage screenings",
+                                                    label: t("statistical.manageScreenings"),
                                                     color: colorStyle.thirdBackground
                                                 },
                                                 {
                                                     value: employeesStatistics.percents &&
                                                         employeesStatistics.percents.others,
-                                                    label: "Others",
+                                                    label: t("statistical.others"),
                                                     color: colorStyle.frmColor
                                                 }
                                             ] : []
@@ -652,21 +647,21 @@ const Statistical = ({ title }) => {
                                         <Box className="chart-note-item" ml={4}>
                                             <Box className="chart-note-color" bgcolor={colorStyle.mainColor}></Box>
                                             <Typography color={colorStyle.txtColor} fontSize={"0.875rem"}>
-                                                : M.Movies
+                                                : {t("statistical.acronymManageMovies")}
                                             </Typography>
                                         </Box>
 
                                         <Box className="chart-note-item">
                                             <Box className="chart-note-color" bgcolor={colorStyle.thirdBackground}></Box>
                                             <Typography color={colorStyle.txtColor} fontSize={"0.875rem"}>
-                                                : M.Screenings
+                                                : {t("statistical.acronymManageScreenings")}
                                             </Typography>
                                         </Box>
 
                                         <Box className="chart-note-item">
                                             <Box className="chart-note-color" bgcolor={colorStyle.frmColor}></Box>
                                             <Typography color={colorStyle.txtColor} fontSize={"0.875rem"}>
-                                                : Others
+                                                : {t("statistical.others")}
                                             </Typography>
                                         </Box>
                                     </Box>
@@ -691,7 +686,7 @@ const Statistical = ({ title }) => {
                     ) : tab === 3 ? (
                         <Box height={"93%"}>
                             <Typography variant="h5" color={colorStyle.mainColor} marginBottom={"10px"}>
-                                Potential customer rankings
+                                {t("statistical.potentialCustomerRankings")}
                             </Typography>
 
                             <DataGrid
@@ -719,14 +714,14 @@ const Statistical = ({ title }) => {
                                             tickLabelStyle: theme.typography.body2
                                         }]}
                                         yAxis={[{
-                                            label: "Unit: .000VNĐ",
+                                            label: t("statistical.unitMoney"),
                                             labelStyle: { fill: colorStyle.txtColor },
                                             tickLabelStyle: theme.typography.body2,
                                             tickNumber: 4,
                                         }]}
                                         series={[{
                                             data: cinemaRows.map(cinema => cinema.cinemaRevenue / 1000),
-                                            label: "Revenue",
+                                            label: t("statistical.revenue"),
                                             color: colorStyle.mainColor
                                         }]}
                                         sx={{

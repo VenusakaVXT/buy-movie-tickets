@@ -1,0 +1,44 @@
+{
+    "newBooking": {
+        "subject": "Đặt vé thành công tại Buy Movie Tickets",
+        "greeting": "Kính thưa {{name}},",
+        "intro": "Vào khoảng thời gian {{createdAt}}, bạn đã đặt vé xem phim tại hệ thống Buy Movie Tickets.",
+        "details": "Chi tiết đặt vé:",
+        "movie": "Phim: {{title}}",
+        "screeningTime": "Thời gian chiếu: {{timeSlot}}, {{movieDate}}",
+        "screeningAt": "Chiếu tại: {{roomNumber}}-{{cinemaName}}",
+        "seats": "Ghế ngồi: {{seats}}",
+        "totalMoney": "Tổng thành tiền: {{totalMoney}} VNĐ",
+        "thanks": "Chân thành cảm ơn quý khách đã luôn tin tưởng và ủng hộ Buy Movie Tickets!!!",
+        "cta": "Ghé thăm trang chủ BMT để xem chi tiết vé xem phim.",
+        "ctaButton": "Trang Chủ BMT"
+    },
+    "restoreBooking": {
+        "subject": "Thu hồi hủy đặt vé",
+        "greeting": "Kính gửi {{name}},",
+        "intro": "Yêu cầu hủy của bạn không được hệ thống Buy Movie Tickets và rạp chiếu phim chấp thuận. Hoặc là bạn nhấn thủ công để thu hồi yêu cầu.",
+        "details": "Chi tiết thông tin hủy đặt vé:",
+        "bookingId": "Mã đặt vé: {{bookingId}}",
+        "bookingTime": "Thời gian đặt vé: {{createdAt}}",
+        "cancellationTime": "Thời gian hủy đặt vé: {{createdAt}}",
+        "reason": "Lí do: {{reason}}",
+        "thanks": "Chân thành cảm ơn quý khách đã luôn tin tưởng và ủng hộ Buy Movie Tickets!!!",
+        "cta": "Ghé thăm trang chủ BMT để xem chi tiết hủy đặt vé.",
+        "ctaButton": "Trang Chủ BMT"
+    },
+    "cancelBooking": {
+        "subject": "Yêu cầu hủy của bạn đã được chấp thuận",
+        "greeting": "Kính gửi {{name}},",
+        "intro": "Sau khi được hệ thống và rạp chiếu phim xem xét, yêu cầu hủy đặt vé của bạn đã được chấp thuận.",
+        "details": "Chi tiết thông tin hủy đặt vé:",
+        "bookingId": "Mã đặt vé: {{bookingId}}",
+        "bookingTime": "Thời gian đặt vé: {{createdAt}}",
+        "cancellationTime": "Thời gian hủy đặt vé: {{createdAt}}",
+        "reason": "Lí do: {{reason}}",
+        "compensationPercent": "Bạn phải đền bù cho rạp chiếu phim là: {{percent}}%",
+        "refunds": "Số tiền bạn sẽ nhận lại được là: {{refunds}} VNĐ",
+        "thanks": "Chân thành cảm ơn quý khách đã luôn tin tưởng và ủng hộ Buy Movie Tickets!!!",
+        "cta": "Ghé thăm trang chủ BMT để xem chi tiết hủy đặt vé.",
+        "ctaButton": "Trang Chủ BMT"
+    }
+}

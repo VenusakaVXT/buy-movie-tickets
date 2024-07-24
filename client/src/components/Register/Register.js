@@ -1,15 +1,10 @@
 import React, { useState } from "react"
-import {
-    Box,
-    Typography,
-    TextField,
-    Link,
-    Button
-} from "@mui/material"
+import { Box, Typography, TextField, Link, Button } from "@mui/material"
 import Brand from "../Brand/Brand"
 import "../../scss/Auth.scss"
 import { customerSendRegisterRequest } from "../../api/userApi"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import { toast } from "react-toastify"
 
 const Register = () => {
@@ -24,6 +19,7 @@ const Register = () => {
         confirmPassword: ""
     })
     const navigate = useNavigate()
+    const { t, i18n } = useTranslation()
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -34,24 +30,21 @@ const Register = () => {
         e.preventDefault()
 
         if (inputs.password !== inputs.confirmPassword) {
-            toast.error("Passwords do not match!!!")
-            return
+            return toast.error(t("register.toastError1"))
         }
 
         const passwordPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&]).{6,}/
         if (!passwordPattern.test(inputs.password)) {
-            toast.error("Password must contain at least one uppercase letter" +
-                ", one number, and one special character Xyz123!&%")
-            return
+            return toast.error(t("register.toastError2"))
         }
 
         customerSendRegisterRequest(inputs)
             .then((res) => {
                 console.log(res)
                 navigate("/login")
-                toast.success(res.message)
+                toast.success(i18n.language === "us" ? res.message : t("register.toastSuccess"))
             })
-            .catch(err => console.error(err))
+            .catch(() => toast.error(t("register.toastError3")))
     }
 
     return (
@@ -59,7 +52,7 @@ const Register = () => {
             <Brand />
 
             <form height={780} className="auth__frm" onSubmit={handleSubmit}>
-                <Typography variant="h5" color="#ff0000">Register</Typography>
+                <Typography variant="h5" color="#ff0000">{t("register.title")}</Typography>
 
                 <TextField
                     value={inputs.name}
@@ -67,7 +60,7 @@ const Register = () => {
                     margin="normal"
                     variant="standard"
                     type="text"
-                    placeholder="Full name"
+                    placeholder={t("register.fullName")}
                     name="name"
                     onChange={handleChange}
                     required
@@ -91,7 +84,7 @@ const Register = () => {
                     margin="normal"
                     variant="standard"
                     type="tel"
-                    placeholder="Phone number"
+                    placeholder={t("register.phoneNumber")}
                     name="phone"
                     onChange={handleChange}
                     required
@@ -103,7 +96,7 @@ const Register = () => {
                     margin="normal"
                     variant="standard"
                     type="password"
-                    placeholder="Password"
+                    placeholder={t("register.password")}
                     name="password"
                     onChange={handleChange}
                     required
@@ -115,17 +108,17 @@ const Register = () => {
                     margin="normal"
                     variant="standard"
                     type="password"
-                    placeholder="Confirm password"
+                    placeholder={t("register.confirmPassword")}
                     name="confirmPassword"
                     onChange={handleChange}
                     required
                 />
 
-                <Button className="auth__btn" type="submit">SIGN UP</Button>
+                <Button className="auth__btn" type="submit">{t("register.btn")}</Button>
 
                 <Box className="other">
                     <Box className="line"></Box>
-                    <span>OR</span>
+                    <span>{t("register.or").toUpperCase()}</span>
                     <Box className="line"></Box>
                 </Box>
 
@@ -145,12 +138,12 @@ const Register = () => {
                             opacity: 0.8
                         }
                     }}>
-                        <Typography>Social Other</Typography>
+                        <Typography>{t("register.btn2")}</Typography>
                     </Box>
                 </Box>
 
                 <Typography className="question-switch">
-                    Do you already have an account? <Link onClick={() => navigate("/login")}>Sign in</Link>
+                    {t("register.question")} <Link onClick={() => navigate("/login")}>{t("register.switch")}</Link>
                 </Typography>
             </form>
         </Box>
