@@ -42,15 +42,20 @@ const CancelBooking = ({ title }) => {
 
     const handleChangeReason = (e) => {
         const label = e.target.closest("label")
-        const queryClass = ".radio-btn .css-1hbvpl3-MuiSvgIcon-root"
+        const queryClass = ".radio-btn .MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium"
         const targetSvg = label.querySelector(queryClass)
 
         document.querySelectorAll(queryClass).forEach((option) => {
             option.classList.remove("active")
         })
 
-        targetSvg.classList.add("active")
-        setReason(e.target.value)
+        if ((targetSvg.classList.contains("css-1hbvpl3-MuiSvgIcon-root"))
+            || (targetSvg.classList.contains("css-q8lw68"))) {
+            targetSvg.classList.add("active")
+            setReason(e.target.value)
+        } else {
+            toast.error(t("cancelBooking.toastErrorSelectReason"))
+        }
     }
 
     const handleCancelBooking = async (e) => {
@@ -130,9 +135,9 @@ const CancelBooking = ({ title }) => {
                     </Button>
                     <Button className="btn" onClick={() => {
                         if (reason === "") {
-                            toast.warn(t("cancelBooking.toastWarn1"))
+                            toast.warn(t("cancelBooking.toastWarnSelectReason"))
                         } else if (reason === "Other" && otherReason.trim() === "") {
-                            toast.warn(t("cancelBooking.toastWarn2"))
+                            toast.warn(t("cancelBooking.toastWarnSelectOther"))
                         } else {
                             setIsModalOpen(true)
                         }

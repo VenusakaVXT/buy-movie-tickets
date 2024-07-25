@@ -85,14 +85,17 @@ const AddMovie = ({ title }) => {
 
     const handleRadioBtnClick = (event) => {
         const label = event.target.closest("label")
-        const queryClass = ".frm-wrapper .css-1hbvpl3-MuiSvgIcon-root"
+        const queryClass = ".frm-wrapper .MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium"
         const targetSvg = label.querySelector(queryClass)
 
         document.querySelectorAll(queryClass).forEach((option) => {
             option.classList.remove("active")
         })
 
-        targetSvg.classList.add("active")
+        if ((targetSvg.classList.contains("css-1hbvpl3-MuiSvgIcon-root"))
+            || (targetSvg.classList.contains("css-q8lw68"))) {
+            targetSvg.classList.add("active")
+        }
 
         const val = label.textContent === t("addMovie.already")
         setInputs((prevState) => ({ ...prevState, wasReleased: val }))

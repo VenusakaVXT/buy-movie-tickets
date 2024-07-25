@@ -272,8 +272,8 @@
         "authBtn": "Authentication",
         "alert": "Request to cancel booking successfully! Please, wait for the system to process in 1-2 days.",
         "toastError": "There is a problem with the process of canceling screening tickets",
-        "toastWarn1": "Please select a reason before submitting a cancellation request!!!",
-        "toastWarn2": "Please enter a reason in the Other before submitting a cancellation request!!!",
+        "toastWarnSelectReason": "Please select a reason before submitting a cancellation request!!!",
+        "toastWarnSelectOther": "Please enter a reason in the Other before submitting a cancellation request!!!",
         "cancelBookingDetail": "Cancel Booking Detail",
         "reason": "Reason",
         "refunds": "Refunds",
@@ -289,7 +289,8 @@
         "userId": "UserID",
         "bookingId": "BookingID",
         "cancelDate": "Cancellation date",
-        "noData": "You haven't canceled any screenings yet"
+        "noData": "You haven't canceled any screenings yet",
+        "toastErrorSelectReason": "Error select reason..."
     },
     "restore": {
         "toastSuccess": "Restore successfully...",

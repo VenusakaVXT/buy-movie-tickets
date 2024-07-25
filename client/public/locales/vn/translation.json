@@ -290,8 +290,8 @@
         "authBtn": "Xác thực",
         "alert": "Yêu cầu hủy đặt vé thành công! Vui lòng đợi hệ thống xử lý sau 1-2 ngày.",
         "toastError": "Có vấn đề trong quá trình hủy đặt vé",
-        "toastWarn1": "Vui lòng chọn lý do trước khi gửi yêu cầu hủy đặt vé!!!",
-        "toastWarn2": "Vui lòng nhập lý do Khác trước khi gửi yêu cầu hủy đặt vé!!!",
+        "toastWarnSelectReason": "Vui lòng chọn lý do trước khi gửi yêu cầu hủy đặt vé!!!",
+        "toastWarnSelectOther": "Vui lòng nhập lý do Khác trước khi gửi yêu cầu hủy đặt vé!!!",
         "cancelBookingDetail": "Thông Tin Hủy Đặt Vé",
         "reason": "Lí do",
         "refunds": "Tiền hoàn",
@@ -308,6 +308,7 @@
         "bookingId": "Mã đặt vé",
         "cancelDate": "Ngày hủy",
         "noData": "Bạn chưa hủy suất chiếu nào hết",
+        "toastErrorSelectReason": "Lỗi chọn lí do...",
         "h5": "Danh sách hủy đặt vé của"
     },
     "restore": {
