@@ -58,7 +58,7 @@ const Profile = () => {
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
                     {t("header.home")}
                 </Typography>
-                {i18n.language === "us"
+                {i18n.language === "en"
                     ? <Typography className="breadcrumb__item disable">
                         {isCustomerLoggedIn ? t("login.customer") : t("login.manager")} {t("profile.title")}
                     </Typography>
@@ -90,7 +90,7 @@ const Profile = () => {
                 </Box>
 
                 <Box width={"calc(100% - 250px)"} margin={"0 18px"}>
-                    {i18n.language === "us"
+                    {i18n.language === "en"
                         ? <Typography variant="h4" textAlign={"center"}>
                             {isCustomerLoggedIn ? t("login.customer") : t("login.manager")} {t("profile.title")}
                         </Typography>
@@ -127,7 +127,7 @@ const Profile = () => {
                                     <Typography className="txt-line">Email: {manager.email}</Typography>
                                     <Typography className="txt-line">
                                         {t("profile.position")}: {
-                                            i18n.language === "us" ? manager.position
+                                            i18n.language === "en" ? manager.position
                                                 : manager.position === "Manage screenings" ? t("statistical.manageScreenings")
                                                     : manager.position === "Manage movies" ? t("statistical.manageMovies")
                                                         : t("profile.noInfo")

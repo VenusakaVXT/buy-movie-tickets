@@ -41,7 +41,7 @@ const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) =
         try {
             const res = await updateUser(id, inputs)
             if (res) {
-                toast.success(i18n.language === "us" ? res.message : t("profile.toastSuccessUpdateUser"))
+                toast.success(i18n.language === "en" ? res.message : t("profile.toastSuccessUpdateUser"))
                 localStorage.setItem("customerName", inputs.name)
                 onProfileUpdate(inputs)
                 onClose()

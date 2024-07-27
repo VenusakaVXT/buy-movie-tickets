@@ -7,17 +7,17 @@ import { useTranslation } from "react-i18next"
 const LanguageMenu = () => {
     const { t, i18n } = useTranslation()
     const languages = [
-        { code: "us", label: t("language.us") },
-        { code: "vn", label: t("language.vn") }
+        { countryCode: "us", langCode: "en", label: t("language.en") },
+        { countryCode: "vn", langCode: "vi", label: t("language.vi") }
     ]
     const [anchorEl, setAnchorEl] = useState(null)
     const [selectedLanguage, setSelectedLanguage] = useState(
-        languages.find(lang => lang.code === i18n.language)
+        languages.find(lang => lang.langCode === i18n.language)
     )
 
     const handleLanguageSelect = (languageCode) => {
         i18n.changeLanguage(languageCode)
-        setSelectedLanguage(languages.find(lang => lang.code === languageCode))
+        setSelectedLanguage(languages.find(lang => lang.langCode === languageCode))
         setAnchorEl(null)
     }
 
@@ -44,13 +44,13 @@ const LanguageMenu = () => {
                     <img
                         loading="lazy"
                         width="20"
-                        srcSet={`https://flagcdn.com/w40/${selectedLanguage.code}.png 2x`}
-                        src={`https://flagcdn.com/w20/${selectedLanguage.code}.png`}
+                        srcSet={`https://flagcdn.com/w40/${selectedLanguage.countryCode}.png 2x`}
+                        src={`https://flagcdn.com/w20/${selectedLanguage.countryCode}.png`}
                         alt=""
                         style={{ marginRight: "8px" }}
                     />
-                    {selectedLanguage.code === "us"
-                        ? "United States" : "Tiếng Việt"} ({selectedLanguage.code.toUpperCase()})
+                    {selectedLanguage.langCode === "en"
+                        ? "United States" : "Tiếng Việt"} ({selectedLanguage.countryCode.toUpperCase()})
                 </Typography>
                 {anchorEl ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
             </Button>
@@ -63,18 +63,18 @@ const LanguageMenu = () => {
             >
                 {languages.map((language) => (
                     <MenuItem
-                        key={language.code}
-                        onClick={() => handleLanguageSelect(language.code)}
+                        key={language.langCode}
+                        onClick={() => handleLanguageSelect(language.langCode)}
                     >
                         <img
                             loading="lazy"
                             width="20"
-                            srcSet={`https://flagcdn.com/w40/${language.code}.png 2x`}
-                            src={`https://flagcdn.com/w20/${language.code}.png`}
+                            srcSet={`https://flagcdn.com/w40/${language.countryCode}.png 2x`}
+                            src={`https://flagcdn.com/w20/${language.countryCode}.png`}
                             alt=""
                             style={{ marginRight: "8px" }}
                         />
-                        {language.label} ({language.code.toUpperCase()})
+                        {language.label} ({language.countryCode.toUpperCase()})
                     </MenuItem>
                 ))}
             </Menu>

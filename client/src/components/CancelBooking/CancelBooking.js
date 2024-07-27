@@ -49,8 +49,8 @@ const CancelBooking = ({ title }) => {
             option.classList.remove("active")
         })
 
-        if ((targetSvg.classList.contains("css-1hbvpl3-MuiSvgIcon-root"))
-            || (targetSvg.classList.contains("css-q8lw68"))) {
+        if ((targetSvg.classList.contains("css-1hbvpl3-MuiSvgIcon-root")) ||
+            (targetSvg.classList.contains("css-q8lw68") && targetSvg.classList.contains("css-1u5ei5s"))) {
             targetSvg.classList.add("active")
             setReason(e.target.value)
         } else {

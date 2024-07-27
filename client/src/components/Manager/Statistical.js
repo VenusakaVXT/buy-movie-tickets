@@ -315,7 +315,7 @@ const Statistical = ({ title }) => {
     const employeeRows = Array.isArray(employeeDetails) && employeeDetails.map((row, index) => ({
         id: index + 1,
         email: row.email,
-        position: i18n.language === "us" ? row.position : row.position === "Manage screenings"
+        position: i18n.language === "en" ? row.position : row.position === "Manage screenings"
             ? t("statistical.manageScreenings") : row.position === "Manage movies"
                 ? t("statistical.manageMovies") : t("profile.noInfo"),
         cinemaName: row.cinemaName,

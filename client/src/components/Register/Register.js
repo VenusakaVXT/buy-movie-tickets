@@ -42,7 +42,7 @@ const Register = () => {
             .then((res) => {
                 console.log(res)
                 navigate("/login")
-                toast.success(i18n.language === "us" ? res.message : t("register.toastSuccess"))
+                toast.success(i18n.language === "en" ? res.message : t("register.toastSuccess"))
             })
             .catch(() => toast.error(t("register.toastError3")))
     }

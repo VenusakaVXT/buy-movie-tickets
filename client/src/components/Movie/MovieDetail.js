@@ -130,11 +130,11 @@ const MovieDetail = () => {
                         >
                             <CardContent>
                                 <Typography className="text-border" variant="h4" component="h2">
-                                    {i18n.language === "us" ? movie.title : t(`movies.${movie.slug}`)}
+                                    {i18n.language === "en" ? movie.title : t(`movies.${movie.slug}`)}
                                 </Typography>
 
                                 <Typography className="text-border" variant="body1" width={856} textAlign={"justify"}>
-                                    {i18n.language === "vn"
+                                    {i18n.language === "vi"
                                         ? t(`moviesDescription.${movie.slug}`)
                                         : movie.description !== "" ? movie.description : t("movieDetail.noDescription")}
                                 </Typography>

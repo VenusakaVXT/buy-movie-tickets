@@ -65,7 +65,7 @@ const AddScreening = ({ title }) => {
             if (res !== null) {
                 console.log(res)
                 navigate("/manager/list-screening")
-                toast.success(i18n.language === "us" ? res.message : t("addScreening.toastSuccess"))
+                toast.success(i18n.language === "en" ? res.message : t("addScreening.toastSuccess"))
             }
         } catch (err) {
             console.error(err)
@@ -125,9 +125,9 @@ const AddScreening = ({ title }) => {
                                     onChange={(date) => handleChangeDateTime(date, null)}
                                     required
                                     options={{
-                                        locale: i18n.language === "vn" ? Vietnamese : undefined,
+                                        locale: i18n.language === "vi" ? Vietnamese : undefined,
                                         altInput: true,
-                                        altFormat: i18n.language === "vn" ? "d/m/Y" : "Y-m-d",
+                                        altFormat: i18n.language === "vi" ? "d/m/Y" : "Y-m-d",
                                         dateFormat: "Y-m-d"
                                     }}
                                 />

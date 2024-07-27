@@ -48,7 +48,7 @@ const Login = () => {
                     localStorage.setItem("customerId", data.id)
                     localStorage.setItem("customerName", data.name)
                     navigate("/")
-                    toast.success(i18n.language === "us" ? data.message : t("login.toastSuccess"))
+                    toast.success(i18n.language === "en" ? data.message : t("login.toastSuccess"))
                 })
                 .catch(err => console.error(err))
             : managerSendLoginRequest(inputs)
@@ -60,7 +60,7 @@ const Login = () => {
                     localStorage.setItem("managerEmail", data.email)
                     localStorage.setItem("cinemaId", data.cinemaId)
                     navigate("/")
-                    toast.success(i18n.language === "us" ? data.message : t("login.toastSuccess"))
+                    toast.success(i18n.language === "en" ? data.message : t("login.toastSuccess"))
                 })
                 .catch(err => console.error(err))
     }

@@ -67,7 +67,7 @@ const ListCancelBooking = ({ title }) => {
                     className="txt-hover"
                     textAlign={"center"}
                 >
-                    {i18n.language === "us" ? "View" : "Xem"}
+                    {i18n.language === "en" ? "View" : "Xem"}
                 </Typography>
             )
         }
@@ -144,7 +144,7 @@ const ListCancelBooking = ({ title }) => {
                             )) : <NoDataComponent content={(t("cancelBooking.noData"))} />}
                         </List>
                         : isManagerLoggedIn && cancelBookingsByCinema && <Box mb={12}>
-                            {i18n.language === "us"
+                            {i18n.language === "en"
                                 ? <Typography variant="h5" color={"#fff"} m={"20px 0"}>
                                     List of <span style={{ color: "#e50914" }}>{cinemaName}</span>'s canceled bookings
                                 </Typography>

@@ -55,12 +55,12 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, s
                         component="div"
                         onClick={() => navigate(`/movie-details/${slug}`)}
                     >
-                        {i18n.language === "us" ? title : t(`movies.${slug}`)}
+                        {i18n.language === "en" ? title : t(`movies.${slug}`)}
                     </Typography>
 
                     <Typography variant="body2" color="text.secondary">
                         <VideocamIcon fontSize="1rem" className="customic" />
-                        {i18n.language === "us"
+                        {i18n.language === "en"
                             ? new Date(releaseDate).toDateString()
                             : releaseDate ? releaseDate : t("movieDetail.notyet")}
                     </Typography>
@@ -122,11 +122,11 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, s
                             onClick={() => navigate(`/movie-details/${slug}`)}
                             color={"#fff"}
                         >
-                            {i18n.language === "us" ? title : t(`movies.${slug}`)}
+                            {i18n.language === "en" ? title : t(`movies.${slug}`)}
                         </Typography>
 
                         <Typography className="desciption-hw" variant="body2" color="#f2f2f2" textAlign={"justify"}>
-                            {i18n.language === "vn"
+                            {i18n.language === "vi"
                                 ? t(`moviesDescription.${slug}`)
                                 : description !== "" ? description : t("movieDetail.noDescription")}
                         </Typography>
@@ -135,7 +135,7 @@ const ScreeningItem = ({ id, title, description, releaseDate, time, trailerId, s
                             <Typography variant="body2" color="#f2f2f2" marginRight={3}>
                                 <VideocamIcon fontSize="1rem" className="customic" />
                                 {t("movieDetail.releaseDate", {
-                                    releaseDate: i18n.language === "us"
+                                    releaseDate: i18n.language === "en"
                                         ? new Date(releaseDate).toDateString()
                                         : releaseDate ? releaseDate : t("movieDetail.notyet")
                                 })}

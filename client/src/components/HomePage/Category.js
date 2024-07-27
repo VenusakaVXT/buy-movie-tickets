@@ -26,7 +26,7 @@ const Category = () => {
                 {categories.map((category, index) => (
                     <div key={index} className="category__item">
                         <h3 className="category__title">
-                            <CategoryIcon htmlColor="#e50914" /> {i18n.language === "us"
+                            <CategoryIcon htmlColor="#e50914" /> {i18n.language === "en"
                                 ? `${t(`category.${convertStr(category.category)}`)} Movies`
                                 : `Phim ${t(`category.${convertStr(category.category)}`)}`
                             }

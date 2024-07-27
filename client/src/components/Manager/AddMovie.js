@@ -92,8 +92,8 @@ const AddMovie = ({ title }) => {
             option.classList.remove("active")
         })
 
-        if ((targetSvg.classList.contains("css-1hbvpl3-MuiSvgIcon-root"))
-            || (targetSvg.classList.contains("css-q8lw68"))) {
+        if ((targetSvg.classList.contains("css-1hbvpl3-MuiSvgIcon-root")) ||
+            (targetSvg.classList.contains("css-q8lw68") && targetSvg.classList.contains("css-1u5ei5s"))) {
             targetSvg.classList.add("active")
         }
 
@@ -108,7 +108,7 @@ const AddMovie = ({ title }) => {
             if (res !== null) {
                 console.log(res)
                 navigate("/manager/list-movie")
-                toast.success(i18n.language === "us" ? res.message : t("addMovie.toastSuccess"))
+                toast.success(i18n.language === "en" ? res.message : t("addMovie.toastSuccess"))
             }
         } catch (err) {
             console.error(err)
@@ -220,7 +220,7 @@ const AddMovie = ({ title }) => {
 
                         <FormLabel>
                             <span className="txt-span">*</span> {t("addMovie.releaseDate")} (<span class="text-italic">
-                                {i18n.language === "us" ? "yyyy-mm-dd" : "mm/dd/yyyy"}
+                                {i18n.language === "en" ? "yyyy-mm-dd" : "mm/dd/yyyy"}
                             </span>):
                         </FormLabel>
                         <Flatpickr
@@ -231,9 +231,9 @@ const AddMovie = ({ title }) => {
                             onChange={(date) => handleChange(null, date)}
                             required
                             options={{
-                                locale: i18n.language === "vn" ? Vietnamese : undefined,
+                                locale: i18n.language === "vi" ? Vietnamese : undefined,
                                 altInput: true,
-                                altFormat: i18n.language === "vn" ? "d/m/Y" : "Y-m-d",
+                                altFormat: i18n.language === "vi" ? "d/m/Y" : "Y-m-d",
                                 dateFormat: "Y-m-d"
                             }}
                         />
