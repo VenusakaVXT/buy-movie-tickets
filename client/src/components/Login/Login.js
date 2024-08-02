@@ -5,13 +5,18 @@ import {
     TextField,
     Link,
     Button,
-    Switch
+    Switch,
+    Modal,
+    IconButton
 } from "@mui/material"
+import CloseIcon from "@mui/icons-material/Close"
+import SendIcon from "@mui/icons-material/Send"
 import Brand from "../Brand/Brand"
 import "../../scss/Auth.scss"
 import {
     customerSendLoginRequest,
-    managerSendLoginRequest
+    managerSendLoginRequest,
+    sendCodeToEmail
 } from "../../api/userApi"
 import { useDispatch } from "react-redux"
 import { customerActions, managerActions } from "../../store"
@@ -22,6 +27,8 @@ import { toast } from "react-toastify"
 const Login = () => {
     const [isCustomer, setIsCustomer] = useState(true)
     const [inputs, setInputs] = useState({ nameAccount: "", password: "" })
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [email, setEmail] = useState("")
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { t, i18n } = useTranslation()
@@ -65,11 +72,26 @@ const Login = () => {
                 .catch(err => console.error(err))
     }
 
+    const handleModalSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            const res = await sendCodeToEmail({ email })
+            if (res) {
+                localStorage.setItem("userEmail", email)
+                localStorage.setItem("userName", res.userName)
+                toast.success(i18n.language === "en" ? res.message : t("verifyCode.sendEmailSuccess"))
+                navigate("/login/forgot-password")
+            }
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
     return (
         <Box className="auth__wrapper">
             <Brand />
 
-            <form height={430} className="auth__frm" onSubmit={handleSubmit}>
+            <form className="auth__frm" onSubmit={handleSubmit} style={{ height: "430px", width: "400px" }}>
                 <Typography variant="h5" color="#ff0000">{t("login.title")}</Typography>
 
                 <TextField
@@ -103,7 +125,15 @@ const Login = () => {
                             {isCustomer ? t("login.customer") : t("login.manager")}
                         </Typography>
                     </Box>
-                    <Link className="forgot-password">{t("login.forgotPassword")}</Link>
+                    <Link className="forgot-password" onClick={() => {
+                        if (isCustomer) {
+                            setIsModalOpen(true)
+                        } else {
+                            toast.info(t("login.toastClickForgotPassword"))
+                        }
+                    }}>
+                        {t("login.forgotPassword")}
+                    </Link>
                 </Box>
 
                 <Button className="auth__btn" type="submit">{t("login.btn")}</Button>
@@ -138,6 +168,47 @@ const Login = () => {
                     {t("login.question")} <Link onClick={() => navigate("/register")}>{t("login.switch")}</Link>
                 </Typography>
             </form>
+
+            {isModalOpen &&
+                <Modal
+                    open={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                >
+                    <form className="modal" style={{ width: 402 }} onSubmit={handleModalSubmit}>
+                        <Box display={"flex"} justifyContent={"flex-end"}>
+                            <IconButton sx={{ p: 0 }} onClick={() => setIsModalOpen(false)}>
+                                <CloseIcon sx={{ ":hover": { color: "#e50914" } }} />
+                            </IconButton>
+                        </Box>
+
+                        <Typography textAlign={"justify"} mt={1} mb={1}>
+                            {t("login.contentModal")} ({<span class="text-italic">{t("login.noteContentModal")}</span>})
+                        </Typography>
+
+                        <Box display={"flex"}>
+                            <input
+                                style={{
+                                    width: "100%",
+                                    padding: "10px",
+                                    border: "none",
+                                    outline: "none",
+                                    borderRadius: "4px",
+                                    marginRight: "10px"
+                                }}
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder={t("login.placeholderInputModal")}
+                                required
+                            />
+
+                            <Button className="btn" type="submit" sx={{ m: "0 !important" }}>
+                                <SendIcon />
+                            </Button>
+                        </Box>
+                    </form>
+                </Modal>
+            }
         </Box>
     )
 }

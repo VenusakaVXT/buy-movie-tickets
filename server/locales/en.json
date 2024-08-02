@@ -1,4 +1,5 @@
 {
+    "contentVerifyCode": "Your verification code is {{verifyCode}}",
     "newBooking": {
         "subject": "Successfully booked tickets at Buy Movie Tickets",
         "greeting": "Dear {{name}},",

@@ -3,6 +3,10 @@ import User from "../models/User.js"
 import Booking from "../models/Booking.js"
 import Comment from "../models/Comment.js"
 import CancelBooking from "../models/CancelBooking.js"
+import crypto from "crypto"
+import sendEmail from "../util/email.js"
+import axios from "axios"
+import { getLocalizedText } from "../util/localization.js"
 
 const salt = bcrypt.genSaltSync(10) // saltRounds: 10
 
@@ -20,9 +24,7 @@ export const getAllUsers = async (req, res, next) => {
     }
 
     if (!users) {
-        return res.status(500).json({
-            message: "Unexpected Error Occurred!!!",
-        })
+        return res.status(500).json({ message: "Unexpected Error Occurred!!!" })
     }
 
     return res.status(200).json({ users })
@@ -43,8 +45,16 @@ export const getUserById = async (req, res, next) => {
 }
 
 export const register = async (req, res, next) => {
-    const { name, phone, email, password, birthDay, gender, address } = req.body
-
+    const {
+        name,
+        phone,
+        email,
+        password,
+        birthDay,
+        gender,
+        address,
+        captchaToken
+    } = req.body
     const hashPassword = hashUserPassword(password)
 
     if (
@@ -56,6 +66,14 @@ export const register = async (req, res, next) => {
         return res.status(422).json({
             message: "Invalid inputs...",
         })
+    }
+
+    const secretKey = "6Le77hoqAAAAAMfUlUJI39h02JCcHG0SYqSTuThd"
+    const resReCaptcha = await axios.post(`
+        https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captchaToken}`)
+
+    if (!resReCaptcha.data.success) {
+        return res.status(400).json({ message: "CAPTCHA verification failed..." })
     }
 
     let user
@@ -77,9 +95,7 @@ export const register = async (req, res, next) => {
     }
 
     if (!user) {
-        return res.status(500).json({
-            message: "Unexpected Error Occurred!!!",
-        })
+        return res.status(500).json({ message: "Unexpected Error Occurred!!!", })
     }
 
     return res.status(201).json({ user, message: "Register successfully..." })
@@ -95,9 +111,7 @@ export const updateUser = async (req, res, next) => {
         (!phone || phone.trim() === "") &&
         (!email || email.trim() === "")
     ) {
-        return res.status(422).json({
-            message: "Invalid inputs...",
-        })
+        return res.status(422).json({ message: "Invalid inputs..." })
     }
 
     let user
@@ -116,9 +130,7 @@ export const updateUser = async (req, res, next) => {
     }
 
     if (!user) {
-        return res.status(500).json({
-            message: "Something went wrong...",
-        })
+        return res.status(500).json({ message: "Something went wrong..." })
     }
 
     res.status(200).json({ message: "User update successfully!!!" })
@@ -136,9 +148,7 @@ export const deleteUser = async (req, res, next) => {
     }
 
     if (!user) {
-        return res.status(500).json({
-            message: "Something went wrong...",
-        })
+        return res.status(500).json({ message: "Something went wrong...", })
     }
 
     res.status(200).json({ message: "User delete successfully!!!" })
@@ -153,9 +163,7 @@ export const login = async (req, res, next) => {
         !password &&
         password.trim() === ""
     ) {
-        return res.status(422).json({
-            message: "Invalid inputs...",
-        })
+        return res.status(422).json({ message: "Invalid inputs..." })
     }
 
     let existUser
@@ -382,6 +390,107 @@ export const getCancelBookingsByUser = async (req, res, next) => {
 
         res.status(200).json({ cancelBookingItems })
     } catch (err) {
+        next(err)
+    }
+}
+
+export const changePassword = async (req, res, next) => {
+    const userId = req.params.id
+    const { oldPassword, newPassword, confirmNewPassword } = req.body
+
+    if (oldPassword === newPassword) {
+        return res.status(401).json({
+            message: "The new password must not be the same as the old password"
+        })
+    }
+
+    if (newPassword !== confirmNewPassword) {
+        return res.status(402).json({ message: "New passwords do not match..." })
+    }
+
+    try {
+        const user = await User.findById(userId)
+        if (!user) {
+            return res.status(404).json({ message: "User not found..." })
+        }
+
+        const isMatch = await bcrypt.compare(oldPassword, user.password)
+        if (!isMatch) {
+            return res.status(403).json({ message: "Old password is incorrect..." })
+        }
+
+        const hashedPassword = await hashUserPassword(newPassword)
+        user.password = hashedPassword
+        await user.save()
+
+        res.status(200).json({ message: "Change password successfully..." })
+    } catch (err) {
+        res.status(500).json({ message: "Change password failed..." })
+        next(err)
+    }
+}
+
+export const sendCodeToEmail = async (req, res, next) => {
+    try {
+        const userEmail = req.body.email
+        const user = await User.findOne({ email: userEmail })
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found..." })
+        }
+
+        const verifyCode = crypto.randomInt(100000, 999999).toString()
+        const verifyCodeExpiry = Date.now() + 300000 // 5 minutes
+
+        user.verifyCode = verifyCode
+        user.verifyCodeExpiry = verifyCodeExpiry
+        await user.save()
+
+        const locale = userEmail.endsWith(".vn") || userEmail.endsWith(".com") ? "vn" : "en"
+        const htmlContent = `<h2>${getLocalizedText(locale, "contentVerifyCode", { verifyCode })}</h2>`
+
+        sendEmail(userEmail, "BMT sends CODE verify", htmlContent)
+        res.status(200).json({ userName: user.name, message: "Send code to email successfully..." })
+    } catch (err) {
+        res.status(500).json({ messgae: "Send code to email failed..." })
+        next(err)
+    }
+}
+
+export const forgotPassword = async (req, res, next) => {
+    const { email, verifyCode, newPassword, confirmNewPassword, captchaToken } = req.body
+
+    if (newPassword !== confirmNewPassword) {
+        return res.status(401).json({ message: "New passwords do not match..." })
+    }
+
+    try {
+        const user = await User.findOne({ email, verifyCode })
+        if (!user) {
+            return res.status(402).json({ message: "Invalid verification code..." })
+        }
+
+        if (user.verifyCodeExpiry < Date.now()) {
+            return res.status(403).json({ message: "Verify code has expired..." })
+        }
+
+        const secretKey = "6LeaCBwqAAAAAI2PwieNM82baiwM-cv2UExKvroy"
+        const resReCaptcha = await axios.post(`
+            https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${captchaToken}`)
+
+        if (!resReCaptcha.data.success) {
+            return res.status(400).json({ message: "CAPTCHA verification failed..." })
+        }
+
+        const hashedPassword = await hashUserPassword(newPassword)
+        user.password = hashedPassword
+        user.verifyCode = null
+        user.verifyCodeExpiry = null
+        await user.save()
+
+        res.status(200).json({ message: "Change password successfully..." })
+    } catch (err) {
+        res.status(500).json({ message: "Change password failed..." })
         next(err)
     }
 }

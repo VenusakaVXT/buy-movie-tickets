@@ -125,7 +125,12 @@
         "toastSuccess": "Đăng nhập thành công!!!",
         "toastError1": "Không tìm thấy tài khoản...",
         "toastError2": "Mật khẩu không chính xác...",
-        "toastError3": "Đăng nhập thất bại..."
+        "toastError3": "Đăng nhập thất bại...",
+        "toastManagerDisabled": "Tài khoản của bạn đã bị vô hiệu hóa",
+        "toastClickForgotPassword": "Chỉ tài khoản Khách Hàng mới truy cập được Quên mật khẩu?",
+        "contentModal": "Gửi email đã dùng để đăng ký tài khoản đến hệ thống. Hệ thống BMT sẽ gửi mail chứa MÃ XÁC MINH đến email mà bạn đã gửi đi để xác thực đổi lại mật khẩu mới",
+        "noteContentModal": "Mã xác minh giới hạn thời gian sử dụng trong 5 phút",
+        "placeholderInputModal": "Nhập email lấy mã xác minh..."
     },
     "moviePage": {
         "selectSort": [
@@ -342,11 +347,32 @@
     "password": {
         "currentPassword": "Mật khẩu hiện tại:",
         "newPassword": "Mật khẩu mới:",
-        "reEnterPassword": "Nhập lại mật khẩu:",
+        "confirmNewPassword": "Nhập lại mật khẩu mới:",
         "placeholderCurrentPassword": "Nhập mật khẩu hiện tại...",
         "placeholderNewPassword": "Nhập mật khẩu mới...",
-        "placeholderReEnterPassword": "Nhập lại mật khẩu...",
-        "savePassword": "Lưu mật khẩu"
+        "placeholderConfirmNewPassword": "Nhập lại mật khẩu mới...",
+        "savePassword": "Lưu mật khẩu",
+        "toastSuccess": "Đổi mật khẩu thành công...",
+        "toastError": "Đổi mật khẩu thất bại...",
+        "toastError1": "Mật khẩu mới không được trùng với mật khẩu cũ",
+        "toastError2": "Mật khẩu mới không trùng khớp...",
+        "toastError3": "Mật khẩu cũ không chính xác...",
+        "forgotPassword": "Quên Mật Khẩu",
+        "verifyCode": "Mã xác minh:",
+        "placeholderVerifyCode": "Nhập mã xác minh...",
+        "authReCaptcha": "Xác nhận reCAPTCHA:",
+        "resetPassword": "Đặt Lại Mật Khẩu",
+        "toastVerifyCode": "Mã xác minh phải có độ dài bằng 6 chữ số",
+        "accountNameNotFound": "Không tìm ra tên tài khoản",
+        "reminder1": "Điền đầy đủ các thông tin bên dưới để đặt lại mật khẩu cho tài khoản",
+        "reminder2": "Thời hạn sử dụng mã xác mình còn lại",
+        "toastWarnRunTime": "Thời gian sử dụng mã xác minh đã hết..."
+    },
+    "verifyCode": {
+        "sendEmailSuccess": "Gửi mã xác minh đến email thành công...",
+        "sendEmailFailed": "Gửi mã xác minh đến email thất bại...",
+        "toastInvalidVerifyCode": "Mã xác minh không hợp lệ...",
+        "toastVerifyCodeExpiry": "Mã xác minh đã hết hạn..."
     },
     "back": "Trở về",
     "save": "Lưu",
@@ -431,5 +457,6 @@
         "cinemaName": "Tên rạp",
         "cinemaRooms": "Số phòng",
         "screenings": "Suất chiếu"
-    }
+    },
+    "errReCaptcha": "Xác minh CAPTCHA thất bại..."
 }

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next"
 import { Box, Typography, Button } from "@mui/material"
 import { useSelector, useDispatch } from "react-redux"
 import { customerActions } from "../../store"
-import { getCustomerProfile, getManagerProfile } from "../../api/userApi"
+import { getCustomerProfile, getManagerProfile, changePassword } from "../../api/userApi"
 import { handleDate } from "../../util"
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import UserUpdateModal from "./UpdateUser"
@@ -16,6 +16,11 @@ const Profile = () => {
     const [manager, setManager] = useState()
     const [render, setRender] = useState(true)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [inputsPassword, setInputsPassword] = useState({
+        oldPassword: "",
+        newPassword: "",
+        confirmNewPassword: ""
+    })
     const customerId = localStorage.getItem("customerId")
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
@@ -50,6 +55,25 @@ const Profile = () => {
     const handleProfileUpdate = (updatedUser) => {
         dispatch(customerActions.updateName({ name: updatedUser.name }))
         setCustomer(updatedUser)
+    }
+
+    const handleValueInputsPassword = (e) => {
+        const { name, value } = e.target
+        setInputsPassword((prevState) => ({ ...prevState, [name]: value }))
+    }
+
+    const handleChangePassword = async (e) => {
+        e.preventDefault()
+        try {
+            const res = await changePassword(customerId, inputsPassword)
+            if (res) {
+                toast.success(i18n.language === "en" ? res.message : t("password.toastSuccess"))
+                setRender(true)
+                setInputsPassword({ oldPassword: "", newPassword: "", confirmNewPassword: "" })
+            }
+        } catch (err) {
+            console.error(err)
+        }
     }
 
     return (
@@ -159,19 +183,43 @@ const Profile = () => {
                             </Button>
                         </Box>
                     </> : <Box>
-                        <form>
+                        <form onSubmit={handleChangePassword}>
                             <label>{t("password.currentPassword")}</label>
-                            <input className="input-form" placeholder={t("password.placeholderCurrentPassword")} />
+                            <input
+                                className="input-form"
+                                type="password"
+                                value={inputsPassword.oldPassword}
+                                name="oldPassword"
+                                onChange={handleValueInputsPassword}
+                                placeholder={t("password.placeholderCurrentPassword")}
+                                required
+                            />
                             <label>{t("password.newPassword")}</label>
-                            <input className="input-form" placeholder={t("password.placeholderNewPassword")} />
-                            <label>{t("password.reEnterPassword")}</label>
-                            <input className="input-form" placeholder={t("password.placeholderReEnterPassword")} />
+                            <input
+                                className="input-form"
+                                type="password"
+                                value={inputsPassword.newPassword}
+                                name="newPassword"
+                                onChange={handleValueInputsPassword}
+                                placeholder={t("password.placeholderNewPassword")}
+                                required
+                            />
+                            <label>{t("password.confirmNewPassword")}</label>
+                            <input
+                                className="input-form"
+                                type="password"
+                                value={inputsPassword.confirmNewPassword}
+                                name="confirmNewPassword"
+                                onChange={handleValueInputsPassword}
+                                placeholder={t("password.placeholderConfirmNewPassword")}
+                                required
+                            />
 
                             <Box display={"flex"} justifyContent={"center"}>
                                 <Button className="btn lowercase" onClick={() => setRender(true)}>
                                     {t("back")}
                                 </Button>
-                                <Button className="btn lowercase" onClick={() => toast.info(t("profile.toastInfo3"))}>
+                                <Button className="btn lowercase" type="submit">
                                     {t("password.savePassword")}
                                 </Button>
                             </Box>

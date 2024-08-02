@@ -125,7 +125,12 @@
         "toastSuccess": "Login successfully!!!",
         "toastError1": "User not found...",
         "toastError2": "Incorrect password...",
-        "toastError3": "Login failed..."
+        "toastError3": "Login failed...",
+        "toastManagerDisabled": "This account has been disabled",
+        "toastClickForgotPassword": "Only Customer accounts can access Forgot password?",
+        "contentModal": "Send the email used to register your account to the system. The BMT system will send an email containing a VERIFY CODE to the email you sent to authenticate and change the new password",
+        "noteContentModal": "Verification codes are limited to 5 minutes",
+        "placeholderInputModal": "Enter email to get verification code..."
     },
     "moviePage": {
         "selectSort": [
@@ -324,11 +329,21 @@
     "password": {
         "currentPassword": "Current password:",
         "newPassword": "New password:",
-        "reEnterPassword": "Re-enter password:",
+        "confirmNewPassword": "Confirm new password:",
         "placeholderCurrentPassword": "Enter current password...",
         "placeholderNewPassword": "Enter new password...",
-        "placeholderReEnterPassword": "Re-enter password...",
-        "savePassword": "Save password"
+        "placeholderConfirmNewPassword": "Confirm new password...",
+        "savePassword": "Save password",
+        "forgotPassword": "Forgot Password",
+        "verifyCode": "Verify code:",
+        "placeholderVerifyCode": "Enter verify code...",
+        "authReCaptcha": "Confirm reCAPTCHA:",
+        "resetPassword": "Reset Password",
+        "toastVerifyCode": "The verification code must be 6 numbers long",
+        "accountNameNotFound": "Account name not found",
+        "reminder1": "Complete the information below to reset the password for account",
+        "reminder2": "Remaining validity period of your verification code",
+        "toastWarnRunTime": "The time to use the verification code has expired..."
     },
     "back": "Back",
     "save": "Save",

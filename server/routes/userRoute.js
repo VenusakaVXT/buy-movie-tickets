@@ -12,6 +12,9 @@ import {
     userDeleteComment,
     comparePassword,
     getCancelBookingsByUser,
+    changePassword,
+    sendCodeToEmail,
+    forgotPassword
 } from "../controllers/userController.js"
 
 const userRouter = express.Router()
@@ -28,5 +31,8 @@ userRouter.post("/create-comment", userComment)
 userRouter.delete("/delete-comment/:commentId", userDeleteComment)
 userRouter.post("/:id/compare-password", comparePassword)
 userRouter.get("/:id/cancel-bookings", getCancelBookingsByUser)
+userRouter.put("/:id/change-password", changePassword)
+userRouter.post("/send-code-to-email", sendCodeToEmail)
+userRouter.post("/forgot-password", forgotPassword)
 
 export default userRouter

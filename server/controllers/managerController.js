@@ -17,9 +17,7 @@ export const addManager = async (req, res, next) => {
     const { email, password } = req.body
 
     if (!email && email.trim() === "" && !password && password.trim() === "") {
-        return res.status(422).json({
-            message: "Invalid inputs...",
-        })
+        return res.status(422).json({ message: "Invalid inputs..." })
     }
 
     let existManager, manager
@@ -54,9 +52,7 @@ export const managerLogin = async (req, res, next) => {
     const { email, password } = req.body
 
     if (!email && email.trim() === "" && !password && password.trim() === "") {
-        return res.status(422).json({
-            message: "Invalid inputs...",
-        })
+        return res.status(422).json({ message: "Invalid inputs..." })
     }
 
     let existManager
@@ -68,11 +64,11 @@ export const managerLogin = async (req, res, next) => {
     }
 
     if (!existManager) {
-        return res.status(400).json({ message: "Manager not found..." })
+        return res.status(404).json({ message: "Manager not found..." })
     }
 
     if (existManager.locked) {
-        return res.status(400).json({ message: "This account has been disabled" })
+        return res.status(423).json({ message: "This account has been disabled" })
     }
 
     const isPasswordCorrect = bcrypt.compareSync(password, existManager.password)

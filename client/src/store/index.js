@@ -16,6 +16,8 @@ const customerSlice = createSlice({
             state.name = action.payload.name
             state.bookings = action.payload.bookings
             state.ratingPoints = action.payload.ratingPoints
+            localStorage.removeItem("userEmail")
+            localStorage.removeItem("userName")
             localStorage.removeItem("seatBookeds")
             localStorage.setItem("customerData", JSON.stringify(action.payload))
         },
@@ -57,6 +59,8 @@ const managerSlice = createSlice({
             sessionStorage.removeItem("tabState")
             sessionStorage.removeItem("activeTab")
             localStorage.removeItem("seatBookeds")
+            localStorage.removeItem("userEmail")
+            localStorage.removeItem("userName")
         },
         logout(state) {
             localStorage.removeItem("token")

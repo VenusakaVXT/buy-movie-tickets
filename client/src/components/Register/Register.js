@@ -6,6 +6,7 @@ import { customerSendRegisterRequest } from "../../api/userApi"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { toast } from "react-toastify"
+import ReCAPTCHA from "react-google-recaptcha"
 
 const Register = () => {
     const [inputs, setInputs] = useState({
@@ -16,7 +17,8 @@ const Register = () => {
         gender: "",
         address: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        captchaToken: null
     })
     const navigate = useNavigate()
     const { t, i18n } = useTranslation()
@@ -44,7 +46,7 @@ const Register = () => {
                 navigate("/login")
                 toast.success(i18n.language === "en" ? res.message : t("register.toastSuccess"))
             })
-            .catch(() => toast.error(t("register.toastError3")))
+            .catch(err => console.error(err))
     }
 
     return (
@@ -114,33 +116,13 @@ const Register = () => {
                     required
                 />
 
+                <ReCAPTCHA
+                    style={{ marginTop: 10 }}
+                    sitekey="6Le77hoqAAAAAPI4zMmhLPgiG5DSvvLKOVmMeMIz"
+                    onChange={(token) => setInputs((prevState) => ({ ...prevState, captchaToken: token }))}
+                />
+
                 <Button className="auth__btn" type="submit">{t("register.btn")}</Button>
-
-                <Box className="other">
-                    <Box className="line"></Box>
-                    <span>{t("register.or").toUpperCase()}</span>
-                    <Box className="line"></Box>
-                </Box>
-
-                <Box margin={"23px 0"}>
-                    <Box sx={{
-                        width: "100%",
-                        height: 40,
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: "15px",
-                        textTransform: "uppercase",
-                        bgcolor: "#fff",
-                        color: "#000",
-                        cursor: "pointer",
-                        ":hover": {
-                            opacity: 0.8
-                        }
-                    }}>
-                        <Typography>{t("register.btn2")}</Typography>
-                    </Box>
-                </Box>
 
                 <Typography className="question-switch">
                     {t("register.question")} <Link onClick={() => navigate("/login")}>{t("register.switch")}</Link>

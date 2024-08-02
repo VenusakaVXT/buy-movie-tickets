@@ -54,6 +54,12 @@ const userSchema = new Schema({
     isOnline: {
         type: Boolean,
         default: false
+    },
+    verifyCode: {
+        type: String
+    },
+    verifyCodeExpiry: {
+        type: Date
     }
 })
 

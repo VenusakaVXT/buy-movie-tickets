@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { customerActions, managerActions } from "./store"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { useTranslation } from "react-i18next"
 import Header from "./components/Header/Header"
 import Home from "./components/HomePage/Home"
 import Release from "./components/HomePage/Release"
@@ -35,6 +36,7 @@ import CancelBooking from "./components/CancelBooking/CancelBooking"
 import ListCancelBooking from "./components/CancelBooking/ListCancelBooking"
 import CancelBookingInfo from "./components/CancelBooking/CancelBookingInfo"
 import Loading from "./components/Loading/Loading"
+import ForgotPassword from "./components/Login/ForgotPassword"
 
 const formatTitle = (pathname) => {
     const convertPathname = pathname.replace(/\//g, " ").replace(/-/g, " ").trim()
@@ -44,6 +46,7 @@ const formatTitle = (pathname) => {
 export const socket = io(process.env.REACT_APP_API_URL)
 
 const App = () => {
+    const { t } = useTranslation()
     const dispatch = useDispatch()
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
@@ -65,7 +68,7 @@ const App = () => {
             socket.on("accountLocked", ({ id }) => {
                 socket.emit("employeeLogout", { id: managerId })
                 if (id === localStorage.getItem("managerId")) {
-                    alert("This account has been disabled")
+                    alert(t("login.toastManagerDisabled"))
                     dispatch(managerActions.logout())
                 }
             })
@@ -74,7 +77,7 @@ const App = () => {
         return () => {
             socket.off("accountLocked")
         }
-    }, [isManagerLoggedIn, managerId, dispatch])
+    }, [isManagerLoggedIn, managerId, dispatch, t])
 
     useEffect(() => {
         if (localStorage.getItem("customerId")) {
@@ -127,6 +130,7 @@ const App = () => {
                         {(!isCustomerLoggedIn && !isManagerLoggedIn) && <>
                             <Route path="/register" element={<Register />} />
                             <Route path="/login" element={<Login />} />
+                            <Route path="/login/forgot-password" element={<ForgotPassword />} />
                         </>}
                         {isCustomerLoggedIn && <>
                             <Route path="/booking/:bookingId/detail"

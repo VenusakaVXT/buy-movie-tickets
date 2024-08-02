@@ -1,4 +1,5 @@
 {
+    "contentVerifyCode": "Mã xác minh của bạn là {{verifyCode}}",
     "newBooking": {
         "subject": "Đặt vé thành công tại Buy Movie Tickets",
         "greeting": "Kính thưa {{name}},",
