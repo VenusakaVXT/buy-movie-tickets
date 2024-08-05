@@ -15,10 +15,11 @@ import ScreeningItem from "../Screening/ScreeningItem"
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber"
 import AppsIcon from "@mui/icons-material/Apps"
 import ViewListIcon from "@mui/icons-material/ViewList"
+import { Helmet } from "react-helmet"
 import "../../scss/App.scss"
 import "../../scss/Movie.scss"
 
-const Movie = () => {
+const Movie = ({ title }) => {
     const navigate = useNavigate()
     const { t } = useTranslation()
     const [movies, setMovies] = useState([])
@@ -115,6 +116,8 @@ const Movie = () => {
 
     return (
         <Box className="movie__wrappper">
+            <Helmet><title>{title}</title></Helmet>
+
             <Box className="breadcrumb">
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
                     {t("header.home")}

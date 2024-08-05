@@ -99,7 +99,7 @@
     "loading": "Đang tải",
     "brand": "Buy Movie Tickets là ứng dụng đặt vé xem phim trực tuyến số 1 Việt Nam",
     "register": {
-        "title": "Đăng ký",
+        "title": "Đăng Ký",
         "fullName": "Họ và tên",
         "phoneNumber": "Số điện thoại",
         "password": "Mật khẩu",
@@ -115,7 +115,7 @@
         "toastError3": "Đăng ký thất bại..."
     },
     "login": {
-        "title": "Đăng nhập",
+        "title": "Đăng Nhập",
         "customer": "Khách hàng",
         "manager": "Nhân viên",
         "forgotPassword": "Quên mật khẩu?",
@@ -188,7 +188,7 @@
         "producer": "Nhà sản xuất: {{producer}}",
         "noDescription": "Chưa có mô tả",
         "notyet": "Chưa được công bố",
-        "booking": "Đặt vé",
+        "booking": "Đặt Vé",
         "seeReviews": "Xem đánh giá",
         "favorite": "Yêu thích"
     },
@@ -377,7 +377,7 @@
     "back": "Trở về",
     "save": "Lưu",
     "addMovie": {
-        "title": "Thêm phim",
+        "title": "Thêm Phim",
         "movieTitle": "Tên phim",
         "placeholderMovieTitle": "Nhập tên phim...",
         "movieDescription": "Mô tả phim",
@@ -402,7 +402,7 @@
         "toastSuccess": "Thêm phim mới thành công..."
     },
     "addScreening": {
-        "title": "Thêm suất chiếu",
+        "title": "Thêm Suất Chiếu",
         "acronymNowShowing": "ĐC",
         "acronymCommingSoon": "SC",
         "movieDate": "Ngày chiếu",
@@ -418,7 +418,7 @@
         "noData": "Bạn chưa thêm bất kỳ {{dataName}} nào"
     },
     "statistical": {
-        "title": "Thống kê",
+        "title": "Thống Kê",
         "movies": "Phim",
         "employees": "Nhân viên",
         "customers": "Khách hàng",
@@ -458,5 +458,15 @@
         "cinemaRooms": "Số phòng",
         "screenings": "Suất chiếu"
     },
-    "errReCaptcha": "Xác minh CAPTCHA thất bại..."
+    "errReCaptcha": "Xác minh CAPTCHA thất bại...",
+    "titlePage": {
+        "movieDetails": "Chi Tiết Phim",
+        "seatDiagram": "Sơ Đồ Ghế Ngồi",
+        "movieTicket": "Vé Xem Phim",
+        "reasonCancelBooking": "Lí Do Hủy Đặt Vé",
+        "lstMovie": "Danh Sách Phim",
+        "lstScreening": "Danh Sách Suất Chiếu",
+        "profile": "Thông Tin Cá Nhân",
+        "lstCancelBooking": "Danh Sách Hủy Đặt Vé"
+    }
 }

@@ -7,8 +7,9 @@ import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { toast } from "react-toastify"
 import ReCAPTCHA from "react-google-recaptcha"
+import { Helmet } from "react-helmet"
 
-const Register = () => {
+const Register = ({ title }) => {
     const [inputs, setInputs] = useState({
         name: "",
         email: "",
@@ -51,6 +52,7 @@ const Register = () => {
 
     return (
         <Box className="auth__wrapper">
+            <Helmet><title>{title}</title></Helmet>
             <Brand />
 
             <form height={780} className="auth__frm" onSubmit={handleSubmit}>

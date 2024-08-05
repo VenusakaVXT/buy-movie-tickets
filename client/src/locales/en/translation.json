@@ -348,7 +348,7 @@
     "back": "Back",
     "save": "Save",
     "addMovie": {
-        "title": "Add movie",
+        "title": "Add Movie",
         "movieTitle": "Movie title",
         "placeholderMovieTitle": "Enter movie title...",
         "movieDescription": "Movie description",
@@ -372,7 +372,7 @@
         "notYet": "Not yet"
     },
     "addScreening": {
-        "title": "Add screening",
+        "title": "Add Screening",
         "acronymNowShowing": "NS",
         "acronymCommingSoon": "CM",
         "movieDate": "Movie date",
@@ -426,5 +426,15 @@
         "cinemaName": "Cinema name",
         "cinemaRooms": "Cinema rooms",
         "screenings": "Screenings"
+    },
+    "titlePage": {
+        "movieDetails": "Movie Details",
+        "seatDiagram": "Seat Diagram",
+        "movieTicket": "Movie Ticket",
+        "reasonCancelBooking": "Reason Cancel Booking",
+        "lstMovie": "List Movie",
+        "lstScreening": "List Screening",
+        "profile": "Personal Profile",
+        "lstCancelBooking": "List Cancel Booking"
     }
 }

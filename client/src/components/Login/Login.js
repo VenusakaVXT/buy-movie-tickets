@@ -23,8 +23,9 @@ import { customerActions, managerActions } from "../../store"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { toast } from "react-toastify"
+import { Helmet } from "react-helmet"
 
-const Login = () => {
+const Login = ({ title }) => {
     const [isCustomer, setIsCustomer] = useState(true)
     const [inputs, setInputs] = useState({ nameAccount: "", password: "" })
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -89,6 +90,7 @@ const Login = () => {
 
     return (
         <Box className="auth__wrapper">
+            <Helmet><title>{title}</title></Helmet>
             <Brand />
 
             <form className="auth__frm" onSubmit={handleSubmit} style={{ height: "430px", width: "400px" }}>

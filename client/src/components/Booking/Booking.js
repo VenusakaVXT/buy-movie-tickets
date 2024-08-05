@@ -13,6 +13,8 @@ import {
     getScreeningsByCinemaAndDate
 } from "../../api/movieApi"
 import NoDataComponent from "../NotFoundPage/NoDataComponent"
+import { Helmet } from "react-helmet"
+import { formatTitle } from "../../App"
 import "../../scss/App.scss"
 import "../../scss/Booking.scss"
 
@@ -129,6 +131,12 @@ const Booking = () => {
         <>
             {movie &&
                 <Box className="booking__wrapper">
+                    <Helmet>
+                        <title>
+                            {formatTitle(`${t("movieDetail.booking")} ${t(`movies.${movie.slug}`)}`)}
+                        </title>
+                    </Helmet>
+
                     <Box className="breadcrumb" margin={0}>
                         <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
                             {t("header.home")}

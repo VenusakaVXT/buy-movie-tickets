@@ -9,9 +9,10 @@ import { handleDate } from "../../util"
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import UserUpdateModal from "./UpdateUser"
 import { toast } from "react-toastify"
+import { Helmet } from "react-helmet"
 import "../../scss/App.scss"
 
-const Profile = () => {
+const Profile = ({ title }) => {
     const [customer, setCustomer] = useState()
     const [manager, setManager] = useState()
     const [render, setRender] = useState(true)
@@ -78,6 +79,8 @@ const Profile = () => {
 
     return (
         <Box className="wrapper" color={"#fff"}>
+            <Helmet><title>{title}</title></Helmet>
+
             <Box className="breadcrumb">
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
                     {t("header.home")}

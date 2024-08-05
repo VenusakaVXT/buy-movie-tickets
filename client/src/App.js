@@ -38,11 +38,13 @@ import CancelBookingInfo from "./components/CancelBooking/CancelBookingInfo"
 import Loading from "./components/Loading/Loading"
 import ForgotPassword from "./components/Login/ForgotPassword"
 
-const formatTitle = (pathname) => {
+const convertTitle = (pathname) => {
     const convertPathname = pathname.replace(/\//g, " ").replace(/-/g, " ").trim()
     return convertPathname.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
 }
 
+const title = "Buy Movie Tickets"
+export const formatTitle = (pathname) => `${title} | ${pathname}`
 export const socket = io(process.env.REACT_APP_API_URL)
 
 const App = () => {
@@ -58,7 +60,6 @@ const App = () => {
     const decision = isCustomerLoggedIn && !isManagerLoggedIn ? "customer" : "manager"
     const location = useLocation()
     const isHomePage = location.pathname === "/"
-    const title = "Buy Movie Tickets"
 
     console.log("isManagerLoggedIn", isManagerLoggedIn)
     console.log("isCustomerLoggedIn", isCustomerLoggedIn)
@@ -108,7 +109,7 @@ const App = () => {
         <Suspense fallback={<Loading />}>
             <Box className="App__wrapper">
                 <Helmet>
-                    <title>{isHomePage ? `${title}` : `${title} | ${formatTitle(location.pathname)}`}</title>
+                    <title>{isHomePage ? title : formatTitle(convertTitle(location.pathname))}</title>
                 </Helmet>
 
                 <ScrollRestoration />
@@ -120,54 +121,64 @@ const App = () => {
                         <Route path="/release" element={<Release />} />
                         <Route path="/category" element={<Category />} />
                         <Route path="/cinema" element={<Cinema />} />
-                        <Route path="/all-movies" element={<Movie />} />
+                        <Route path="/all-movies" element={
+                            <Movie title={formatTitle(t("moviePage.allMovies"))} />
+                        } />
                         <Route path="/movie-details/:slug" element={<MovieDetail />} />
                         <Route path="/booking/:slug" element={<Booking />} />
                         <Route path="/booking/:movieSlug/:screeningId" element={
-                            <SeatDiagram title={`${title} | Seat Diagram`} />
+                            <SeatDiagram title={formatTitle(t("titlePage.seatDiagram"))} />
                         } />
-                        <Route path="/charts" element={<Charts />} />
+                        <Route path="/charts" element={
+                            <Charts title={formatTitle(t("charts.title"))} />
+                        } />
                         {(!isCustomerLoggedIn && !isManagerLoggedIn) && <>
-                            <Route path="/register" element={<Register />} />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/login/forgot-password" element={<ForgotPassword />} />
+                            <Route path="/register" element={
+                                <Register title={formatTitle(t("register.title"))} />
+                            } />
+                            <Route path="/login" element={
+                                <Login title={formatTitle(t("login.title"))} />
+                            } />
+                            <Route path="/login/forgot-password" element={
+                                <ForgotPassword title={formatTitle(t("password.forgotPassword"))} />
+                            } />
                         </>}
                         {isCustomerLoggedIn && <>
                             <Route path="/booking/:bookingId/detail"
-                                element={<CinemaTicket title={`${title} | Movie Ticket`} />}
+                                element={<CinemaTicket title={formatTitle(t("titlePage.movieTicket"))} />}
                             />
                             <Route path="/cart" element={<Cart />} />
                             <Route path={"/customer/cancel-booking/:bookingId"} element={
-                                <CancelBooking title={`${title} | Reason Cancel Booking`} />
+                                <CancelBooking title={formatTitle(t("titlePage.reasonCancelBooking"))} />
                             } />
                         </>}
                         {isManagerLoggedIn && <>
                             <Route path="/manager/add-movie" element={
-                                <AddMovie title={`${title} | Add Movie`} />
+                                <AddMovie title={formatTitle(t("addMovie.title"))} />
                             } />
                             <Route path="/manager/add-screening" element={
-                                <AddScreening title={`${title} | Add Screening`} />
+                                <AddScreening title={formatTitle(t("addScreening.title"))} />
                             } />
                             <Route path={`/manager/list-movie`}
-                                element={<ListData title={`${title} | List Movie`} />}
+                                element={<ListData title={formatTitle(t("titlePage.lstMovie"))} />}
                             />
                             <Route path={`/manager/list-screening`}
-                                element={<ListData title={`${title} | List Screening`} />}
+                                element={<ListData title={formatTitle(t("titlePage.lstScreening"))} />}
                             />
                             <Route path="/manager/statistical" element={
-                                <Statistical title={`${title} | Statistical`} />
+                                <Statistical title={formatTitle(t("statistical.title"))} />
                             } />
                         </>}
                         {(isCustomerLoggedIn || isManagerLoggedIn) && <>
                             <Route
                                 path={`${isCustomerLoggedIn ? "/customer" : "/manager"}/profile`}
-                                element={<Profile />}
+                                element={<Profile title={formatTitle(t("titlePage.profile"))} />}
                             />
                             <Route path={`/${decision}/cancel-booking/list`} element={
-                                <ListCancelBooking title={`${title} | List Cancel Booking`} />
+                                <ListCancelBooking title={formatTitle(t("titlePage.lstCancelBooking"))} />
                             } />
                             <Route path={`/${decision}/cancel-booking/:id/detail`} element={
-                                <CancelBookingInfo title={`${title} | Cancel Booking Detail`} />
+                                <CancelBookingInfo title={formatTitle(t("cancelBooking.cancelBookingDetail"))} />
                             } />
                         </>}
                         <Route path="*" element={<NotFoundPage />} />

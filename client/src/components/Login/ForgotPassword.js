@@ -5,10 +5,11 @@ import { useNavigate } from "react-router-dom"
 import ReCAPTCHA from "react-google-recaptcha"
 import { forgotPassword } from "../../api/userApi"
 import { toast } from "react-toastify"
+import { Helmet } from "react-helmet"
 
 const divStyle = { display: "flex", alignItems: "center", justifyContent: "center" }
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ title }) => {
     const userName = localStorage.getItem("userName")
     const email = localStorage.getItem("userEmail")
     const [verifyCode, setVerifyCode] = useState(null)
@@ -66,6 +67,8 @@ const ForgotPassword = () => {
 
     return (
         <Box className="wrapper">
+            <Helmet><title>{title}</title></Helmet>
+
             <Box className="breadcrumb" margin={0}>
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
                     {t("header.home")}

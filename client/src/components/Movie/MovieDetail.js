@@ -18,6 +18,8 @@ import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
 import { toast } from "react-toastify"
 import { convertStr } from "../../util"
+import { Helmet } from "react-helmet"
+import { formatTitle } from "../../App"
 import "../../scss/MovieDetail.scss"
 import "../../scss/App.scss"
 
@@ -87,6 +89,14 @@ const MovieDetail = () => {
 
     return (
         <Box bgcolor={"#000"} pb={32}>
+            <Helmet>
+                <title>
+                    {formatTitle(i18n.language === "en"
+                        ? `${t(`movies.${slug}`)} ${t("titlePage.movieDetails")}`
+                        : `${t("titlePage.movieDetails")} ${t(`movies.${slug}`)}`)
+                    }
+                </title>
+            </Helmet>
             {movie && (
                 <Box
                     sx={{

@@ -15,9 +15,10 @@ import { useTranslation } from "react-i18next"
 import { getCustomersRanking } from "../../api/userApi"
 import Loading from "../Loading/Loading"
 import { Tooltip } from "react-tooltip"
+import { Helmet } from "react-helmet"
 import "../../scss/App.scss"
 
-const Charts = () => {
+const Charts = ({ title }) => {
     const [customersRanking, setCustomersRanking] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
@@ -34,6 +35,8 @@ const Charts = () => {
 
     return (
         <Box className="wrapper">
+            <Helmet><title>{title}</title></Helmet>
+
             <Box className="breadcrumb" margin={0}>
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
                     {t("header.home")}
