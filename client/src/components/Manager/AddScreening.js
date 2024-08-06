@@ -81,7 +81,7 @@ const AddScreening = ({ title }) => {
                     <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
                         {t("header.home")}
                     </Typography>
-                    <Typography className="breadcrumb__item" textTransform={"capitalize"}>
+                    <Typography className="breadcrumb__item">
                         {t("addScreening.title")}
                     </Typography>
                 </Box>

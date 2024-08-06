@@ -147,7 +147,7 @@ const App = () => {
                             <Route path="/booking/:bookingId/detail"
                                 element={<CinemaTicket title={formatTitle(t("titlePage.movieTicket"))} />}
                             />
-                            <Route path="/cart" element={<Cart />} />
+                            <Route path="/cart" element={<Cart title={formatTitle(t("cart.title"))} />} />
                             <Route path={"/customer/cancel-booking/:bookingId"} element={
                                 <CancelBooking title={formatTitle(t("titlePage.reasonCancelBooking"))} />
                             } />

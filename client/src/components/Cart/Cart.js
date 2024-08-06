@@ -12,10 +12,11 @@ import { calculateDaysBetween } from "../../util"
 import CancelSendIcon from "@mui/icons-material/CancelScheduleSend"
 import NoDataComponent from "../NotFoundPage/NoDataComponent"
 import { toast } from "react-toastify"
+import { Helmet } from "react-helmet"
 import "../../scss/Cart.scss"
 import "../../scss/App.scss"
 
-const Cart = () => {
+const Cart = ({ title }) => {
     const [bookings, setBookings] = useState()
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
@@ -32,6 +33,7 @@ const Cart = () => {
 
     return (
         <>
+            <Helmet><title>{title}</title></Helmet>
             {bookings && !isLoading ? <Box className="cart__wrapper">
                 <Box className="breadcrumb" margin={0}>
                     <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
