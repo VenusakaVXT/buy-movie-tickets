@@ -12,7 +12,7 @@ const LanguageMenu = () => {
     ]
     const [anchorEl, setAnchorEl] = useState(null)
     const [selectedLanguage, setSelectedLanguage] = useState(
-        languages.find(lang => lang.langCode === i18n.language)
+        languages.find(lang => lang.langCode === i18n.language) || languages[0]
     )
 
     const handleLanguageSelect = (languageCode) => {

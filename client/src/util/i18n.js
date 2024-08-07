@@ -22,6 +22,7 @@ i18n
             checkWhitelist: true
         },
         whitelist: ["en", "vi"],
+        nonExplicitWhitelist: true,
         interpolation: {
             escapeValue: false,
         },
