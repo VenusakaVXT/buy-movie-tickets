@@ -7,13 +7,14 @@ import { getManagerProfile } from "../../api/userApi"
 import { handleDate, getEndTime } from "../../util"
 import Loading from "../Loading/Loading"
 import NoDataComponent from "../NotFoundPage/NoDataComponent"
+import { formatTitle } from "../../App"
 import "../../scss/App.scss"
 import "../../scss/Cart.scss"
 
-const ListData = ({ title }) => {
+const ListData = () => {
     const [manager, setManager] = useState()
     const [isLoading, setIsLoading] = useState(false)
-    const { t } = useTranslation()
+    const { t, i18n } = useTranslation()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -28,7 +29,14 @@ const ListData = ({ title }) => {
     return (
         <>
             {manager && !isLoading ? <Box className="wrapper cart__wrapper">
-                <Helmet><title>{title}</title></Helmet>
+                <Helmet>
+                    <title>
+                        {manager && manager.position === "Manage movies"
+                            ? formatTitle(t("titlePage.lstMovie"))
+                            : formatTitle(t("titlePage.lstScreening"))
+                        }
+                    </title>
+                </Helmet>
 
                 <Box className="breadcrumb" margin={0}>
                     <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
@@ -57,9 +65,7 @@ const ListData = ({ title }) => {
                                     />
 
                                     <Box className="col1">
-                                        <Typography className="link" onClick={() =>
-                                            navigate(`/movie-details/${movie.slug}`)
-                                        }>
+                                        <Typography className="link" onClick={() => navigate(`/movie-details/${movie.slug}`)}>
                                             {t(`movies.${movie.slug}`)}
                                         </Typography>
 
@@ -68,7 +74,9 @@ const ListData = ({ title }) => {
 
                                     <Box className="col2">
                                         <Typography>{t("addMovie.releaseDate")}:</Typography>
-                                        <ListItemText>{handleDate(movie.releaseDate)}</ListItemText>
+                                        <ListItemText>
+                                            {i18n.language === "en" ? movie.releaseDate : handleDate(movie.releaseDate)}
+                                        </ListItemText>
                                     </Box>
 
                                     <Box className="col2">
@@ -106,7 +114,9 @@ const ListData = ({ title }) => {
 
                                     <Box className="col2">
                                         <Typography>{t("addScreening.movieDate")}:</Typography>
-                                        <ListItemText>{screening.movieDate}</ListItemText>
+                                        <ListItemText>
+                                            {i18n.language === "en" ? handleDate(screening.movieDate) : screening.movieDate}
+                                        </ListItemText>
                                     </Box>
 
                                     <Box className="col2">

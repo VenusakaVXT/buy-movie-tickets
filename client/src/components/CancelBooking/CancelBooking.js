@@ -16,10 +16,11 @@ import CloseIcon from "@mui/icons-material/Close"
 import { comparePassword } from "../../api/userApi"
 import { cancelBooking } from "../../api/bookingApi"
 import { Helmet } from "react-helmet"
+import { formatTitle } from "../../App"
 import { toast } from "react-toastify"
 import "../../scss/App.scss"
 
-const CancelBooking = ({ title }) => {
+const CancelBooking = () => {
     const [reason, setReason] = useState("")
     const [otherReason, setOtherReason] = useState("")
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -43,19 +44,14 @@ const CancelBooking = ({ title }) => {
     const handleChangeReason = (e) => {
         const label = e.target.closest("label")
         const queryClass = ".radio-btn .MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium"
-        const targetSvg = label.querySelector(queryClass)
+        const targetSvgs = label.querySelectorAll(queryClass)
 
         document.querySelectorAll(queryClass).forEach((option) => {
             option.classList.remove("active")
         })
 
-        if ((targetSvg.classList.contains("css-1hbvpl3-MuiSvgIcon-root")) ||
-            (targetSvg.classList.contains("css-q8lw68") || targetSvg.classList.contains("css-1u5ei5s"))) {
-            targetSvg.classList.add("active")
-            setReason(e.target.value)
-        } else {
-            toast.error(t("cancelBooking.toastErrorSelectReason"))
-        }
+        targetSvgs.forEach(targetSvg => targetSvg.classList.add("active"))
+        setReason(e.target.value)
     }
 
     const handleCancelBooking = async (e) => {
@@ -88,7 +84,7 @@ const CancelBooking = ({ title }) => {
 
     return (
         <Box className="wrapper">
-            <Helmet><title>{title}</title></Helmet>
+            <Helmet><title>{formatTitle(t("titlePage.reasonCancelBooking"))}</title></Helmet>
 
             <Box className="breadcrumb" margin={0}>
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>

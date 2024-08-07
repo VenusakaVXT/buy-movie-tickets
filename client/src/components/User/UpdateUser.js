@@ -16,6 +16,9 @@ import { updateUser } from "../../api/userApi"
 import { formatDateInput } from "../../util"
 import { toast } from "react-toastify"
 import { useTranslation } from "react-i18next"
+import Flatpickr from "react-flatpickr"
+import { Vietnamese } from "flatpickr/dist/l10n/vn"
+import "flatpickr/dist/flatpickr.min.css"
 
 const setWidth = { width: "510px" }
 const frmRow = { display: "flex", marginBottom: 2 }
@@ -32,8 +35,18 @@ const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) =
     })
     const { t, i18n } = useTranslation()
 
-    const handleChange = (e) => {
-        setInputs((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
+    const handleChange = (e, date = null) => {
+        if (date) {
+            const selectedDate = new Date(date[0])
+            const utcDate = new Date(Date.UTC(
+                selectedDate.getFullYear(),
+                selectedDate.getMonth(),
+                selectedDate.getDate()
+            ))
+            setInputs((prevState) => ({ ...prevState, birthDay: utcDate.toISOString() }))
+        } else {
+            setInputs((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
+        }
     }
 
     const handleSubmit = async (e) => {
@@ -113,13 +126,18 @@ const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) =
 
                         <Box sx={frmCol}>
                             <FormLabel>{t("profile.birthday")}:</FormLabel>
-                            <input
+                            <Flatpickr
                                 type="date"
-                                className="calendar"
+                                className="calendar select-birthday"
                                 name="birthDay"
                                 value={inputs.birthDay}
-                                style={setWidth}
-                                onChange={handleChange}
+                                onChange={(date) => handleChange(null, date)}
+                                options={{
+                                    locale: i18n.language === "vi" ? Vietnamese : undefined,
+                                    altInput: true,
+                                    altFormat: i18n.language === "vi" ? "d/m/Y" : "Y-m-d",
+                                    dateFormat: "Y-m-d"
+                                }}
                             />
                         </Box>
                     </Box>

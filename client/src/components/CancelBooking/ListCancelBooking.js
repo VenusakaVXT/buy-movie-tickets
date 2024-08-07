@@ -7,13 +7,14 @@ import { useSelector } from "react-redux"
 import { getCancelBookingsByUser } from "../../api/userApi"
 import { getCinemaById, getCancelBookingsByCinema } from "../../api/cinemaApi"
 import NoDataComponent from "../NotFoundPage/NoDataComponent"
-import { handleDate } from "../../util"
+import { handleDate, formatDateInput } from "../../util"
 import Loading from "../Loading/Loading"
 import { DataGrid } from "@mui/x-data-grid"
 import { useStyles } from "../Manager/Statistical"
+import { formatTitle } from "../../App"
 import "../../scss/Cart.scss"
 
-const ListCancelBooking = ({ title }) => {
+const ListCancelBooking = () => {
     const [cancelBookingsByUser, setCancelBookingsByUser] = useState()
     const [cancelBookingsByCinema, setCancelBookingsByCinema] = useState()
     const [cinemaName, setCinemaName] = useState("")
@@ -77,7 +78,7 @@ const ListCancelBooking = ({ title }) => {
         id: index + 1,
         userId: row.user,
         bookingId: row.booking,
-        cancellationDate: handleDate(row.createdAt),
+        cancellationDate: i18n.language === "en" ? formatDateInput(row.createdAt) : handleDate(row.createdAt),
         refunds: `${row.refunds.toLocaleString("vi-VN")} VNĐ`,
         approveRequest: row.approveRequest ? t("cancelBooking.approved") : t("cancelBooking.awaitApproval"),
         cancelBookingId: row._id
@@ -85,7 +86,7 @@ const ListCancelBooking = ({ title }) => {
 
     return (
         <Box>
-            <Helmet><title>{title}</title></Helmet>
+            <Helmet><title>{formatTitle(t("titlePage.lstCancelBooking"))}</title></Helmet>
 
             {!isLoading && (cancelBookingsByUser || cancelBookingsByCinema) ?
                 <Box className="cart__wrapper">
@@ -122,12 +123,22 @@ const ListCancelBooking = ({ title }) => {
 
                                     <Box className="col1">
                                         <Typography>{t(`movies.${cancelBooking.booking.screening.movie.slug}`)}</Typography>
-                                        <Typography>{cancelBooking.booking.screening.movieDate}</Typography>
+                                        <Typography>
+                                            {i18n.language === "en"
+                                                ? cancelBooking.booking.screening.movieDate
+                                                : handleDate(cancelBooking.booking.screening.movieDate)
+                                            }
+                                        </Typography>
                                     </Box>
 
                                     <Box className="col2">
                                         <Typography>{t("cancelBooking.cancelDate")}</Typography>
-                                        <Typography>{handleDate(cancelBooking.cancellationTime)}</Typography>
+                                        <Typography>
+                                            {i18n.language === "en"
+                                                ? formatDateInput(cancelBooking.cancellationTime)
+                                                : handleDate(cancelBooking.cancellationTime)
+                                            }
+                                        </Typography>
                                     </Box>
 
                                     <Box className="col3">

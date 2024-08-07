@@ -6,10 +6,11 @@ import ReCAPTCHA from "react-google-recaptcha"
 import { forgotPassword } from "../../api/userApi"
 import { toast } from "react-toastify"
 import { Helmet } from "react-helmet"
+import { formatTitle } from "../../App"
 
 const divStyle = { display: "flex", alignItems: "center", justifyContent: "center" }
 
-const ForgotPassword = ({ title }) => {
+const ForgotPassword = () => {
     const userName = localStorage.getItem("userName")
     const email = localStorage.getItem("userEmail")
     const [verifyCode, setVerifyCode] = useState(null)
@@ -67,7 +68,7 @@ const ForgotPassword = ({ title }) => {
 
     return (
         <Box className="wrapper">
-            <Helmet><title>{title}</title></Helmet>
+            <Helmet><title>{formatTitle(t("password.forgotPassword"))}</title></Helmet>
 
             <Box className="breadcrumb" margin={0}>
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>

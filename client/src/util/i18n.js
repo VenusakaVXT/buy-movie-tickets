@@ -12,6 +12,16 @@ i18n
     .init({
         debug: true,
         fallbackLng: "en",
+        detection: {
+            order: ["querystring", "cookie", "localStorage", "navigator", "htmlTag", "path", "subdomain"],
+            lookupQuerystring: "lng",
+            lookupCookie: "i18next",
+            lookupLocalStorage: "i18nextLng",
+            caches: ["localStorage", "cookie"],
+            excludeCacheFor: ["cimode"],
+            checkWhitelist: true
+        },
+        whitelist: ["en", "vi"],
         interpolation: {
             escapeValue: false,
         },

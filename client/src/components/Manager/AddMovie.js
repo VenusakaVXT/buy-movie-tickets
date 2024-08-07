@@ -19,13 +19,14 @@ import { useTranslation } from "react-i18next"
 import { addMovie, getApiFromBE } from "../../api/movieApi"
 import { Helmet } from "react-helmet"
 import { toast } from "react-toastify"
-import { convertStr } from "../../util"
+import { convertStr, formatDateInput } from "../../util"
+import { formatTitle } from "../../App"
 import Flatpickr from "react-flatpickr"
 import "flatpickr/dist/flatpickr.min.css"
 import { Vietnamese } from "flatpickr/dist/l10n/vn"
 import "../../scss/App.scss"
 
-const AddMovie = ({ title }) => {
+const AddMovie = () => {
     const [inputs, setInputs] = useState({
         title: "",
         description: "",
@@ -75,27 +76,31 @@ const AddMovie = ({ title }) => {
         return () => { resizeObserver.disconnect() }
     }, [])
 
-    const handleChange = (e, date = null) => {
-        if (date) {
-            setInputs((prevState) => ({ ...prevState, releaseDate: date[0] }))
-        } else {
-            setInputs((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
-        }
+    const handleChange = (e) => {
+        setInputs((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
     }
 
-    const handleRadioBtnClick = (event) => {
-        const label = event.target.closest("label")
+    const handleChangeDate = (date) => {
+        const selectedDate = new Date(date[0])
+        const utcDate = new Date(Date.UTC(
+            selectedDate.getFullYear(),
+            selectedDate.getMonth(),
+            selectedDate.getDate()
+        ))
+        const valDate = formatDateInput(utcDate.toISOString())
+        setInputs((prevState) => ({ ...prevState, releaseDate: valDate }))
+    }
+
+    const handleRadioBtnClick = (e) => {
+        const label = e.target.closest("label")
         const queryClass = ".frm-wrapper .MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium"
-        const targetSvg = label.querySelector(queryClass)
+        const targetSvgs = label.querySelectorAll(queryClass)
 
         document.querySelectorAll(queryClass).forEach((option) => {
             option.classList.remove("active")
         })
 
-        if ((targetSvg.classList.contains("css-1hbvpl3-MuiSvgIcon-root")) ||
-            (targetSvg.classList.contains("css-q8lw68") || targetSvg.classList.contains("css-1u5ei5s"))) {
-            targetSvg.classList.add("active")
-        }
+        targetSvgs.forEach(targetSvg => targetSvg.classList.add("active"))
 
         const val = label.textContent === t("addMovie.already")
         setInputs((prevState) => ({ ...prevState, wasReleased: val }))
@@ -117,7 +122,7 @@ const AddMovie = ({ title }) => {
 
     return (
         <>
-            <Helmet><title>{title}</title></Helmet>
+            <Helmet><title>{formatTitle(t("addMovie.title"))}</title></Helmet>
 
             <Box className="wrapper">
                 <Box className="breadcrumb" margin={0}>
@@ -228,7 +233,7 @@ const AddMovie = ({ title }) => {
                             className="calendar"
                             name="releaseDate"
                             value={inputs.releaseDate}
-                            onChange={(date) => handleChange(null, date)}
+                            onChange={(date) => handleChangeDate(date)}
                             required
                             options={{
                                 locale: i18n.language === "vi" ? Vietnamese : undefined,

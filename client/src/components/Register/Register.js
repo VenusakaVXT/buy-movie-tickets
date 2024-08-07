@@ -8,8 +8,9 @@ import { useTranslation } from "react-i18next"
 import { toast } from "react-toastify"
 import ReCAPTCHA from "react-google-recaptcha"
 import { Helmet } from "react-helmet"
+import { formatTitle } from "../../App"
 
-const Register = ({ title }) => {
+const Register = () => {
     const [inputs, setInputs] = useState({
         name: "",
         email: "",
@@ -52,7 +53,7 @@ const Register = ({ title }) => {
 
     return (
         <Box className="auth__wrapper">
-            <Helmet><title>{title}</title></Helmet>
+            <Helmet><title>{formatTitle(t("register.title"))}</title></Helmet>
             <Brand />
 
             <form height={780} className="auth__frm" onSubmit={handleSubmit}>

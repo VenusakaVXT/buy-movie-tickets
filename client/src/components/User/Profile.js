@@ -5,14 +5,15 @@ import { Box, Typography, Button } from "@mui/material"
 import { useSelector, useDispatch } from "react-redux"
 import { customerActions } from "../../store"
 import { getCustomerProfile, getManagerProfile, changePassword } from "../../api/userApi"
-import { handleDate } from "../../util"
+import { formatDateInput, handleDate } from "../../util"
+import { formatTitle } from "../../App"
 import AccountCircleIcon from "@mui/icons-material/AccountCircle"
 import UserUpdateModal from "./UpdateUser"
 import { toast } from "react-toastify"
 import { Helmet } from "react-helmet"
 import "../../scss/App.scss"
 
-const Profile = ({ title }) => {
+const Profile = () => {
     const [customer, setCustomer] = useState()
     const [manager, setManager] = useState()
     const [render, setRender] = useState(true)
@@ -79,7 +80,7 @@ const Profile = ({ title }) => {
 
     return (
         <Box className="wrapper" color={"#fff"}>
-            <Helmet><title>{title}</title></Helmet>
+            <Helmet><title>{formatTitle(t("titlePage.profile"))}</title></Helmet>
 
             <Box className="breadcrumb">
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
@@ -138,8 +139,9 @@ const Profile = ({ title }) => {
                                         {t("register.phoneNumber")}: {customer.phone}
                                     </Typography>
                                     <Typography className="txt-line">
-                                        {t("profile.birthday")}: {customer.birthDay
-                                            ? handleDate(customer.birthDay) : t("profile.noInfo")}
+                                        {t("profile.birthday")}: {customer.birthDay ? i18n.language === "en"
+                                            ? formatDateInput(customer.birthDay) : handleDate(customer.birthDay)
+                                            : t("profile.noInfo")}
                                     </Typography>
                                     <Typography className="txt-line">
                                         {t("profile.gender")}: {customer.gender

@@ -17,7 +17,7 @@ import SendIcon from "@mui/icons-material/Send"
 import { useSelector } from "react-redux"
 import { useTranslation } from "react-i18next"
 import { toast } from "react-toastify"
-import { convertStr } from "../../util"
+import { convertStr, handleDate } from "../../util"
 import { Helmet } from "react-helmet"
 import { formatTitle } from "../../App"
 import "../../scss/MovieDetail.scss"
@@ -188,7 +188,9 @@ const MovieDetail = () => {
 
                                 <Typography className="text-border" variant="body1">
                                     {t("movieDetail.releaseDate", {
-                                        releaseDate: movie.releaseDate ? movie.releaseDate : t("movieDetail.notyet")
+                                        releaseDate: movie.releaseDate
+                                            ? i18n.language === "en" ? movie.releaseDate : handleDate(movie.releaseDate)
+                                            : t("movieDetail.notyet")
                                     })}
                                 </Typography>
 

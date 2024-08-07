@@ -9,10 +9,11 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart"
 import QrCode2Icon from "@mui/icons-material/QrCode2"
 import { getEndTime, handleSeatArr } from "../../util"
 import html2canvas from "html2canvas"
+import { formatTitle } from "../../App"
 import "../../scss/CinemaTicket.scss"
 import "../../scss/App.scss"
 
-const CinemaTicket = ({ title }) => {
+const CinemaTicket = () => {
     const [booking, setBooking] = useState()
     const [isLoading, setIsLoading] = useState(false)
     const bookingId = useParams().bookingId
@@ -50,7 +51,7 @@ const CinemaTicket = ({ title }) => {
         <>
             {booking && !isLoading ? <Box className="cinema-ticket__wrapper">
                 <Helmet>
-                    <title>{title}</title>
+                    <title>{formatTitle(t("titlePage.movieTicket"))}</title>
                 </Helmet>
 
                 <Box className="cinema-ticket__border">

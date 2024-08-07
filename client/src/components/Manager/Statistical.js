@@ -25,6 +25,7 @@ import { convertToAcronym } from "../../util"
 import { Tooltip } from "react-tooltip"
 import CircleIcon from "@mui/icons-material/Circle"
 import { useTranslation } from "react-i18next"
+import { formatTitle } from "../../App"
 import "../../scss/App.scss"
 import "../../scss/Statistical.scss"
 
@@ -103,7 +104,7 @@ const PieCenterLabel = ({ children }) => {
     )
 }
 
-const Statistical = ({ title }) => {
+const Statistical = () => {
     const [tab, setTab] = useState(1)
     const [moviesStatistics, setMoviesStatistics] = useState([])
     const [employeesStatistics, setEmployeesStatistics] = useState({})
@@ -388,7 +389,7 @@ const Statistical = ({ title }) => {
 
     return (
         <Box margin={"15px 46px"} className="statistical__wrapper">
-            <Helmet><title>{title}</title></Helmet>
+            <Helmet><title>{formatTitle(t("statistical.title"))}</title></Helmet>
 
             <Box className="breadcrumb" margin={0}>
                 <Typography className="breadcrumb__item" onClick={() => navigate("/")}>

@@ -11,10 +11,11 @@ import RestoreIcon from "@mui/icons-material/Restore"
 import ReplyIcon from "@mui/icons-material/Reply"
 import { useSelector } from "react-redux"
 import { toast } from "react-toastify"
+import { formatTitle } from "../../App"
 import "../../scss/CinemaTicket.scss"
 import "../../scss/App.scss"
 
-const CancelBookingInfo = ({ title }) => {
+const CancelBookingInfo = () => {
     const [cancelBooking, setCancelBooking] = useState()
     const [isLoading, setIsLoading] = useState(false)
     const cancelBookingId = useParams().id
@@ -45,6 +46,8 @@ const CancelBookingInfo = ({ title }) => {
         <>
             {cancelBooking && !isLoading ?
                 <Box className="wrapper">
+                    <Helmet><title>{formatTitle(t("cancelBooking.cancelBookingDetail"))}</title></Helmet>
+
                     <Box className="breadcrumb" margin={0}>
                         <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
                             {t("header.home")}
@@ -60,8 +63,6 @@ const CancelBookingInfo = ({ title }) => {
                     </Box>
 
                     <Box className="cinema-ticket__wrapper">
-                        <Helmet><title>{title}</title></Helmet>
-
                         <Box className="cinema-ticket__border">
                             <img src={`${process.env.REACT_APP_API_URL}/img/cinema_ticket.png`} alt="cinema-ticket" />
 

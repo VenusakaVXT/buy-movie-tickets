@@ -19,9 +19,11 @@ import { toast } from "react-toastify"
 import Flatpickr from "react-flatpickr"
 import "flatpickr/dist/flatpickr.min.css"
 import { Vietnamese } from "flatpickr/dist/l10n/vn"
+import { formatDateInput } from "../../util"
+import { formatTitle } from "../../App"
 import "../../scss/App.scss"
 
-const AddScreening = ({ title }) => {
+const AddScreening = () => {
     const [inputs, setInputs] = useState({
         movie: "",
         movieDate: "",
@@ -52,9 +54,20 @@ const AddScreening = ({ title }) => {
 
     const handleChangeDateTime = (date = null, time = null) => {
         if (date) {
-            setInputs((prevState) => ({ ...prevState, movieDate: date[0] }))
+            const selectedDate = new Date(date[0])
+            const utcDate = new Date(Date.UTC(
+                selectedDate.getFullYear(),
+                selectedDate.getMonth(),
+                selectedDate.getDate()
+            ))
+            const valDate = formatDateInput(utcDate.toISOString())
+            setInputs((prevState) => ({ ...prevState, movieDate: valDate }))
         } else {
-            setInputs((prevState) => ({ ...prevState, timeSlot: time[0] }))
+            const selectedTime = new Date(time[0])
+            const hours = selectedTime.getHours().toString().padStart(2, "0")
+            const minutes = selectedTime.getMinutes().toString().padStart(2, "0")
+            const formatTime = `${hours}:${minutes}`
+            setInputs((prevState) => ({ ...prevState, timeSlot: formatTime }))
         }
     }
 
@@ -74,7 +87,7 @@ const AddScreening = ({ title }) => {
 
     return (
         <>
-            <Helmet><title>{title}</title></Helmet>
+            <Helmet><title>{formatTitle(t("addScreening.title"))}</title></Helmet>
 
             <Box className="wrapper">
                 <Box className="breadcrumb" margin={0}>

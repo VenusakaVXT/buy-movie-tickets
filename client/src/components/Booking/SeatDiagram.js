@@ -11,10 +11,11 @@ import Loading from "../Loading/Loading"
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined"
 import DragHandleOutlinedIcon from "@mui/icons-material/DragHandleOutlined"
 import { toast } from "react-toastify"
+import { formatTitle } from "../../App"
 import "../../scss/SeatDiagram.scss"
 import "../../scss/App.scss"
 
-const SeatDiagram = ({ title }) => {
+const SeatDiagram = () => {
     const [synthesizeData, setSynthesizeData] = useState()
     const [price, setPrice] = useState(0)
     const [quantity, setQuantity] = useState(0)
@@ -164,7 +165,7 @@ const SeatDiagram = ({ title }) => {
         <>
             {synthesizeData && !isLoading ? <Box margin={"30px 92px"}>
                 <Helmet>
-                    <title>{title}</title>
+                    <title>{formatTitle(t("titlePage.seatDiagram"))}</title>
                 </Helmet>
 
                 <Box className="breadcrumb" margin={0}>

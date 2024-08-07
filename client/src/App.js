@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { customerActions, managerActions } from "./store"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import { useTranslation } from "react-i18next"
 import Header from "./components/Header/Header"
 import Home from "./components/HomePage/Home"
 import Release from "./components/HomePage/Release"
@@ -48,7 +47,6 @@ export const formatTitle = (pathname) => `${title} | ${pathname}`
 export const socket = io(process.env.REACT_APP_API_URL)
 
 const App = () => {
-    const { t } = useTranslation()
     const dispatch = useDispatch()
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
@@ -69,16 +67,14 @@ const App = () => {
             socket.on("accountLocked", ({ id }) => {
                 socket.emit("employeeLogout", { id: managerId })
                 if (id === localStorage.getItem("managerId")) {
-                    alert(t("login.toastManagerDisabled"))
+                    alert("This account will be logged out because it has been disabled by the BMT system.")
                     dispatch(managerActions.logout())
                 }
             })
         }
 
-        return () => {
-            socket.off("accountLocked")
-        }
-    }, [isManagerLoggedIn, managerId, dispatch, t])
+        return () => { socket.off("accountLocked") }
+    }, [isManagerLoggedIn, managerId, dispatch])
 
     useEffect(() => {
         if (localStorage.getItem("customerId")) {
@@ -121,65 +117,32 @@ const App = () => {
                         <Route path="/release" element={<Release />} />
                         <Route path="/category" element={<Category />} />
                         <Route path="/cinema" element={<Cinema />} />
-                        <Route path="/all-movies" element={
-                            <Movie title={formatTitle(t("moviePage.allMovies"))} />
-                        } />
+                        <Route path="/all-movies" element={<Movie />} />
                         <Route path="/movie-details/:slug" element={<MovieDetail />} />
                         <Route path="/booking/:slug" element={<Booking />} />
-                        <Route path="/booking/:movieSlug/:screeningId" element={
-                            <SeatDiagram title={formatTitle(t("titlePage.seatDiagram"))} />
-                        } />
-                        <Route path="/charts" element={
-                            <Charts title={formatTitle(t("charts.title"))} />
-                        } />
+                        <Route path="/booking/:movieSlug/:screeningId" element={<SeatDiagram />} />
+                        <Route path="/charts" element={<Charts />} />
                         {(!isCustomerLoggedIn && !isManagerLoggedIn) && <>
-                            <Route path="/register" element={
-                                <Register title={formatTitle(t("register.title"))} />
-                            } />
-                            <Route path="/login" element={
-                                <Login title={formatTitle(t("login.title"))} />
-                            } />
-                            <Route path="/login/forgot-password" element={
-                                <ForgotPassword title={formatTitle(t("password.forgotPassword"))} />
-                            } />
+                            <Route path="/register" element={<Register />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/login/forgot-password" element={<ForgotPassword />} />
                         </>}
                         {isCustomerLoggedIn && <>
-                            <Route path="/booking/:bookingId/detail"
-                                element={<CinemaTicket title={formatTitle(t("titlePage.movieTicket"))} />}
-                            />
-                            <Route path="/cart" element={<Cart title={formatTitle(t("cart.title"))} />} />
-                            <Route path={"/customer/cancel-booking/:bookingId"} element={
-                                <CancelBooking title={formatTitle(t("titlePage.reasonCancelBooking"))} />
-                            } />
+                            <Route path="/booking/:bookingId/detail" element={<CinemaTicket />} />
+                            <Route path="/cart" element={<Cart />} />
+                            <Route path={"/customer/cancel-booking/:bookingId"} element={<CancelBooking />} />
                         </>}
                         {isManagerLoggedIn && <>
-                            <Route path="/manager/add-movie" element={
-                                <AddMovie title={formatTitle(t("addMovie.title"))} />
-                            } />
-                            <Route path="/manager/add-screening" element={
-                                <AddScreening title={formatTitle(t("addScreening.title"))} />
-                            } />
-                            <Route path={`/manager/list-movie`}
-                                element={<ListData title={formatTitle(t("titlePage.lstMovie"))} />}
-                            />
-                            <Route path={`/manager/list-screening`}
-                                element={<ListData title={formatTitle(t("titlePage.lstScreening"))} />}
-                            />
-                            <Route path="/manager/statistical" element={
-                                <Statistical title={formatTitle(t("statistical.title"))} />
-                            } />
+                            <Route path="/manager/add-movie" element={<AddMovie />} />
+                            <Route path="/manager/add-screening" element={<AddScreening />} />
+                            <Route path={`/manager/list-movie`} element={<ListData />} />
+                            <Route path={`/manager/list-screening`} element={<ListData />} />
+                            <Route path="/manager/statistical" element={<Statistical />} />
                         </>}
                         {(isCustomerLoggedIn || isManagerLoggedIn) && <>
-                            <Route
-                                path={`${isCustomerLoggedIn ? "/customer" : "/manager"}/profile`}
-                                element={<Profile title={formatTitle(t("titlePage.profile"))} />}
-                            />
-                            <Route path={`/${decision}/cancel-booking/list`} element={
-                                <ListCancelBooking title={formatTitle(t("titlePage.lstCancelBooking"))} />
-                            } />
-                            <Route path={`/${decision}/cancel-booking/:id/detail`} element={
-                                <CancelBookingInfo title={formatTitle(t("cancelBooking.cancelBookingDetail"))} />
-                            } />
+                            <Route path={`/${decision}/profile`} element={<Profile />} />
+                            <Route path={`/${decision}/cancel-booking/list`} element={<ListCancelBooking />} />
+                            <Route path={`/${decision}/cancel-booking/:id/detail`} element={<CancelBookingInfo />} />
                         </>}
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>

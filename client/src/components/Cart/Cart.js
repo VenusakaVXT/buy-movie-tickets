@@ -13,10 +13,11 @@ import CancelSendIcon from "@mui/icons-material/CancelScheduleSend"
 import NoDataComponent from "../NotFoundPage/NoDataComponent"
 import { toast } from "react-toastify"
 import { Helmet } from "react-helmet"
+import { formatTitle } from "../../App"
 import "../../scss/Cart.scss"
 import "../../scss/App.scss"
 
-const Cart = ({ title }) => {
+const Cart = () => {
     const [bookings, setBookings] = useState()
     const [isLoading, setIsLoading] = useState(false)
     const navigate = useNavigate()
@@ -33,7 +34,7 @@ const Cart = ({ title }) => {
 
     return (
         <>
-            <Helmet><title>{title}</title></Helmet>
+            <Helmet><title>{formatTitle(t("cart.title"))}</title></Helmet>
             {bookings && !isLoading ? <Box className="cart__wrapper">
                 <Box className="breadcrumb" margin={0}>
                     <Typography className="breadcrumb__item" onClick={() => navigate("/")}>
