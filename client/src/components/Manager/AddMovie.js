@@ -19,7 +19,7 @@ import { useTranslation } from "react-i18next"
 import { addMovie, getApiFromBE } from "../../api/movieApi"
 import { Helmet } from "react-helmet"
 import { toast } from "react-toastify"
-import { convertStr, formatDateInput } from "../../util"
+import { convertStr, handleUTCDate } from "../../util"
 import { formatTitle } from "../../App"
 import Flatpickr from "react-flatpickr"
 import "flatpickr/dist/flatpickr.min.css"
@@ -81,14 +81,7 @@ const AddMovie = () => {
     }
 
     const handleChangeDate = (date) => {
-        const selectedDate = new Date(date[0])
-        const utcDate = new Date(Date.UTC(
-            selectedDate.getFullYear(),
-            selectedDate.getMonth(),
-            selectedDate.getDate()
-        ))
-        const valDate = formatDateInput(utcDate.toISOString())
-        setInputs((prevState) => ({ ...prevState, releaseDate: valDate }))
+        setInputs((prevState) => ({ ...prevState, releaseDate: handleUTCDate(date[0]) }))
     }
 
     const handleRadioBtnClick = (e) => {

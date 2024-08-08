@@ -13,7 +13,7 @@ import {
 } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
 import { updateUser } from "../../api/userApi"
-import { formatDateInput } from "../../util"
+import { formatDateInput, handleUTCDate } from "../../util"
 import { toast } from "react-toastify"
 import { useTranslation } from "react-i18next"
 import Flatpickr from "react-flatpickr"
@@ -35,18 +35,12 @@ const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) =
     })
     const { t, i18n } = useTranslation()
 
-    const handleChange = (e, date = null) => {
-        if (date) {
-            const selectedDate = new Date(date[0])
-            const utcDate = new Date(Date.UTC(
-                selectedDate.getFullYear(),
-                selectedDate.getMonth(),
-                selectedDate.getDate()
-            ))
-            setInputs((prevState) => ({ ...prevState, birthDay: utcDate.toISOString() }))
-        } else {
-            setInputs((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
-        }
+    const handleChange = (e) => {
+        setInputs((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
+    }
+
+    const handleChangeDateTime = (date) => {
+        setInputs((prevState) => ({ ...prevState, birthDay: handleUTCDate(date[0]) }))
     }
 
     const handleSubmit = async (e) => {
@@ -131,7 +125,7 @@ const UserUpdateModal = ({ id, customerData, open, onClose, onProfileUpdate }) =
                                 className="calendar select-birthday"
                                 name="birthDay"
                                 value={inputs.birthDay}
-                                onChange={(date) => handleChange(null, date)}
+                                onChange={(date) => handleChangeDateTime(date)}
                                 options={{
                                     locale: i18n.language === "vi" ? Vietnamese : undefined,
                                     altInput: true,

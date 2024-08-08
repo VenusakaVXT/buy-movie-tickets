@@ -24,16 +24,21 @@ export const handleDate = (date) => {
     return formatDate.toLocaleDateString("en-GB", options)
 }
 
-export const convertToAcronym = (phrase) => {
-    const words = String(phrase).split(" ")
-    const acronym = words.map(word => word.charAt(0).toUpperCase()).join("")
-    return acronym
-}
-
 export const formatDateInput = (dateStr) => {
     if (!dateStr) return null
     const date = new Date(dateStr)
     return date.toISOString().split("T")[0]
+}
+
+export const handleUTCDate = (date) => {
+    const selectedDate = new Date(date)
+    const utcDate = new Date(Date.UTC(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate()
+    ))
+    const valDate = formatDateInput(utcDate.toISOString())
+    return valDate
 }
 
 export const calculateDaysBetween = (movieDate, bookingDate) => {
@@ -47,3 +52,9 @@ export const calculateDaysBetween = (movieDate, bookingDate) => {
 }
 
 export const convertStr = (str) => str.toLowerCase().replace(/[\s,]+/g, "-")
+
+export const convertToAcronym = (phrase) => {
+    const words = String(phrase).split(" ")
+    const acronym = words.map(word => word.charAt(0).toUpperCase()).join("")
+    return acronym
+}

@@ -19,7 +19,7 @@ import { toast } from "react-toastify"
 import Flatpickr from "react-flatpickr"
 import "flatpickr/dist/flatpickr.min.css"
 import { Vietnamese } from "flatpickr/dist/l10n/vn"
-import { formatDateInput } from "../../util"
+import { handleUTCDate } from "../../util"
 import { formatTitle } from "../../App"
 import "../../scss/App.scss"
 
@@ -54,14 +54,7 @@ const AddScreening = () => {
 
     const handleChangeDateTime = (date = null, time = null) => {
         if (date) {
-            const selectedDate = new Date(date[0])
-            const utcDate = new Date(Date.UTC(
-                selectedDate.getFullYear(),
-                selectedDate.getMonth(),
-                selectedDate.getDate()
-            ))
-            const valDate = formatDateInput(utcDate.toISOString())
-            setInputs((prevState) => ({ ...prevState, movieDate: valDate }))
+            setInputs((prevState) => ({ ...prevState, movieDate: handleUTCDate(date[0]) }))
         } else {
             const selectedTime = new Date(time[0])
             const hours = selectedTime.getHours().toString().padStart(2, "0")
