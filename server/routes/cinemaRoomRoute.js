@@ -9,5 +9,6 @@ cinemaRoomRouter.get("/table-lists", cinemaRoomController.tableLists)
 cinemaRoomRouter.get("/:id/edit", cinemaRoomController.edit)
 cinemaRoomRouter.put("/:id", cinemaRoomController.update)
 cinemaRoomRouter.delete("/:id", cinemaRoomController.delete)
+cinemaRoomRouter.put("/:id/reset-seats", cinemaRoomController.resetSeats)
 
 export default cinemaRoomRouter

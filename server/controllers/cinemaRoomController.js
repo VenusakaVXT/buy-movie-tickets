@@ -153,6 +153,26 @@ class CinemaRoomController {
             next(err)
         }
     }
+
+    resetSeats = async (req, res, next) => {
+        try {
+            const cinemaRoom = await CinemaRoom.findById(req.params.id).populate("seats")
+
+            if (!cinemaRoom) {
+                return res.status(404).json({ message: "CinemaRoom not found..." })
+            }
+
+            const seatUpdates = cinemaRoom.seats.map((seatId) => {
+                return Seat.findByIdAndUpdate(seatId, { selected: false }, { new: true })
+            })
+
+            await Promise.all(seatUpdates)
+            return res.status(200).json({ message: "Reset seats successfully!!!" })
+        } catch (err) {
+            res.status(400).json({ message: "Reset seats failed!!!" })
+            next(err)
+        }
+    }
 }
 
 export default new CinemaRoomController

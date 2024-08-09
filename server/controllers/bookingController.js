@@ -529,3 +529,23 @@ export const approveRequestCancelBooking = async (req, res, next) => {
         next(err)
     }
 }
+
+export const resetSeats = async (req, res, next) => {
+    try {
+        const booking = await Booking.findById(req.params.id).populate("seats")
+
+        if (!booking) {
+            return res.status(404).json({ message: "Booking not found..." })
+        }
+
+        const seatUpdates = booking.seats.map((seatId) => {
+            return Seat.findByIdAndUpdate(seatId, { selected: false }, { new: true })
+        })
+
+        await Promise.all(seatUpdates)
+        return res.status(200).json({ message: "Reset seats successfully!!!" })
+    } catch (err) {
+        res.status(400).json({ message: "Reset seats failed!!!" })
+        next(err)
+    }
+}

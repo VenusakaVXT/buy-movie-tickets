@@ -8,6 +8,7 @@ import {
     getAllCancelBooking,
     approveRequestCancelBooking,
     restoreBooking,
+    resetSeats
 } from "../controllers/bookingController.js"
 
 const bookingRouter = express.Router()
@@ -20,5 +21,6 @@ bookingRouter.get("/cancel-booking/:id/detail", detailCancelBooking)
 bookingRouter.patch("/cancel-booking/:id/restore", restoreBooking)
 bookingRouter.get("/cancel-booking/all", getAllCancelBooking)
 bookingRouter.put("/cancel-booking/:id/approve-request", approveRequestCancelBooking)
+bookingRouter.put("/:id/reset-seats", resetSeats)
 
 export default bookingRouter

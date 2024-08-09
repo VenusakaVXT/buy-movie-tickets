@@ -72,7 +72,7 @@ configCors(app)
 app.use(cors("*"))
 
 // Router
-app.use("/", homeRouter)
+app.use("/home", homeRouter)
 app.use("/user", userRouter)
 app.use("/manager", managerRouter)
 app.use("/movie", movieRouter)
