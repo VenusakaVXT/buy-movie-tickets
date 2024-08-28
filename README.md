@@ -1,4 +1,25 @@
 # Buy Movie Tickets (BMT)
+![react](https://badgen.net/badge/react/^18.2.0?labelColor=blue&color=black)
+![@redux-toolkit](https://badgen.net/badge/@redux-toolkit/^2.2.3?labelColor=purple&color=black)
+![@mui-material](https://badgen.net/badge/@mui-material/^5.14.18?labelColor=blue&color=black)
+![axios](https://badgen.net/badge/axios/^1.6.2?labelColor=purple&color=black)
+![i18next](https://badgen.net/badge/i18next/^23.12.1?labelColor=purple&color=black)
+![flatpickr](https://badgen.net/badge/flatpickr/^4.6.13?labelColor=red&color=black)
+![html2canvas](https://badgen.net/badge/html2canvas/^1.4.1?labelColor=orange&color=black)
+![react-router-dom](https://badgen.net/badge/react-router-dom/^6.20.0?labelColor=grey&color=black)
+![sass](https://badgen.net/badge/sass/^1.69.5?labelColor=pink&color=black)
+![web-vitals](https://badgen.net/badge/web-vitals/^2.1.4?labelColor=red&color=black)
+![node](https://badgen.net/badge/node/v20.3.1?labelColor=green&color=black)
+![express](https://badgen.net/badge/express/4.18.2?labelColor=yellow&color=black)
+![mongoose](https://badgen.net/badge/mongoose/^7.6.3?labelColor=green&color=black)
+![crypto](https://badgen.net/badge/crypto/^1.0.1?labelColor=yellow&color=black)
+![jsonwebtoken](https://badgen.net/badge/jsonwebtoken/^9.0.2?labelColor=brown&color=black)
+![nodemailer](https://badgen.net/badge/nodemailer/^6.9.14?labelColor=green&color=black)
+![nunjucks](https://badgen.net/badge/nunjucks/^3.2.4?labelColor=green&color=black)
+![less](https://badgen.net/badge/less/^4.2.0?labelColor=pink&color=black)
+![moment](https://badgen.net/badge/moment/^2.30.1?labelColor=red&color=black)
+![socket.io](https://badgen.net/badge/socket.io/^4.7.5?labelColor=purple&color=black)
+
 This is the project that I did for software project 1, 2 and my scientific research project at school. As the name of the product suggests, the topic I chose to research and implement is called: "Analyze, Design and Build an Online Movie Ticket Sales System".
 
 In project 1, I went into the analysis of the online movie ticket sales system. From surveying the old system, giving advantages and disadvantages to overcome the new system, building more advanced functions that are not available in other systems, managing large data volumes when managing capacity movie screenings, revenue and all other activities for many cinemas rather than a single cinema like previous systems did.
