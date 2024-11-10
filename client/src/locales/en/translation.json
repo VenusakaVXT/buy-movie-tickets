@@ -157,7 +157,7 @@
         "captain-america-brave-new-world": "Captain America: Brave New World",
         "thunderbolts": "Thunderbolts",
         "fantastic-four": "Fantastic Four",
-        "avengers-the-kang-dynasty": "Avengers: The Kang Dynasty",
+        "avengers-doomsday": "Avengers: DoomsDay",
         "avengers-secret-wars": "Avengers: Secret Wars"
     },
     "movieDetail": {
@@ -189,7 +189,13 @@
         "toastErrorSend": "Error send comment!!!",
         "toastSuccessDelete": "Delete comment successfully...",
         "toastErrorDelete": "Delete comment failed...",
-        "toastWarnEdit": "Edit cmt under maintenance!!!"
+        "toastWarnEdit": "Edit cmt under maintenance!!!",
+        "minutesAgo": "minute{{isPlural}} ago",
+        "hoursAgo": "hour{{isPlural}} ago",
+        "daysAgo": "day{{isPlural}} ago",
+        "weeksAgo": "week{{isPlural}} ago",
+        "monthsAgo": "month{{isPlural}} ago",
+        "yearsAgo": "year{{isPlural}} ago"
     },
     "booking": {
         "allScreenings": "All Screenings",

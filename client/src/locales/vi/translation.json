@@ -157,7 +157,7 @@
         "captain-america-brave-new-world": "Captain America: Trật Tự Thế Giới Mới",
         "thunderbolts": "Thunderbolts",
         "fantastic-four": "Bộ Tứ Siêu Đẳng",
-        "avengers-the-kang-dynasty": "Avengers: Triều Đại Kang",
+        "avengers-doomsday": "Avengers: DoomsDay",
         "avengers-secret-wars": "Avengers: Secret Wars"
     },
     "moviesDescription": {
@@ -207,7 +207,13 @@
         "toastErrorSend": "Lỗi gửi bình luận!!!",
         "toastSuccessDelete": "Xóa bình luận thành công...",
         "toastErrorDelete": "Xóa bình luận thất bại...",
-        "toastWarnEdit": "Chỉnh sửa bình luận đã bảo trì!!!"
+        "toastWarnEdit": "Chỉnh sửa bình luận đã bảo trì!!!",
+        "minutesAgo": "phút{{isPlural}} trước",
+        "hoursAgo": "giờ{{isPlural}} trước",
+        "daysAgo": "ngày{{isPlural}} trước",
+        "weeksAgo": "tuần{{isPlural}} trước",
+        "monthsAgo": "tháng{{isPlural}} trước",
+        "yearsAgo": "năm{{isPlural}} trước"
     },
     "booking": {
         "allScreenings": "Tất Cả Suất Chiếu",

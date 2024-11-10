@@ -23,19 +23,17 @@ commentSchema.virtual("periodAfterCreation").get(function () {
     const duration = moment.duration(now.diff(createdAt))
 
     if (duration.asMinutes() < 60) {
-        return `${Math.floor(duration.asMinutes())} minutes ago`
+        return { timeUnit: "minutes", duration: Math.floor(duration.asMinutes()) }
     } else if (duration.asHours() < 24) {
-        return `${Math.floor(duration.asHours())} hours ago`
+        return { timeUnit: "hours", duration: Math.floor(duration.asHours()) }
     } else if (duration.asDays() < 7) {
-        return `${Math.floor(duration.asDays())} days ago`
+        return { timeUnit: "days", duration: Math.floor(duration.asDays()) }
     } else if (duration.asWeeks() < 4) {
-        return `${Math.floor(duration.asWeeks())} weeks ago`
+        return { timeUnit: "weeks", duration: Math.floor(duration.asWeeks()) }
     } else if (duration.asMonths() < 12) {
-        const months = Math.floor(duration.asMonths())
-        return `${months} ${months === 1 ? "month" : "months"} ago`
+        return { timeUnit: "months", duration: Math.floor(duration.asMonths()) }
     } else {
-        const years = Math.floor(duration.asYears())
-        return `${years} ${years === 1 ? "year" : "years"} ago`
+        return { timeUnit: "years", duration: Math.floor(duration.asYears()) }
     }
 })
 

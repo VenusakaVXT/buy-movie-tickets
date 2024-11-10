@@ -87,6 +87,26 @@ const MovieDetail = () => {
         }
     }
 
+    const getDurationComment = (periodAfterCreation) => {
+        const timeUnit = periodAfterCreation.timeUnit
+        const duration = periodAfterCreation.duration
+        const isPlural = i18n.language === "en" && duration > 1 ? "s" : ""
+
+        if (timeUnit === "minutes") {
+            return `${duration} ${t("comment.minutesAgo", { isPlural })}`
+        } else if (timeUnit === "hours") {
+            return `${duration} ${t("comment.hoursAgo", { isPlural })}`
+        } else if (timeUnit === "days") {
+            return `${duration} ${t("comment.daysAgo", { isPlural })}`
+        } else if (timeUnit === "weeks") {
+            return `${duration} ${t("comment.weeksAgo", { isPlural })}`
+        } else if (timeUnit === "months") {
+            return `${duration} ${t("comment.monthsAgo", { isPlural })}`
+        } else {
+            return `${duration} ${t("comment.yearsAgo", { isPlural })}`
+        }
+    }
+
     return (
         <Box bgcolor={"#000"} pb={32}>
             <Helmet>
@@ -271,7 +291,7 @@ const MovieDetail = () => {
                                             </Stack>
 
                                             <Typography pt={"2px"} sx={{ fontSize: "0.75rem", color: "#ccc" }}>
-                                                {comment.periodAfterCreation}
+                                                {getDurationComment(comment.periodAfterCreation)}
                                             </Typography>
                                         </Box>
 
