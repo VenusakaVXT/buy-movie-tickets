@@ -28,7 +28,6 @@ const ListCancelBooking = () => {
 
     useEffect(() => {
         setIsLoading(true)
-
         isCustomerLoggedIn && getCancelBookingsByUser(userId)
             .then((res) => setCancelBookingsByUser(res.cancelBookingItems))
             .catch((err) => console.error(err))
@@ -37,7 +36,6 @@ const ListCancelBooking = () => {
 
     useEffect(() => {
         setIsLoading(true)
-
         isManagerLoggedIn && getCancelBookingsByCinema(cinemaId)
             .then((res) => setCancelBookingsByCinema(res.cancelBookingRows))
             .catch((err) => console.error(err))

@@ -26,7 +26,7 @@ const Release = () => {
     const handleTabClick = (val) => {
         if (val !== showing) {
             setShowing(val)
-            sessionStorage.setItem("tabState", val ? "now_showing" : "comming_soon")
+            sessionStorage.setItem("tabState", val ? "now_showing" : "coming_soon")
         }
     }
 
@@ -50,7 +50,7 @@ const Release = () => {
                     className={`release__tab ${!showing ? "selected" : ""}`}
                     onClick={() => handleTabClick(false)}
                 >
-                    {t("homepage.commingSoon").toUpperCase()}
+                    {t("homepage.comingSoon").toUpperCase()}
                 </span>
             </h4>
 

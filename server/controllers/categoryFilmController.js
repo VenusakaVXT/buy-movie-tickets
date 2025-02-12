@@ -7,7 +7,6 @@ class CategoryController {
 
     store(req, res, next) {
         const category = new Category(req.body)
-
         category.save()
             .then(() => res.redirect("/category-film/table-lists"))
             .catch(() => next)

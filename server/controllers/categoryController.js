@@ -59,7 +59,7 @@ export const updateCategory = async (req, res, next) => {
         const updatedCategory = await Category.findByIdAndUpdate(
             id,
             { category, movies },
-            { new: true }, // returns object after update
+            { new: true }
         )
 
         if (!updatedCategory) {

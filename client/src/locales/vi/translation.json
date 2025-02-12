@@ -36,7 +36,7 @@
     "homepage": {
         "specialOffers": "Ưu đãi đặc biệt",
         "nowShowing": "Phim Đang Chiếu",
-        "commingSoon": "Phim Sắp Chiếu",
+        "comingSoon": "Phim Sắp Chiếu",
         "allMovieBtn": "Xem Tất Cả Phim",
         "systemDescription": "Buy Movie Tickets là hệ thống bán vé xem phim trực tuyến uy tín nhất hiện nay không chỉ ở Việt Nam mà còn trên toàn thế giới. Thay vì các hệ thống bán vé xem phim trực tuyến khác chỉ quản lý một hệ thống rạp chiếu phim. Với Buy Movie Tickets là nơi quản lý, kiểm soát việc bán vé và công khai suất chiếu cho nhiều hệ thống rạp trên toàn thế giới. Dưới đây là tri ân các hệ thống rạp chiếu phim đã đồng hành cùng Buy Movie Tickets, chúng tôi xin chân thành cảm ơn. Buy Movie Tickets uy tín tạo nên thương hiệu và sự tin cậy của mọi hệ thống rạp chiếu phim và khách hàng trên toàn cầu."
     },
@@ -132,12 +132,14 @@
         "noteContentModal": "Mã xác minh giới hạn thời gian sử dụng trong 5 phút",
         "placeholderInputModal": "Nhập email lấy mã xác minh..."
     },
+    "selectSort": {
+        "low": "Thấp",
+        "high": "Cao",
+        "unprecedented": "Không sắp xếp",
+        "name": "Tên phim",
+        "duration": "Thời lượng"
+    },
     "moviePage": {
-        "selectSort": [
-            "Mức độ liên quan",
-            "Tên phim (A - Z)",
-            "Giá (Thấp - Cao)"
-        ],
         "allMovies": "Tất Cả Phim",
         "moviesCount": "Tổng cộng có {{count}} bộ phim.",
         "sortBy": "Sắp xếp theo:"
@@ -410,7 +412,7 @@
     "addScreening": {
         "title": "Thêm Suất Chiếu",
         "acronymNowShowing": "ĐC",
-        "acronymCommingSoon": "SC",
+        "acronymComingSoon": "SC",
         "movieDate": "Ngày chiếu",
         "timeSlot": "Khung giờ",
         "price": "Giá tiền",

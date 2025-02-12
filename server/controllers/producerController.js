@@ -21,7 +21,6 @@ class ProducerController {
 
     store(req, res, next) {
         const producer = new Producer(req.body)
-
         producer.save()
             .then(() => res.redirect("/producer/table-lists"))
             .catch(() => next)

@@ -10,25 +10,29 @@ import {
 } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 import { useTranslation } from "react-i18next"
-import { getApiFromBE } from "../../api/movieApi"
+import { getAllMovies, getApiFromBE } from "../../api/movieApi"
 import ScreeningItem from "../Screening/ScreeningItem"
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber"
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
+import ExpandLessIcon from "@mui/icons-material/ExpandLess"
 import AppsIcon from "@mui/icons-material/Apps"
 import ViewListIcon from "@mui/icons-material/ViewList"
 import { Helmet } from "react-helmet"
 import { formatTitle } from "../../App"
 import "../../scss/App.scss"
 import "../../scss/Movie.scss"
+import { MovieFilter } from "../../util/constants/movie"
+import { OrderBy } from "../../util/constants/order"
 
 const Movie = () => {
     const navigate = useNavigate()
     const { t } = useTranslation()
     const [movies, setMovies] = useState([])
     const [active, setActive] = useState(0)
-    const [sort, setSort] = useState(0)
+    const [sort, setSort] = useState("normal")
     const [isLoading, setIsLoading] = useState(false)
     const [tabStates, setTabStates] = useState([true, false])
-    const listSelectSort = t("moviePage.selectSort", { returnObjects: true })
+    const [expandedLists, setExpandedLists] = useState({ nowShowing: true, comingSoon: true })
 
     useEffect(() => {
         const storedActiveTab = sessionStorage.getItem("activeTab")
@@ -44,74 +48,111 @@ const Movie = () => {
         }
 
         setIsLoading(true)
+        handleSort(sort)
+    }, [sort])
 
-        getApiFromBE("movie")
-            .then((data) => setMovies(data.movies))
-            .catch((err) => console.error(err))
-            .finally(() => setIsLoading(false))
-    }, [])
+    const handleSort = (sortOption) => {
+        switch (sortOption) {
+            case "movieTitleAsc":
+                getAllMovies(MovieFilter.MOVIE_TITLE, OrderBy.ASC)
+                    .then((data) => setMovies(data.movies))
+                    .catch((err) => console.error(err))
+                    .finally(() => setIsLoading(false))
+                break
+            case "movieTitleDesc":
+                getAllMovies(MovieFilter.MOVIE_TITLE, OrderBy.DESC)
+                    .then((data) => setMovies(data.movies))
+                    .catch((err) => console.error(err))
+                    .finally(() => setIsLoading(false))
+                break
+            case "movieTimeAsc":
+                getAllMovies(MovieFilter.MOVIE_TIME, OrderBy.ASC)
+                    .then((data) => setMovies(data.movies))
+                    .catch((err) => console.error(err))
+                    .finally(() => setIsLoading(false))
+                break
+            case "movieTimeDesc":
+                getAllMovies(MovieFilter.MOVIE_TIME, OrderBy.DESC)
+                    .then((data) => setMovies(data.movies))
+                    .catch((err) => console.error(err))
+                    .finally(() => setIsLoading(false))
+                break
+            default:
+                getApiFromBE("movie")
+                    .then((data) => setMovies(data.movies))
+                    .catch((err) => console.error(err))
+                    .finally(() => setIsLoading(false))
+                break
+        }
+    }
 
     const filterMoviesByRelease = (isReleased) => {
         return movies.filter((movie) => movie.wasReleased === isReleased)
     }
 
-    const renderMovieList = (title, isReleased) => (
+    const toggleExpandedList = (listKey) => {
+        setExpandedLists((prev) => ({ ...prev, [listKey]: !prev[listKey] }))
+    }
+
+    const renderMovieList = (title, isReleased, listKey) => (
         <>
-            <Typography variant="h5" color={"#fff"} paddingLeft={"16px"}>
-                <ConfirmationNumberIcon
-                    htmlColor="#ff0000"
-                    sx={{
-                        position: "relative",
-                        bottom: "-3px",
-                        paddingRight: "5px"
-                    }}
-                />
+            <Typography
+                variant="h5"
+                color={"#fff"}
+                paddingLeft={"16px"}
+                onClick={() => toggleExpandedList(listKey)}
+                sx={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+            >
+                <ConfirmationNumberIcon htmlColor="#ff0000" sx={{ paddingRight: "5px" }} />
                 {title.toUpperCase()}
+                {expandedLists[listKey] ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             </Typography>
 
-            <div role="tab" hidden={active !== 0}>
-                <Box className="movie__list">
-                    {filterMoviesByRelease(isReleased).map((movie, index) => (
-                        <ScreeningItem
-                            key={index}
-                            id={movie._id}
-                            title={movie.title}
-                            description={movie.description}
-                            releaseDate={movie.releaseDate}
-                            time={movie.time}
-                            trailerId={movie.trailerId}
-                            slug={movie.slug}
-                            displayType={true}
-                        />
-                    ))}
-                </Box>
-            </div>
+            {expandedLists[listKey] && (
+                <div role="tab" hidden={active !== 0}>
+                    <Box className="movie__list">
+                        {filterMoviesByRelease(isReleased).map((movie, index) => (
+                            <ScreeningItem
+                                key={index}
+                                id={movie._id}
+                                title={movie.title}
+                                description={movie.description}
+                                releaseDate={movie.releaseDate}
+                                time={movie.time}
+                                trailerId={movie.trailerId}
+                                slug={movie.slug}
+                                displayType={true}
+                            />
+                        ))}
+                    </Box>
+                </div>
+            )}
 
-            <div role="tab" hidden={active !== 1}>
-                <Box className="movie__list">
-                    {filterMoviesByRelease(isReleased).map((movie, index) => (
-                        <ScreeningItem
-                            key={index}
-                            id={movie._id}
-                            title={movie.title}
-                            releaseDate={movie.releaseDate}
-                            time={movie.time}
-                            trailerId={movie.trailerId}
-                            slug={movie.slug}
-                            displayType={false}
-                        />
-                    ))}
-                </Box>
-            </div>
+            {expandedLists[listKey] && (
+                <div role="tab" hidden={active !== 1}>
+                    <Box className="movie__list">
+                        {filterMoviesByRelease(isReleased).map((movie, index) => (
+                            <ScreeningItem
+                                key={index}
+                                id={movie._id}
+                                title={movie.title}
+                                releaseDate={movie.releaseDate}
+                                time={movie.time}
+                                trailerId={movie.trailerId}
+                                slug={movie.slug}
+                                displayType={false}
+                            />
+                        ))}
+                    </Box>
+                </div>
+            )}
         </>
     )
 
     const handleTabChange = (_, newActive) => {
         const newTabState = tabStates.map((_, index) => index === newActive)
-
         setTabStates(newTabState)
         setActive(newActive)
-
         sessionStorage.setItem("activeTab", newActive.toString())
     }
 
@@ -188,19 +229,25 @@ const Movie = () => {
                         <Select
                             value={sort}
                             onChange={(e) => setSort(e.target.value)}
-                            defaultValue={0}
+                            defaultValue="normal"
                         >
-                            {listSelectSort.map((item, index) => (
-                                <MenuItem value={index}>{item}</MenuItem>
-                            ))}
+                            <MenuItem value="normal">{t("selectSort.unprecedented")}</MenuItem>
+                            <MenuItem value="movieTitleAsc">{`${t("selectSort.name")} (A-Z)`}</MenuItem>
+                            <MenuItem value="movieTitleDesc">{`${t("selectSort.name")} (Z-A)`}</MenuItem>
+                            <MenuItem value="movieTimeAsc">
+                                {`${t("selectSort.duration")} (${t("selectSort.low")}-${t("selectSort.high")})`}
+                            </MenuItem>
+                            <MenuItem value="movieTimeDesc">
+                                {`${t("selectSort.duration")} (${t("selectSort.high")}-${t("selectSort.low")})`}
+                            </MenuItem>
                         </Select>
                     </FormControl>
                 </Box>
             </Box>
 
             {isLoading ? <Box mb={12}><Box className="loading-spinner"></Box></Box> : <>
-                {renderMovieList(t("homepage.nowShowing"), true)}
-                {renderMovieList(t("homepage.commingSoon"), false)}
+                {renderMovieList(t("homepage.nowShowing"), true, "nowShowing")}
+                {renderMovieList(t("homepage.comingSoon"), false, "comingSoon")}
             </>}
         </Box>
     )

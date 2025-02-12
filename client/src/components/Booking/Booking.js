@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import { Box, Typography } from "@mui/material"
+import React, { useCallback, useEffect, useState } from "react"
+import { Box, Typography, Menu, MenuItem } from "@mui/material"
 import { useNavigate, useParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { getEndTime } from "../../util"
@@ -15,6 +15,9 @@ import {
 import NoDataComponent from "../NotFoundPage/NoDataComponent"
 import { Helmet } from "react-helmet"
 import { formatTitle } from "../../App"
+import FilterListIcon from "@mui/icons-material/FilterList"
+import { ScreeningFilter } from "../../util/constants/screening"
+import { OrderBy } from "../../util/constants/order"
 import "../../scss/App.scss"
 import "../../scss/Booking.scss"
 
@@ -25,6 +28,8 @@ const Booking = () => {
     const [screenings, setScreenings] = useState()
     const [selectedCinema, setSelectedCinema] = useState("")
     const [selectedDate, setSelectedDate] = useState("")
+    const [sort, setSort] = useState("")
+    const [anchorEl, setAnchorEl] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const slug = useParams().slug
     const navigate = useNavigate()
@@ -48,14 +53,49 @@ const Booking = () => {
             .catch((err) => console.error(err))
     }, [])
 
+    const handleSort = useCallback((sortOption) => {
+        switch (sortOption) {
+            case "movieDateAsc":
+                getScreeningsByMovie(slug, ScreeningFilter.SCREENING_DATE, OrderBy.ASC)
+                    .then((res) => setScreenings(res.screenings))
+                    .catch((err) => console.error(err))
+                    .finally(() => setIsLoading(false))
+                break
+            case "movieDateDesc":
+                getScreeningsByMovie(slug, ScreeningFilter.SCREENING_DATE, OrderBy.DESC)
+                    .then((res) => setScreenings(res.screenings))
+                    .catch((err) => console.error(err))
+                    .finally(() => setIsLoading(false))
+                break
+            case "priceAsc":
+                getScreeningsByMovie(slug, ScreeningFilter.SCREENING_PRICE, OrderBy.ASC)
+                    .then((res) => setScreenings(res.screenings))
+                    .catch((err) => console.error(err))
+                    .finally(() => setIsLoading(false))
+                break
+            case "priceDesc":
+                getScreeningsByMovie(slug, ScreeningFilter.SCREENING_PRICE, OrderBy.DESC)
+                    .then((res) => setScreenings(res.screenings))
+                    .catch((err) => console.error(err))
+                    .finally(() => setIsLoading(false))
+                break
+            default:
+                renderAllScreenings(slug)
+                break
+        }
+    }, [slug])
+
     useEffect(() => {
         setIsLoading(true)
+        handleSort(sort)
+    }, [sort, handleSort])
 
-        getScreeningsByMovie(slug)
+    const renderAllScreenings = (slug) => {
+        getScreeningsByMovie(slug, "", "")
             .then((res) => setScreenings(res.screenings))
             .catch((err) => console.error(err))
             .finally(() => setIsLoading(false))
-    }, [slug])
+    }
 
     const handleSelectActive = (target, queryClass) => {
         document.querySelectorAll(queryClass).forEach((item) => {
@@ -64,13 +104,6 @@ const Booking = () => {
             }
         })
         target.classList.add("active")
-    }
-
-    const renderAllScreenings = () => {
-        getScreeningsByMovie(slug)
-            .then((res) => setScreenings(res.screenings))
-            .catch((err) => console.error(err))
-            .finally(() => setIsLoading(false))
     }
 
     const handleSelectCinema = (event, cinemaId) => {
@@ -96,7 +129,7 @@ const Booking = () => {
                 .catch((err) => console.error(err))
                 .finally(() => setIsLoading(false))
         } else {
-            renderAllScreenings()
+            renderAllScreenings(slug)
         }
     }
 
@@ -123,8 +156,16 @@ const Booking = () => {
                 .catch((err) => console.error(err))
                 .finally(() => setIsLoading(false))
         } else {
-            renderAllScreenings()
+            renderAllScreenings(slug)
         }
+    }
+
+    const handleClose = () => setAnchorEl(null)
+
+    const handleMenuItemClick = (e) => {
+        const value = e.currentTarget.getAttribute("value")
+        setSort(value)
+        handleClose()
     }
 
     return (
@@ -181,7 +222,35 @@ const Booking = () => {
                         ))}
                     </Box>
 
-                    <Typography color={"#fff"} paddingTop={2}>{t("booking.movieScreenings")}</Typography>
+                    <Box display={"flex"} justifyContent={"space-between"} paddingTop={2} color={"#fff"}>
+                        <Typography>{t("booking.movieScreenings")}</Typography>
+
+                        <FilterListIcon cursor="pointer" onClick={(e) => setAnchorEl(e.currentTarget)} />
+
+                        <Menu
+                            anchorEl={anchorEl}
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                            transformOrigin={{ vertical: "top", horizontal: "right" }}
+                        >
+                            <MenuItem value="" onClick={handleMenuItemClick}>
+                                {t("selectSort.unprecedented")}
+                            </MenuItem>
+                            <MenuItem value="movieDateAsc" onClick={handleMenuItemClick}>
+                                {`${t("addScreening.movieDate")} (${t("selectSort.low")}-${t("selectSort.high")})`}
+                            </MenuItem>
+                            <MenuItem value="movieDateDesc" onClick={handleMenuItemClick}>
+                                {`${t("addScreening.movieDate")} (${t("selectSort.high")}-${t("selectSort.low")})`}
+                            </MenuItem>
+                            <MenuItem value="priceAsc" onClick={handleMenuItemClick}>
+                                {`${t("addScreening.price")} (${t("selectSort.low")}-${t("selectSort.high")})`}
+                            </MenuItem>
+                            <MenuItem value="priceDesc" onClick={handleMenuItemClick}>
+                                {`${t("addScreening.price")} (${t("selectSort.high")}-${t("selectSort.low")})`}
+                            </MenuItem>
+                        </Menu>
+                    </Box>
 
                     <Box className="screening__list">
                         {isLoading ? <Box mb={12}><Box className="loading-spinner"></Box></Box> :
@@ -207,6 +276,11 @@ const Booking = () => {
                                     <Box>
                                         <Typography>{t("booking.cinemaRoom")}</Typography>
                                         <Typography>{screening.cinemaRoom.roomNumber}</Typography>
+                                    </Box>
+
+                                    <Box>
+                                        <Typography>{t("addScreening.price")}</Typography>
+                                        <Typography>{screening.price}</Typography>
                                     </Box>
                                 </Box>
                             )) : <NoDataComponent content={t("booking.noData")} />}

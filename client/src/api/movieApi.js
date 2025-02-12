@@ -12,6 +12,28 @@ export const getApiFromBE = async (destination) => {
     return resData
 }
 
+export const getAllMovies = async (groupCode, order) => {
+    const res = await axios
+        .get(`/movie/?groupCode=${groupCode}&order=${order}`)
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200) console.log("no data...")
+
+    const resData = await res.data
+    return resData
+}
+
+export const getAllScreenings = async (groupCode, order) => {
+    const res = await axios
+        .get(`/screening/?groupCode=${groupCode}&order=${order}`)
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200) console.log("no data...")
+
+    const resData = await res.data
+    return resData
+}
+
 export const getMovieDetail = async (slug) => {
     const res = await axios
         .get(`/movie/${slug}/detail`)
@@ -34,9 +56,11 @@ export const getCommentsByMovie = async (slug) => {
     return resData
 }
 
-export const getScreeningsByMovie = async (slug) => {
+export const getScreeningsByMovie = async (slug, groupCode, order) => {
     const res = await axios
-        .get(`/movie/${slug}/screenings`)
+        .get(groupCode !== ""
+            ? `/movie/${slug}/screenings?groupCode=${groupCode}&order=${order}`
+            : `/movie/${slug}/screenings`)
         .catch((err) => console.error(err))
 
     if (res.status !== 200) console.log("no data...")

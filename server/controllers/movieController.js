@@ -7,57 +7,76 @@ import slugify from "slugify"
 import Screening from "../models/Screening.js"
 import CinemaRoom from "../models/CinemaRoom.js"
 import Comment from "../models/Comment.js"
+import { MovieFilter } from "../util/constants/movie.js"
+import { ScreeningFilter } from "../util/constants/screening.js"
+import { OrderBy } from "../util/constants/order.js"
 
 export const getAllMovies = async (req, res, next) => {
-    let movies
+    const { groupCode, order } = req.query
+    let sortOption = {}
+
+    if (!groupCode) {
+        try {
+            const movies = await Movie.find()
+            if (!movies || movies.length === 0) {
+                return res.status(404).json({ message: "Movies not found..." })
+            }
+            return res.status(200).json({ movies })
+        } catch (err) {
+            console.error(err)
+            return res.status(500).json({ message: "Request failed..." })
+        }
+    }
+
+    if (groupCode === MovieFilter.MOVIE_TITLE) {
+        sortOption.title = order === OrderBy.DESC ? -1 : 1
+    } else if (groupCode === MovieFilter.MOVIE_TIME) {
+        sortOption.time = order === OrderBy.DESC ? -1 : 1
+    } else {
+        return res.status(400).json({ message: "Invalid groupCode" })
+    }
 
     try {
-        movies = await Movie.find()
+        const movies = await Movie.find().sort(sortOption)
+        if (!movies || movies.length === 0) {
+            return res.status(404).json({ message: "Movies not found..." })
+        }
+        return res.status(200).json({ movies })
     } catch (err) {
         console.error(err)
+        return res.status(500).json({ message: "Request failed..." })
     }
-
-    if (!movies) {
-        return res.status(500).json({ message: "request failed..." })
-    }
-
-    return res.status(200).json({ movies })
 }
 
 export const getMovieById = async (req, res, next) => {
     const id = req.params.id
-
-    let movie
-
     try {
-        movie = await Movie.findById(id)
+        const movie = await Movie.findById(id)
+        if (!movie) {
+            return res.status(404).json({ message: "Invalid movie id..." })
+        }
+        return res.status(200).json({ movie })
     } catch (err) {
         console.error(err)
+        return res.status(500).json({ message: "Request failed..." })
     }
-
-    if (!movie) {
-        return res.status(404).json({ message: "invalid movie id..." })
-    }
-
-    return res.status(200).json({ movie })
 }
 
 export const getMovieBySlug = async (req, res, next) => {
-    let movie
-
     try {
-        movie = await Movie.findOne({ slug: req.params.slug })
+        const movie = await Movie.findOne({ slug: req.params.slug })
             .populate("category", "category")
             .populate("producer", "producerName")
+
+        if (!movie) {
+            return res.status(404).json({ message: "Invalid movie slug..." })
+        }
+
+        return res.status(200).json({ movie })
     } catch (err) {
         console.error(err)
+        return res.status(500).json({ message: "Request failed..." })
     }
-
-    if (!movie) {
-        return res.status(404).json({ message: "invalid movie slug..." })
-    }
-
-    return res.status(200).json({ movie })
 }
 
 export const addMovie = async (req, res, next) => {
@@ -161,10 +180,10 @@ export const deleteMovie = async (req, res, next) => {
     }
 
     if (!movie) {
-        return res.status(500).json({ message: "unable to delete..." })
+        return res.status(500).json({ message: "Unable to delete..." })
     }
 
-    return res.status(200).json({ message: "successfully delete!!!" })
+    return res.status(200).json({ message: "Successfully delete!!!" })
 }
 
 export const updateMovie = async (req, res, next) => {
@@ -200,7 +219,7 @@ export const updateMovie = async (req, res, next) => {
         }, { new: true })
 
         if (!updatedMovie) {
-            res.status(404).json({ message: "invalid movie id..." })
+            res.status(404).json({ message: "Invalid movie id..." })
         }
 
         res.status(200).json(updatedMovie)
@@ -215,23 +234,34 @@ export const updateMovie = async (req, res, next) => {
 export const getScreeningsByMovieSlug = async (req, res, next) => {
     try {
         const { slug } = req.params
+        const { groupCode, order } = req.query
+        let sortOption = {}
+
+        if (groupCode) {
+            if (groupCode === ScreeningFilter.SCREENING_DATE) {
+                sortOption.movieDate = order === OrderBy.DESC ? -1 : 1
+            } else if (groupCode === ScreeningFilter.SCREENING_PRICE) {
+                sortOption.price = order === OrderBy.DESC ? -1 : 1
+            } else {
+                return res.status(400).json({ message: "Invalid groupCode" })
+            }
+        }
+
         const movie = await Movie.findOne({ slug }).populate({
             path: "screenings",
             select: "_id movieDate timeSlot price cinemaRoom",
-            populate: {
-                path: "cinemaRoom",
-                select: "roomNumber"
-            }
+            populate: { path: "cinemaRoom", select: "roomNumber" },
+            options: groupCode ? { sort: sortOption } : {}
         })
 
         if (!movie) {
-            return res.status(404).json({ message: "movie not found..." })
+            return res.status(404).json({ message: "Movie not found..." })
         }
 
         return res.status(200).json({ screenings: movie.screenings })
     } catch (err) {
         console.error(err)
-        return res.status(500).json({ message: next })
+        return res.status(500).json({ message: "Screenings not found for the movie..." })
     }
 }
 

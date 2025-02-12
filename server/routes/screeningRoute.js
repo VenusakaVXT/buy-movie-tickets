@@ -11,11 +11,12 @@ screeningRouter.get("/now-showing", screeningController.lstNowShowing)
 screeningRouter.get("/:id/edit", screeningController.edit)
 screeningRouter.put("/:id", screeningController.update)
 screeningRouter.delete("/:id", screeningController.delete)
-screeningRouter.get("/comming-soon", screeningController.lstCommingSoon)
+screeningRouter.get("/coming-soon", screeningController.lstComingSoon)
 screeningRouter.get("/:id/cinema-room/all-seats", screeningController.getAllSeatsFromCinemaRoom)
 screeningRouter.get("/dates", screeningController.getCurrentDateAnd7DaysLater)
 screeningRouter.get("/:movieSlug/:movieDate", screeningController.getScreeningsByDate)
 screeningRouter.get("/:movieSlug/cinema/:cinemaId", screeningController.getScreeningsByCinema)
 screeningRouter.get("/:movieSlug/:movieDate/:cinemaId", screeningController.getScreeningsByCinemaAndDate)
+screeningRouter.get("/:id", screeningController.getScreeningById)
 
 export default screeningRouter

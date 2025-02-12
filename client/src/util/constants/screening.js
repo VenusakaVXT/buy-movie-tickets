@@ -1,0 +1,4 @@
+export const ScreeningFilter = {
+    SCREENING_DATE: "SCREENING_DATE",
+    SCREENING_PRICE: "SCREENING_PRICE"
+}

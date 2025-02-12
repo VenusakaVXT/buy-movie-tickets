@@ -97,7 +97,7 @@ const AddScreening = () => {
                         <FormLabel>
                             <span className="txt-span">*</span> {t("cinemaTicket.movie")} (<span className="text-italic">
                                 {`${t("addScreening.acronymNowShowing")}: ${t("homepage.nowShowing")}, 
-                                ${t("addScreening.acronymCommingSoon")}: ${t("homepage.commingSoon")}`}
+                                ${t("addScreening.acronymComingSoon")}: ${t("homepage.comingSoon")}`}
                             </span>):
                         </FormLabel>
                         <FormControl fullWidth>
@@ -114,7 +114,7 @@ const AddScreening = () => {
                                 {movies.map((movie) =>
                                     <MenuItem key={movie._id} value={movie._id}>
                                         {t(`movies.${movie.slug}`)} ({movie.wasReleased
-                                            ? t("addScreening.acronymNowShowing") : t("addScreening.acronymCommingSoon")})
+                                            ? t("addScreening.acronymNowShowing") : t("addScreening.acronymComingSoon")})
                                     </MenuItem>)
                                 }
                             </Select>

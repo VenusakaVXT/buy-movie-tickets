@@ -7,21 +7,66 @@ import mongoose, { isValidObjectId } from "mongoose"
 import jwt from "jsonwebtoken"
 import Seat from "../models/Seat.js"
 import moment from "moment"
+import { ScreeningFilter } from "../util/constants/screening.js"
+import { OrderBy } from "../util/constants/order.js"
 
 class ScreeningController {
     getApiScreening = async (req, res, next) => {
+        const { groupCode, order } = req.query
+        let sortOption = {}
+
+        if (!groupCode) {
+            try {
+                const screenings = await Screening.find()
+                    .populate("movie", "title")
+                    .populate("cinemaRoom", "roomNumber")
+
+                if (!screenings) {
+                    return res.status(404).json({ message: "Screenings not found..." })
+                }
+
+                res.status(200).json({ screenings })
+            } catch (err) {
+                console.error(err)
+                return res.status(500).json({ message: "Request failed..." })
+            }
+        }
+
+        if (groupCode === ScreeningFilter.SCREENING_DATE) {
+            sortOption.movieDate = order === OrderBy.DESC ? -1 : 1
+        } else if (groupCode === ScreeningFilter.SCREENING_PRICE) {
+            sortOption.price = order === OrderBy.DESC ? -1 : 1
+        } else {
+            return res.status(400).json({ message: "Invalid groupCode" })
+        }
+
         try {
-            const screenings = await Screening.find()
+            const screenings = await Screening.find().sort(sortOption)
                 .populate("movie", "title")
                 .populate("cinemaRoom", "roomNumber")
 
             if (!screenings) {
-                return res.status(500).json({ message: "request failed..." })
+                return res.status(404).json({ message: "Screenings not found..." })
             }
 
             res.status(200).json({ screenings })
         } catch (err) {
             console.error(err)
+            return res.status(500).json({ message: "Request failed..." })
+        }
+    }
+
+    getScreeningById = async (req, res, next) => {
+        const id = req.params.id
+        try {
+            const screening = await Screening.findById(id)
+            if (!screening || !isValidObjectId(id)) {
+                return res.status(404).json({ message: "Invalid screening id..." })
+            }
+            return res.status(200).json({ screening })
+        } catch (err) {
+            console.error(err)
+            return res.status(500).json({ message: "Request failed..." })
         }
     }
 
@@ -123,7 +168,7 @@ class ScreeningController {
             session.endSession()
 
             if (!screening) {
-                return res.status(500).json({ message: "request failed..." })
+                return res.status(500).json({ message: "Request failed..." })
             }
 
             return res.status(201).json({ screening, message: "Add screening successfully..." })
@@ -209,7 +254,7 @@ class ScreeningController {
             if (screening.wasReleased === true) {
                 res.redirect("/screening/now-showing")
             } else {
-                res.redirect("/screening/comming-soon")
+                res.redirect("/screening/coming-soon")
             }
         } catch (err) {
             next(err)
@@ -347,8 +392,6 @@ class ScreeningController {
                 await cinemaRoomObj.save()
             }
 
-            // const checkIsWasreleased = movieObj.wasReleased ? "now-showing" : "comming-soon"
-
             res.redirect("/screening/now-showing")
         } catch (err) {
             next(err)
@@ -379,7 +422,7 @@ class ScreeningController {
         }
     }
 
-    lstCommingSoon = async (req, res, next) => {
+    lstComingSoon = async (req, res, next) => {
         try {
             const screenings = await Screening.find({ wasReleased: false })
             const movies = await Movie.find({})
@@ -409,7 +452,7 @@ class ScreeningController {
                 screening.showtimeOver = screeningDate < currentDate
             })
 
-            res.render("screening/comming-soon", { screenings })
+            res.render("screening/coming-soon", { screenings })
         } catch (err) {
             next(err)
         }
@@ -473,7 +516,7 @@ class ScreeningController {
 
             return res.status(200).json({ screenings })
         } catch {
-            return res.status(500).json({ message: next })
+            return res.status(500).json({ message: "This movie has no show in this cinema" })
         }
     }
 
