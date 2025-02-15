@@ -23,7 +23,6 @@ const CinemaTicket = () => {
 
     useEffect(() => {
         setIsLoading(true)
-
         getBookingDetail(bookingId)
             .then((res) => setBooking(res.booking))
             .catch((err) => console.error(err))

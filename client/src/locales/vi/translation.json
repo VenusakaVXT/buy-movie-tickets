@@ -266,11 +266,15 @@
     },
     "cart": {
         "title": "Giỏ Hàng",
+        "passReleaseDate": "Đã qua ngày chiếu",
         "seatNumber": "Số ghế:",
         "priceTicket": "Giá vé:",
         "viewDetails": "Xem chi tiết",
         "cancelBooking": "Hủy suất chiếu",
         "waitCancel": "Vé này đã được hủy và đang chờ phê duyệt",
+        "removeMovieTicket": "Xóa vé xem phim",
+        "toastDeleteSuccess": "Xóa vé xem phim thành công",
+        "toastDeleteFailed": "Xóa vé xem phim thất bại",
         "toastCancelBooking": "Không đáp ứng đủ điều kiện để trả lại vé",
         "noBooking": "Bạn chưa đặt vé nào"
     },

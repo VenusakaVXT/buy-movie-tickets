@@ -27,7 +27,6 @@ const Charts = () => {
 
     useEffect(() => {
         setIsLoading(true)
-
         getCustomersRanking()
             .then((res) => setCustomersRanking(res.customersStatistics))
             .catch((err) => console.error(err))

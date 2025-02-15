@@ -33,6 +33,7 @@ $choice: #750fff;
 
         &.seat-booked {
             background: $booked;
+            cursor: default;
         }
 
         &.seat-choice {

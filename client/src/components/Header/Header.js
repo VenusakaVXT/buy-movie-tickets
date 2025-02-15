@@ -58,6 +58,11 @@ const Header = () => {
     const ratingPoints = useSelector((state) => state.customer.ratingPoints)
 
     useEffect(() => {
+        console.log("Bookings length:", bookingsLength)
+        console.log("Rating points:", ratingPoints)
+    }, [bookingsLength, ratingPoints])
+
+    useEffect(() => {
         if (location.pathname === "/") setActive(0)
     }, [location])
 
@@ -72,7 +77,6 @@ const Header = () => {
             getCustomerProfile(customerId)
                 .then((res) => setCustomer(res.user))
                 .catch((err) => console.error(err))
-
             getBookingsFromUser(customerId)
                 .then((res) => setBookings(res.bookings))
                 .catch((err) => console.error(err))

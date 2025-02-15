@@ -20,6 +20,8 @@ import { toast } from "react-toastify"
 import { convertStr, handleDate } from "../../util"
 import { Helmet } from "react-helmet"
 import { formatTitle } from "../../App"
+import { useDispatch } from "react-redux"
+import { customerActions } from "../../store"
 import "../../scss/MovieDetail.scss"
 import "../../scss/App.scss"
 
@@ -34,6 +36,7 @@ const MovieDetail = () => {
     const userId = localStorage.getItem("customerId")
     const slug = useParams().slug
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const { t, i18n } = useTranslation()
 
     useEffect(() => {
@@ -58,19 +61,22 @@ const MovieDetail = () => {
                     content: newComment
                 })
 
-                // if (res) {
-                //     dispatch(customerActions.setRatingPoints(5))
-                // }
-
-                setComments([...comments, res.comment])
-                setNewComment("")
+                if (res) {
+                    dispatch(customerActions.setRatingPoints(5))
+                    setComments([...comments, res.comment])
+                    setNewComment("")
+                } else {
+                    console.error("Error comment:", res.message)
+                    toast.error(t("comment.toastErrorSend"))
+                }
             } else if (isManagerLoggedIn) {
                 toast.info(t("comment.toastInfoStaff"))
             } else {
                 toast.info(t("comment.toastInfoLogIn"))
                 navigate("/login")
             }
-        } catch {
+        } catch (err) {
+            console.error("Error comment:", err)
             toast.error(t("comment.toastErrorSend"))
         }
     }
@@ -81,7 +87,7 @@ const MovieDetail = () => {
             setComments(comments.filter(comment => comment._id !== id))
             setIsModalOpen(false)
             toast.success(t("comment.toastSuccessDelete"))
-            // dispatch(customerActions.setRatingPoints(-5))
+            dispatch(customerActions.setRatingPoints(-5))
         } catch {
             toast.error(t("comment.toastErrorDelete"))
         }

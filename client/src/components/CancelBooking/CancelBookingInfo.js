@@ -26,7 +26,6 @@ const CancelBookingInfo = () => {
 
     useEffect(() => {
         setIsLoading(true)
-
         detailCancelBooking(cancelBookingId)
             .then((res) => setCancelBooking(res.cancelBooking))
             .catch((err) => console.error(err))

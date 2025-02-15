@@ -14,7 +14,8 @@ import {
     getCancelBookingsByUser,
     changePassword,
     sendCodeToEmail,
-    forgotPassword
+    forgotPassword,
+    userDeleteBooking
 } from "../controllers/userController.js"
 
 const userRouter = express.Router()
@@ -26,6 +27,7 @@ userRouter.put("/:id", updateUser)
 userRouter.delete("/:id", deleteUser)
 userRouter.post("/login", login)
 userRouter.get("/:id/bookings", getBookingOfUser)
+userRouter.delete("/:userId/bookings/:bookingId", userDeleteBooking)
 userRouter.get("/customers/ranking", getCustomersRanking)
 userRouter.post("/create-comment", userComment)
 userRouter.delete("/delete-comment/:commentId", userDeleteComment)

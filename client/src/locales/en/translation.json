@@ -248,11 +248,15 @@
     },
     "cart": {
         "title": "Cart",
+        "passReleaseDate": "Pass release date",
         "seatNumber": "Seat number:",
         "priceTicket": "Price ticket:",
         "viewDetails": "View details",
         "cancelBooking": "Cancel booking",
         "waitCancel": "This movie screening has been canceled and is awaiting approval",
+        "removeMovieTicket": "Remove movie ticket",
+        "toastDeleteSuccess": "Delete movie ticket successfully",
+        "toastDeleteFailed": "Delete movie ticket failed",
         "toastCancelBooking": "Conditions are not met to return tickets",
         "noBooking": "You haven't booked any tickets yet"
     },

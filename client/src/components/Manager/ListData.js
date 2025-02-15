@@ -19,7 +19,6 @@ const ListData = () => {
 
     useEffect(() => {
         setIsLoading(true)
-
         getManagerProfile(localStorage.getItem("managerId"))
             .then((res) => setManager(res.manager))
             .catch((err) => console.error(err))

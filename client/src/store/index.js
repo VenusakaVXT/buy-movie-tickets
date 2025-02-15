@@ -22,15 +22,8 @@ const customerSlice = createSlice({
             localStorage.setItem("customerData", JSON.stringify(action.payload))
         },
         logout(state) {
-            localStorage.removeItem("customerData")
-            localStorage.removeItem("customerId")
-            localStorage.removeItem("customerName")
-            localStorage.removeItem("seatBookeds")
-            localStorage.removeItem("ratingPointsDeducted")
-            localStorage.removeItem("refunds")
-            localStorage.removeItem("compensationPercent")
-            sessionStorage.removeItem("tabState")
-            sessionStorage.removeItem("activeTab")
+            localStorage.clear()
+            sessionStorage.clear()
             state.isLoggedIn = false
             state.id = null
             state.name = ""
@@ -42,6 +35,9 @@ const customerSlice = createSlice({
         },
         addBooking(state, action) {
             state.bookings.push(action.payload)
+        },
+        removeBooking(state, action) {
+            state.bookings = state.bookings.filter(booking => booking._id !== action.payload)
         },
         setRatingPoints(state, action) {
             state.ratingPoints += action.payload
@@ -63,13 +59,8 @@ const managerSlice = createSlice({
             localStorage.removeItem("userName")
         },
         logout(state) {
-            localStorage.removeItem("token")
-            localStorage.removeItem("managerId")
-            localStorage.removeItem("managerEmail")
-            localStorage.removeItem("cinemaId")
-            localStorage.removeItem("seatBookeds")
-            sessionStorage.removeItem("tabState")
-            sessionStorage.removeItem("activeTab")
+            localStorage.clear()
+            sessionStorage.clear()
             state.isLoggedIn = false
             state.id = null
         }

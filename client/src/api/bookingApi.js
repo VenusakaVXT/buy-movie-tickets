@@ -33,6 +33,17 @@ export const getBookingsFromUser = async (userId) => {
     return resData
 }
 
+export const userDeleteBooking = async (userId, bookingId) => {
+    const res = await axios
+        .delete(`/user/${userId}/bookings/${bookingId}`)
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200 && res.status !== 201) console.log("no data...")
+
+    const resData = await res.data
+    return resData
+}
+
 export const cancelBooking = async ({ userId, bookingId, reason, refunds, compensationPercent }) => {
     const res = await axios
         .post("/booking/cancel-booking", { userId, bookingId, reason, refunds, compensationPercent })

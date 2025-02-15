@@ -227,6 +227,24 @@ export const getBookingOfUser = async (req, res, next) => {
     }
 }
 
+export const userDeleteBooking = async (req, res, next) => {
+    try {
+        const { userId, bookingId } = req.params
+        const booking = await Booking.findById(bookingId)
+
+        if (!booking) {
+            return res.status(404).json({ success: false, message: "Booking not found..." })
+        }
+
+        await User.findByIdAndUpdate(userId, { $pull: { bookings: bookingId } })
+        // await Booking.findByIdAndDelete(bookingId)
+
+        return res.status(200).json({ success: true, message: "Booking delete successfully!!!" })
+    } catch {
+        return res.status(500).json({ message: "Booking delete failed!!!" })
+    }
+}
+
 export const getCustomersRanking = async (req, res, next) => {
     try {
         const customers = await User.find().lean()

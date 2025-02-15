@@ -36,7 +36,6 @@ const SeatDiagram = () => {
 
     useEffect(() => {
         setIsLoading(true)
-
         getAllSeatsFromCinemaRoom(screeningId)
             .then((res) => setSynthesizeData(res.synthesizeData))
             .catch((err) => console.error(err))
