@@ -16,6 +16,8 @@ import cinemaRoomRouter from "./routes/cinemaRoomRoute.js"
 import seatRouter from "./routes/seatRoute.js"
 import screeningRouter from "./routes/screeningRoute.js"
 import employeeRouter from "./routes/employeeRoute.js"
+import promotionProgramRouter from "./routes/promotionProgramRoute.js"
+import waterCornComboRouter from "./routes/waterCornComboRoute.js"
 import configCors from "./config/fixCORS.js"
 import path, { dirname } from "path"
 import { fileURLToPath } from "url"
@@ -86,10 +88,13 @@ app.use("/cinemaroom", cinemaRoomRouter)
 app.use("/seat", seatRouter)
 app.use("/screening", screeningRouter)
 app.use("/employee", employeeRouter)
+app.use("/promotion-program", promotionProgramRouter)
+app.use("/water-corn-combo", waterCornComboRouter)
 
 // Static file
 const __dirname = dirname(fileURLToPath(import.meta.url))
 app.use(express.static(path.join(__dirname, "public")))
+app.use(express.static(path.join(__dirname, "public/uploads")))
 
 // Template engine
 nunjucks.configure("views", {

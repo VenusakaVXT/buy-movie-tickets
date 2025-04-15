@@ -36,6 +36,7 @@ import ListCancelBooking from "./components/CancelBooking/ListCancelBooking"
 import CancelBookingInfo from "./components/CancelBooking/CancelBookingInfo"
 import Loading from "./components/Loading/Loading"
 import ForgotPassword from "./components/Login/ForgotPassword"
+import PromotionProgram from "./components/PromotionProgram/PromotionProgram"
 
 const convertTitle = (pathname) => {
     const convertPathname = pathname.replace(/\//g, " ").replace(/-/g, " ").trim()
@@ -122,6 +123,7 @@ const App = () => {
                         <Route path="/booking/:slug" element={<Booking />} />
                         <Route path="/booking/:movieSlug/:screeningId" element={<SeatDiagram />} />
                         <Route path="/charts" element={<Charts />} />
+                        <Route path="/promotion-program/:id" element={<PromotionProgram />} />
                         {(!isCustomerLoggedIn && !isManagerLoggedIn) && <>
                             <Route path="/register" element={<Register />} />
                             <Route path="/login" element={<Login />} />

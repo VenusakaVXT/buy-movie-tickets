@@ -1,26 +1,29 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import "../../scss/Banner.scss"
 import LoyaltyIcon from "@mui/icons-material/Loyalty"
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import { useTranslation } from "react-i18next"
-
-const banners = [
-    { imgIndex: 1, path: "happy-weekend" },
-    { imgIndex: 2, path: "movie-night" },
-    { imgIndex: 3, path: "movie-corner" },
-    { imgIndex: 4, path: "movie-club" },
-    { imgIndex: 5, path: "jrivia-night" },
-    { imgIndex: 6, path: "movie-time-cinema" },
-    { imgIndex: 7, path: "conventions-of-film" }
-]
+import { getPromotionPrograms } from "../../api/promotionProgramApi"
+import "../../scss/Banner.scss"
 
 const Banner = () => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const [banners, setBanners] = useState([])
     const [currentIndex, setCurrentIndex] = useState(0)
     const itemsPerPage = 5
+
+    useEffect(() => {
+        getPromotionPrograms()
+            .then((res) => {
+                const promotionProgramsActive = res.promotionPrograms.filter(
+                    (program) => program.isActive && new Date(program.endDate) > new Date()
+                )
+                setBanners(promotionProgramsActive)
+            })
+            .catch((err) => console.error(err))
+    }, [])
 
     const handlePrev = () => {
         setCurrentIndex((prevIndex) => (prevIndex - itemsPerPage + banners.length) % banners.length)
@@ -36,7 +39,7 @@ const Banner = () => {
                 <h2>
                     <LoyaltyIcon htmlColor="#e50914" /> {t("homepage.specialOffers").toUpperCase()}
                 </h2>
-                
+
                 <span className="banner__control">
                     <ArrowBackIosIcon onClick={handlePrev} cursor="pointer" />
                     <ArrowForwardIosIcon onClick={handleNext} cursor="pointer" />
@@ -44,15 +47,15 @@ const Banner = () => {
             </div>
 
             <div className="banner__carousel">
-                {banners.map((banner, index) => (
+                {banners && banners.map((banner, index) => (
                     <img
                         key={index}
-                        src={`${process.env.REACT_APP_API_URL}/img/banner/banner${banner.imgIndex}.png`}
+                        src={`${process.env.REACT_APP_API_URL}${banner.image}`}
                         alt={`Banner ${index + 1}`}
                         className={
                             Math.floor(index / itemsPerPage) === Math.floor(currentIndex / itemsPerPage) ? "visible" : ""
                         }
-                        onClick={() => navigate(`/special-offers/${banner.path}`)}
+                        onClick={() => navigate(`/promotion-program/${banner._id}`)}
                     />
                 ))}
             </div>

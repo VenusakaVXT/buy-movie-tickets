@@ -27,38 +27,39 @@ class MovieScreeningController {
     }
 
     store = async (req, res, next) => {
-        const {
-            title,
-            description,
-            director,
-            contentWritter,
-            actors,
-            category,
-            releaseDate,
-            time,
-            trailerId,
-            wasReleased,
-            producer
-        } = req.body
-        const categoryObj = await Categorty.findOne({ _id: req.body.category })
-        const producerObj = await Producer.findOne({ _id: req.body.producer })
-
-        const movie = new Movie({
-            title,
-            description,
-            director,
-            contentWritter,
-            actors,
-            category: categoryObj._id,
-            releaseDate,
-            time,
-            trailerId,
-            wasReleased,
-            producer: producerObj._id
-        })
-        movie.slug = slugify(movie.title.replace(/:/g, ""), { lower: true })
-
         try {
+            const {
+                title,
+                description,
+                director,
+                contentWritter,
+                actors,
+                category,
+                releaseDate,
+                time,
+                trailerId,
+                wasReleased,
+                producer
+            } = req.body
+            
+            const categoryObj = await Categorty.findOne({ _id: category })
+            const producerObj = await Producer.findOne({ _id: producer })
+
+            const movie = new Movie({
+                title,
+                description,
+                director,
+                contentWritter,
+                actors,
+                category: categoryObj._id,
+                releaseDate,
+                time,
+                trailerId,
+                wasReleased,
+                producer: producerObj._id
+            })
+
+            movie.slug = slugify(movie.title.replace(/:/g, ""), { lower: true })
             await movie.save()
 
             producerObj.movies.push(movie._id)

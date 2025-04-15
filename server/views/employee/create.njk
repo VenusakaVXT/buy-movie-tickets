@@ -23,14 +23,14 @@
                 <span style="color: #ff0000">*</span>
                 <label for="position">Position employee:</label>
                 <select name="position" id="position" class="form-control" required>
-                    <option value="">Select position</option>
-                    <option value="Manage movies">Manage movies</option>
-                    <option value="Manage screenings">Manage screenings</option>
-                    <option value="Manage tickets">Manage tickets</option>
-                    <option value="Manage cinemarooms">Manage cinemarooms</option>
-                    <option value="Support staff">Support staff</option>
-                    <option value="Statistical staff">Statistical staff</option>
-                    <option value="Manage employees">Manage employees</option>
+                    <option value="">----- Select position -----</option>
+                    <option value="Manage movies">Manage movies (DM)</option>
+                    <option value="Manage screenings">Manage screenings (MS)</option>
+                    <option value="Manage tickets">Manage tickets (MT)</option>
+                    <option value="Manage cinemarooms">Manage cinemarooms (MC)</option>
+                    <option value="Support staff">Support staff (SP)</option>
+                    <option value="Statistical staff">Statistical staff (SS)</option>
+                    <option value="Human resource">Human resource (HR)</option>
                 </select>
             </div>
 
@@ -38,7 +38,7 @@
                 <span style="color: #ff0000">*</span>
                 <label for="cinema">Cinema:</label>
                 <select name="cinema" id="cinema" class="form-control" required>
-                    <option value="">Select cinema</option>
+                    <option value="">----- Select cinema -----</option>
                     {% for cinema in cinemas %}
                         <option value="{{ cinema._id }}">{{ cinema.name }}</option>
                     {% endfor %}

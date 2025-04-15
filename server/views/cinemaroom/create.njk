@@ -21,7 +21,7 @@
                 <span style="color: #ff0000">*</span>
                 <label for="cinema">Cinema:</label>
                 <select name="cinema" id="cinema" class="form-control" required>
-                    <option value="">Select cinema</option>
+                    <option value="">----- Select cinema -----</option>
                     {% for cinema in cinemas %}
                         <option value="{{ cinema._id }}">{{ cinema.name }}</option>
                     {% endfor %}

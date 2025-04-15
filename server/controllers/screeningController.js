@@ -282,8 +282,7 @@ class ScreeningController {
                     cinemaRoom && c._id.toString() === cinemaRoom.cinema.toString()
                 )
 
-                screening.screeningAt = cinemaRoom && cinema
-                    ? `${cinemaRoom.roomNumber}-${cinema.name}` : "Unknown"
+                screening.screeningAt = cinemaRoom && cinema ? `${cinemaRoom.roomNumber}-${cinema.name}` : "Unknown"
 
                 const screeningDate = new Date(screening.movieDate + "T" + screening.timeSlot + ":00")
                 const currentDate = new Date()
@@ -340,7 +339,7 @@ class ScreeningController {
             const currentDate = new Date()
 
             if (newScreeningDate < currentDate) {
-                return res.status(400).send("Cannot add screening for a past date.")
+                return res.status(400).send("Cannot update screening for a past date.")
             }
 
             const existScreening = await Screening.findOne({
@@ -368,7 +367,7 @@ class ScreeningController {
 
                 if (newScreeningDate < existScreeningEnd) {
                     return res.status(400).send(
-                        `Cannot add screening at ${timeSlot} on ${movieDate} for ${cinemaRoomObj.roomNumber} room. 
+                        `Cannot update screening at ${timeSlot} on ${movieDate} for ${cinemaRoomObj.roomNumber} room. 
                         Because the previous screening ends at ${existScreeningEnd.getHours()}
                         :${String(existScreeningEnd.getMinutes()).padStart(2, '0')}.`
                     )
@@ -433,23 +432,15 @@ class ScreeningController {
                 const movie = movies.find((m) =>
                     m._id.toString() === screening.movie.toString()
                 )
-
-                screening.movieName = movie ? movie.title : "Unknown"
-
                 const cinemaRoom = cinemaRooms.find((cr) =>
                     cr._id.toString() === screening.cinemaRoom.toString()
                 )
                 const cinema = cinemas.find((c) =>
                     cinemaRoom && c._id.toString() === cinemaRoom.cinema.toString()
                 )
-
-                screening.screeningAt = cinemaRoom && cinema
-                    ? `${cinemaRoom.roomNumber}-${cinema.name}` : "Unknown"
-
-                const screeningDate = new Date(screening.movieDate + "T" + screening.timeSlot + ":00")
-                const currentDate = new Date()
-
-                screening.showtimeOver = screeningDate < currentDate
+                
+                screening.movieName = movie ? movie.title : "Unknown"
+                screening.screeningAt = cinemaRoom && cinema ? `${cinemaRoom.roomNumber}-${cinema.name}` : "Unknown"
             })
 
             res.render("screening/coming-soon", { screenings })

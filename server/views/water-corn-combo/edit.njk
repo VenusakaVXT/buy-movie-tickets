@@ -1,0 +1,54 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <div class="p-4">
+        <h3 class="title">Update water corn combo</h3>
+
+        <form id="frm-update-water-corn-combo" method="POST" action="/water-corn-combo/{{waterCornCombo._id}}?_method=PUT" enctype="multipart/form-data">
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="comboName">Combo name:</label>
+                <input type="text" class="form-control" value={{waterCornCombo.comboName}} id="comboName" name="comboName" required>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="image">Image:</label>
+                {% if imageUrl %}
+                    <div>
+                        <img src="{{imageUrl}}" alt="Current Image" style="width:150px;height:auto;margin-bottom:10px;">
+                    </div>
+                {% endif %}
+                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="components">Components:</label>
+                <input type="text" class="form-control" value={{waterCornCombo.components}} id="components" name="components" required>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="price">Price:</label>
+                <input type="number" class="form-control" value={{waterCornCombo.price}} id="price" name="price" required>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="cinema">Cinema:</label>
+                <select name="cinema" id="cinema" class="form-control" required>
+                    {% for cinema in cinemas %}
+                        <option value="{{ cinema._id }}"
+                            {% if (waterCornCombo.cinema) and (waterCornCombo.cinema.toString() === cinema._id.toString()) %}selected{% endif %}
+                        >
+                            {{ cinema.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-control mt-2" style="width: 100">Save</button>
+        </form>
+    </div>
+{% endblock %}

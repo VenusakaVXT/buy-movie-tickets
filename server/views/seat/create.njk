@@ -9,7 +9,7 @@
                 <span style="color: #ff0000">*</span>
                 <label for="rowSeat">Row seat:</label>
                 <select name="rowSeat" id="rowSeat" class="form-control" required>
-                    <option value="">Select row seat</option>
+                    <option value="">----- Select row seat -----</option>
                     <option value="A">A</option>
                     <option value="B">B</option>
                     <option value="C">C</option>
@@ -41,7 +41,7 @@
                 <span style="color: #ff0000">*</span>
                 <label for="cinemaRoom">Cinema room:</label>
                 <select name="cinemaRoom" id="cinemaRoom" class="form-control" required>
-                    <option value="">Select cinema room</option>
+                    <option value="">----- Select cinema room -----</option>
                     {% for cinemaRoom in cinemaRooms %}
                         <option value="{{ cinemaRoom._id }}">{{ cinemaRoom.roomNumber }}</option>
                     {% endfor %}

@@ -1,6 +1,7 @@
 import Cinema from "../models/Cinema.js"
 import CinemaRoom from "../models/CinemaRoom.js"
 import CancelBooking from "../models/CancelBooking.js"
+import WaterCornCombo from "../models/WaterCornCombo.js"
 
 class CinemaController {
     getApiCinema = async (req, res, next) => {
@@ -37,13 +38,19 @@ class CinemaController {
             .catch((err) => res.status(500).json({ message: err }))
     }
 
+    getComboByCinema = (req, res, next) => {
+        const { cinemaId } = req.params
+        WaterCornCombo.find({ cinema: cinemaId })
+            .then((waterCornCombos) => res.status(200).json({ waterCornCombos }))
+            .catch(next)
+    }
+
     create(req, res, next) {
         res.render("cinema/create")
     }
 
     store(req, res, next) {
-        const cinema = new Cinema(req.body)
-
+        const cinema = new Cinema({ ...req.body, waterCornCombos: [], promotionPrograms: [] })
         cinema.save()
             .then(() => res.redirect("/cinema/table-lists"))
             .catch(() => next)
@@ -67,7 +74,9 @@ class CinemaController {
             logo: req.body.logo,
             address: req.body.address,
             img: req.body.img,
-            description: req.body.description
+            description: req.body.description,
+            waterCornCombos: req.body.waterCornCombos || [],
+            promotionPrograms: req.body.promotionPrograms || []
         })
             .then(() => res.redirect("/cinema/table-lists"))
             .catch(next)

@@ -14,12 +14,7 @@
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
                 <label for="description">Movie description:</label>
-                <textarea 
-                    class="form-control" 
-                    id="description" 
-                    name="description" 
-                    placeholder="Please enter a movie description..."
-                ></textarea>
+                <textarea class="form-control" id="description" name="description" required placeholder="Please enter a movie description..."></textarea>
             </div>
 
             <div class="form-group">
@@ -44,7 +39,7 @@
                 <span style="color: #ff0000">*</span>
                 <label for="category">Category:</label>
                 <select name="category" id="category" class="form-control" required>
-                    <option value="">Select category</option>
+                    <option value="">----- Select category -----</option>
                     {% for category in categories %}
                         <option value="{{ category._id }}">{{ category.category }}</option>
                     {% endfor %}
@@ -75,7 +70,7 @@
                 <span style="color: #ff0000">*</span>
                 <label for="producer">Producer:</label>
                 <select name="producer" id="producer" class="form-control" required>
-                    <option value="">Select producer</option>
+                    <option value="">----- Select producer -----</option>
                     {% for producer in producers %}
                         <option value="{{ producer._id }}">{{ producer.producerName }}</option>
                     {% endfor %}

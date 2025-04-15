@@ -1,0 +1,55 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <form class="p-4 movies__table-lists">
+        <h3 class="title">Promotion Program</h3>
+
+        <table class="table table-movies mt-4" border="1">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Discount code</th>
+                    <th scope="col">Program name</th>
+                    <th scope="col">Start date</th>
+                    <th scope="col">End date</th>
+                    <th scope="col">Percent</th>
+                    <th scope="col">Max money</th>
+                    <th scope="col">Cinema</th>
+                    <th scope="col">Customs</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for promotionProgram in promotionPrograms %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ promotionProgram.discountCode }}</td>
+                    <td>{{ promotionProgram.programName }}</td>
+                    <td>{{ promotionProgram.startDate }}</td>
+                    <td>{{ promotionProgram.endDate }}</td>
+                    <td>{{ promotionProgram.percentReduction }}%</td>
+                    <td>{{ promotionProgram.maxMoneyAmount }}</td>
+                    <td>{{ promotionProgram.cinema.name }}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-warning">
+                            <a href="/promotion-program/{{ promotionProgram._id }}/edit">Edit</a>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger">
+                            <a href="" data-toggle="modal" data-id="{{ promotionProgram._id }}" data-target="#deletePromotionProgramModal">
+                                Delete
+                            </a>
+                        </button>
+                    </td>
+                </tr>
+                {% else %}
+                <tr style="text-align: center">
+                    <td colspan="6">You have not registered for any promotion program yet.
+                        <a href="/promotion-program/create">Post a promotion program</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+    {% include "promotion-program/delete.njk" %}
+{% endblock %}

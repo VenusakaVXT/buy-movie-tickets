@@ -30,6 +30,18 @@ const cinemaSchema = new Schema({
             type: mongoose.Types.ObjectId,
             ref: "Employee"
         }
+    ],
+    waterCornCombos: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "WaterCornCombo"
+        }
+    ],
+    promotionPrograms: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: "PromotionProgram"
+        }
     ]
 })
 

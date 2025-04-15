@@ -1,0 +1,49 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <form class="p-4 movies__table-lists">
+        <h3 class="title">Water Corn Combo</h3>
+
+        <table class="table table-movies mt-4" border="1">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Combo name</th>
+                    <th scope="col">Components</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Cinema</th>
+                    <th scope="col">Customs</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for waterCornCombo in waterCornCombos %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ waterCornCombo.comboName }}</td>
+                    <td>{{ waterCornCombo.components }}</td>
+                    <td>{{ waterCornCombo.price }}</td>
+                    <td>{{ waterCornCombo.cinema.name }}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-warning">
+                            <a href="/water-corn-combo/{{ waterCornCombo._id }}/edit">Edit</a>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger">
+                            <a href="" data-toggle="modal" data-id="{{ waterCornCombo._id }}" data-target="#deleteWaterCornComboModal">
+                                Delete
+                            </a>
+                        </button>
+                    </td>
+                </tr>
+                {% else %}
+                <tr style="text-align: center">
+                    <td colspan="6">You have not registered for any water corn combo yet.
+                        <a href="/water-corn-combo/create">Post a water corn combo</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+    {% include "water-corn-combo/delete.njk" %}
+{% endblock %}

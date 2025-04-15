@@ -9,7 +9,7 @@
                 <span style="color: #ff0000">*</span>
                 <label for="movie">Movie (NS: Now Showing, CM: Coming Soon):</label>
                 <select name="movie" id="movie" class="form-control" required>
-                    <option value="">Select movie</option>
+                    <option value="">----- Select movie -----</option>
                     {% for movie in movies %}
                         <option value="{{ movie._id }}">
                             {{ movie.title }} {% if movie.wasReleased %}(NS){% else %}(CM){% endif %}
@@ -40,7 +40,7 @@
                 <span style="color: #ff0000">*</span>
                 <label for="cinemaRoom">Cinema room:</label>
                 <select name="cinemaRoom" id="cinemaRoom" class="form-control" required>
-                    <option value="">Select cinema room</option>
+                    <option value="">----- Select cinema room -----</option>
                     {% for cinemaRoom in cinemaRooms %}
                         <option value="{{ cinemaRoom._id }}">
                             {{ cinemaRoom.roomNumber }}-{{ cinemaRoom.cinemaName }}

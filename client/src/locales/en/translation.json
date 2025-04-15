@@ -40,6 +40,18 @@
         "allMovieBtn": "See All Movies",
         "systemDescription": "Buy Movie Tickets is the most reputable online movie ticket selling system today not only in Vietnam but also around the world. Instead of other online movie ticketing systems that only manage one cinema system. With the reputation of Buy Movie Tickets, it is the place to manage and control ticket sales and publicize screenings for many theater systems around the world. Below are the theater systems that have accompanied Buy Movie Tickets, we sincerely thank you. Buy Movie Tickets reputation creates the brand and trust of all cinema systems and customers globally."
     },
+    "promotionProgram": {
+        "title": "Promotion Program",
+        "discountCode": "Discount code",
+        "content": "Program content",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "percentReduction": "Percent reduction",
+        "maxMoneyAmount": "Max money amount",
+        "condition": "Application conditions"
+    },
+    "seeMore": "See more",
+    "shorten": "Shorten",
     "category": {
         "blockbuster": "Blockbuster",
         "action": "Action",

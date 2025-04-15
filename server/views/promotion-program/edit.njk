@@ -1,0 +1,89 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <div class="p-4">
+        <h3 class="title">Update promotion program</h3>
+
+        <form id="frm-update-promotion-program" method="POST" action="/promotion-program/{{promotionProgram._id}}?_method=PUT" enctype="multipart/form-data">
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="discountCode">Discount code:</label>
+                <input type="text" class="form-control" value="{{promotionProgram.discountCode}}" id="discountCode" name="discountCode" required>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="programName">Program name:</label>
+                <input type="text" class="form-control" value="{{promotionProgram.programName}}" id="programName" name="programName" required>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="content">Content:</label>
+                <textarea class="form-control" id="content" name="content" required>{{promotionProgram.content}}</textarea>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="startDate">Start date:</label>
+                <input type="date" class="form-control" value="{{promotionProgram.startDate}}" id="startDate" name="startDate" required>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="endDate">End date:</label>
+                <input type="date" class="form-control" value="{{promotionProgram.endDate}}" id="endDate" name="endDate" required>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="percentReduction">Percent reduction:</label>
+                <input type="number" class="form-control" value="{{promotionProgram.percentReduction}}" id="percentReduction" name="percentReduction" required>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="maxMoneyAmount">Max money amount:</label>
+                <input type="number" class="form-control" value="{{promotionProgram.maxMoneyAmount}}" id="maxMoneyAmount" name="maxMoneyAmount" required>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="image">Image:</label>
+                {% if imageUrl %}
+                    <div>
+                        <img src="{{imageUrl}}" alt="Current Image" style="width:150px;height:auto;margin-bottom:10px;">
+                    </div>
+                {% endif %}
+                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="condition">Condition:</label>
+                <input type="text" class="form-control" value="{{promotionProgram.condition}}" id="condition" name="condition" required>
+            </div>
+
+            <div>
+                <input type="checkbox" id="isActive" name="isActive" {% if promotionProgram.isActive %}checked{% endif %}>
+                <label for="isActive">Is active</label>
+            </div>
+
+            <div class="form-group">
+                <label for="cinema">Cinema:</label>
+                <select name="cinema" id="cinema" class="form-control">
+                    <option value="" {% if promotionProgram.cinema === "" %}selected{% endif %}>----- Select cinema -----</option>
+                    {% for cinema in cinemas %}
+                        <option value="{{ cinema._id }}"
+                            {% if (promotionProgram.cinema) and (promotionProgram.cinema.toString() === cinema._id.toString()) %}selected{% endif %}
+                        >
+                            {{ cinema.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-control mt-2" style="width: 100">Save</button>
+        </form>
+    </div>
+{% endblock %}

@@ -12,7 +12,7 @@
 
             <div class="form-group">
                 <label for="description">Movie description:</label>
-                <textarea class="form-control" id="description" name="description">{{ movie.description }}</textarea>
+                <textarea class="form-control" id="description" name="description" required>{{ movie.description }}</textarea>
             </div>
 
             <div class="form-group">
@@ -33,7 +33,7 @@
             <div class="form-group">
                 <label for="category">Category:</label>
                 <select name="category" id="category" class="form-control" required>
-                    <option value="" {% if movie.category === "" %}selected{% endif %}>Select category</option>
+                    <option value="" {% if movie.category === "" %}selected{% endif %}>----- Select category -----</option>
                     {% for category in categories %}
                         <option value="{{ category._id }}"
                             {% if (movie.category) and (movie.category.toString() === category._id.toString()) %}selected{% endif %}
@@ -64,7 +64,7 @@
             <div class="form-group">
                 <label for="producer">Producer:</label>
                 <select name="producer" id="producer" class="form-control" required>
-                    <option value="" {% if movie.producer === "" %}selected{% endif %}>Select producer</option>
+                    <option value="" {% if movie.producer === "" %}selected{% endif %}>----- Select producer -----</option>
                     {% for producer in producers %}
                         <option value="{{ producer._id }}"
                             {% if (movie.producer) and (movie.producer.toString() === producer._id.toString()) %}selected{% endif %}

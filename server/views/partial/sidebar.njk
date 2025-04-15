@@ -6,7 +6,7 @@
 
         <hr />
 
-        <div class="menu-item active" onclick="toggleMenu('moviesMenu')">
+        <div class="menu-item" onclick="toggleMenu('moviesMenu')">
             Manage Movies
             <span class="arrow">
                 <i class='bx bx-chevron-down'></i>
@@ -35,6 +35,22 @@
             </div>
             <div class="submenu">
                 <a href="/category-film/table-lists">View Category</a>
+            </div>
+        </div>
+
+        <div class="menu-item" onclick="toggleMenu('producersMenu')">
+            Manage Producers
+            <span class="arrow">
+                <i class='bx bx-chevron-down'></i>
+            </span>
+        </div>
+
+        <div class="menu-sub" id="producersMenu">
+            <div class="submenu">
+                <a href="/producer/create">Add Producer</a>
+            </div>
+            <div class="submenu">
+                <a href="/producer/table-lists">View Producer</a>
             </div>
         </div>
 
@@ -102,22 +118,6 @@
             </div>
         </div>
 
-        <div class="menu-item" onclick="toggleMenu('producersMenu')">
-            Manage Producers
-            <span class="arrow">
-                <i class='bx bx-chevron-down'></i>
-            </span>
-        </div>
-
-        <div class="menu-sub" id="producersMenu">
-            <div class="submenu">
-                <a href="/producer/create">Add Producer</a>
-            </div>
-            <div class="submenu">
-                <a href="/producer/table-lists">View Producer</a>
-            </div>
-        </div>
-
         <div class="menu-item" onclick="toggleMenu('screeningsMenu')">
             Manage Screenings
             <span class="arrow">
@@ -134,16 +134,48 @@
             </div>
         </div>
 
+        <div class="menu-item" onclick="toggleMenu('promotionProgramsMenu')">
+            Promotion Programs
+            <span class="arrow">
+                <i class='bx bx-chevron-down'></i>
+            </span>
+        </div>
+
+        <div class="menu-sub" id="promotionProgramsMenu">
+            <div class="submenu">
+                <a href="/promotion-program/create">Add PromotionProgram</a>
+            </div>
+            <div class="submenu">
+                <a href="/promotion-program/table-lists">View PromotionProgram</a>
+            </div>
+        </div>
+
+        <div class="menu-item" onclick="toggleMenu('waterCornComboMenu')">
+            Water Corn Combo
+            <span class="arrow">
+                <i class='bx bx-chevron-down'></i>
+            </span>
+        </div>
+
+        <div class="menu-sub" id="waterCornComboMenu">
+            <div class="submenu">
+                <a href="/water-corn-combo/create">Add Water Corn Combo</a>
+            </div>
+            <div class="submenu">
+                <a href="/water-corn-combo/table-lists">View Water Corn Combo</a>
+            </div>
+        </div>
+
         <div class="menu-item" onclick="toggleMenu('bookingMenu')">
             <a href="/booking/detail-booking">Show Bookings</a>
         </div>
 
-        <div class="menu-item" onclick="toggleMenu('permissionsMenu')">
+        {# <div class="menu-item" onclick="toggleMenu('permissionsMenu')">
             User Permissions
-        </div>
+        </div> #}
     </div>
 
-    <div class="d-flex flex-column flex-shrink-0 p-3">
+    {# <div class="d-flex flex-column flex-shrink-0 p-3">
         <div class="dropdown">
             <a 
                 href="#"
@@ -162,5 +194,5 @@
                 <li><a class="dropdown-item" href="#">Sign out</a></li>
             </ul>
         </div>
-    </div>
+    </div> #}
 </div>

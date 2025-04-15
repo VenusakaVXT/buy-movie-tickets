@@ -18,6 +18,7 @@
                     <th scope="col">Time slot</th>
                     <th scope="col">Price</th>
                     <th scope="col">Screening at</th>
+                    <th scope="col">Customs</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,6 +30,16 @@
                     <td>{{ screening.timeSlot }}</td>
                     <td>{{ screening.price }}</td>
                     <td>{{ screening.screeningAt }}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-warning">
+                            <a href="/screening/{{ screening._id }}/edit">Edit</a>
+                        </button>
+                        <button type="button" class="btn btn-outline-danger">
+                            <a href="" data-toggle="modal" data-id="{{ screening._id }}" data-target="#deleteScreeningModal">
+                                Delete
+                            </a>
+                        </button>
+                    </td>
                 </tr>
                 {% else %}
                 <tr style="text-align: center">
@@ -38,4 +49,6 @@
             </tbody>
         </table>
     </form>
+
+    {% include "screening/delete.njk" %}
 {% endblock %}

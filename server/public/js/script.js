@@ -178,6 +178,14 @@ document.addEventListener("DOMContentLoaded", () => {
     deleteData("screening", "screening-delete-form", "#deleteScreeningModal")
 })
 
+document.addEventListener("DOMContentLoaded", () => {
+    deleteData("promotion-program", "promotion-program-delete-form", "#deletePromotionProgramModal")
+})
+
+document.addEventListener("DOMContentLoaded", () => {
+    deleteData("water-corn-combo", "water-corn-combo-delete-form", "#deleteWaterCornComboModal")
+})
+
 // Group models
 function handleSelectGroup(element, path) {
     const select = document.getElementById(element)

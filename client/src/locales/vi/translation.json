@@ -40,6 +40,18 @@
         "allMovieBtn": "Xem Tất Cả Phim",
         "systemDescription": "Buy Movie Tickets là hệ thống bán vé xem phim trực tuyến uy tín nhất hiện nay không chỉ ở Việt Nam mà còn trên toàn thế giới. Thay vì các hệ thống bán vé xem phim trực tuyến khác chỉ quản lý một hệ thống rạp chiếu phim. Với Buy Movie Tickets là nơi quản lý, kiểm soát việc bán vé và công khai suất chiếu cho nhiều hệ thống rạp trên toàn thế giới. Dưới đây là tri ân các hệ thống rạp chiếu phim đã đồng hành cùng Buy Movie Tickets, chúng tôi xin chân thành cảm ơn. Buy Movie Tickets uy tín tạo nên thương hiệu và sự tin cậy của mọi hệ thống rạp chiếu phim và khách hàng trên toàn cầu."
     },
+    "promotionProgram": {
+        "title": "Chương Trình Ưu Đãi",
+        "discountCode": "Mã giảm giá",
+        "content": "Nội dung chương trình",
+        "startDate": "Ngày bắt đầu",
+        "endDate": "Ngày kết thúc",
+        "percentReduction": "Phần trăm giảm",
+        "maxMoneyAmount": "Số tiền giảm tối đa",
+        "condition": "Điều kiện áp dụng"
+    },
+    "seeMore": "Xem thêm",
+    "shorten": "Rút ngắn",
     "category": {
         "blockbuster": "Bom tấn",
         "action": "Hành động",

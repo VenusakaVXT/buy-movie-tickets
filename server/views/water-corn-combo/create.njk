@@ -1,0 +1,48 @@
+{% extends "index.njk" %}
+
+{% block content %}
+    <div class="p-4">
+        <h3 class="title">Post a water corn combo</h3>
+
+        <form id="frm-add-water-corn-combo" method="POST" action="/water-corn-combo/store" enctype="multipart/form-data">
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="comboName">Combo name:</label>
+                <input type="text" class="form-control" id="comboName" name="comboName" required>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="image">Image:</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="components">Components:</label>
+                <input type="text" class="form-control" id="components" name="components" required>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="price">Price:</label>
+                <input type="number" class="form-control" id="price" name="price" required>
+            </div>
+
+            <div class="form-group">
+                <span style="color: #ff0000">*</span>
+                <label for="cinema">Cinema:</label>
+                <select name="cinema" id="cinema" class="form-control" required>
+                    <option value="">----- Select cinema -----</option>
+                    {% for cinema in cinemas %}
+                        <option value="{{ cinema._id }}">{{ cinema.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-control mt-2" style="width: 200">
+                Add water corn combo
+            </button>
+        </form>
+    </div>
+{% endblock %}
