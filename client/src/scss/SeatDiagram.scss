@@ -2,9 +2,11 @@
 
 $booked: #797878;
 $choice: #750fff;
+$hold: #f8f815;
 
 .seat-statistics {
     display: flex;
+    justify-content: center;
     margin-top: 16px;
 
     .textitem {
@@ -14,7 +16,7 @@ $choice: #750fff;
 }
 
 .seat-diagram {
-    width: 650px;
+    width: 550px;
     margin: 20px auto;
     display: flex;
     align-items: center;
@@ -22,8 +24,8 @@ $choice: #750fff;
     flex-wrap: wrap;
 
     .seat-item {
-        $height: 50px;
-        width: 55px;
+        $height: 45px;
+        width: 50px;
         height: $height;
         border: 1px solid #ccc;
         background: $main-color;
@@ -31,27 +33,32 @@ $choice: #750fff;
         line-height: $height;
         opacity: 1;
 
+        &.seat-choice {
+            background: $choice;
+        }
+
         &.seat-booked {
             background: $booked;
             cursor: default;
         }
 
-        &.seat-choice {
-            background: $choice;
+        &.seat-hold {
+            background: $hold;
+            cursor: default;
         }
 
-        &:hover:not(.seat-booked) {
+        &:hover:not(.seat-booked):not(.seat-hold) {
             cursor: pointer;
             opacity: 0.9;
         }
     }
 }
 
-.seat-caption {
+.seat-note {
     display: flex;
     justify-content: center;
 
-    .seat-caption__item {
+    .seat-note__item {
         display: flex;
         color: #fff;
         margin: 0 20px;
@@ -78,15 +85,31 @@ $choice: #750fff;
             &.choice {
                 background: $choice;
             }
+
+            &.hold {
+                background: $hold;
+            }
         }
     }
 }
 
 .seat-fee {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
+    background: $second-background;
+    width: 340px;
+    height: 488px;
+    padding: 10px;
+    border-radius: 16px;
     color: #fff;
-    margin: 30px;
+
+    .seat-fee__item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+}
+
+.open-combo-btn {
+    color: $main-color !important;
+    border: 1px solid $main-color !important;
+    margin: 10px 0 !important;
 }

@@ -560,6 +560,7 @@ class ScreeningController {
 
             const synthesizeData = {
                 roomNumber: cinemaRoom.roomNumber,
+                cinemaId: cinema._id,
                 cinemaName: cinema.name,
                 seats: cinemaRoom.seats,
                 price: screening.price

@@ -207,7 +207,6 @@ export const getBookingOfUser = async (req, res, next) => {
             .populate("seats", "rowSeat seatNumber")
             .populate({
                 path: "screening",
-                select: "movieDate",
                 options: { withDeleted: true },
                 populate: {
                     path: "movie",

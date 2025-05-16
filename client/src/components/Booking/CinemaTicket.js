@@ -10,6 +10,7 @@ import QrCode2Icon from "@mui/icons-material/QrCode2"
 import { getEndTime, handleSeatArr } from "../../util"
 import html2canvas from "html2canvas"
 import { formatTitle } from "../../App"
+import { Tooltip } from "react-tooltip"
 import "../../scss/CinemaTicket.scss"
 import "../../scss/App.scss"
 
@@ -58,30 +59,73 @@ const CinemaTicket = () => {
 
                     <Box className="cinema-ticket__content">
                         <Typography variant="h3">{t("cinemaTicket.title")}</Typography>
-                        <Typography>{t("cinemaTicket.customerName")}: <span>{booking.user.name}</span></Typography>
                         <Typography>{t("cinemaTicket.movie")}: <span>{booking.screening.movie.title}</span></Typography>
-                        <Typography>{t("cinemaTicket.date")}: <span>{booking.screening.movieDate}</span></Typography>
-                        <Box display={"flex"}>
-                            <Typography marginRight={"40px"}>
-                                {t("cinemaTicket.start")}: <span>{booking.screening.timeSlot}</span>
-                            </Typography>
-                            <Typography>{t("cinemaTicket.end")}: <span>
-                                {getEndTime(booking.screening.timeSlot, booking.screening.movie.time)}
-                            </span></Typography>
-                        </Box>
-                        <Typography>{t("cinemaTicket.seat")}: <span>
-                            {booking.seats ? handleSeatArr(booking.seats) : t("unknown")}
-                        </span></Typography>
+                        <Typography>{t("cinemaTicket.projectionTime")}: <span>
+                            {booking.screening.movieDate}, {booking.screening.timeSlot}-{getEndTime(booking.screening.timeSlot, booking.screening.movie.time)}
+                        </span>
+                        </Typography>
                         <Typography>{t("cinemaTicket.screeningAt")}: {booking.screening.cinemaRoom
-                            ? <span>
-                                {booking.screening.cinemaRoom.roomNumber}-{booking.screening.cinemaRoom.cinema.name}
-                            </span>
+                            ? <span>{booking.screening.cinemaRoom.roomNumber}-{booking.screening.cinemaRoom.cinema.name}</span>
                             : t("unknown")}
                         </Typography>
-                        <Typography>
-                            {t("seatDiagram.unitPrice")}: <span>{booking.screening.price.toLocaleString("vi-VN")} VNĐ</span>
+                        <Typography>{t("cinemaTicket.seat")}: <span>
+                            {booking.seats ? handleSeatArr(booking.seats) : t("unknown")}
+                        </span>
                         </Typography>
-                        <Typography>{t("seatDiagram.quantity")}: <span>{booking.seats.length}</span></Typography>
+                        <Typography>{t("cinemaTicket.totalSeatsMoney")}: <span>
+                            {booking.screening.price.toLocaleString("vi-VN")} x {booking.seats.length} = {(
+                                booking.screening.price * booking.seats.length
+                            ).toLocaleString("vi-VN")} VNĐ
+                        </span>
+                        </Typography>
+                        <Typography>
+                            {t("cinemaTicket.waterCornCombos")}: {booking.waterCornCombos && booking.waterCornCombos.length > 0
+                                ? booking.waterCornCombos.length > 1
+                                    ? <>
+                                        <span>
+                                            {booking.waterCornCombos[0].quantity} {booking.waterCornCombos[0].id.comboName} ({booking.waterCornCombos[0].id.price.toLocaleString("vi-VN")}),
+                                        </span>
+                                        <span data-tooltip-id="combo-tooltip" data-tooltip-content={
+                                            booking.waterCornCombos.slice(1).map((combo) =>
+                                                `${combo.quantity} ${combo.id.comboName} (${combo.id.price.toLocaleString("vi-VN")})`
+                                            ).join("\n")
+                                        }> ...
+                                        </span>
+                                        <Tooltip
+                                            id="combo-tooltip"
+                                            place="top"
+                                            effect="solid"
+                                            style={{
+                                                background: "rgba(0, 0, 0, 0.95)",
+                                                borderRadius: "8px",
+                                                fontSize: "14px",
+                                                whiteSpace: "pre-line",
+                                                zIndex: "9999"
+                                            }}
+                                        />
+                                    </>
+                                    : <span>
+                                        {booking.waterCornCombos[0].quantity} {booking.waterCornCombos[0].id.comboName} ({booking.waterCornCombos[0].id.price.toLocaleString("vi-VN")})
+                                    </span>
+                                : <span>-/-</span>}
+                        </Typography>
+                        <Typography>
+                            {t("cinemaTicket.waterCornCombosMoney")}: {booking.waterCornCombos && booking.waterCornCombos.length > 0
+                                ? <span>
+                                    {booking.waterCornCombos
+                                        .reduce((total, combo) => total + (combo.quantity * combo.id.price), 0)
+                                        .toLocaleString("vi-VN")} VNĐ
+                                </span>
+                                : <span>0 VNĐ</span>}
+                        </Typography>
+                        <Typography>{t("cinemaTicket.voucherId")}: {booking.promotionProgram && booking.promotionProgram.discountCode
+                            ? <span>
+                                {booking.promotionProgram.discountCode} ({t("cinemaTicket.reduce")} {booking.promotionProgram.percentReduction}%{
+                                    booking.amountDecreases && `, -${booking.amountDecreases.toLocaleString("vi-VN")}VNĐ`
+                                })
+                            </span>
+                            : <span>-/-</span>}
+                        </Typography>
                         <Typography>
                             {t("seatDiagram.totalMoney")}: <span>{booking.totalMoney.toLocaleString("vi-VN")} VNĐ</span>
                         </Typography>
@@ -91,7 +135,6 @@ const CinemaTicket = () => {
                     <Box className="cinema-ticket__img">
                         <img src={booking.qrCode} alt="QR Code" ref={qrCodeRef} />
                         <Typography>{t("cinemaTicket.qrCode").toUpperCase()}</Typography>
-
                         <img src={`${process.env.REACT_APP_API_URL}/img/cinema_decorate.png`} alt="cinema-decorate" />
                     </Box>
                 </Box>

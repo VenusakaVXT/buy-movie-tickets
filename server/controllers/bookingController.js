@@ -6,8 +6,10 @@ import User from "../models/User.js"
 import Movie from "../models/Movie.js"
 import CinemaRoom from "../models/CinemaRoom.js"
 import Cinema from "../models/Cinema.js"
-import qrCode from "qrcode"
 import CancelBooking from "../models/CancelBooking.js"
+import WaterCornCombo from "../models/WaterCornCombo.js"
+import PromotionProgram from "../models/PromotionProgram.js"
+import qrCode from "qrcode"
 import sendEmail from "../util/email.js"
 import { getLocalizedText } from "../util/localization.js"
 import dotenv from "dotenv"
@@ -15,11 +17,15 @@ import dotenv from "dotenv"
 dotenv.config()
 
 export const newBooking = async (req, res, next) => {
-    const { screening, seats, user } = req.body
+    const { screening, seats, user, waterCornCombos, discountCode } = req.body
 
     let existScreening
     let existUser
     let existSeats = []
+    let existWaterCornCombos = []
+    let existPromotionProgram
+    let appliedPromotionProgram = false
+    let amountDecreases = 0
 
     try {
         existScreening = await Screening.findById(screening)
@@ -30,13 +36,29 @@ export const newBooking = async (req, res, next) => {
             if (existSeat) {
                 if (existSeat.selected) {
                     return res.status(400).json({
-                        message: `Seat ${existSeat.rowSeat}
-                        -${existSeat.seatNumber.padStart(3, "0")} has already been selected`
+                        message: `Seat ${existSeat.rowSeat}-${existSeat.seatNumber.padStart(3, "0")} has already been selected`
                     })
                 } else {
                     existSeats.push(existSeat)
                 }
             }
+        }
+
+        for (const waterCornCombo of waterCornCombos) {
+            const existWaterCornCombo = await WaterCornCombo.findById(waterCornCombo.id)
+            if (existWaterCornCombo) {
+                existWaterCornCombos.push({
+                    id: existWaterCornCombo._id,
+                    quantity: waterCornCombo.quantity
+                })
+            }
+        }
+
+        existPromotionProgram = await PromotionProgram.findOne({ discountCode })
+        if (existPromotionProgram && existPromotionProgram.isActive) {
+            appliedPromotionProgram = true
+        } else {
+            appliedPromotionProgram = false
         }
     } catch (err) {
         console.error(err)
@@ -63,12 +85,39 @@ export const newBooking = async (req, res, next) => {
     let booking
 
     try {
-        const totalMoney = existScreening.price * existSeats.length
+        const waterCornComboIds = existWaterCornCombos.map(combo => combo.id)
+        const waterCornComboData = await WaterCornCombo.find({ _id: { $in: waterCornComboIds } })
+        const waterCornComboMoney = existWaterCornCombos.reduce((total, combo) => {
+            const waterCornCombo = waterCornComboData.find(wc => wc._id.toString() === combo.id.toString())
+            return total + (waterCornCombo ? combo.quantity * waterCornCombo.price : 0)
+        }, 0)
+        let totalMoney = (existScreening.price * existSeats.length) + waterCornComboMoney
+
+        if (appliedPromotionProgram && existPromotionProgram) {
+            const discountAmount = (totalMoney * existPromotionProgram.percentReduction) / 100
+            if (discountAmount > existPromotionProgram.maxMoneyAmount) {
+                totalMoney -= existPromotionProgram.maxMoneyAmount
+                amountDecreases = existPromotionProgram.maxMoneyAmount
+            } else {
+                totalMoney -= discountAmount
+                amountDecreases = discountAmount
+            }
+        }
+
         const ratingPoints = existSeats.length * 5
-        const qrData = JSON.stringify({ screening, seats, user, totalMoney })
+        const qrData = JSON.stringify({ screening, seats, user, waterCornCombos, discountCode, totalMoney })
         const qrDataURL = await qrCode.toDataURL(qrData)
 
-        booking = new Booking({ screening, seats, user, totalMoney, qrCode: qrDataURL })
+        booking = new Booking({
+            screening,
+            seats,
+            user,
+            waterCornCombos,
+            promotionProgram: existPromotionProgram ? existPromotionProgram._id : null,
+            amountDecreases,
+            totalMoney,
+            qrCode: qrDataURL
+        })
 
         const session = await mongoose.startSession()
         session.startTransaction()
@@ -93,6 +142,14 @@ export const newBooking = async (req, res, next) => {
         const screeningAt = await CinemaRoom.findById(existScreening.cinemaRoom).populate("cinema", "name")
         const seatArr = await Seat.find({ _id: { $in: existSeats } })
         const seatDisplay = seatArr.map(seat => `${seat.rowSeat}-${seat.seatNumber.padStart(3, "0")}`)
+        const waterCornCombosArr = await Promise.all(
+            existWaterCornCombos.map(async (combo) => {
+                const waterCornCombo = await WaterCornCombo.findById(combo.id)
+                return `${combo.quantity} ${waterCornCombo.comboName}`
+            })
+        )
+        const waterCornCombosDisplay = waterCornCombosArr.length > 0 ? waterCornCombosArr.join(", ") : "-/-"
+        const programName = existPromotionProgram ? existPromotionProgram.programName : "-/-"
 
         const emailContent = (locale) => {
             return `
@@ -106,6 +163,8 @@ export const newBooking = async (req, res, next) => {
                     <p>${getLocalizedText(locale, "newBooking.screeningTime", { timeSlot: existScreening.timeSlot, movieDate: existScreening.movieDate })}</p>
                     <p>${getLocalizedText(locale, "newBooking.screeningAt", { roomNumber: screeningAt.roomNumber, cinemaName: screeningAt.cinema.name })}</p>
                     <p>${getLocalizedText(locale, "newBooking.seats", { seats: seatDisplay.join(", ") })}</p>
+                    <p>${getLocalizedText(locale, "newBooking.waterCornCombos", { waterCornCombos: waterCornCombosDisplay })}</p>
+                    <p>${getLocalizedText(locale, "newBooking.promotionProgram", { programName })}</p>
                     <p>${getLocalizedText(locale, "newBooking.totalMoney", { totalMoney: booking.totalMoney.toLocaleString("vi-VN") })}</p>
                     <p>${getLocalizedText(locale, "newBooking.thanks")}</p>
                     <p>${getLocalizedText(locale, "newBooking.cta")}</p>
@@ -171,6 +230,8 @@ export const getBookingById = async (req, res, next) => {
                     }
                 ]
             })
+            .populate("waterCornCombos.id", "comboName price")
+            .populate("promotionProgram", "discountCode programName percentReduction maxMoneyAmount")
 
         if (!booking) {
             return res.status(404).json({ message: "booking not found..." })
@@ -199,30 +260,41 @@ export const detailAllBooking = async (req, res, next) => {
         const movies = await Movie.findWithDeleted({})
         const cinemaRooms = await CinemaRoom.find({})
         const cinemas = await Cinema.find({})
+        const waterCornCombos = await WaterCornCombo.find({})
+        const promotionPrograms = await PromotionProgram.find({})
 
         bookings.forEach((booking) => {
             const screening = screenings.find((sn) =>
                 sn._id.toString() === booking.screening.toString()
             )
-
             booking.screeningTime = screening
                 ? `${screening.timeSlot}, ${screening.movieDate}` : "Unknown"
 
             const movie = movies.find((m) =>
                 screening && m._id.toString() === screening.movie.toString()
             )
-
             booking.movieName = movie ? movie.title : "Unknown"
 
             const cinemaRoom = cinemaRooms.find((cr) =>
                 screening && cr._id.toString() === screening.cinemaRoom.toString()
             )
-
             const cinema = cinemas.find((c) =>
                 cinemaRoom && c._id.toString() === cinemaRoom.cinema.toString()
             )
-
             booking.screeningAt = cinema ? `${cinemaRoom.roomNumber}-${cinema.name}` : "Unknown"
+
+            booking.waterCornComboQuantity = booking.waterCornCombos && booking.waterCornCombos.length > 0
+                ? booking.waterCornCombos.map((combo) => {
+                    if (combo && combo.id) {
+                        const waterCornCombo = waterCornCombos.find((wc) => wc._id.toString() === combo.id.toString())
+                        return waterCornCombo ? `${combo.quantity ?? 1} ${waterCornCombo.comboName}` : "Unknown"
+                    }
+                }).join(", ") : "-/-"
+
+            const promotionProgram = promotionPrograms.find((pp) =>
+                pp._id.toString() === booking.promotionProgram?.toString()
+            )
+            booking.discountCode = promotionProgram ? promotionProgram.discountCode : "-/-"
         })
 
         for (let booking of bookings) {
@@ -417,6 +489,9 @@ export const getAllCancelBooking = async (req, res, next) => {
             })
             .sort({ approveRequest: 1, createdAt: -1 })
 
+        const waterCornCombos = await WaterCornCombo.find({})
+        const promotionPrograms = await PromotionProgram.find({})
+
         cancelBookings.forEach((cancelBooking) => {
             if (cancelBooking.booking
                 && cancelBooking.booking.screening.timeSlot
@@ -426,9 +501,7 @@ export const getAllCancelBooking = async (req, res, next) => {
                     ${cancelBooking.booking.screening.movieDate}`
                 cancelBooking.booking.screeningTime = screeningTime
             }
-        })
 
-        cancelBookings.forEach((cancelBooking) => {
             if (cancelBooking.booking
                 && cancelBooking.booking.screening.cinemaRoom.roomNumber
                 && cancelBooking.booking.screening.cinemaRoom.cinema.name) {
@@ -439,9 +512,7 @@ export const getAllCancelBooking = async (req, res, next) => {
             } else {
                 cancelBooking.booking.screeningAt = "Unknown"
             }
-        })
 
-        cancelBookings.forEach((cancelBooking) => {
             if (cancelBooking.booking && cancelBooking.booking.seats) {
                 const seatArr = cancelBooking.booking.seats
                 const seats = seatArr.map(seat => `${seat.rowSeat}-${seat.seatNumber.padStart(3, "0")}`)
@@ -449,6 +520,20 @@ export const getAllCancelBooking = async (req, res, next) => {
             } else {
                 cancelBooking.booking.seatDisplay = "Unknown"
             }
+
+            cancelBooking.booking.waterCornComboQuantity = cancelBooking.booking.waterCornCombos
+                && cancelBooking.booking.waterCornCombos.length > 0 ?
+                cancelBooking.booking.waterCornCombos.map((combo) => {
+                    if (combo && combo.id) {
+                        const waterCornCombo = waterCornCombos.find((wc) => wc._id.toString() === combo.id.toString())
+                        return waterCornCombo ? `${combo.quantity ?? 1} ${waterCornCombo.comboName}` : "Unknown"
+                    }
+                }).join(", ") : "-/-"
+
+            const promotionProgram = promotionPrograms.find((pp) =>
+                pp._id.toString() === cancelBooking.booking.promotionProgram?.toString()
+            )
+            cancelBooking.booking.discountCode = promotionProgram ? promotionProgram.discountCode : "-/-"
         })
 
         res.render("booking/cancel-booking", { cancelBookings })

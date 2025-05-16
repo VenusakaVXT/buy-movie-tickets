@@ -279,9 +279,9 @@ const AddMovie = () => {
                                 onChange={handleChange}
                                 required
                             >
-                                {producers.map((producer) =>
-                                    <MenuItem key={producer._id} value={producer._id}>{producer.producerName}</MenuItem>)
-                                }
+                                {producers.map((producer) => <MenuItem key={producer._id} value={producer._id}>
+                                    {producer.producerName}
+                                </MenuItem>)}
                             </Select>
                         </FormControl>
 

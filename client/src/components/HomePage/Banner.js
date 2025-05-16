@@ -34,7 +34,7 @@ const Banner = () => {
     }
 
     return (
-        <div className="banner__wrapper">
+        banners && banners.length > 0 ? <div className="banner__wrapper">
             <div className="banner__title">
                 <h2>
                     <LoyaltyIcon htmlColor="#e50914" /> {t("homepage.specialOffers").toUpperCase()}
@@ -47,7 +47,7 @@ const Banner = () => {
             </div>
 
             <div className="banner__carousel">
-                {banners && banners.map((banner, index) => (
+                {banners.map((banner, index) => (
                     <img
                         key={index}
                         src={`${process.env.REACT_APP_API_URL}${banner.image}`}
@@ -55,11 +55,11 @@ const Banner = () => {
                         className={
                             Math.floor(index / itemsPerPage) === Math.floor(currentIndex / itemsPerPage) ? "visible" : ""
                         }
-                        onClick={() => navigate(`/promotion-program/${banner._id}`)}
+                        onClick={() => navigate(`/promotion-program/${banner.discountCode.toUpperCase()}`)}
                     />
                 ))}
             </div>
-        </div>
+        </div> : <div style={{ height: 70 }}></div>
     )
 }
 

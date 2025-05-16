@@ -33,11 +33,13 @@
                     <td>
                         <button type="button" class="btn btn-outline-warning" 
                             {% if screening.showtimeOver === false %}disabled{% endif %}>
-                            <a href="/screening/{{ screening._id }}/edit">Edit</a>
+                            <a href="{% if screening.showtimeOver %}/screening/{{ screening._id }}/edit{% else %}#{% endif %}">
+                                Edit
+                            </a>
                         </button>
                         <button type="button" class="btn btn-outline-danger" 
                             {% if screening.showtimeOver === false %}disabled{% endif %}>
-                            <a href="" data-toggle="modal" data-id="{{ screening._id }}" data-target="#deleteScreeningModal">
+                            <a href="#" data-toggle="modal" data-id="{{ screening._id }}" data-target="#deleteScreeningModal">
                                 Delete
                             </a>
                         </button>

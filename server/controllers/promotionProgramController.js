@@ -32,6 +32,47 @@ class PromotionProgramController {
         }
     }
 
+    getPromotionProgramsByCinema = async (req, res, next) => {
+        try {
+            const cinemaId = req.params.cinemaId
+
+            if (!isValidObjectId(cinemaId)) {
+                return res.status(400).json({ message: "Invalid cinema id..." })
+            }
+
+            const promotionPrograms = await PromotionProgram.find({
+                $and: [
+                    { $or: [{ cinema: cinemaId }, { cinema: null }] },
+                    { isActive: true }
+                ]
+            }).populate("cinema", "name")
+
+            if (!promotionPrograms) {
+                return res.status(500).json({ message: "request failed..." })
+            }
+
+            res.status(200).json({ promotionPrograms })
+        } catch (err) {
+            next(err)
+        }
+    }
+
+    getPromotionProgramByDiscountCode = async (req, res, next) => {
+        try {
+            const discountCode = req.params.discountCode
+            const promotionProgram = await PromotionProgram.findOne({ discountCode: discountCode.toUpperCase() })
+                .populate("cinema", "name")
+
+            if (!promotionProgram) {
+                return res.status(404).json({ message: "Promotion program not found..." })
+            }
+
+            res.status(200).json({ promotionProgram })
+        } catch (err) {
+            next(err)
+        }
+    }
+
     getPromotionProgramById = async (req, res, next) => {
         try {
             const promotionProgram = await PromotionProgram.findById(req.params.id).populate("cinema", "name")
@@ -92,6 +133,8 @@ class PromotionProgramController {
                         return res.status(404).json({ message: "Cinema not found..." })
                     }
                     promotionData.cinema = cinemaObj._id
+                } else {
+                    promotionData.cinema = null
                 }
 
                 const promotionProgram = new PromotionProgram(promotionData)
@@ -168,6 +211,8 @@ class PromotionProgramController {
                         return res.status(404).json({ message: "Cinema not found..." })
                     }
                     promotionData.cinema = cinemaObj._id
+                } else {
+                    promotionData.cinema = null
                 }
 
                 if (req.file) {

@@ -31,6 +31,17 @@ export const getCinemaRoomFromCinema = async (cinemaId) => {
     return resData
 }
 
+export const getComboByCinema = async (cinemaId) => {
+    const res = await axios
+        .get(`/cinema/${cinemaId}/water-corn-combos`)
+        .catch((err) => console.error(err))
+
+    if (res.status !== 200) console.log("no data...")
+
+    const resData = await res.data
+    return resData
+}
+
 export const getCancelBookingsByCinema = async (id) => {
     const res = await axios
         .get(`/cinema/${id}/cancel-bookings`)

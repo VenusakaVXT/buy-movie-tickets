@@ -56,7 +56,6 @@ const CancelBooking = () => {
 
     const handleCancelBooking = async (e) => {
         e.preventDefault()
-
         try {
             const res = await comparePassword(userId, passwordAuth)
             const match = res.match

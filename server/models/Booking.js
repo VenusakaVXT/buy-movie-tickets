@@ -21,6 +21,7 @@ const bookingSchema = new Schema({
     ],
     waterCornCombos: [
         {
+            _id: false,
             id: {
                 type: mongoose.Types.ObjectId,
                 ref: "WaterCornCombo"
@@ -33,6 +34,9 @@ const bookingSchema = new Schema({
     promotionProgram: {
         type: mongoose.Types.ObjectId,
         ref: "PromotionProgram"
+    },
+    amountDecreases: {
+        type: Number
     },
     totalMoney: {
         type: Number,

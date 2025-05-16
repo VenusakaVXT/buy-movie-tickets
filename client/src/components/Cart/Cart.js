@@ -20,6 +20,8 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import "../../scss/Cart.scss"
 import "../../scss/App.scss"
 
+const hoverIconStyle = { ":hover": { cursor: "pointer", color: "#e50914" } }
+
 const Cart = () => {
     const [bookings, setBookings] = useState()
     const [isLoading, setIsLoading] = useState(false)
@@ -99,81 +101,65 @@ const Cart = () => {
                                 </ListItemText>
                             </Box>
 
-                            {new Date(booking.screening.movieDate) < new Date()
-                                ? <DeleteIcon
-                                    sx={{
-                                        ":hover": {
-                                            cursor: "pointer",
-                                            color: "#e50914"
-                                        }
-                                    }}
-                                    data-tooltip-content={t("cart.removeMovieTicket")}
-                                    data-tooltip-id="removeMovieTicketIcon"
-                                    onClick={() => handleUserDeleteBooking(booking._id)}
-                                />
-                                : booking.cancelled ?
-                                    <CancelSendIcon
-                                        sx={{
-                                            ":hover": {
-                                                cursor: "pointer",
-                                                color: "#e50914"
-                                            }
-                                        }}
-                                        data-tooltip-content={t("cart.waitCancel")}
-                                        data-tooltip-id="iconPendingCancellation"
-                                        onClick={() => navigate("/customer/cancel-booking/list")}
-                                    /> :
-                                    <Box display={"flex"} flexDirection={"column"}>
-                                        <DetailsIcon
-                                            sx={{
-                                                marginBottom: "4px",
-                                                ":hover": {
-                                                    cursor: "pointer",
-                                                    color: "#e50914"
-                                                }
-                                            }}
-                                            data-tooltip-content={t("cart.viewDetails")}
-                                            data-tooltip-id="cinemaTicketDetails"
-                                            onClick={() => navigate(`/booking/${booking._id}/detail`)}
+                            {booking.cancelled ?
+                                <CancelSendIcon
+                                    sx={hoverIconStyle}
+                                    data-tooltip-content={t("cart.waitCancel")}
+                                    data-tooltip-id="iconPendingCancellation"
+                                    onClick={() => navigate("/customer/cancel-booking/list")}
+                                /> :
+                                <Box display={"flex"} flexDirection={"column"}>
+                                    <DetailsIcon
+                                        sx={{ marginBottom: "4px", ...hoverIconStyle }}
+                                        data-tooltip-content={t("cart.viewDetails")}
+                                        data-tooltip-id="cinemaTicketDetails"
+                                        onClick={() => navigate(`/booking/${booking._id}/detail`)}
+                                    />
+
+                                    {new Date(booking.screening.movieDate) < new Date()
+                                        && <DeleteIcon
+                                            sx={hoverIconStyle}
+                                            data-tooltip-content={t("cart.removeMovieTicket")}
+                                            data-tooltip-id="removeMovieTicketIcon"
+                                            onClick={() => handleUserDeleteBooking(booking._id)}
                                         />
+                                    }
 
-                                        {calculateDaysBetween(booking.screening.movieDate, booking.createdAt) >= 3 &&
-                                            <EventBusyIcon
-                                                sx={{
-                                                    marginTop: "4px",
-                                                    ":hover": {
-                                                        cursor: "pointer",
-                                                        color: "#e50914"
-                                                    }
-                                                }}
-                                                data-tooltip-content={t("cart.cancelBooking")}
-                                                data-tooltip-id="cancelBookingIcon"
-                                                onClick={() => {
-                                                    const percent = [90, 80, 70]
-                                                    const dayNum = calculateDaysBetween(
-                                                        booking.screening.movieDate,
-                                                        booking.createdAt
-                                                    )
+                                    {calculateDaysBetween(booking.screening.movieDate, booking.createdAt) >= 3 &&
+                                        <EventBusyIcon
+                                            sx={{ marginTop: "4px", ...hoverIconStyle }}
+                                            data-tooltip-content={t("cart.cancelBooking")}
+                                            data-tooltip-id="cancelBookingIcon"
+                                            onClick={() => {
+                                                const percent = [90, 80, 70]
+                                                const dayNum = calculateDaysBetween(
+                                                    booking.screening.movieDate,
+                                                    booking.createdAt
+                                                )
+                                                const seatsLength = booking.seats.length
+                                                const totalSeatsMoney = seatsLength * booking.screening.price
+                                                const waterCornMoney = booking.totalMoney - totalSeatsMoney
 
-                                                    localStorage.setItem("ratingPointsDeducted", booking.seats.length * 5)
+                                                localStorage.setItem("ratingPointsDeducted", seatsLength * 5)
 
-                                                    if (dayNum >= 7) {
-                                                        localStorage.setItem("compensationPercent", percent[0])
-                                                        localStorage.setItem("refunds", booking.totalMoney * (percent[0] / 100))
-                                                    } else if (dayNum >= 5 && dayNum < 7) {
-                                                        localStorage.setItem("compensationPercent", percent[1])
-                                                        localStorage.setItem("refunds", booking.totalMoney * (percent[1] / 100))
-                                                    } else if (dayNum >= 3 && dayNum < 5) {
-                                                        localStorage.setItem("compensationPercent", percent[2])
-                                                        localStorage.setItem("refunds", booking.totalMoney * (percent[2] / 100))
-                                                    } else {
-                                                        toast.error(t("cart.toastCancelBooking"))
-                                                    }
+                                                if (dayNum >= 7) {
+                                                    localStorage.setItem("compensationPercent", percent[0])
+                                                    localStorage.setItem("refunds", (totalSeatsMoney * (percent[0] / 100)) + waterCornMoney)
+                                                } else if (dayNum >= 5 && dayNum < 7) {
+                                                    localStorage.setItem("compensationPercent", percent[1])
+                                                    localStorage.setItem("refunds", (totalSeatsMoney * (percent[1] / 100)) + waterCornMoney)
+                                                } else if (dayNum >= 3 && dayNum < 5) {
+                                                    localStorage.setItem("compensationPercent", percent[2])
+                                                    localStorage.setItem("refunds", (totalSeatsMoney * (percent[2] / 100)) + waterCornMoney)
+                                                } else {
+                                                    toast.error(t("cart.toastCancelBooking"))
+                                                }
 
-                                                    navigate(`/customer/cancel-booking/${booking._id}`)
-                                                }}
-                                            />}
-                                    </Box>}
+                                                navigate(`/customer/cancel-booking/${booking._id}`)
+                                            }}
+                                        />}
+                                </Box>
+                            }
 
                             <Tooltip
                                 id="cinemaTicketDetails"

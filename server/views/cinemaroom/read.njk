@@ -40,7 +40,7 @@
                             <a href="/cinemaroom/{{ cinemaRoom._id }}/edit">Edit</a>
                         </button>
                         <button type="button" class="btn btn-outline-danger" {% if cinemaRoom.screenings.length %}disabled{% endif %}>
-                            <a href="" data-toggle="modal" data-id="{{ cinemaRoom._id }}" data-target="#deleteCinemaRoomModal">
+                            <a href="#" data-toggle="modal" data-id="{{ cinemaRoom._id }}" data-target="#deleteCinemaRoomModal">
                                 Delete
                             </a>
                         </button>

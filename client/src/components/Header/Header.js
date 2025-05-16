@@ -36,6 +36,7 @@ import { Tooltip } from "react-tooltip"
 import { socket } from "../../App"
 import { toast } from "react-toastify"
 import { useTranslation } from "react-i18next"
+import { highlightOption } from "../../util"
 import "../../scss/App.scss"
 
 const Header = () => {
@@ -63,7 +64,7 @@ const Header = () => {
     }, [bookingsLength, ratingPoints])
 
     useEffect(() => {
-        if (location.pathname === "/") setActive(0)
+        location.pathname === "/" && setActive(0)
     }, [location])
 
     useEffect(() => {
@@ -91,9 +92,7 @@ const Header = () => {
 
     const handleChange = (e, val) => {
         const movie = movies.find((movie) => movie.title === val)
-        if (movie) {
-            navigate(`/movie-details/${movie.slug}`)
-        }
+        movie && navigate(`/movie-details/${movie.slug}`)
     }
 
     const handleTabClick = (e) => {
@@ -105,21 +104,6 @@ const Header = () => {
             if (element) {
                 element.scrollIntoView({ behavior: "smooth" })
             }
-        }
-    }
-
-    const highlightOption = (option, inputVal) => {
-        const regex = new RegExp(`(${inputVal})`, "gi")
-
-        if (!inputVal) {
-            return <span>{option}</span>
-        } else {
-            // Word breaking skill: Keep space between words
-            return option.split(regex).map((query, index) =>
-                regex.test(query) ? (
-                    <span key={index} style={{ color: "#ff0000" }}>{query}</span>
-                ) : (query)
-            )
         }
     }
 
@@ -255,7 +239,6 @@ const Header = () => {
                                     data-tooltip-content={t("header.screeningCart")}
                                     data-tooltip-id="cart"
                                 />
-
                                 <span>{bookingsLength !== 0 ? bookingsLength : bookings.length}</span>
                             </Link>
 

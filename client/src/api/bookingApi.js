@@ -1,8 +1,14 @@
 import axios from "axios"
 
-export const newBooking = async (screeningId, seats, customerId) => {
+export const newBooking = async (screeningId, seats, customerId, waterCornCombos, discountCode) => {
     const res = await axios
-        .post("/booking", { screening: screeningId, seats, user: customerId })
+        .post("/booking", {
+            screening: screeningId,
+            seats,
+            user: customerId,
+            waterCornCombos,
+            discountCode
+        })
         .catch((err) => console.error(err))
 
     if (res.status !== 200 && res.status !== 201) console.log("no data...")

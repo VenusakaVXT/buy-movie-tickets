@@ -4,6 +4,8 @@ import promotionProgramController from "../controllers/promotionProgramControlle
 const promotionProgramRouter = express.Router()
 
 promotionProgramRouter.get("/", promotionProgramController.getPromotionPrograms)
+promotionProgramRouter.get("/cinema/:cinemaId", promotionProgramController.getPromotionProgramsByCinema)
+promotionProgramRouter.get("/discount-code/:discountCode", promotionProgramController.getPromotionProgramByDiscountCode)
 promotionProgramRouter.get("/create", promotionProgramController.create)
 promotionProgramRouter.post("/store", promotionProgramController.store)
 promotionProgramRouter.get("/table-lists", promotionProgramController.tableLists)

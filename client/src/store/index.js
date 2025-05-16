@@ -19,6 +19,8 @@ const customerSlice = createSlice({
             localStorage.removeItem("userEmail")
             localStorage.removeItem("userName")
             localStorage.removeItem("seatBookeds")
+            localStorage.removeItem("waterCornCombos")
+            localStorage.removeItem("waterCornComboMoney")
             localStorage.setItem("customerData", JSON.stringify(action.payload))
         },
         logout(state) {
@@ -55,6 +57,8 @@ const managerSlice = createSlice({
             sessionStorage.removeItem("tabState")
             sessionStorage.removeItem("activeTab")
             localStorage.removeItem("seatBookeds")
+            localStorage.removeItem("waterCornCombos")
+            localStorage.removeItem("waterCornComboMoney")
             localStorage.removeItem("userEmail")
             localStorage.removeItem("userName")
         },

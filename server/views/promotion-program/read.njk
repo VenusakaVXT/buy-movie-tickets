@@ -9,7 +9,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Discount code</th>
-                    <th scope="col">Program name</th>
+                    {# <th scope="col">Program name</th> #}
                     <th scope="col">Start date</th>
                     <th scope="col">End date</th>
                     <th scope="col">Percent</th>
@@ -23,7 +23,7 @@
                 <tr>
                     <th scope="row">{{ loop.index }}</th>
                     <td>{{ promotionProgram.discountCode }}</td>
-                    <td>{{ promotionProgram.programName }}</td>
+                    {# <td>{{ promotionProgram.programName }}</td> #}
                     <td>{{ promotionProgram.startDate }}</td>
                     <td>{{ promotionProgram.endDate }}</td>
                     <td>{{ promotionProgram.percentReduction }}%</td>

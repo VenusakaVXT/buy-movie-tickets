@@ -58,3 +58,18 @@ export const convertToAcronym = (phrase) => {
     const acronym = words.map(word => word.charAt(0).toUpperCase()).join("")
     return acronym
 }
+
+export const highlightOption = (option, inputVal) => {
+    const regex = new RegExp(`(${inputVal})`, "gi")
+
+    if (!inputVal) {
+        return <span>{option}</span>
+    } else {
+        // Word breaking skill: Keep space between words
+        return option.split(regex).map((query, index) =>
+            regex.test(query) ? (
+                <span key={index} style={{ color: "#ff0000" }}>{query}</span>
+            ) : (query)
+        )
+    }
+}

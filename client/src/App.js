@@ -123,7 +123,7 @@ const App = () => {
                         <Route path="/booking/:slug" element={<Booking />} />
                         <Route path="/booking/:movieSlug/:screeningId" element={<SeatDiagram />} />
                         <Route path="/charts" element={<Charts />} />
-                        <Route path="/promotion-program/:id" element={<PromotionProgram />} />
+                        <Route path="/promotion-program/:discountCode" element={<PromotionProgram />} />
                         {(!isCustomerLoggedIn && !isManagerLoggedIn) && <>
                             <Route path="/register" element={<Register />} />
                             <Route path="/login" element={<Login />} />

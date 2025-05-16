@@ -31,6 +31,8 @@ const Login = () => {
     const [inputs, setInputs] = useState({ nameAccount: "", password: "" })
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [email, setEmail] = useState("")
+    const movieSlug = localStorage.getItem("movieSlug")
+    const screeningId = localStorage.getItem("screeningId")
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { t, i18n } = useTranslation()
@@ -56,7 +58,13 @@ const Login = () => {
                     }))
                     localStorage.setItem("customerId", data.id)
                     localStorage.setItem("customerName", data.name)
-                    navigate("/")
+                    if (movieSlug && screeningId) {
+                        navigate(`/booking/${movieSlug}/${screeningId}`)
+                        localStorage.removeItem("movieSlug")
+                        localStorage.removeItem("screeningId")
+                    } else {
+                        navigate("/")
+                    }
                     toast.success(i18n.language === "en" ? data.message : t("login.toastSuccess"))
                 })
                 .catch(err => console.error(err))
@@ -159,9 +167,7 @@ const Login = () => {
                         bgcolor: "#fff",
                         color: "#000",
                         cursor: "pointer",
-                        ":hover": {
-                            opacity: 0.8
-                        }
+                        ":hover": { opacity: 0.8 }
                     }}>
                         <Typography>{t("register.btn2")}</Typography>
                     </Box>

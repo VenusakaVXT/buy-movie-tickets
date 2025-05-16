@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import { Box, Typography, Button } from "@mui/material"
-import { useNavigate, useParams } from "react-router-dom"
+import { Box, Typography, Button, Autocomplete, TextField } from "@mui/material"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
 import { useSelector, useDispatch } from "react-redux"
 import { customerActions } from "../../store"
@@ -8,28 +8,44 @@ import { Helmet } from "react-helmet"
 import { getAllSeatsFromCinemaRoom } from "../../api/cinemaApi"
 import { newBooking } from "../../api/bookingApi"
 import Loading from "../Loading/Loading"
-import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined"
-import DragHandleOutlinedIcon from "@mui/icons-material/DragHandleOutlined"
 import { toast } from "react-toastify"
 import { formatTitle } from "../../App"
 import "../../scss/SeatDiagram.scss"
 import "../../scss/App.scss"
+import { getPromotionProgramsByCinema } from "../../api/promotionProgramApi"
+import WaterCornCombo from "../WaterCornCombo/WaterCornCombo"
+import { highlightOption } from "../../util"
 
 const SeatDiagram = () => {
     const [synthesizeData, setSynthesizeData] = useState()
     const [price, setPrice] = useState(0)
     const [quantity, setQuantity] = useState(0)
+    const [isOpenCombo, setIsOpenCombo] = useState(false)
+    const [promotionPrograms, setPromotionPrograms] = useState([])
+    const [selectedPromotion, setSelectedPromotion] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
+    const [amountDecreases, setAmountDecreases] = useState(0)
+    const [totalMoney, setTotalMoney] = useState(0)
+    const waterCornComboMoney = localStorage.getItem("waterCornComboMoney")
     const navigate = useNavigate()
     const screeningId = useParams().screeningId
     const movieSlug = useParams().movieSlug
     const isCustomerLoggedIn = useSelector((state) => state.customer.isLoggedIn)
     const isManagerLoggedIn = useSelector((state) => state.manager.isLoggedIn)
     const dispatch = useDispatch()
+    const location = useLocation()
     const { t } = useTranslation()
 
+    const handleRemoveLocalStorage = () => {
+        localStorage.removeItem("seatBookeds")
+        localStorage.removeItem("waterCornCombos")
+        localStorage.removeItem("waterCornComboMoney")
+    }
+
+    useEffect(() => handleRemoveLocalStorage(), [location.pathname])
+
     useEffect(() => {
-        const handleBeforeUnload = () => localStorage.removeItem("seatBookeds")
+        const handleBeforeUnload = () => handleRemoveLocalStorage()
         window.addEventListener("beforeunload", handleBeforeUnload)
         return () => window.removeEventListener("beforeunload", handleBeforeUnload)
     }, [])
@@ -42,7 +58,32 @@ const SeatDiagram = () => {
             .finally(() => setIsLoading(false))
     }, [screeningId])
 
-    useEffect(() => setQuantity(document.querySelectorAll(".seat-choice").length), [synthesizeData])
+    useEffect(() => {
+        setQuantity(document.querySelectorAll(".seat-choice").length)
+        synthesizeData && getPromotionProgramsByCinema(synthesizeData.cinemaId)
+            .then((res) => setPromotionPrograms(res.promotionPrograms))
+            .catch((err) => console.error(err))
+    }, [synthesizeData])
+
+    useEffect(() => {
+        const calculateDiscountAndTotal = () => {
+            const seatMoney = price * quantity
+            const comboMoney = parseInt(waterCornComboMoney || 0)
+            let total = seatMoney + comboMoney
+            let discount = 0
+
+            if (selectedPromotion) {
+                const discountAmount = (total * selectedPromotion.percentReduction) / 100
+                discount = Math.min(discountAmount, selectedPromotion.maxMoneyAmount)
+                total -= discount
+            }
+
+            setAmountDecreases(discount)
+            setTotalMoney(total)
+        }
+
+        calculateDiscountAndTotal()
+    }, [price, quantity, waterCornComboMoney, selectedPromotion])
 
     const sortedSeats = synthesizeData && synthesizeData.seats ? synthesizeData.seats.sort((x, y) => {
         if (x.rowSeat !== y.rowSeat) {
@@ -116,6 +157,7 @@ const SeatDiagram = () => {
     const handleBookNowClick = async () => {
         const seats = JSON.parse(localStorage.getItem("seatBookeds")) || []
         const customerId = localStorage.getItem("customerId")
+        const waterCornCombos = JSON.parse(localStorage.getItem("waterCornCombos")) || []
 
         if (!screeningId) {
             toast.error(t("seatDiagram.toastScreeningNotFound"))
@@ -145,18 +187,24 @@ const SeatDiagram = () => {
         // }
 
         try {
-            const bookingData = await newBooking(screeningId, seats, customerId)
+            const bookingData = await newBooking(
+                screeningId,
+                seats,
+                customerId,
+                waterCornCombos,
+                selectedPromotion ? selectedPromotion.discountCode : null
+            )
             const bookingId = bookingData.booking._id
 
             dispatch(customerActions.addBooking(bookingData.booking))
             dispatch(customerActions.setRatingPoints(seats.length * 5))
             navigate(`/booking/${bookingId}/detail`)
             toast.success(t("seatDiagram.toastSuccess"))
-
-            localStorage.removeItem("seatBookeds")
+            handleRemoveLocalStorage()
         } catch (err) {
             console.error(err)
             toast.error(t("seatDiagram.toastError"))
+            setIsLoading(false)
         }
     }
 
@@ -185,86 +233,211 @@ const SeatDiagram = () => {
                     </Typography>
                 </Box>
 
-                <Box className="seat-statistics">
-                    <Typography className="textitem">
-                        {t("seatDiagram.totalSeats")}: {synthesizeData.seats.length}
-                    </Typography>
+                <Box display={"flex"}>
+                    <Box width={780} margin={"0 auto"}>
+                        <Box className="seat-statistics">
+                            <Typography className="textitem">
+                                {t("seatDiagram.totalSeats")}: {synthesizeData.seats.length}
+                            </Typography>
 
-                    <Typography className="textitem">
-                        {t("seatDiagram.seatsBooked")}: {synthesizeData.seats.filter(seat => seat.selected === true).length}
-                    </Typography>
+                            <Typography className="textitem">
+                                {t("seatDiagram.seatsBooked")}: {synthesizeData.seats.filter(seat => seat.selected === true).length}
+                            </Typography>
 
-                    <Typography className="textitem">
-                        {t("seatDiagram.seatsNotBooked")}: {synthesizeData.seats.filter(seat => seat.selected === false).length}
-                    </Typography>
+                            <Typography className="textitem">
+                                {t("seatDiagram.seatsNotBooked")}: {synthesizeData.seats.filter(seat => seat.selected === false).length}
+                            </Typography>
+                        </Box>
+
+                        <Box className="seat-diagram">
+                            {sortedSeats.map((seat) => (
+                                <div
+                                    key={seat._id}
+                                    className={`seat-item ${seat.selected === true ? "seat-booked" : ""}`}
+                                    onClick={(e) => {
+                                        setPrice(synthesizeData.price)
+                                        handleSeatClick(e, seat)
+                                    }}
+                                >
+                                    {`${seat.rowSeat}-${seat.seatNumber.padStart(3, "0")}`}
+                                </div>
+                            ))}
+                        </Box>
+
+                        <Box className="seat-note">
+                            <Box className="seat-note__item">
+                                <div className="seat-color not-booked"></div>:
+                                <Typography className="text-caption">{t("seatDiagram.seatNotBooked")}</Typography>
+                            </Box>
+
+                            <Box className="seat-note__item">
+                                <div className="seat-color booked"></div>:
+                                <Typography className="text-caption">{t("seatDiagram.seatBooked")}</Typography>
+                            </Box>
+
+                            <Box className="seat-note__item">
+                                <div className="seat-color choice"></div>:
+                                <Typography className="text-caption">{t("seatDiagram.seatChoice")}</Typography>
+                            </Box>
+
+                            <Box className="seat-note__item">
+                                <div className="seat-color hold"></div>:
+                                <Typography className="text-caption">{t("seatDiagram.seatHold")}</Typography>
+                            </Box>
+                        </Box>
+                    </Box>
+
+                    <Box width={"calc(100% - 780px)"} margin={"16px auto 0"}>
+                        <Box className="seat-fee">
+                            <Typography textAlign={"center"} variant="h6" marginBottom={2}>
+                                {t("seatDiagram.bookingInfo")}
+                            </Typography>
+
+                            <Typography className="seat-fee__item">
+                                <span>{t("seatDiagram.seatHoldTime")}:</span>
+                                <span>00:00</span>
+                            </Typography>
+                            <Typography className="seat-fee__item">
+                                <span>{t("seatDiagram.unitPrice")}:</span>
+                                <span>{price}</span>
+                            </Typography>
+                            <Typography className="seat-fee__item">
+                                <span>{t("seatDiagram.quantity")}:</span>
+                                <span>{quantity}</span>
+                            </Typography>
+                            <Typography className="seat-fee__item">
+                                <span>{t("seatDiagram.seatMoney")}:</span>
+                                <span>{price * quantity}</span>
+                            </Typography>
+
+                            <Button
+                                className="open-combo-btn"
+                                fullWidth
+                                onClick={() => setIsOpenCombo(true)}
+                            >
+                                {t("seatDiagram.selectCornWater")}
+                            </Button>
+                            <Typography className="seat-fee__item">
+                                <span>{t("cinemaTicket.waterCornCombosMoney")}:</span>
+                                <span>{waterCornComboMoney ? waterCornComboMoney : 0}</span>
+                            </Typography>
+
+                            <Autocomplete
+                                options={promotionPrograms}
+                                getOptionLabel={(option) => option.discountCode}
+                                onChange={(e, val) => setSelectedPromotion(val)}
+                                renderOption={(props, option, { inputValue }) => (
+                                    <Box
+                                        {...props}
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            padding: "8px",
+                                            backgroundColor: "#1a1b1e !important",
+                                            "&:hover": { backgroundColor: "#2f3032 !important" },
+                                        }}
+                                    >
+                                        <img
+                                            src={`${process.env.REACT_APP_API_URL}${option.image}`}
+                                            alt={option.discountCode}
+                                            style={{
+                                                width: "100px",
+                                                height: "50px",
+                                                marginRight: "10px",
+                                            }}
+                                        />
+                                        <Box>
+                                            <Typography sx={{ fontSize: "14px", fontWeight: "bold", color: "#fff" }}>
+                                                {highlightOption(option.discountCode, inputValue)}
+                                            </Typography>
+                                            <Typography sx={{ fontSize: "13px", color: "#fff" }}>
+                                                {t("cinemaTicket.reduce").toUpperCase()} {option.percentReduction}%
+                                            </Typography>
+                                            <Typography sx={{ fontSize: "12px", color: "#ccc" }}>
+                                                HSD: {option.endDate}
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                )}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label={t("seatDiagram.searchVoucher")}
+                                        variant="outlined"
+                                        sx={{
+                                            "& .MuiInputBase-root": {
+                                                backgroundColor: "transparent",
+                                                color: "#fff",
+                                            },
+                                            "& .MuiInputLabel-root": {
+                                                color: "#fff",
+                                            },
+                                            "& .MuiOutlinedInput-root": {
+                                                "& fieldset": {
+                                                    borderColor: "#fff",
+                                                },
+                                                "&:hover fieldset": {
+                                                    borderColor: "#fff",
+                                                },
+                                                "&.Mui-focused fieldset": {
+                                                    borderColor: "#fff",
+                                                },
+                                            },
+                                            "& .MuiSvgIcon-root": {
+                                                color: "#fff",
+                                            },
+                                        }}
+                                    />
+                                )}
+                                sx={{
+                                    marginTop: 2,
+                                    marginBottom: 2,
+                                    "& .MuiAutocomplete-listbox": {
+                                        backgroundColor: "#1a1b1e",
+                                        color: "#fff",
+                                    },
+                                    "& .MuiAutocomplete-option": {
+                                        "&[aria-selected='true']": {
+                                            color: "#e50914",
+                                        },
+                                    },
+                                }}
+                            />
+
+                            <Typography className="seat-fee__item">
+                                <span>{t("seatDiagram.preferentialMoney")}:</span>
+                                <span>{amountDecreases === 0 ? 0 : `-${amountDecreases}`}</span>
+                            </Typography>
+                            <Typography className="seat-fee__item">
+                                <span>{t("seatDiagram.totalMoney")}:</span>
+                                <span>{totalMoney}</span>
+                            </Typography>
+
+                            <Box display={"flex"} justifyContent={"center"} marginTop={2}>
+                                <Button className="btn" fontSize={"1.5rem"} onClick={() => {
+                                    if (isCustomerLoggedIn) {
+                                        setIsLoading(true)
+                                        handleBookNowClick()
+                                    } else if (isManagerLoggedIn) {
+                                        toast.warn(t("seatDiagram.toastWarnStaff"))
+                                    } else {
+                                        localStorage.setItem("screeningId", screeningId)
+                                        localStorage.setItem("movieSlug", movieSlug)
+                                        toast.info(t("seatDiagram.toastInfoLogIn"))
+                                        navigate("/login")
+                                    }
+                                }}>
+                                    {t("seatDiagram.bookNow")}
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
                 </Box>
-
-                <Box className="seat-diagram">
-                    {sortedSeats.map((seat) => (
-                        <div
-                            key={seat._id}
-                            className={`seat-item ${seat.selected === true ? "seat-booked" : ""}`}
-                            onClick={(e) => {
-                                setPrice(synthesizeData.price)
-                                handleSeatClick(e, seat)
-                            }}
-                        >
-                            {`${seat.rowSeat}-${seat.seatNumber.padStart(3, "0")}`}
-                        </div>
-                    ))}
-                </Box>
-
-                <Box className="seat-caption">
-                    <Box className="seat-caption__item">
-                        <div className="seat-color not-booked"></div>:
-                        <Typography className="text-caption">{t("seatDiagram.seatNotBooked")}</Typography>
-                    </Box>
-
-                    <Box className="seat-caption__item">
-                        <div className="seat-color booked"></div>:
-                        <Typography className="text-caption">{t("seatDiagram.seatBooked")}</Typography>
-                    </Box>
-
-                    <Box className="seat-caption__item">
-                        <div className="seat-color choice"></div>:
-                        <Typography className="text-caption">{t("seatDiagram.seatChoice")}</Typography>
-                    </Box>
-                </Box>
-
-                <Box className="seat-fee">
-                    <Box className="seat-unit-price">
-                        <Typography fontSize={"1.5rem"}>{t("seatDiagram.unitPrice")}</Typography>
-                        <Typography fontSize={"1.5rem"}>{price}</Typography>
-                    </Box>
-
-                    <ClearOutlinedIcon />
-
-                    <Box className="seat-quantity">
-                        <Typography fontSize={"1.5rem"}>{t("seatDiagram.quantity")}</Typography>
-                        <Typography fontSize={"1.5rem"}>{quantity}</Typography>
-                    </Box>
-
-                    <DragHandleOutlinedIcon />
-
-                    <Box className="total-money">
-                        <Typography fontSize={"1.5rem"}>{t("seatDiagram.totalMoney")}</Typography>
-                        <Typography fontSize={"1.5rem"}>{price * quantity}</Typography>
-                    </Box>
-
-                    <Button className="btn" fontSize={"1.5rem"} onClick={() => {
-                        if (isCustomerLoggedIn) {
-                            setIsLoading(true)
-                            handleBookNowClick()
-                        } else if (isManagerLoggedIn) {
-                            toast.warn(t("seatDiagram.toastWarnStaff"))
-                        } else {
-                            toast.info(t("seatDiagram.toastInfoLogIn"))
-                            navigate("/login")
-                        }
-                    }}>
-                        {t("seatDiagram.bookNow")}
-                    </Button>
-                </Box>
+                <WaterCornCombo
+                    cinemaId={synthesizeData.cinemaId}
+                    open={isOpenCombo}
+                    onClose={() => setIsOpenCombo(false)}
+                />
             </Box> : <Loading />}
         </>
     )
