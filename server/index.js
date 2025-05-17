@@ -43,8 +43,62 @@ const io = new Server(server, {
     }
 })
 
+// Manage keeping seats according to screeningid: { [screeningId]: { [seatId]: { userId, expireAt } } }
+const seatHolds = {}
+
 io.on("connection", (socket) => {
     console.log("a user connected")
+
+    socket.on("joinScreeningRoom", ({ screeningId }) => {
+        socket.join(`screening_${screeningId}`)
+        // Send the current status of holding seats to the new client
+        if (seatHolds[screeningId]) {
+            Object.entries(seatHolds[screeningId]).forEach(([seatId, hold]) => {
+                if (hold.expireAt > Date.now()) {
+                    socket.emit("seatHoldUpdate", { seatId, userId: hold.userId, expireAt: hold.expireAt })
+                }
+            })
+        }
+    })
+
+    socket.on("leaveScreeningRoom", ({ screeningId }) => {
+        socket.leave(`screening_${screeningId}`)
+    })
+
+    socket.on("holdSeat", ({ screeningId, seatId, userId, holdTime }) => {
+        if (!seatHolds[screeningId]) seatHolds[screeningId] = {}
+        // If the seat has not been held or has expired
+        const now = Date.now()
+        const expireAt = now + (holdTime || 300) * 1000
+        if (!seatHolds[screeningId][seatId] || seatHolds[screeningId][seatId].expireAt < now) {
+            seatHolds[screeningId][seatId] = { userId, expireAt }
+            io.to(`screening_${screeningId}`).emit("seatHoldUpdate", { seatId, userId, expireAt })
+            // Automatically release the seat after holding time
+            setTimeout(() => {
+                if (seatHolds[screeningId] && seatHolds[screeningId][seatId] && seatHolds[screeningId][seatId].expireAt <= Date.now()) {
+                    delete seatHolds[screeningId][seatId]
+                    io.to(`screening_${screeningId}`).emit("seatHoldRelease", { seatId })
+                }
+            }, (holdTime || 300) * 1000)
+        }
+    })
+
+    socket.on("releaseSeatHold", ({ screeningId, seatId }) => {
+        if (seatHolds[screeningId] && seatHolds[screeningId][seatId]) {
+            delete seatHolds[screeningId][seatId]
+            io.to(`screening_${screeningId}`).emit("seatHoldRelease", { seatId })
+        }
+    })
+
+    socket.on("bookSeats", ({ screeningId, seatIds }) => {
+        if (seatHolds[screeningId]) {
+            seatIds.forEach(seatId => {
+                delete seatHolds[screeningId][seatId]
+            })
+        }
+        io.to(`screening_${screeningId}`).emit("seatBookedUpdate", { seatIds })
+    })
+
     socket.on("disconnect", () => {
         console.log("user disconnected")
     })

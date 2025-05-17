@@ -9,7 +9,7 @@ import { getAllSeatsFromCinemaRoom } from "../../api/cinemaApi"
 import { newBooking } from "../../api/bookingApi"
 import Loading from "../Loading/Loading"
 import { toast } from "react-toastify"
-import { formatTitle } from "../../App"
+import { formatTitle, socket } from "../../App"
 import "../../scss/SeatDiagram.scss"
 import "../../scss/App.scss"
 import { getPromotionProgramsByCinema } from "../../api/promotionProgramApi"
@@ -26,6 +26,9 @@ const SeatDiagram = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [amountDecreases, setAmountDecreases] = useState(0)
     const [totalMoney, setTotalMoney] = useState(0)
+    const [holdSeats, setHoldSeats] = useState({}) // { seatId: { userId, expireAt } }
+    const [countdown, setCountdown] = useState(300) // 5 minutes = 300 seconds
+    const customerId = localStorage.getItem("customerId")
     const waterCornComboMoney = localStorage.getItem("waterCornComboMoney")
     const navigate = useNavigate()
     const screeningId = useParams().screeningId
@@ -85,6 +88,66 @@ const SeatDiagram = () => {
         calculateDiscountAndTotal()
     }, [price, quantity, waterCornComboMoney, selectedPromotion])
 
+    useEffect(() => {
+        if (!synthesizeData || !screeningId) return
+
+        socket.emit("joinScreeningRoom", { screeningId })
+
+        socket.on("seatHoldUpdate", ({ seatId, userId, expireAt }) => {
+            setHoldSeats(prev => ({
+                ...prev,
+                [seatId]: { userId, expireAt }
+            }))
+        })
+
+        socket.on("seatHoldRelease", ({ seatId }) => {
+            setHoldSeats(prev => {
+                const newHold = { ...prev }
+                delete newHold[seatId]
+                return newHold
+            })
+        })
+
+        socket.on("seatBookedUpdate", ({ seatIds }) => {
+            setHoldSeats(prev => {
+                const newHold = { ...prev }
+                seatIds.forEach(id => {
+                    newHold[id] = { ...(newHold[id] || {}), booked: true }
+                })
+                return newHold
+            })
+        })
+
+        return () => {
+            socket.emit("leaveScreeningRoom", { screeningId })
+            socket.off("seatHoldUpdate")
+            socket.off("seatHoldRelease")
+            socket.off("seatBookedUpdate")
+        }
+    }, [synthesizeData, screeningId])
+
+    useEffect(() => {
+        let timer
+        if (quantity > 0) {
+            setCountdown(300)
+            timer = setInterval(() => {
+                setCountdown(prev => {
+                    if (prev <= 1) {
+                        const seatBookeds = JSON.parse(localStorage.getItem("seatBookeds")) || []
+                        seatBookeds.forEach(seatId => {
+                            socket.emit("releaseSeatHold", { screeningId, seatId })
+                        })
+                        localStorage.removeItem("seatBookeds")
+                        setQuantity(0)
+                        return 0
+                    }
+                    return prev - 1
+                })
+            }, 1000)
+        }
+        return () => clearInterval(timer)
+    }, [quantity, screeningId])
+
     const sortedSeats = synthesizeData && synthesizeData.seats ? synthesizeData.seats.sort((x, y) => {
         if (x.rowSeat !== y.rowSeat) {
             return x.rowSeat.localeCompare(y.rowSeat)
@@ -97,7 +160,7 @@ const SeatDiagram = () => {
         const seatTarget = event.target
         const seatId = seat._id
 
-        if (!seatTarget.classList.contains("seat-booked")) {
+        if (!seatTarget.classList.contains("seat-booked") && !seatTarget.classList.contains("seat-hold")) {
             const seatBookeds = JSON.parse(localStorage.getItem("seatBookeds")) || []
 
             if (seatTarget.classList.contains("seat-choice")) {
@@ -105,10 +168,17 @@ const SeatDiagram = () => {
                 const index = seatBookeds.indexOf(seatId)
                 if (index > -1) {
                     seatBookeds.splice(index, 1)
+                    socket.emit("releaseSeatHold", { screeningId, seatId })
                 }
             } else {
                 seatTarget.classList.add("seat-choice")
                 seatBookeds.push(seatId)
+                socket.emit("holdSeat", {
+                    screeningId,
+                    seatId,
+                    userId: customerId,
+                    holdTime: 300
+                })
             }
 
             localStorage.setItem("seatBookeds", JSON.stringify(seatBookeds))
@@ -156,7 +226,6 @@ const SeatDiagram = () => {
 
     const handleBookNowClick = async () => {
         const seats = JSON.parse(localStorage.getItem("seatBookeds")) || []
-        const customerId = localStorage.getItem("customerId")
         const waterCornCombos = JSON.parse(localStorage.getItem("waterCornCombos")) || []
 
         if (!screeningId) {
@@ -198,6 +267,7 @@ const SeatDiagram = () => {
 
             dispatch(customerActions.addBooking(bookingData.booking))
             dispatch(customerActions.setRatingPoints(seats.length * 5))
+            socket.emit("bookSeats", { screeningId, seatIds: seats })
             navigate(`/booking/${bookingId}/detail`)
             toast.success(t("seatDiagram.toastSuccess"))
             handleRemoveLocalStorage()
@@ -206,6 +276,12 @@ const SeatDiagram = () => {
             toast.error(t("seatDiagram.toastError"))
             setIsLoading(false)
         }
+    }
+
+    const formatCountdown = (sec) => {
+        const m = Math.floor(sec / 60)
+        const s = sec % 60
+        return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`
     }
 
     return (
@@ -250,18 +326,28 @@ const SeatDiagram = () => {
                         </Box>
 
                         <Box className="seat-diagram">
-                            {sortedSeats.map((seat) => (
-                                <div
-                                    key={seat._id}
-                                    className={`seat-item ${seat.selected === true ? "seat-booked" : ""}`}
-                                    onClick={(e) => {
-                                        setPrice(synthesizeData.price)
-                                        handleSeatClick(e, seat)
-                                    }}
-                                >
-                                    {`${seat.rowSeat}-${seat.seatNumber.padStart(3, "0")}`}
-                                </div>
-                            ))}
+                            {sortedSeats.map((seat) => {
+                                const isBooked = seat.selected === true
+                                const isBookedBySocket = !seat.selected && holdSeats[seat._id] && holdSeats[seat._id].booked
+                                const isHold = holdSeats[seat._id] && holdSeats[seat._id].userId !== customerId && !holdSeats[seat._id].booked
+                                const isChoice = (JSON.parse(localStorage.getItem("seatBookeds")) || []).includes(seat._id)
+                                let seatClass = "seat-item"
+                                if (isBooked || isBookedBySocket) seatClass += " seat-booked"
+                                else if (isHold) seatClass += " seat-hold"
+                                else if (isChoice) seatClass += " seat-choice"
+                                return (
+                                    <div
+                                        key={seat._id}
+                                        className={seatClass}
+                                        onClick={(e) => {
+                                            setPrice(synthesizeData.price)
+                                            handleSeatClick(e, seat)
+                                        }}
+                                    >
+                                        {`${seat.rowSeat}-${seat.seatNumber.padStart(3, "0")}`}
+                                    </div>
+                                )
+                            })}
                         </Box>
 
                         <Box className="seat-note">
@@ -295,7 +381,14 @@ const SeatDiagram = () => {
 
                             <Typography className="seat-fee__item">
                                 <span>{t("seatDiagram.seatHoldTime")}:</span>
-                                <span>00:00</span>
+                                <span
+                                    style={{
+                                        color: (quantity > 0 && countdown <= 60) ? "#e50914" : undefined,
+                                        fontWeight: (quantity > 0 && countdown <= 60) ? "bold" : undefined
+                                    }}
+                                >
+                                    {quantity > 0 ? formatCountdown(countdown) : "00:00"}
+                                </span>
                             </Typography>
                             <Typography className="seat-fee__item">
                                 <span>{t("seatDiagram.unitPrice")}:</span>
