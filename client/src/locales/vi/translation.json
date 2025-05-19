@@ -29,9 +29,9 @@
         "vi": "Tiếng Việt"
     },
     "carousel": {
-        "contentCarousel1": "Avatar: Dòng chảy của nước sau 13 năm, sự chờ đợi của khán giả phải nói là thực sự rất là xứng đáng.",
-        "contentCarousel2": "Người Kiến 3 mở rộng vũ trụ điện ảnh Marvel, đưa khán giả đến với thế giới lượng tử - vùng đất chưa được giới thiệu nhiều trong các phần phim trước.",
-        "contentCarousel3": "The Flash 2, Barry sẽ phải đối mặt với mối đe dọa mới từ vũ trụ song song dưới hình thức Speedster Zoom."
+        "contentCarousel1": "Bộ Tứ Siêu Đẳng: Bước Đi Đầu Tiên khởi đầu mới của những siêu anh hùng huyền thoại – đầy kịch tính và mãn nhãn!",
+        "contentCarousel2": "Từ Vũ trụ John Wick: Ballerina vũ điệu báo thù bắt đầu. Một nữ sát thủ, một quá khứ đẫm máu.",
+        "contentCarousel3": "Nhiệm Vụ: Bất Khả Thi - Nghiệp Báo Cuối Cùng: Chặng cuối định mệnh của Ethan Hunt – gay cấn, nghẹt thở đến phút chót!"
     },
     "homepage": {
         "specialOffers": "Ưu đãi đặc biệt",
@@ -170,10 +170,24 @@
         "kraven-the-hunter": "Kraven: Thợ Săn Thủ Lĩnh",
         "deadpool-3": "Deadpool 3",
         "captain-america-brave-new-world": "Captain America: Trật Tự Thế Giới Mới",
-        "thunderbolts": "Thunderbolts",
-        "fantastic-four": "Bộ Tứ Siêu Đẳng",
         "avengers-doomsday": "Avengers: DoomsDay",
-        "avengers-secret-wars": "Avengers: Secret Wars"
+        "avengers-secret-wars": "Avengers: Secret Wars",
+        "thunderbolts": "Biệt Đội Sấm Sét",
+        "the-fantastic-four-first-steps": "Bộ Tứ Siêu Đẳng: Bước Đi Đầu Tiên",
+        "superman": "Superman (2025)",
+        "a-minecraft-movie": "Một Bộ Phim Minecraft",
+        "lat-mat-8-vong-tay-nang": "Lật Mặt 8: Vòng Tay Nắng",
+        "tham-tu-kien-ky-an-khong-dau": "Thảm Tử Kiên: Kỳ Án Không Đầu",
+        "dia-dao-mat-troi-trong-bong-toi": "Địa Đạo: Mặt Trời Trong Bóng Tối",
+        "bo-tu-bao-thu": "Bộ Tứ Báo Thủ",
+        "mission-impossible-the-final-reckoning": "Nhiệm Vụ: Bât Khả Thi - Nghiệp Báo Cuối Cùng",
+        "de-men-cuoc-choi-phieu-luu-toi-xom-lay-loi": "Dế Mèn: Cuộc Chơi Phiêu Lưu Tới Xóm Lầy Lội",
+        "ballerina": "Ballerina",
+        "how-to-train-your-dragon": "Bí Kíp Luyện Rồng",
+        "f1": "F1",
+        "jurassic-world-rebirth": "Thế Giới Khủng Long: Tái Sinh",
+        "tu-chien-tren-khong": "Tử Chiến Trên Không",
+        "the-old-guard-2": "The Old Guard 2"
     },
     "moviesDescription": {
         "aquaman-and-the-lost-kingdom": "Aquaman và Vương Quốc Thất Lạc là một bộ phim siêu anh hùng của Mỹ phát hành năm 2023 dựa trên nhân vật Aquaman trong DC Comics. Phim do DC Films, The Safran Company và Atomic Monster Productions sản xuất và được phân phối bởi Warner Bros. Pictures.",
@@ -188,10 +202,24 @@
         "kraven-the-hunter": "Kraven: Thợ Săn Thủ Lĩnh là một bộ phim siêu anh hùng của Mỹ dựa trên nhân vật cùng tên của Marvel Comics, do Columbia Pictures hợp tác với Marvel sản xuất. Sony Pictures Releasing sẽ đóng vai trò là nhà phân phối phim và là phim thứ tư trong Vũ trụ Người Nhện của Sony.",
         "deadpool-3": "Bộ phim Deadpool chưa có tiêu đề, thường được gọi là Deadpool 3, là một bộ phim siêu anh hùng sắp ra mắt của Mỹ dựa trên nhân vật Deadpool của Marvel Comics, do Marvel Studios và Maximum Effort sản xuất và Walt Disney Studios Motion Pictures phân phối.",
         "captain-america-brave-new-world": "Captain America: Trật Tự Thế Giới Mới là một bộ phim siêu anh hùng sắp ra mắt của Mỹ dựa trên nhân vật truyện tranh Marvel Sam Wilson / Captain America. Phim do Marvel Studios sản xuất và dự kiến sẽ được Walt Disney Studios Motion Pictures phát hành vào năm 2024.",
-        "thunderbolts": "Thunderbolts là một đội phản anh hùng xuất hiện trong truyện tranh Mỹ do Marvel Comics xuất bản. Nhóm này chủ yếu bao gồm các giám sát viên được cải cách. Được thành lập bởi Kurt Busiek và Mark Bagley, nhóm xuất hiện lần đầu trong The Incredible Hulk #449.",
-        "fantastic-four": "Chưa có mô tả.",
         "avengers-the-kang-dynasty": "Chưa có mô tả.",
-        "avengers-secret-wars": "Chưa có mô tả."
+        "avengers-secret-wars": "Chưa có mô tả.",
+        "thunderbolts": "Biệt đội sấm sét* là bộ phim thể loại siêu anh hùng Mỹ sắp ra mắt, dựa theo nguyên tác nhóm siêu anh hùng cùng tên của Marvel Comics. Bộ phim được sản xuất bởi Marvel Studios và phát hành bởi Walt Disney Studios Motion Pictures, phim dự định là bộ phim thứ 36 của Vũ trụ Điện ảnh Marvel.",
+        "the-fantastic-four-first-steps": "Bộ tứ siêu đẳng: Bước đi đầu tiên là phim điện ảnh siêu anh hùng Mỹ dự kiến ra mắt năm 2025, dựa trên nhóm nhân vật cùng tên trong bộ truyện tranh Marvel Comics. Phim do hãng Marvel Studios sản xuất và Walt Disney Studios Motion Pictures phân phối.",
+        "superman": "Superman là bộ phim siêu anh hùng của Hoa Kỳ dựa trên nhân vật cùng tên của DC Comics. Phim được sản xuất bởi DC Studios và sẽ do Warner Bros. Pictures phân phối, đây sẽ là phần phim đầu tiên của Vũ trụ DC và đồng thời cũng là bộ phim tái khởi động của loạt phim về Superman.",
+        "a-minecraft-movie": "Một bộ phim Minecraft là một bộ phim điện ảnh Mỹ thuộc thể loại hài – phiêu lưu ra mắt vào năm 2025, là tác phẩm dựa trên một trong những loạt trò chơi điện tử bán chạy nhất trên toàn thế giới, được ra mắt vào năm 2011 mang tên Minecraft do Markus Notch Persson sáng tạo và Mojang Studios phát triển.",
+        "lat-mat-8-vong-tay-nang": "Một bộ phim về sự khác biệt quan điểm giữa ba thế hệ ông bà cha mẹ con cháu. Ai cũng đúng ở góc nhìn của mình nhưng đứng trước hoài bão của tuổi trẻ, cuối cùng thì ai sẽ là người phải nghe theo người còn lại? Và nếu ước mơ của những đứa trẻ bị cho là viển vông, thì cơ hội nào và bao giờ tuổi trẻ mới được tự quyết định tương lai của mình?",
+        "tham-tu-kien-ky-an-khong-dau": "Thám Tử Kiên là một nhân vật được yêu thích trong tác phẩm điện của ăn khách của NGƯỜI VỢ CUỐI CÙNG của Victor Vũ, Thám Tử Kiên: Kỳ Không Đầu sẽ là một phim Victor Vũ trở về với thể loại sở trường Kinh Dị - Trinh Thám sau những tác phẩm tình cảm lãng mạn trước đó.",
+        "dia-dao-mat-troi-trong-bong-toi": "Địa Đạo: Mặt Trời Trong Bóng Tối là một bộ phim điện ảnh Việt Nam thuộc thể loại lịch sử – chiến tranh – chính kịch ra mắt vào năm 2025 do Bùi Thạc Chuyên làm đạo diễn kiêm viết kịch bản, và đồng thời còn là bộ phim đầu tay của ông dưới vai trò là nhà sản xuất.",
+        "bo-tu-bao-thu": "Bộ Tứ Báo Thủ là một bộ phim hài lãng mạn Việt Nam năm 2025 của đạo diễn Trấn Thành và các ngôi sao Trấn Thành, Lê Dương Bảo Lâm, Lê Giang, Uyên An, Quốc Anh, Tiểu Vi và Kỳ Duyên.",
+        "mission-impossible-the-final-reckoning": "Nhiệm Vụ: Bất Khả Thi - Nghiệp Báo Cuối Cùng là một bộ phim hành động gián điệp của Mỹ năm 2025 do Christopher McQuarrie đạo diễn từ một kịch bản mà ông đồng sáng tác với Erik Jendresen. Phần tiếp theo trực tiếp của Mission: Impossible – Dead Reckoning Phần một, đây là phần thứ tám trong loạt phim Mission: Impossible.",
+        "de-men-cuoc-choi-phieu-luu-toi-xom-lay-loi": "Bộ phim kể về chuyến phiêu lưu của 2 anh em Dế Mèn - Dế Trũi tại xóm Lầy Lội. Nơi những nguy hiểm liên tục rình rập trước sự hiếu kỳ của anh em nhà Dế. Để rồi vượt qua nhiều hiểm nguy, tình bạn, tình đoàn kết về muôn loài được ca ngợi.",
+        "ballerina": "Từ Vũ trụ John Wick: Ballerina hay gọi tắt là Ballerina là bộ phim điện ảnh thuộc thể loại hành động giật gân của Hoa Kỳ được đạo diễn bởi Len Wiseman với kịch bản do Shay Hatten chấp bút. Đây là phần phim ngoại truyện đầu tiên của loạt phim John Wick với bối cảnh xảy ra vào giữa Sát thủ John Wick: Phần 3 – Chuẩn bị chiến tranh (2019) và Sát thủ John Wick: Phần 4 (2023).",
+        "how-to-train-your-dragon": "Bí kíp luyện rồng là một bộ phim giả tưởng của Mỹ năm 2025 do Dean DeBlois đồng sản xuất, viết kịch bản và đạo diễn. Đây là bản làm lại người đóng của bộ phim hoạt hình cùng tên năm 2010 do DreamWorks Animation sản xuất, bản thân nó dựa trên tiểu thuyết cùng tên năm 2003 của Cressida Cowell.",
+        "f1": "Ba mươi năm sau, Sonny trở thành một tay đua tự do, cho đến khi người đồng đội cũ của anh, Ruben Cervantes (Javier Bardem), chủ sở hữu một đội đua F1 đang trên bờ vực sụp đổ, tìm đến anh. Ruben thuyết phục Sonny quay lại với F1® để có một cơ hội cuối cùng cứu lấy đội và khẳng định mình là tay đua xuất sắc nhất thế giới.",
+        "jurassic-world-rebirth": "Thế Giới Khủng Long: Tái Sinh lấy bối cảnh 5 năm sau phần phim Thế Giới Khủng Long: Lãnh Địa, môi trường Trái đất đã chứng tỏ phần lớn là không phù hợp với khủng long. Nhiều loài thằn lằn tiền sử được tái sinh đã chết. Những con chưa chết đã rút lui đến một vùng nhiệt đới hẻo lánh gần phòng thí nghiệm. Địa điểm đó chính là nơi bộ ba Scarlett Johansson, Mahershala Ali và Jonathan Bailey dấn thân vào một nhiệm vụ cực kỳ hiểm nguy.",
+        "tu-chien-tren-khong": "Tử chiến trên không là phim điện ảnh hành động - kịch tính, được lấy cảm hứng từ vụ cướp máy bay có thật tại Việt Nam sau năm 1975. Điện ảnh Công an nhân dân chỉ đạo sản xuất bộ phim và là bảo chứng cho tính chân thực của chất liệu lịch sử và những tư liệu an ninh hàng không, góp phần tái hiện câu chuyện sống động và thuyết phục.",
+        "the-old-guard-2": "The Old Guard 2 là một bộ phim siêu anh hùng sắp ra mắt của Mỹ do Victoria Mahoney đạo diễn, từ kịch bản của Greg Rucka, dựa trên truyện tranh The Old Guard của ông. Đây là phần tiếp theo của bộ phim The Old Guard (2020). Phim có sự tham gia của Charlize Theron, KiKi Layne, Marwan Kenzari, Luca Marinelli, Matthias Schoenaerts và Chiwetel Ejiofor."
     },
     "movieDetail": {
         "director": "Đạo diễn: {{director}}",

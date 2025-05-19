@@ -29,9 +29,9 @@
         "vi": "Vietnamese"
     },
     "carousel": {
-        "contentCarousel1": "Avatar: The Way Of Water after 13 years, the audience's wait is truly worth it.",
-        "contentCarousel2": "Ant-Man 3 expands the Marvel Cinematic Universe, bringing audiences to the quantum world - a land that has not been introduced much in previous films.",
-        "contentCarousel3": "The Flash 2, Barry will face a new threat from a parallel universe in the form of Speedster Zoom."
+        "contentCarousel1": "The Fantastic Four: First Steps a thrilling new beginning for the iconic superhero team!",
+        "contentCarousel2": "From the World of John Wick: Ballerina a deadly ballerina. A mission of revenge. Let the dance begin.",
+        "contentCarousel3": "Mission: Impossible – The Final Reckoning: Ethan Hunt’s final mission – explosive, intense, unforgettable!"
     },
     "homepage": {
         "specialOffers": "Special offers",
@@ -170,10 +170,42 @@
         "kraven-the-hunter": "Kraven The Hunter",
         "deadpool-3": "Deadpool 3",
         "captain-america-brave-new-world": "Captain America: Brave New World",
-        "thunderbolts": "Thunderbolts",
-        "fantastic-four": "Fantastic Four",
         "avengers-doomsday": "Avengers: DoomsDay",
-        "avengers-secret-wars": "Avengers: Secret Wars"
+        "avengers-secret-wars": "Avengers: Secret Wars",
+        "thunderbolts": "Thunderbolts",
+        "the-fantastic-four-first-steps": "Fantastic Four: First Steps",
+        "superman": "Superman (2025)",
+        "a-minecraft-movie": "A Minecraft Movie",
+        "lat-mat-8-vong-tay-nang": "Lat Mat 8: Vong Tay Nang",
+        "tham-tu-kien-ky-an-khong-dau": "Tham Tu Kien: Ky An Khong Dau",
+        "dia-dao-mat-troi-trong-bong-toi": "Dia Dao: Mat Troi Trong Bong Toi",
+        "bo-tu-bao-thu": "Bo Tu Bao Thu",
+        "mission-impossible-the-final-reckoning": "Mission: Impossible – The Final Reckoning",
+        "de-men-cuoc-choi-phieu-luu-toi-xom-lay-loi": "De Men: Cuoc Phieu Luu Toi Xom Lay Loi",
+        "ballerina": "Ballerina",
+        "how-to-train-your-dragon": "How to Train Your Dragon",
+        "f1": "F1",
+        "jurassic-world-rebirth": "Jurassic World: Rebirth",
+        "tu-chien-tren-khong": "Tu Chien Tren Khong",
+        "the-old-guard-2": "The Old Guard 2"
+    },
+    "moviesDescription": {
+        "thunderbolts": "Thunderbolts* is the movie The upcoming American superhero genre, based on the original of the superhero group of the same name of Marvel Comics. The film was produced by Marvel Studios and released by Walt Disney Studios Motion Pictures, the film intended to be the 36th movie of the Marvel Cinema Universe.",
+        "the-fantastic-four-first-steps": "Fantastic Four: First Steps is the American superhero film scheduled to be released in 2025, based on the group of characters of the same name in the Marvel Comics comic series. The film is produced by Marvel Studios and Walt Disney Studios Motion Pictures.",
+        "superman": "Superman is a superhero movie of the United States based on the character of the same name DC Comics. The film is produced by DC Studios and will be by Warner Bros. Pictures distributed, this will be the first film of the DC universe and also the movie that restarted the series about Superman.",
+        "a-minecraft-movie": "A Minecraft Movie is an American movie in the genre of Comedy - Adventure launched by 2025, a work based on one of the best -selling video games worldwide, released in 2011 entitled Minecraft created by Markus Notch Perrson and Mojang Studios.",
+        "lat-mat-8-vong-tay-nang": "A film about the difference between the three generations of parents and grandchildren. Everyone is right in their perspective but facing the ambition of youth, who will eventually listen to the other? And if the dreams of children are thought to be unrealistic, what opportunities and when the youth will decide their own future?",
+        "tham-tu-kien-ky-an-khong-dau": "Tham Tu Kien: Ky An Khong Dau is a favorite character in the electric work of the last wife of Victor Vu, Tham Tu Kien: The first non -first will be a Victor Vu movie returning to the genre of horror - detective after the previous romantic works.",
+        "dia-dao-mat-troi-trong-bong-toi": "Dia Dao: Mat Troi Trong Bong Toi is a Vietnamese movie in the historical - war - drama genre released in 2025 by Bui Thac, who is a director and wrote a script, and is also his first film as a producer. The film is a story about the life of a soldier in the Vietnam War, who was sent to the US to work as a spy.",
+        "bo-tu-bao-thu": "Bo Tu Bao Thu is a Vietnamese romantic comedy in 2025 directed by Tran Thanh and Tran Thanh, Le Duong Bao Lam, Le Giang, Uyen An, Quoc Anh, Tieu Vi and Ky Duyen.",
+        "mission-impossible-the-final-reckoning": "Mission: Impossible – The Final Reckoning was an American spy actor in 2025 directed by Christopher Mcquarrie from a script that he co -composed with Erik Jendresen. Mission's direct continuation: Impossible - Dead Reckoning, this is the eighth part of the Mission: Impossible series.",
+        "de-men-cuoc-choi-phieu-luu-toi-xom-lay-loi": "The film tells the adventure of the two brothers of De Men - De Troi in the muddy village. Where dangers are constantly lurking before the curiosity of the cricket brothers. Then overcome many dangers, friendship, solidarity of all species praised.",
+        "ballerina": "From the John Wick Universe: Ballerina, called Ballerina, is the movie of the sensational action genre of the United States directed by Wiseman with the script written by Shay Hatten. This is the first part of the John Wick series with the context that happened in the middle of the assassin John Wick: Part 3 - Preparing War (2019) and Assassin John Wick: Part 4 (2023).",
+        "how-to-train-your-dragon": "The secret of dragon training was an American fantasy film in 2025 produced by Dean Deblois, writing script and director. This is a re -player of the cartoon of the same name in 2010 produced by DreamWorks Animation, itself based on the novel of the same name of the same name by Cressida Cowell.",
+        "f1": "Thirty years later, Sonny became a free racer, until his former teammate, Ruben Cervantes (Javier Bardem), owner of a F1 racing team on the brink of collapse, came to him. Ruben persuaded Sonny to return to F1® to have a last chance to save the team and assert himself as the best racer in the world.",
+        "jurassic-world-rebirth": "The world of dinosaurs: Rebirth set in 5 years after the movie The Dinosaur World: The territory, the Earth's environment has shown that largely is not suitable for dinosaurs. Many prehistoric lizards have been reborn. Those who have not died have retreated to a remote tropical area near the laboratory. That location is the place where the scarlett Johansson, Mahershala Ali and Jonathan Bailey embark on an extremely dangerous mission.",
+        "tu-chien-tren-khong": "Tu Chien Tren Khong is an action film - dramatic, inspired by the real plane robbery in Vietnam after 1975. The People's Police cinema directed the production of the film and was a guarantee for the authenticity of historical materials and aviation security materials, contributing to the vivid and convincing story.",
+        "the-old-guard-2": "The Old Guard 2 is an upcoming superhero movie directed by Victoria Mahoney, from the script of Greg Rucka, based on his Old Guard comic. The film is a sequel to the Old Guard movie released in 2020. The film stars Charlize Theron, KiKi Layne, Matthias Schoenaerts, Marwan Kenzari, Luca Marinelli and Chiwetel Ejiofor."
     },
     "movieDetail": {
         "director": "Director: {{director}}",

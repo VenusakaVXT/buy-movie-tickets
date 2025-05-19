@@ -62,8 +62,18 @@
                         <button type="button" class="btn btn-outline-warning">
                             <a href="/movie-screening/{{ movie._id }}/edit">Edit</a>
                         </button>
-                        <button type="button" class="btn btn-outline-danger" {% if movie.wasReleased === true %}disabled{% endif %}>
-                            <a href="#" data-toggle="modal" data-id="{{ movie._id }}" data-target="#deleteMovieModal">
+                        <button 
+                            type="button"
+                            class="btn btn-outline-danger"
+                            {% if movie.wasReleased === true %}disabled style="cursor: not-allowed"{% endif %}
+                        >
+                            <a
+                                href="#"
+                                data-toggle="modal"
+                                data-id="{{ movie._id }}"
+                                data-target="#deleteMovieModal"
+                                {% if movie.wasReleased === true %}style="cursor: not-allowed"{% endif %}
+                            >
                                 Remove
                             </a>
                         </button>

@@ -72,6 +72,7 @@ const MovieDetail = () => {
             } else if (isManagerLoggedIn) {
                 toast.info(t("comment.toastInfoStaff"))
             } else {
+                localStorage.setItem("movieSlug", slug)
                 toast.info(t("comment.toastInfoLogIn"))
                 navigate("/login")
             }
@@ -166,13 +167,11 @@ const MovieDetail = () => {
                         >
                             <CardContent>
                                 <Typography className="text-border" variant="h4" component="h2">
-                                    {i18n.language === "en" ? movie.title : t(`movies.${movie.slug}`)}
+                                    {t(`movies.${movie.slug}`)}
                                 </Typography>
 
                                 <Typography className="text-border" variant="body1" width={856} textAlign={"justify"}>
-                                    {i18n.language === "vi"
-                                        ? t(`moviesDescription.${movie.slug}`)
-                                        : movie.description !== "" ? movie.description : t("movieDetail.noDescription")}
+                                    {movie.description !== "" ? t(`moviesDescription.${movie.slug}`) : t("movieDetail.noDescription")}
                                 </Typography>
 
                                 <Typography className="text-border" variant="body1">

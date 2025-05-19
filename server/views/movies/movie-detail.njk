@@ -37,8 +37,17 @@
                 <button class="btn mx-2 btn-control">
                     <a href="/movie-screening/{{ movie._id }}/edit">Edit</a>
                 </button>
-                <button class="btn mx-2 btn-control" {% if movie.wasReleased === true %}disabled{% endif %}>
-                    <a href="" data-toggle="modal" data-id="{{ movie._id }}" data-target="#deleteMovieModal">
+                <button
+                    class="btn mx-2 btn-control"
+                    {% if movie.wasReleased === true %}disabled style="cursor: not-allowed"{% endif %}
+                >
+                    <a 
+                        href="#"
+                        data-toggle="modal"
+                        data-id="{{ movie._id }}"
+                        data-target="#deleteMovieModal"
+                        {% if movie.wasReleased === true %}style="cursor: not-allowed"{% endif %}
+                    >
                         Delete
                     </a>
                 </button>

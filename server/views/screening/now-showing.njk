@@ -31,15 +31,30 @@
                     <td>{{ screening.price }}</td>
                     <td>{{ screening.screeningAt }}</td>
                     <td>
-                        <button type="button" class="btn btn-outline-warning" 
-                            {% if screening.showtimeOver === false %}disabled{% endif %}>
-                            <a href="{% if screening.showtimeOver %}/screening/{{ screening._id }}/edit{% else %}#{% endif %}">
+                        <button
+                            type="button"
+                            class="btn btn-outline-warning"
+                            {% if screening.showtimeOver === false %}disabled style="cursor: not-allowed"{% endif %}
+                        >
+                            <a 
+                                href="{% if screening.showtimeOver %}/screening/{{ screening._id }}/edit{% else %}#{% endif %}"
+                                {% if screening.showtimeOver === false %}style="cursor: not-allowed"{% endif %}
+                            >
                                 Edit
                             </a>
                         </button>
-                        <button type="button" class="btn btn-outline-danger" 
-                            {% if screening.showtimeOver === false %}disabled{% endif %}>
-                            <a href="#" data-toggle="modal" data-id="{{ screening._id }}" data-target="#deleteScreeningModal">
+                        <button
+                            type="button"
+                            class="btn btn-outline-danger" 
+                            {% if screening.showtimeOver === false %}disabled style="cursor: not-allowed"{% endif %}
+                        >
+                            <a
+                                href="#"
+                                data-toggle="modal"
+                                data-id="{{ screening._id }}"
+                                data-target="#deleteScreeningModal"
+                                {% if screening.showtimeOver === false %}style="cursor: not-allowed"{% endif %}
+                            >
                                 Delete
                             </a>
                         </button>

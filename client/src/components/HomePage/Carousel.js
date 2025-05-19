@@ -2,27 +2,30 @@ import React, { useState, useEffect, useCallback } from "react"
 import { Typography, IconButton, Paper, Container, Grid } from "@mui/material"
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material"
 import { useTranslation } from "react-i18next"
+import { useNavigate } from "react-router-dom"
 import "../../scss/Carousel.scss"
 
 const Carousel = () => {
-    const { t } = useTranslation()
     const [index, setIndex] = useState(0)
+    const { t } = useTranslation()
+    const navigate = useNavigate()
+
     const carousel = [
         {
-            src: `${process.env.REACT_APP_API_URL}/img/slider/avatar.jpeg`,
+            slug: "the-fantastic-four-first-steps",
             content: t("carousel.contentCarousel1")
         },
         {
-            src: `${process.env.REACT_APP_API_URL}/img/slider/ant-man-quantuminia.jpg`,
+            slug: "ballerina",
             content: t("carousel.contentCarousel2")
         },
         {
-            src: `${process.env.REACT_APP_API_URL}/img/slider/theflash2.jpg`,
+            slug: "mission-impossible-the-final-reckoning",
             content: t("carousel.contentCarousel3")
         },
     ]
-    const carouselLength = carousel.length
 
+    const carouselLength = carousel.length
     const handlePrev = () => setIndex((prevIndex) => (prevIndex - 1 + carouselLength) % carouselLength)
     const handleNext = useCallback(() => setIndex((nextIndex) => (nextIndex + 1) % carouselLength), [carouselLength])
 
@@ -43,8 +46,10 @@ const Carousel = () => {
 
                 <img
                     className="carousel__img"
-                    src={carousel[index].src}
+                    src={`${process.env.REACT_APP_API_URL}/img/slider/${carousel[index].slug}.jpg`}
                     alt={`Slide ${index + 1}`}
+                    onClick={() => navigate(`/movie-details/${carousel[index].slug}`)}
+                    style={{ cursor: "pointer" }}
                 />
 
                 <IconButton

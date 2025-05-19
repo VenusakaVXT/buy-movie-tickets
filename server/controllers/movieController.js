@@ -174,6 +174,7 @@ export const deleteMovie = async (req, res, next) => {
     let movie
 
     try {
+        await Screening.deleteMany({ movie: id })
         movie = await Movie.findByIdAndRemove(id)
     } catch (err) {
         console.error(err)

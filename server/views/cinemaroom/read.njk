@@ -39,8 +39,18 @@
                         <button type="button" class="btn btn-outline-warning">
                             <a href="/cinemaroom/{{ cinemaRoom._id }}/edit">Edit</a>
                         </button>
-                        <button type="button" class="btn btn-outline-danger" {% if cinemaRoom.screenings.length %}disabled{% endif %}>
-                            <a href="#" data-toggle="modal" data-id="{{ cinemaRoom._id }}" data-target="#deleteCinemaRoomModal">
+                        <button 
+                            type="button"
+                            class="btn btn-outline-danger"
+                            {% if cinemaRoom.screenings.length %}disabled style="cursor: not-allowed"{% endif %}
+                        >
+                            <a 
+                                href="#"
+                                data-toggle="modal"
+                                data-id="{{ cinemaRoom._id }}"
+                                data-target="#deleteCinemaRoomModal"
+                                {% if cinemaRoom.screenings.length %}style="cursor: not-allowed"{% endif %}
+                            >
                                 Delete
                             </a>
                         </button>

@@ -62,6 +62,9 @@ const Login = () => {
                         navigate(`/booking/${movieSlug}/${screeningId}`)
                         localStorage.removeItem("movieSlug")
                         localStorage.removeItem("screeningId")
+                    } else if (movieSlug) {
+                        navigate(`/movie-details/${movieSlug}`)
+                        localStorage.removeItem("movieSlug")
                     } else {
                         navigate("/")
                     }

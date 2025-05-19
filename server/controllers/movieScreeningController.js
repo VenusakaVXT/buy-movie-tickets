@@ -41,7 +41,7 @@ class MovieScreeningController {
                 wasReleased,
                 producer
             } = req.body
-            
+
             const categoryObj = await Categorty.findOne({ _id: category })
             const producerObj = await Producer.findOne({ _id: producer })
 
@@ -152,10 +152,8 @@ class MovieScreeningController {
     delete = async (req, res, next) => {
         try {
             const movieId = req.params.id
-
-            await Screening.delete({ movie: movieId })
+            await Screening.deleteMany({ movie: movieId })
             await Movie.delete({ _id: movieId })
-
             res.redirect("/movie-screening/table-lists")
         } catch (err) {
             next(err)
@@ -179,42 +177,47 @@ class MovieScreeningController {
     forceDelete = async (req, res, next) => {
         try {
             const movieId = req.params.id
-
             await Screening.deleteMany({ movie: movieId })
             await Movie.deleteOne({ _id: movieId })
-
             res.redirect("back")
         } catch (err) {
             next(err)
         }
     }
 
-    handleDeleteActionFrm(req, res, next) {
-        switch (req.body.action) {
-            case "delete":
-                Movie.delete({ _id: { $in: req.body.movieIds } })
-                    .then(() => res.redirect("back"))
-                    .catch(next)
-                break
-            default:
+    handleDeleteActionFrm = async (req, res, next) => {
+        try {
+            if (req.body.action === "delete") {
+                const movieIds = req.body.movieIds
+                await Screening.deleteMany({ movie: { $in: movieIds } })
+                await Movie.delete({ _id: { $in: movieIds } })
+                res.redirect("back")
+            } else {
                 res.json({ message: "Action is invalid" })
+            }
+        } catch (err) {
+            next(err)
         }
     }
 
-    handleRestoreActionFrm(req, res, next) {
-        switch (req.body.action) {
-            case "restore":
-                Movie.restore({ _id: { $in: req.body.movieIds } })
-                    .then(() => res.redirect("back"))
-                    .catch(next)
-                break
-            case "hard-delete":
-                Movie.deleteMany({ _id: { $in: req.body.movieIds } })
-                    .then(() => res.redirect("back"))
-                    .catch(next)
-                break
-            default:
-                res.json({ message: "Action is invalid" })
+    handleRestoreActionFrm = async (req, res, next) => {
+        try {
+            const movieIds = req.body.movieIds
+            switch (req.body.action) {
+                case "restore":
+                    await Movie.restore({ _id: { $in: movieIds } })
+                    res.redirect("back")
+                    break
+                case "hard-delete":
+                    await Screening.deleteMany({ movie: { $in: movieIds } })
+                    await Movie.deleteMany({ _id: { $in: movieIds } })
+                    res.redirect("back")
+                    break
+                default:
+                    res.json({ message: "Action is invalid" })
+            }
+        } catch (err) {
+            next(err)
         }
     }
 }
