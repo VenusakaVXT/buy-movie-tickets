@@ -2,14 +2,14 @@
 
 {% block content %}
     <form class="p-4 movies__table-lists">
-        <h3 class="title">Seat List</h3>
+        <h3 class="title">Danh Sách Ghế Ngồi</h3>
 
         <div class="d-flex">
-            <label for="selectCinemaRoom" style="line-height: 38px; margin-right: 10px">Select CinemaRoom</label>
+            <label for="selectCinemaRoom" style="line-height: 38px; margin-right: 10px">Chọn phòng chiếu</label>
             <select id="selectCinemaRoom" 
                 style="width: 15%; border-radius: 5px" onchange="handleSelectGroup('selectCinemaRoom', 'seat')"
             >
-                <option value="all" {% if selectedCinemaRoomId == "all" %}selected{% endif %}>All CinemaRooms</option>
+                <option value="all" {% if selectedCinemaRoomId == "all" %}selected{% endif %}>Tất cả phòng chiếu</option>
                 {% for cinemaRoom in cinemaRooms %}
                 <option value="{{ cinemaRoom._id }}" {% if cinemaRoom._id == selectedCinemaRoomId %}selected{% endif %}>
                     {{ cinemaRoom.roomNumber }}
@@ -22,10 +22,10 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Seat position</th>
-                    <th scope="col">Book status</th>
-                    <th scope="col">Cinema room</th>
-                    <th scope="col">Customs</th>
+                    <th scope="col">Vị trí</th>
+                    <th scope="col">Trạng thái</th>
+                    <th scope="col">Phòng chiếu</th>
+                    <th scope="col">Tùy chỉnh</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,11 +35,11 @@
                     <td>
                         {{seat.rowSeat}}{% if seat.seatNumber < 10 %}-00{{seat.seatNumber}}{% else %}-0{{seat.seatNumber}}{% endif %}
                     </td>
-                    <td>{% if seat.selected %}Booked{% else %}Not booked{% endif %}</td>
+                    <td>{% if seat.selected %}Đã đặt{% else %}Chưa đặt{% endif %}</td>
                     <td>{{ seat.cinemaRoom.roomNumber }}</td>
                     <td>
                         <button type="button" class="btn btn-outline-warning">
-                            <a href="/seat/{{ seat._id }}/edit">Edit</a>
+                            <a href="/seat/{{ seat._id }}/edit">Sửa</a>
                         </button>
                         <button
                             type="button"
@@ -53,7 +53,7 @@
                                 data-target="#deleteSeatModal"
                                 {% if seat.selected %}style="cursor: not-allowed"{% endif %}
                             >
-                                Delete
+                                Xóa
                             </a>
                         </button>
                     </td>

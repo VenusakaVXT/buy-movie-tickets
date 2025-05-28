@@ -2,11 +2,11 @@
 
 {% block content %}
     <div class="p-4">
-        <h3 class="title">Update seat</h3>
+        <h3 class="title">Cập nhật ghế ngồi</h3>
 
         <form id="frm-update-seat" method="POST" action="/seat/{{seat._id}}?_method=PUT">
             <div class="form-group">
-                <label for="rowSeat">Row seat:</label>
+                <label for="rowSeat">Hàng ghế:</label>
                 <select name="rowSeat" id="rowSeat" class="form-control" required>
                     {% for row in "ABCDEFGHI" %}
                         <option value="{{ row }}" {% if seat.rowSeat === row %}selected{% endif %}>{{ row }}</option>
@@ -15,20 +15,20 @@
             </div>
 
             <div class="form-group">
-                <label for="seatNumber">Seat number:</label>
+                <label for="seatNumber">Số ghế:</label>
                 <input type="number" class="form-control" value="{{ seat.seatNumber }}" id="seatNumber" name="seatNumber" max="110" required>
             </div>
 
             <div class="form-group">
-                <label for="seatType">Seat type:</label>
+                <label for="seatType">Kiểu ghế:</label>
                 <select name="seatType" id="seatType" class="form-control">
-                    <option value="Single" {% if seat.seatType === "Single" %}selected{% endif %}>Single</option>
-                    <option value="Double" {% if seat.seatType === "Double" %}selected{% endif %}>Double</option>
+                    <option value="Single" {% if seat.seatType === "Single" %}selected{% endif %}>Đơn</option>
+                    <option value="Double" {% if seat.seatType === "Double" %}selected{% endif %}>Đôi</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="cinemaRoom">Cinema room:</label>
+                <label for="cinemaRoom">Phòng chiếu phim:</label>
                 <select name="cinemaRoom" id="cinemaRoom" class="form-control" required>
                     {% for cinemaRoom in cinemaRooms %}
                         <option value="{{ cinemaRoom._id }}"
@@ -40,7 +40,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-control mt-2" style="width: 100">Save</button>
+            <button type="submit" class="btn btn-control mt-2" style="width: 100">Lưu</button>
         </form>
     </div>
 {% endblock %}

@@ -3,9 +3,9 @@
 {% block content %}
     <form class="p-4 movies__table-lists">
         <div class="list-movies__header mt-4">
-            <h3 class="title">Now Showing</h3>
+            <h3 class="title">Danh Sách Đang Chiếu</h3>
             <a class="list-movies__header-trash" href="/screening/coming-soon">
-                Coming Soon
+                Sắp chiếu
             </a>
         </div>
 
@@ -13,12 +13,12 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Movie title</th>
-                    <th scope="col">Movie date</th>
-                    <th scope="col">Time slot</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Screening at</th>
-                    <th scope="col">Customs</th>
+                    <th scope="col">Tên phim</th>
+                    <th scope="col">Ngày chiếu</th>
+                    <th scope="col">Khung giờ</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col">Chiếu tại</th>
+                    <th scope="col">Tùy chỉnh</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,7 +40,7 @@
                                 href="{% if screening.showtimeOver %}/screening/{{ screening._id }}/edit{% else %}#{% endif %}"
                                 {% if screening.showtimeOver === false %}style="cursor: not-allowed"{% endif %}
                             >
-                                Edit
+                                Sửa
                             </a>
                         </button>
                         <button
@@ -55,7 +55,7 @@
                                 data-target="#deleteScreeningModal"
                                 {% if screening.showtimeOver === false %}style="cursor: not-allowed"{% endif %}
                             >
-                                Delete
+                                Xóa
                             </a>
                         </button>
                     </td>

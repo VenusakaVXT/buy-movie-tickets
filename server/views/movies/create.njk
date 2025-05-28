@@ -2,44 +2,44 @@
 
 {% block content %}
     <div class="p-4">
-        <h3 class="title">Post a movie</h3>
+        <h3 class="title">Thêm phim mới</h3>
 
         <form id="frm-add-movie" method="POST" action="/movie-screening/store" onsubmit="setWasReleasedDefaultValue(); processArrayInput()">
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="title">Movie title:</label>
+                <label for="title">Tên phim:</label>
                 <input type="text" class="form-control" id="title" name="title" required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="description">Movie description:</label>
-                <textarea class="form-control" id="description" name="description" required placeholder="Please enter a movie description..."></textarea>
+                <label for="description">Mô tả phim:</label>
+                <textarea class="form-control" id="description" name="description" required placeholder="Vui lòng nhập mô tả bộ phim..."></textarea>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="director">Movie director:</label>
+                <label for="director">Đạo diễn:</label>
                 <input type="text" class="form-control" id="director" name="director" multiple required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="contentWritter">Content writter:</label>
+                <label for="contentWritter">Biên kịch:</label>
                 <input type="text" class="form-control" id="contentWritter" name="contentWritter" multiple required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="actors">Actors:</label>
+                <label for="actors">Diễn viên:</label>
                 <input type="text" class="form-control" id="actors"s name="actors" multiple required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="category">Category:</label>
+                <label for="category">Thể loại:</label>
                 <select name="category" id="category" class="form-control" required>
-                    <option value="">----- Select category -----</option>
+                    <option value="">----- Chọn thể loại -----</option>
                     {% for category in categories %}
                         <option value="{{ category._id }}">{{ category.category }}</option>
                     {% endfor %}
@@ -49,14 +49,14 @@
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
                 <label for="releaseDate">
-                    Release date (<span class="text-italic">mm/dd/yyyy</span>):
+                    Ngày công chiếu (<span class="text-italic">mm/dd/yyyy</span>):
                 </label>
                 <input type="date" class="form-control" id="releaseDate" name="releaseDate" required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="time">Movie time:</label>
+                <label for="time">Thời lượng:</label>
                 <input type="number" class="form-control" id="time" name="time" required>
             </div>
 
@@ -68,9 +68,9 @@
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="producer">Producer:</label>
+                <label for="producer">Nhà sản xuất:</label>
                 <select name="producer" id="producer" class="form-control" required>
-                    <option value="">----- Select producer -----</option>
+                    <option value="">----- Chọn nhà sản xuất -----</option>
                     {% for producer in producers %}
                         <option value="{{ producer._id }}">{{ producer.producerName }}</option>
                     {% endfor %}
@@ -79,18 +79,18 @@
 
             <div class="form-group">
                 <span>
-                    Was released (<span class="text-italic">If not selected, the default will be "Not yet"</span>):
+                    Đã phát hành (<span class="text-italic">Nếu không chọn, mặc định sẽ là "Chưa"</span>):
                 </span>
                 <input class="radio-btn" type="radio" name="selectReleased" id="already" onclick="setWasReleased(true)">
-                <label for="already">Already</label>
+                <label for="already">Sẵn sàng</label>
                 <input class="radio-btn" type="radio" name="selectReleased" id="notyet" onclick="setWasReleased(false)">
-                <label for="notyet">Not yet</label>
+                <label for="notyet">Chưa</label>
             </div>
 
             <input type="hidden" id="wasReleased" name="wasReleased" value="">
 
             <button type="submit" class="btn btn-control mt-2" style="width: 100">
-                Add movie
+                Thêm phim
             </button>
         </form>
     </div>

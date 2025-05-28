@@ -2,17 +2,17 @@
 
 {% block content %}
     <form class="p-4 movies__table-lists">
-        <h3 class="title">Employee List</h3>
+        <h3 class="title">Danh Sách Nhân Viên</h3>
 
         <table class="table table-movies mt-4" border="1">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Email employee</th>
-                    <th scope="col">Password (hashed)</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Cinema</th>
-                    <th scope="col">Lock account</th>
+                    <th scope="col">Email nhân viên</th>
+                    <th scope="col">Mật khẩu (đã băm)</th>
+                    <th scope="col">Vị trí</th>
+                    <th scope="col">Rạp chiếu phim</th>
+                    <th scope="col">Khóa tài khoản</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,14 +27,14 @@
                     <td>{{ employee.cinemaName }}</td>
                     <td>
                         {% if employee.locked %}
-                        <button style="width: 75px;" type="button" class="btn btn-outline-info unlock-btn" 
+                        <button style="width: 85px;" type="button" class="btn btn-outline-info unlock-btn" 
                             data-id="{{employee._id}}">
-                            Unlock
+                            Mở khóa
                         </button>
                         {% else %}
-                        <button style="width: 75px;" type="button" class="btn btn-outline-danger lock-btn" 
+                        <button style="width: 85px;" type="button" class="btn btn-outline-danger lock-btn" 
                             data-id="{{employee._id}}">
-                            Lock
+                            Khóa
                         </button>
                         {% endif %}
                     </td>

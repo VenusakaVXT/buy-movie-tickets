@@ -3,18 +3,18 @@
 {% block content %}
     <form class="p-4 movies__table-lists">
         <div class="list-movies__header mt-4">
-            <h3 class="title">Cancel Booking List</h3>
+            <h3 class="title">Danh Sách Hủy Đặt Vé</h3>
             <a class="list-movies__header-trash" href="/booking/detail-booking">
-                List Booking
+                Đặt vé
             </a>
         </div>
 
         <table class="table table-movies mt-4" border="1">
             <thead class="thead-dark">
                 <tr>
-                    <th scope="col">Username</th>
-                    <th scope="col">Cancel booking detail</th>
-                    <th scope="col">Approve</th>
+                    <th scope="col">Tên khách hàng</th>
+                    <th scope="col">Thông tin hủy đặt vé</th>
+                    <th scope="col">Chấp thuận</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,32 +24,32 @@
                     <td>
                         <ul class="booking-ul">
                             <li>ID: {{cancelBooking._id}}</li>
-                            <li>Movie: {{cancelBooking.booking.screening.movie.title}}</li>
-                            <li>Screening time: {{cancelBooking.booking.screeningTime}}</li>
-                            <li>Seats: {{cancelBooking.booking.seatDisplay}}</li>
-                            <li>Screening at: {{cancelBooking.booking.screeningAt}}</li>
-                            <li>Water corn combos: {{cancelBooking.booking.waterCornComboQuantity}}</li>
-                            <li>Promotion program: {{cancelBooking.booking.discountCode}}</li>
-                            <li>Total money: {{cancelBooking.booking.totalMoney}}</li>
-                            <li>Booking time: {{cancelBooking.booking.createdAt}}</li>
-                            <li>Reason: {{cancelBooking.reason}}</li>
+                            <li>Tên phim: {{cancelBooking.booking.screening.movie.title}}</li>
+                            <li>Thời gian chiếu: {{cancelBooking.booking.screeningTime}}</li>
+                            <li>Ghế ngồi: {{cancelBooking.booking.seatDisplay}}</li>
+                            <li>Chiếu tại: {{cancelBooking.booking.screeningAt}}</li>
+                            <li>Combo bắp nước: {{cancelBooking.booking.waterCornComboQuantity}}</li>
+                            <li>Chương trình ưu đãi: {{cancelBooking.booking.discountCode}}</li>
+                            <li>Tổng thành tiền: {{cancelBooking.booking.totalMoney}}</li>
+                            <li>Thời gian đặt vé: {{cancelBooking.booking.createdAt}}</li>
+                            <li>Lí do: {{cancelBooking.reason}}</li>
                             <li> 
-                                Refunds: {{cancelBooking.refunds}} (
-                                    {{cancelBooking.compensationPercent}}% for Customer,
-                                    {{100 - cancelBooking.compensationPercent}}% for Cinema)
+                                Tiền hoàn: {{cancelBooking.refunds}} (
+                                    {{cancelBooking.compensationPercent}}% cho Khách hàng,
+                                    {{100 - cancelBooking.compensationPercent}}% cho Rạp chiếu phim)
                             </li>
-                            <li>Cancel time: {{cancelBooking.createdAt}}</li>
+                            <li>Thời gian hủy: {{cancelBooking.createdAt}}</li>
                         </ul>
                     </td>
                     <td>
                         {% if cancelBooking.approveRequest %}
-                            Approved
+                            Đã được duyệt
                         {% else %}
                             <button class="btn btn-success approve-btn" data-id="{{cancelBooking._id}}">
-                                Approve
+                                Duyệt
                             </button>
                             <button class="btn btn-danger restore-cancel-booking-btn" data-id="{{cancelBooking._id}}">
-                                Not approved
+                                Không duyệt
                             </button>
                         {% endif %}
                     </td>

@@ -2,38 +2,38 @@
 
 {% block content %}
     <div class="p-4">
-        <h3 class="title">Update movie</h3>
+        <h3 class="title">Cập nhật phim</h3>
 
         <form id="frm-update-movie" method="POST" action="/movie-screening/{{movie._id}}?_method=PUT">
             <div class="form-group">
-                <label for="title">Movie title:</label>
+                <label for="title">Tên phim:</label>
                 <input type="text" class="form-control" value="{{ movie.title }}" id="title" name="title" required>
             </div>
 
             <div class="form-group">
-                <label for="description">Movie description:</label>
+                <label for="description">Mô tả phim:</label>
                 <textarea class="form-control" id="description" name="description" required>{{ movie.description }}</textarea>
             </div>
 
             <div class="form-group">
-                <label for="director">Movie director:</label>
+                <label for="director">Đạo diễn:</label>
                 <input type="text" class="form-control" value="{{ movie.director }}" id="director" name="director" required>
             </div>
 
             <div class="form-group">
-                <label for="contentWritter">Content writter:</label>
+                <label for="contentWritter">Biên kịch:</label>
                 <input type="text" class="form-control" value="{{ movie.contentWritter }}" id="contentWritter" name="contentWritter" required>
             </div>
 
             <div class="form-group">
-                <label for="actors">Actors:</label>
+                <label for="actors">Diễn viên:</label>
                 <input type="text" class="form-control" value="{{ movie.actors }}" id="actors"s name="actors" required>
             </div>
 
             <div class="form-group">
-                <label for="category">Category:</label>
+                <label for="category">Thể loại:</label>
                 <select name="category" id="category" class="form-control" required>
-                    <option value="" {% if movie.category === "" %}selected{% endif %}>----- Select category -----</option>
+                    <option value="" {% if movie.category === "" %}selected{% endif %}>----- Chọn thể loại -----</option>
                     {% for category in categories %}
                         <option value="{{ category._id }}"
                             {% if (movie.category) and (movie.category.toString() === category._id.toString()) %}selected{% endif %}
@@ -46,13 +46,13 @@
 
             <div class="form-group">
                 <label for="releaseDate">
-                    Release date (<span class="text-italic">mm/dd/yyyy</span>):
+                    Ngày công chiếu (<span class="text-italic">mm/dd/yyyy</span>):
                 </label>
                 <input type="date" class="form-control" value="{{ movie.releaseDate }}" id="releaseDate" name="releaseDate" required>
             </div>
 
             <div class="form-group">
-                <label for="time">Movie time:</label>
+                <label for="time">Thời lượng:</label>
                 <input type="number" class="form-control" value="{{ movie.time }}" id="time" name="time" required>
             </div>
 
@@ -62,9 +62,9 @@
             </div>
 
             <div class="form-group">
-                <label for="producer">Producer:</label>
+                <label for="producer">Nhà sản xuất:</label>
                 <select name="producer" id="producer" class="form-control" required>
-                    <option value="" {% if movie.producer === "" %}selected{% endif %}>----- Select producer -----</option>
+                    <option value="" {% if movie.producer === "" %}selected{% endif %}>----- Nhà sản xuất -----</option>
                     {% for producer in producers %}
                         <option value="{{ producer._id }}"
                             {% if (movie.producer) and (movie.producer.toString() === producer._id.toString()) %}selected{% endif %}
@@ -76,7 +76,7 @@
             </div>
 
             <div class="form-group">
-                <span>Was released</span>
+                <span>Đã phát hành</span>
                 <input 
                     class="radio-btn" 
                     type="radio" 
@@ -85,7 +85,7 @@
                     value="true"
                     {% if movie.wasReleased %}checked{% endif %}
                 >
-                <label for="already">Already</label>
+                <label for="already">Sẵn sàng</label>
                 <input 
                     class="radio-btn" 
                     type="radio" 
@@ -94,10 +94,10 @@
                     value="false"
                     {% if not movie.wasReleased %}checked{% endif %}
                 >
-                <label for="notyet">Not yet</label>
+                <label for="notyet">Chưa</label>
             </div>
 
-            <button type="submit" class="btn btn-control mt-2" style="width: 100">Save</button>
+            <button type="submit" class="btn btn-control mt-2" style="width: 100">Lưu</button>
         </form>
     </div>
 {% endblock %}

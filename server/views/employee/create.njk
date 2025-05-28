@@ -2,28 +2,28 @@
 
 {% block content %}
     <div class="p-4">
-        <h3 class="title">Post a employee</h3>
+        <h3 class="title">Thêm nhân viên</h3>
 
         <form id="frm-add-employee" method="POST" action="/employee/store">
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="email">Email employee:</label>
+                <label for="email">Email nhân viên:</label>
                 <input type="email" class="form-control" id="email" name="email" required>
             </div>
             
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="password">Password <span class="text-italic">
-                    (Includes: must have at least uppercase letters A-Z, lowercase letters a-z, special characters @$!%*?&, numbers and minlength = 6):</span>
+                <label for="password">Mật khẩu <span class="text-italic">
+                    (Bao gồm: Ít nhất phải có chữ cái viết hoa A-Z, chữ cái thường a-z, kí tự đặc biệt @$!%*?&, chữ số và độ dài tối thiếu 6 kí tự):</span>
                 </label>
                 <input type="text" class="form-control" id="password" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&]).{6,}" required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="position">Position employee:</label>
+                <label for="position">Vị trí công việc:</label>
                 <select name="position" id="position" class="form-control" required>
-                    <option value="">----- Select position -----</option>
+                    <option value="">----- Chọn vị trí -----</option>
                     <option value="Manage movies">Manage movies (DM)</option>
                     <option value="Manage screenings">Manage screenings (MS)</option>
                     <option value="Manage tickets">Manage tickets (MT)</option>
@@ -36,9 +36,9 @@
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="cinema">Cinema:</label>
+                <label for="cinema">Rạp chiếu phim:</label>
                 <select name="cinema" id="cinema" class="form-control" required>
-                    <option value="">----- Select cinema -----</option>
+                    <option value="">----- Chọn rạp chiếu phim -----</option>
                     {% for cinema in cinemas %}
                         <option value="{{ cinema._id }}">{{ cinema.name }}</option>
                     {% endfor %}
@@ -46,7 +46,7 @@
             </div>
 
             <button type="submit" class="btn btn-control mt-2" style="width: 130">
-                Add employee
+                Thêm nhân viên
             </button>
         </form>
     </div>

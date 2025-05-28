@@ -2,22 +2,22 @@
 
 {% block content %}
     <div class="p-4">
-        <h3 class="title">Post a producer</h3>
+        <h3 class="title">Thêm Nhà sản xuất</h3>
 
         <form id="frm-add-producer" method="POST" action="/producer/store">
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="producerName">Producer name:</label>
+                <label for="producerName">Tên nhà sản xuất:</label>
                 <input type="text" class="form-control" id="producerName" name="producerName" required>
             </div>
             
             <div class="form-group">
-                <label for="producerEmail">Producer email:</label>
+                <label for="producerEmail">Email nhà sản xuất:</label>
                 <input type="email" class="form-control" id="producerEmail" name="producerEmail" requried>
             </div>
 
             <button type="submit" class="btn btn-control mt-2" style="width: 120">
-                Add producer
+                Thêm NSX
             </button>
         </form>
     </div>

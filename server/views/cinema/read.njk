@@ -2,15 +2,15 @@
 
 {% block content %}
     <form class="p-4 movies__table-lists">
-        <h3 class="title">Cinema List</h3>
+        <h3 class="title">Danh Sách Rạp Chiếu Phim</h3>
 
         <table class="table table-movies mt-4" border="1">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Cinema name</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">Customs</th>
+                    <th scope="col">Rạp chiếu phim</th>
+                    <th scope="col">Địa chỉ</th>
+                    <th scope="col">Tùy chỉnh</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,11 +21,11 @@
                     <td>{{ cinema.address }}</td>
                     <td>
                         <button type="button" class="btn btn-outline-warning">
-                            <a href="/cinema/{{ cinema._id }}/edit">Edit</a>
+                            <a href="/cinema/{{ cinema._id }}/edit">Sửa</a>
                         </button>
                         <button type="button" class="btn btn-outline-danger">
                             <a href="" data-toggle="modal" data-id="{{ cinema._id }}" data-target="#deleteCinemaModal">
-                                Delete
+                                Xóa
                             </a>
                         </button>
                     </td>

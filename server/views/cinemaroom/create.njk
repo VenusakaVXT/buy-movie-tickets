@@ -2,26 +2,26 @@
 
 {% block content %}
     <div class="p-4">
-        <h3 class="title">Post a cinema room</h3>
+        <h3 class="title">Thêm phòng chiếu phim</h3>
 
         <form id="frm-add-cinemaroom" method="POST" action="/cinemaroom/store">
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="roomNumber">Room number:</label>
+                <label for="roomNumber">Số phòng:</label>
                 <input type="text" class="form-control" id="roomNumber" name="roomNumber" required>
             </div>
             
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="totalNumSeat">Total number seats (max: 99):</label>
+                <label for="totalNumSeat">Tống số ghế (tối đa: 99):</label>
                 <input type="number" class="form-control" id="totalNumSeat" name="totalNumSeat" max="99" required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="cinema">Cinema:</label>
+                <label for="cinema">Rạp chiếu phim:</label>
                 <select name="cinema" id="cinema" class="form-control" required>
-                    <option value="">----- Select cinema -----</option>
+                    <option value="">----- Chọn rạp chiếu phim -----</option>
                     {% for cinema in cinemas %}
                         <option value="{{ cinema._id }}">{{ cinema.name }}</option>
                     {% endfor %}
@@ -29,7 +29,7 @@
             </div>
 
             <button type="submit" class="btn btn-control mt-2" style="width: 160">
-                Add cinema room
+                Thêm phòng chiếu
             </button>
         </form>
     </div>

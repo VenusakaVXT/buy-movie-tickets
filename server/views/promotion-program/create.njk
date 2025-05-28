@@ -2,79 +2,79 @@
 
 {% block content %}
     <div class="p-4">
-        <h3 class="title">Post a promotion program</h3>
+        <h3 class="title">Thêm Chương trình ưu đãi</h3>
 
         <form id="frm-add-promotion-program" method="POST" action="/promotion-program/store" enctype="multipart/form-data">
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="discountCode">Discount code:</label>
+                <label for="discountCode">Mã giảm giá:</label>
                 <input type="text" class="form-control" id="discountCode" name="discountCode" required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="programName">Program name:</label>
+                <label for="programName">Tên chương trình:</label>
                 <input type="text" class="form-control" id="programName" name="programName" required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="content">Content:</label>
+                <label for="content">Nội dung:</label>
                 <textarea class="form-control" id="content" name="content" required placeholder="Please enter a content of program..."></textarea>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="startDate">Start date:</label>
+                <label for="startDate">Ngày bắt đầu:</label>
                 <input type="date" class="form-control" id="startDate" name="startDate" required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="endDate">End date:</label>
+                <label for="endDate">Ngày kết thúc:</label>
                 <input type="date" class="form-control" id="endDate" name="endDate" required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="percentReduction">Percent reduction:</label>
+                <label for="percentReduction">Phần trăm giảm:</label>
                 <input type="number" class="form-control" id="percentReduction" name="percentReduction" required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="maxMoneyAmount">Max money amount:</label>
+                <label for="maxMoneyAmount">Số tiền tối đa:</label>
                 <input type="number" class="form-control" id="maxMoneyAmount" name="maxMoneyAmount" required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="image">Image:</label>
+                <label for="image">Hình ảnh:</label>
                 <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
             </div>
 
             <div class="form-group">
-                <label for="condition">Condition:</label>
+                <label for="condition">Điều kiện:</label>
                 <input type="text" class="form-control" id="condition" name="condition" required>
             </div>
 
             <div>
                 <input type="checkbox" id="isActive" name="isActive">
-                <label for="isActive">Is active</label>
+                <label for="isActive">Đang hoạt động</label>
             </div>
 
             <div class="form-group">
-                <label for="cinema">Cinema:</label>
+                <label for="cinema">Rạp chiếu phim:</label>
                 <select name="cinema" id="cinema" class="form-control">
-                    <option value="">----- Select cinema -----</option>
+                    <option value="">----- Chọn rạp chiếu phim -----</option>
                     {% for cinema in cinemas %}
                         <option value="{{ cinema._id }}">{{ cinema.name }}</option>
                     {% endfor %}
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-control mt-2" style="width: 200">
-                Add promotion program
+            <button type="submit" class="btn btn-control mt-2" style="width: 160">
+                Thêm chương trình
             </button>
         </form>
     </div>

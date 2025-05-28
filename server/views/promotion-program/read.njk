@@ -2,20 +2,20 @@
 
 {% block content %}
     <form class="p-4 movies__table-lists">
-        <h3 class="title">Promotion Program</h3>
+        <h3 class="title">Chương trình ưu đãi</h3>
 
         <table class="table table-movies mt-4" border="1">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Discount code</th>
-                    {# <th scope="col">Program name</th> #}
-                    <th scope="col">Start date</th>
-                    <th scope="col">End date</th>
-                    <th scope="col">Percent</th>
-                    <th scope="col">Max money</th>
-                    <th scope="col">Cinema</th>
-                    <th scope="col">Customs</th>
+                    <th scope="col">Mã giảm giá</th>
+                    {# <th scope="col">Tên chương trình</th> #}
+                    <th scope="col">Ngày bắt đầu</th>
+                    <th scope="col">Ngày kết thúc</th>
+                    <th scope="col">Phần trăm</th>
+                    <th scope="col">Tối đa</th>
+                    <th scope="col">Rạp chiếu</th>
+                    <th scope="col">Tùy chỉnh</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,11 +31,11 @@
                     <td>{{ promotionProgram.cinema.name }}</td>
                     <td>
                         <button type="button" class="btn btn-outline-warning">
-                            <a href="/promotion-program/{{ promotionProgram._id }}/edit">Edit</a>
+                            <a href="/promotion-program/{{ promotionProgram._id }}/edit">Sửa</a>
                         </button>
                         <button type="button" class="btn btn-outline-danger">
                             <a href="" data-toggle="modal" data-id="{{ promotionProgram._id }}" data-target="#deletePromotionProgramModal">
-                                Delete
+                                Xóa
                             </a>
                         </button>
                     </td>

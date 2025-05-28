@@ -2,15 +2,15 @@
 
 {% block content %}
     <div class="p-4">
-        <h3 class="title">Update category</h3>
+        <h3 class="title">Cập nhật thể loại</h3>
 
         <form id="frm-update-category" method="POST" action="/category-film/{{category._id}}?_method=PUT">
             <div class="form-group">
-                <label for="category">Category title:</label>
+                <label for="category">Thể loại:</label>
                 <input type="text" class="form-control" value="{{ category.category }}" id="category" name="category" required>
             </div>
 
-            <button type="submit" class="btn btn-control mt-2" style="width: 100">Save</button>
+            <button type="submit" class="btn btn-control mt-2" style="width: 100">Lưu</button>
         </form>
     </div>
 {% endblock %}

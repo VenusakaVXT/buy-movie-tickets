@@ -2,14 +2,14 @@
 
 {% block content %}
     <div class="p-4">
-        <h3 class="title">Post a seat</h3>
+        <h3 class="title">Thêm ghế ngồi</h3>
 
         <form id="frm-add-seat" method="POST" action="/seat/store">
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="rowSeat">Row seat:</label>
+                <label for="rowSeat">Hàng ghế:</label>
                 <select name="rowSeat" id="rowSeat" class="form-control" required>
-                    <option value="">----- Select row seat -----</option>
+                    <option value="">----- Chọn hàng ghế -----</option>
                     <option value="A">A</option>
                     <option value="B">B</option>
                     <option value="C">C</option>
@@ -24,24 +24,24 @@
             
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="seatNumber">Seat number (1-12):</label>
+                <label for="seatNumber">Số ghế (1-12):</label>
                 <input type="number" class="form-control" id="seatNumber" name="seatNumber" min="1" max="12" required>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="seatType">Seat type:</label>
+                <label for="seatType">Kiểu ghế:</label>
                 <select name="seatType" id="seatType" class="form-control">
-                    <option value="Single">Single</option>
-                    <option value="Double">Double</option>
+                    <option value="Single">Đơn</option>
+                    <option value="Double">Đôi</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <span style="color: #ff0000">*</span>
-                <label for="cinemaRoom">Cinema room:</label>
+                <label for="cinemaRoom">Phòng chiếu phim:</label>
                 <select name="cinemaRoom" id="cinemaRoom" class="form-control" required>
-                    <option value="">----- Select cinema room -----</option>
+                    <option value="">----- Chọn phòng chiếu -----</option>
                     {% for cinemaRoom in cinemaRooms %}
                         <option value="{{ cinemaRoom._id }}">{{ cinemaRoom.roomNumber }}</option>
                     {% endfor %}
@@ -49,7 +49,7 @@
             </div>
 
             <button type="submit" class="btn btn-control mt-2" style="width: 120">
-                Add seat
+                Thêm ghế
             </button>
         </form>
     </div>

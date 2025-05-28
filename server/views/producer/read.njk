@@ -2,15 +2,15 @@
 
 {% block content %}
     <form class="p-4 movies__table-lists">
-        <h3 class="title">Producer List</h3>
+        <h3 class="title">Danh Sách Nhà Sản Xuất</h3>
 
         <table class="table table-movies mt-4" border="1">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Producer name</th>
-                    <th scope="col">Producer email</th>
-                    <th scope="col">Customs</th>
+                    <th scope="col">Tên nhà sản xuất</th>
+                    <th scope="col">Email nhà sản xuất</th>
+                    <th scope="col">Tùy chỉnh</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,11 +21,11 @@
                     <td>{{ producer.producerEmail }}</td>
                     <td>
                         <button type="button" class="btn btn-outline-warning">
-                            <a href="/producer/{{ producer._id }}/edit">Edit</a>
+                            <a href="/producer/{{ producer._id }}/edit">Sửa</a>
                         </button>
                         <button type="button" class="btn btn-outline-danger">
                             <a href="" data-toggle="modal" data-id="{{ producer._id }}" data-target="#deleteProducerModal">
-                                Delete
+                                Xóa
                             </a>
                         </button>
                     </td>

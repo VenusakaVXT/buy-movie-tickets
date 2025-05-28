@@ -2,11 +2,11 @@
 
 {% block content %}
     <div class="p-4">
-        <h3 class="title">Update screening</h3>
+        <h3 class="title">Cập nhật suất chiếu</h3>
 
         <form id="frm-update-screening" method="POST" action="/screening/{{screening._id}}?_method=PUT">
             <div class="form-group">
-                <label for="movie">Movie:</label>
+                <label for="movie">Phim:</label>
                 <select name="movie" id="movie" class="form-control" required>
                     {% for movie in movies %}
                         <option value="{{ movie._id }}"
@@ -19,22 +19,22 @@
             </div>
 
             <div class="form-group">
-                <label for="movieDate">Movie date:</label>
+                <label for="movieDate">Ngày chiếu phim:</label>
                 <input type="date" class="form-control" value="{{ screening.movieDate }}" id="movieDate" name="movieDate" required>
             </div>
 
             <div class="form-group">
-                <label for="timeSlot">Time slot:</label>
+                <label for="timeSlot">Khung giờ:</label>
                 <input type="time" class="form-control" value="{{ screening.timeSlot }}" id="timeSlot" name="timeSlot" required>
             </div>
 
             <div class="form-group">
-                <label for="price">Price (<span class="text-italic">xx000 = xx.000VNĐ</span>):</label>
+                <label for="price">Giá (<span class="text-italic">xx000 = xx.000VNĐ</span>):</label>
                 <input type="number" class="form-control" value="{{ screening.price }}" id="price" name="price" required>
             </div>
 
             <div class="form-group">
-                <label for="cinemaRoom">Cinema room:</label>
+                <label for="cinemaRoom">Phòng chiếu phim:</label>
                 <select name="cinemaRoom" id="cinemaRoom" class="form-control" required>
                     {% for cinemaRoom in cinemaRooms %}
                         <option value="{{ cinemaRoom._id }}"
@@ -46,7 +46,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-control mt-2" style="width: 100">Save</button>
+            <button type="submit" class="btn btn-control mt-2" style="width: 100">Lưu</button>
         </form>
     </div>
 {% endblock %}

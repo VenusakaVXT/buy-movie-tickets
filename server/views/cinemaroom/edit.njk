@@ -2,21 +2,21 @@
 
 {% block content %}
     <div class="p-4">
-        <h3 class="title">Update cinema room</h3>
+        <h3 class="title">Cập nhật phòng chiếu phim</h3>
 
         <form id="frm-update-cinemaroom" method="POST" action="/cinemaroom/{{cinemaroom._id}}?_method=PUT">
             <div class="form-group">
-                <label for="roomNumber">Room number:</label>
+                <label for="roomNumber">Số phòng:</label>
                 <input type="text" class="form-control" value="{{ cinemaroom.roomNumber }}" id="roomNumber" name="roomNumber" required>
             </div>
 
             <div class="form-group">
-                <label for="totalNumSeat">Total number seats (max: 110):</label>
+                <label for="totalNumSeat">Tổng số ghế (tối đa: 110):</label>
                 <input type="number" class="form-control" value="{{ cinemaroom.totalNumSeat }}" id="totalNumSeat" name="totalNumSeat" max="110" required>
             </div>
 
             <div class="form-group">
-                <label for="cinema">Cinema:</label>
+                <label for="cinema">Rạp chiếu phim:</label>
                 <select name="cinema" id="cinema" class="form-control" required>
                     {% for cinema in cinemas %}
                         <option value="{{ cinema._id }}"
@@ -28,7 +28,7 @@
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-control mt-2" style="width: 100">Save</button>
+            <button type="submit" class="btn btn-control mt-2" style="width: 100">Lưu</button>
         </form>
     </div>
 {% endblock %}

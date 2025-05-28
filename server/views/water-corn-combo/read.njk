@@ -2,17 +2,17 @@
 
 {% block content %}
     <form class="p-4 movies__table-lists">
-        <h3 class="title">Water Corn Combo</h3>
+        <h3 class="title">Combo Bắp Nước</h3>
 
         <table class="table table-movies mt-4" border="1">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col" style="width: 240px">Combo name</th>
-                    <th scope="col" style="width: 400px">Components</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Cinema</th>
-                    <th scope="col">Customs</th>
+                    <th scope="col" style="width: 240px">Tên combo</th>
+                    <th scope="col" style="width: 400px">Thành phần</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col">Rạp</th>
+                    <th scope="col">Tùy chỉnh</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,11 +25,11 @@
                     <td>{{ waterCornCombo.cinema.name }}</td>
                     <td>
                         <button type="button" class="btn btn-outline-warning">
-                            <a href="/water-corn-combo/{{ waterCornCombo._id }}/edit">Edit</a>
+                            <a href="/water-corn-combo/{{ waterCornCombo._id }}/edit">Sửa</a>
                         </button>
                         <button type="button" class="btn btn-outline-danger">
                             <a href="" data-toggle="modal" data-id="{{ waterCornCombo._id }}" data-target="#deleteWaterCornComboModal">
-                                Delete
+                                Xóa
                             </a>
                         </button>
                     </td>

@@ -13,20 +13,20 @@
             />
 
             <div>
-                <p style="text-align: justify">Description: {{ movie.description }}</p>
-                <p>Director: {{ movie.director }}</p>
-                <p>Content writter: {{ movie.contentWritter }}</p>
-                <p>Actors: {{ movie.actors }}</p>
-                <p>Category: {{ categoryName }}</p>
-                <p>Release date: {{ movie.releaseDate }}</p>
-                <p>Time: {{ movie.time }} minute</p>
-                <p>Producer: {{ producerName }}</p>
+                <p style="text-align: justify">Mô tả: {{ movie.description }}</p>
+                <p>Đạo diễn: {{ movie.director }}</p>
+                <p>Biên kịch: {{ movie.contentWritter }}</p>
+                <p>Diễn viên: {{ movie.actors }}</p>
+                <p>Thể loại: {{ categoryName }}</p>
+                <p>Ngày công chiếu: {{ movie.releaseDate }}</p>
+                <p>Thời lượng: {{ movie.time }} phút</p>
+                <p>Nhà sản xuất: {{ producerName }}</p>
                 <p>
-                    Was released: 
+                    Đã phát hành: 
                     {% if movie.wasReleased %}
-                        Already
+                        Sẵn sàng
                     {% else %}
-                        Not yet
+                        Chưa phát hành
                     {% endif %}
                 </p>
             </div>
@@ -35,7 +35,7 @@
         <div class="d-flex">
             <div class="d-flex mt-5" style="margin-left: 379px">
                 <button class="btn mx-2 btn-control">
-                    <a href="/movie-screening/{{ movie._id }}/edit">Edit</a>
+                    <a href="/movie-screening/{{ movie._id }}/edit">Sửa</a>
                 </button>
                 <button
                     class="btn mx-2 btn-control"
@@ -48,7 +48,7 @@
                         data-target="#deleteMovieModal"
                         {% if movie.wasReleased === true %}style="cursor: not-allowed"{% endif %}
                     >
-                        Delete
+                        Xóa
                     </a>
                 </button>
             </div>
