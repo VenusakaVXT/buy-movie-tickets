@@ -148,7 +148,7 @@ const CancelBookingInfo = () => {
                                     <ReplyIcon /><span>{t("cancelBooking.comeback")}</span>
                                 </Button>
                             }
-                            <Button className="btn" onClick={() => navigate("/support")}>
+                            <Button className="btn" onClick={() => navigate("/chat")}>
                                 <SupportAgentIcon /><span>{t("cancelBooking.supportCounseling")}</span>
                             </Button>
                         </Box>}

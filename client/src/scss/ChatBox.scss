@@ -1,0 +1,121 @@
+@import "./variable";
+
+.chatbox__container {
+    display: flex;
+    height: 542px;
+    width: 100%;
+    background: $main-background;
+}
+
+.chatbox__sidebar {
+    width: 300px;
+    background: $second-background;
+    padding: 20px 10px;
+    border-right: 1px solid #222;
+    overflow-y: auto;
+}
+
+.chatbox__main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: $main-background;
+}
+
+.chatbox__header {
+    padding: 16px;
+    background: $second-background;
+    color: #fff;
+    font-size: 18px;
+}
+
+.chatbox__messages {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background: $main-background;
+    display: flex;
+    flex-direction: column;
+}
+
+.chatbox__msg {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+    max-width: 70%;
+}
+
+.chatbox__msg--me {
+    align-self: flex-end;
+
+    .chatbox__msg-content {
+        background: $main-color;
+        color: #fff;
+        border-radius: 16px 16px 4px 16px;
+        padding: 10px 16px;
+    }
+}
+
+.chatbox__msg--other {
+    align-self: flex-start;
+
+    .chatbox__msg-content {
+        background: $second-background;
+        color: #fff;
+        border-radius: 16px 16px 16px 4px;
+        padding: 10px 16px;
+        border: 1px solid $main-color;
+    }
+}
+
+.chatbox__msg-time {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 2px;
+    align-self: flex-end;
+}
+
+.chatbox__input {
+    display: flex;
+    padding: 12px 16px;
+    background: $second-background;
+    border-top: 1px solid #222;
+}
+
+.chatbox__faq {
+    padding: 8px 16px;
+    background: $main-background;
+    border-top: 1px solid #222;
+}
+
+.chatbox__faq-btn {
+    margin-bottom: 4px !important;
+    font-size: 13px !important;
+    text-transform: none !important;
+}
+
+.chatbox__session-list {
+    padding: 0;
+}
+
+.chatbox__session-item {
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 6px;
+
+    &:hover, &[aria-selected="true"] {
+        background: $main-color !important;
+        color: #fff !important;
+    }
+}
+
+.chatbox__btn {
+    background: $main-color !important;
+    color: #fff !important;
+    font-size: 14px !important;
+    text-transform: none !important;
+
+    &:hover {
+        background: $span-color !important;
+    }
+}

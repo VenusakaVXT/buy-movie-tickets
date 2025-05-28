@@ -18,6 +18,7 @@ import screeningRouter from "./routes/screeningRoute.js"
 import employeeRouter from "./routes/employeeRoute.js"
 import promotionProgramRouter from "./routes/promotionProgramRoute.js"
 import waterCornComboRouter from "./routes/waterCornComboRoute.js"
+import chatRouter from "./routes/chatRoute.js"
 import configCors from "./config/fixCORS.js"
 import path, { dirname } from "path"
 import { fileURLToPath } from "url"
@@ -49,6 +50,7 @@ const seatHolds = {}
 io.on("connection", (socket) => {
     console.log("a user connected")
 
+    // Holding seats
     socket.on("joinScreeningRoom", ({ screeningId }) => {
         socket.join(`screening_${screeningId}`)
         // Send the current status of holding seats to the new client
@@ -99,6 +101,15 @@ io.on("connection", (socket) => {
         io.to(`screening_${screeningId}`).emit("seatBookedUpdate", { seatIds })
     })
 
+    // Chat realtime
+    socket.on("joinSession", (sessionId) => {
+        socket.join(sessionId)
+    })
+
+    socket.on("sendMessage", (msg) => {
+        io.to(msg.sessionId).emit("receiveMessage", msg)
+    })
+
     socket.on("disconnect", () => {
         console.log("user disconnected")
     })
@@ -144,6 +155,7 @@ app.use("/screening", screeningRouter)
 app.use("/employee", employeeRouter)
 app.use("/promotion-program", promotionProgramRouter)
 app.use("/water-corn-combo", waterCornComboRouter)
+app.use("/chat", chatRouter)
 
 // Static file
 const __dirname = dirname(fileURLToPath(import.meta.url))

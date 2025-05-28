@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { Box, Typography, Button, Autocomplete, TextField } from "@mui/material"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { useTranslation } from "react-i18next"
@@ -39,19 +39,23 @@ const SeatDiagram = () => {
     const location = useLocation()
     const { t } = useTranslation()
 
-    const handleRemoveLocalStorage = () => {
+    const handleRemoveLocalStorage = useCallback(() => {
+        const seatBookeds = JSON.parse(localStorage.getItem("seatBookeds")) || []
+        seatBookeds.forEach(seatId => {
+            socket.emit("releaseSeatHold", { screeningId, seatId })
+        })
         localStorage.removeItem("seatBookeds")
         localStorage.removeItem("waterCornCombos")
         localStorage.removeItem("waterCornComboMoney")
-    }
+    }, [screeningId])
 
-    useEffect(() => handleRemoveLocalStorage(), [location.pathname])
+    useEffect(() => handleRemoveLocalStorage(), [location.pathname, handleRemoveLocalStorage])
 
     useEffect(() => {
         const handleBeforeUnload = () => handleRemoveLocalStorage()
         window.addEventListener("beforeunload", handleBeforeUnload)
         return () => window.removeEventListener("beforeunload", handleBeforeUnload)
-    }, [])
+    }, [handleRemoveLocalStorage])
 
     useEffect(() => {
         setIsLoading(true)
@@ -514,6 +518,7 @@ const SeatDiagram = () => {
                                     } else if (isManagerLoggedIn) {
                                         toast.warn(t("seatDiagram.toastWarnStaff"))
                                     } else {
+                                        handleRemoveLocalStorage()
                                         localStorage.setItem("screeningId", screeningId)
                                         localStorage.setItem("movieSlug", movieSlug)
                                         toast.info(t("seatDiagram.toastInfoLogIn"))

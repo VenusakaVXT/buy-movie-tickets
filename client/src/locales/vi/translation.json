@@ -245,6 +245,7 @@
         "modalContent": "Bạn có chắc chắn muốn xóa bình luận này? Nếu bạn xóa bình luận này đi thì bạn sẽ bị trừ",
         "ok": "Đồng ý",
         "cancel": "Hủy",
+        "toastCommentEmpty": "Bình luận không được để trống",
         "toastInfoStaff": "Bạn đang dùng tài khoản nhân viên nên không thể bình luận!!!",
         "toastInfoLogIn": "Bạn cần đăng nhập để bình luận!!!",
         "toastErrorSend": "Lỗi gửi bình luận!!!",
@@ -544,5 +545,17 @@
         "lstScreening": "Danh Sách Suất Chiếu",
         "profile": "Thông Tin Cá Nhân",
         "lstCancelBooking": "Danh Sách Hủy Đặt Vé"
+    },
+    "chat": {
+        "title": "Trò Chuyện",
+        "newChat": "Cuộc trò chuyện mới",
+        "supportStaff": "Nhân viên hỗ trợ",
+        "noConnection": "Chưa kết nối",
+        "customerSupport": "Hỗ trợ khách hàng",
+        "selectOrCreateChat": "Chọn hoặc tạo cuộc trò chuyện",
+        "selectChatToStart": "Chọn một cuộc trò chuyện để bắt đầu",
+        "question": "Câu hỏi thường gặp",
+        "placeholder": "Nhập tin nhắn...",
+        "send": "Gửi"
     }
 }

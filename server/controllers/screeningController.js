@@ -263,7 +263,7 @@ class ScreeningController {
 
     lstNowShowing = async (req, res, next) => {
         try {
-            const screenings = await Screening.find({ wasReleased: true })
+            const screenings = await Screening.find({ wasReleased: true }).sort({ movieDate: 1 })
             const movies = await Movie.find({})
             const cinemaRooms = await CinemaRoom.find({})
             const cinemas = await Cinema.find({})
@@ -290,7 +290,7 @@ class ScreeningController {
                 screening.showtimeOver = screeningDate < currentDate
             })
 
-            res.render("screening/now-showing", { screenings: screenings.reverse() })
+            res.render("screening/now-showing", { screenings })
         } catch (err) {
             next(err)
         }
@@ -423,7 +423,7 @@ class ScreeningController {
 
     lstComingSoon = async (req, res, next) => {
         try {
-            const screenings = await Screening.find({ wasReleased: false })
+            const screenings = await Screening.find({ wasReleased: false }).sort({ movieDate: 1 })
             const movies = await Movie.find({})
             const cinemaRooms = await CinemaRoom.find({})
             const cinemas = await Cinema.find({})
@@ -438,7 +438,7 @@ class ScreeningController {
                 const cinema = cinemas.find((c) =>
                     cinemaRoom && c._id.toString() === cinemaRoom.cinema.toString()
                 )
-                
+
                 screening.movieName = movie ? movie.title : "Unknown"
                 screening.screeningAt = cinemaRoom && cinema ? `${cinemaRoom.roomNumber}-${cinema.name}` : "Unknown"
             })

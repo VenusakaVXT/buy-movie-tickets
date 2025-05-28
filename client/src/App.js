@@ -37,6 +37,8 @@ import CancelBookingInfo from "./components/CancelBooking/CancelBookingInfo"
 import Loading from "./components/Loading/Loading"
 import ForgotPassword from "./components/Login/ForgotPassword"
 import PromotionProgram from "./components/PromotionProgram/PromotionProgram"
+import ChatBoxButton from "./components/ChatBox/ChatBoxButton"
+import ChatBox from "./components/ChatBox/ChatBox"
 
 const convertTitle = (pathname) => {
     const convertPathname = pathname.replace(/\//g, " ").replace(/-/g, " ").trim()
@@ -145,6 +147,10 @@ const App = () => {
                             <Route path={`/${decision}/profile`} element={<Profile />} />
                             <Route path={`/${decision}/cancel-booking/list`} element={<ListCancelBooking />} />
                             <Route path={`/${decision}/cancel-booking/:id/detail`} element={<CancelBookingInfo />} />
+                            <Route path={`/chat`} element={<ChatBox
+                                userId={isCustomerLoggedIn ? localStorage.getItem("customerId") : localStorage.getItem("managerId")}
+                                userType={decision}
+                            />} />
                         </>}
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
@@ -152,6 +158,7 @@ const App = () => {
 
                 {isHomePage ? <Footer /> : <PageEnding />}
 
+                {location.pathname !== "/chat" && <ChatBoxButton />}
                 <GoToTopButton />
 
                 <ToastContainer

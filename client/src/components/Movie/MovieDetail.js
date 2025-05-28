@@ -55,11 +55,12 @@ const MovieDetail = () => {
         e.preventDefault()
         try {
             if (isCustomerLoggedIn) {
-                const res = await userComment({
-                    userId,
-                    movieId: movie._id,
-                    content: newComment
-                })
+                if (newComment.trim() === "") {
+                    toast.error(t("comment.toastCommentEmpty"))
+                    return
+                }
+
+                const res = await userComment({ userId, movieId: movie._id, content: newComment })
 
                 if (res) {
                     dispatch(customerActions.setRatingPoints(5))
