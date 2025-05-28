@@ -25,7 +25,7 @@
 ## Class Diagram
 This is the final class diagram that I have designed. It may be necessary to edit it after the software is improved.
 
-![class_uml](https://github.com/VenusakaVXT/buy-movie-tickets/assets/125566811/0fa250c5-4e44-4db5-a1d6-1647ecc9e78e)
+![class_uml](https://raw.githubusercontent.com/VenusakaVXT/buy-movie-tickets/refs/heads/master/uml_class_diagram.drawio.png)
 
 ## Launch the project
 Launch the backend (NodeJS, Express):
@@ -62,14 +62,21 @@ $ npm start
 
 <div align="center">
   
-![image](https://github.com/VenusakaVXT/buy-movie-tickets/assets/125566811/428bb399-b410-465b-94c1-f55b366eece7)
+![image](https://github.com/user-attachments/assets/ea929495-1118-4e67-9ead-cb16a9f916b0)
 *Seat diagram.*
   
 </div>
 
 <div align="center">
   
-![image](https://github.com/user-attachments/assets/d074488c-9210-457b-9dc5-ebc9d2ee6f53)
+![image](https://github.com/user-attachments/assets/437cdb70-b94b-4e19-a95f-eb7f6952346c)
+*Select water corn combo.*
+  
+</div>
+
+<div align="center">
+  
+![image](https://github.com/user-attachments/assets/3d2aa14f-a41d-4538-acdc-759134470e68)
 *Movie ticket details.*
   
 </div>
@@ -92,6 +99,13 @@ $ npm start
   
 ![image](https://github.com/user-attachments/assets/6ca725cb-2ea9-4585-9c72-8250b379558e)
 *Admin moderates ticket cancellation requests.*
+  
+</div>
+
+<div align="center">
+  
+![image](https://github.com/user-attachments/assets/db2290d6-6007-4d12-bc64-73f961e2f114)
+*Chat support.*
   
 </div>
 
