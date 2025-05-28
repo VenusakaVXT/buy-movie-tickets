@@ -8,7 +8,7 @@ import { Box, Button, Typography } from "@mui/material"
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart"
 import QrCode2Icon from "@mui/icons-material/QrCode2"
 import { getEndTime, handleSeatArr } from "../../util"
-import html2canvas from "html2canvas"
+//import html2canvas from "html2canvas"
 import { formatTitle } from "../../App"
 import { Tooltip } from "react-tooltip"
 import "../../scss/CinemaTicket.scss"
@@ -31,20 +31,30 @@ const CinemaTicket = () => {
     }, [bookingId])
 
     const handleSaveQRCode = async () => {
-        const element = qrCodeRef.current
-        if (!element) return
+        const link = document.createElement("a")
+        link.href = booking.qrCode
+        link.download = `qr_code_${bookingId}.png`
+        link.click()
 
-        try {
-            const canvas = await html2canvas(element)
-            const imgData = canvas.toDataURL("image/png")
-            const link = document.createElement("a")
+        // const element = qrCodeRef.current
+        // if (!element) return
 
-            link.href = imgData
-            link.download = `qr_code_${bookingId}.png`
-            link.click()
-        } catch (err) {
-            console.error(err)
-        }
+        // const originalBackground = element.style.backgroundColor
+        // element.style.backgroundColor = "rgba(255,255,255,1)"
+
+        // try {
+        //     const canvas = await html2canvas(element, { useCORS: true })
+        //     const imgData = canvas.toDataURL("image/png")
+        //     const link = document.createElement("a")
+
+        //     link.href = imgData
+        //     link.download = `qr_code_${bookingId}.png`
+        //     link.click()
+        // } catch (err) {
+        //     console.error(err)
+        // } finally {
+        //     element.style.backgroundColor = originalBackground
+        // }
     }
 
     return (
@@ -133,7 +143,7 @@ const CinemaTicket = () => {
                     </Box>
 
                     <Box className="cinema-ticket__img">
-                        <img src={booking.qrCode} alt="QR Code" ref={qrCodeRef} />
+                        <img src={booking.qrCode} alt="QR Code" ref={qrCodeRef} crossOrigin="anonymous" />
                         <Typography>{t("cinemaTicket.qrCode").toUpperCase()}</Typography>
                         <img src={`${process.env.REACT_APP_API_URL}/img/cinema_decorate.png`} alt="cinema-decorate" />
                     </Box>
